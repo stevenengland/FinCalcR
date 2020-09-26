@@ -9,7 +9,7 @@ namespace StEn.FinCalcR.Ui
 	{
 		public MainWindow()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 	}
 }
