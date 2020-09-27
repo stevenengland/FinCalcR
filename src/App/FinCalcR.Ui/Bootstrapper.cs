@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.Ui.Events;
+using StEn.FinCalcR.Ui.LibraryMapper.DialogHost;
 using StEn.FinCalcR.Ui.LibraryMapper.WpfLocalizeExtension;
 
 namespace StEn.FinCalcR.Ui
@@ -28,9 +29,7 @@ namespace StEn.FinCalcR.Ui
 
 		protected override void Configure()
 		{
-
 			try
-
 			{
 				this.LocalizationService = new WpfLocalizeExtensionMapper("Resources");
 				this.LocalizationService.ChangeCurrentCulture(new CultureInfo("de"));
@@ -38,8 +37,7 @@ namespace StEn.FinCalcR.Ui
 			}
 			catch (Exception e)
 			{
-				this.SetErrorEvent(new ErrorEvent(e,
-					$"Could not set Language {nameof(this.LocalizationService)}:" + e.Message, true));
+				this.SetErrorEvent(new ErrorEvent(e, $"Could not set Language {nameof(this.LocalizationService)}:" + e.Message, true));
 			}
 
 			try
