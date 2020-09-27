@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\App\FinCalcR.Ui\FinCalcR.Ui.csproj" />
+    <ProjectReference Include="..\..\App\FinCalcR.WinUi\FinCalcR.WinUi.csproj" />
   </ItemGroup>
 
 </Project>

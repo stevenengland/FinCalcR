@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinCalcR.Common", "src\App\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinCalcR.Common.Tests", "src\Tests\FinCalcR.Common.Tests\FinCalcR.Common.Tests.csproj", "{1F46AB6E-FFA4-4AA6-B11A-46F34B28CE54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinCalcR.WinUi", "src\App\FinCalcR.WinUi\FinCalcR.WinUi.csproj", "{5A0ABAE5-5D51-42A9-B82E-A369BB371FEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{1F46AB6E-FFA4-4AA6-B11A-46F34B28CE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F46AB6E-FFA4-4AA6-B11A-46F34B28CE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F46AB6E-FFA4-4AA6-B11A-46F34B28CE54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A0ABAE5-5D51-42A9-B82E-A369BB371FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A0ABAE5-5D51-42A9-B82E-A369BB371FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A0ABAE5-5D51-42A9-B82E-A369BB371FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A0ABAE5-5D51-42A9-B82E-A369BB371FEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{41892FAB-1FE2-44D0-823E-4CBA5E100070} = {69747D5F-DA07-4794-8501-E3B7DA6E3159}
 		{1D3A1651-A2BA-4886-8D87-A4C27EFFBBBA} = {322AFEE6-F003-47C1-9CAF-F81F2D8FC97F}
 		{1F46AB6E-FFA4-4AA6-B11A-46F34B28CE54} = {69747D5F-DA07-4794-8501-E3B7DA6E3159}
+		{5A0ABAE5-5D51-42A9-B82E-A369BB371FEB} = {322AFEE6-F003-47C1-9CAF-F81F2D8FC97F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3BFAAD71-1DEB-4213-9B58-8D21E7A1CE60}
