@@ -59,5 +59,59 @@ namespace StEn.FinCalcR.Common.LanguageResources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehler!.
+        /// </summary>
+        public static string DialogErrorTitleLbl_Text {
+            get {
+                return ResourceManager.GetString("DialogErrorTitleLbl_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hinweis!.
+        /// </summary>
+        public static string DialogHintTitleLbl_Text {
+            get {
+                return ResourceManager.GetString("DialogHintTitleLbl_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string DialogOkBtn_Content {
+            get {
+                return ResourceManager.GetString("DialogOkBtn_Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehlermeldung:.
+        /// </summary>
+        public static string ErrorMessageLbl {
+            get {
+                return ResourceManager.GetString("ErrorMessageLbl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eine unbehandelte Ausnahme ist aufgetreten:.
+        /// </summary>
+        public static string EXC_GUI_UNHANDLED_EXCEPTION_OCCURED {
+            get {
+                return ResourceManager.GetString("EXC_GUI_UNHANDLED_EXCEPTION_OCCURED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Innerer Fehler:.
+        /// </summary>
+        public static string InnerErrorMessageLbl_Text {
+            get {
+                return ResourceManager.GetString("InnerErrorMessageLbl_Text", resourceCulture);
+            }
+        }
     }
 }

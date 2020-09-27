@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
+using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension;
+using StEn.FinCalcR.WinUi.ViewModels;
 
 namespace StEn.FinCalcR.WinUi
 {
@@ -64,6 +69,57 @@ namespace StEn.FinCalcR.WinUi
 				.ToList()
 				.ForEach(viewModelType => this.simpleContainer.RegisterPerRequest(
 					viewModelType, viewModelType.ToString(), viewModelType));
+		}
+
+		protected override void OnStartup(object sender, StartupEventArgs e)
+		{
+			var proc = Process.GetCurrentProcess();
+			var count = Process.GetProcesses().Count(p => p.ProcessName == proc.ProcessName);
+
+			if (count > 1)
+			{
+				Environment.Exit(1);
+			}
+
+			this.DisplayRootViewFor<ShellViewModel>();
+			if (this.firstErrorEvent != null)
+			{
+				var eventAggregator = (IEventAggregator)this.simpleContainer.GetInstance(typeof(IEventAggregator), null);
+				eventAggregator.PublishOnUIThread(
+					new ErrorEvent(
+						this.firstErrorEvent.Exception,
+						Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + this.firstErrorEvent.ErrorMessage,
+						this.firstErrorEvent.ApplicationMustShutdown));
+			}
+		}
+
+		protected override object GetInstance(Type service, string key)
+		{
+			return this.simpleContainer.GetInstance(service, key);
+		}
+
+		protected override IEnumerable<object> GetAllInstances(Type service)
+		{
+			return this.simpleContainer.GetAllInstances(service);
+		}
+
+		protected override void BuildUp(object instance)
+		{
+			this.simpleContainer.BuildUp(instance);
+		}
+
+		protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+		{
+			var eventAggregator = (IEventAggregator)this.simpleContainer.GetInstance(typeof(IEventAggregator), null);
+			if (e == null)
+			{
+				eventAggregator.PublishOnUIThread(new ErrorEvent(new Exception(), Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + "null", true));
+			}
+			else
+			{
+				eventAggregator.PublishOnUIThread(new ErrorEvent(e.Exception, Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + e.Exception.Message, true));
+				e.Handled = true;
+			}
 		}
 
 		private void SetErrorEvent(ErrorEvent errorEvent)
