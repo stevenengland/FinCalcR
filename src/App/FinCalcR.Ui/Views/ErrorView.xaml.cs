@@ -20,7 +20,7 @@ namespace StEn.FinCalcR.Ui.Views
 	{
 		public ErrorView()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 	}
 }

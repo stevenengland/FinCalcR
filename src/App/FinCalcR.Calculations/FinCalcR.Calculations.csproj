@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>StEn.FinCalcR.Calculations</RootNamespace>
+    <NeutralLanguage>de-DE</NeutralLanguage>
   </PropertyGroup>
 
 </Project>

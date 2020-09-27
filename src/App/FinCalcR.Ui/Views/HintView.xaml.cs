@@ -20,7 +20,7 @@ namespace StEn.FinCalcR.Ui.Views
 	{
 		public HintView()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 	}
 }
