@@ -10,10 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.136-rc" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+    <PackageReference Include="WpfLocalizeExtension" Version="2.3.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FinCalcR.Calculations\FinCalcR.Calculations.csproj" />
+    <ProjectReference Include="..\FinCalcR.Common\FinCalcR.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
