@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using StEn.FinCalcR.Common.Services.Localization;

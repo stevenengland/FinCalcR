@@ -5,7 +5,72 @@
       <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6916.0" tool-company="Microsoft" />
     </header>
     <body>
-      <group id="FINCALCR.COMMON/LANGUAGERESOURCES/RESOURCES.RESX" datatype="resx" />
+      <group id="FINCALCR.COMMON/LANGUAGERESOURCES/RESOURCES.RESX" datatype="resx">
+        <trans-unit id="DialogErrorTitleLbl_Text" translate="yes" xml:space="preserve">
+          <source>Fehler!</source>
+          <target state="new">Fehler!</target>
+        </trans-unit>
+        <trans-unit id="DialogHintTitleLbl_Text" translate="yes" xml:space="preserve">
+          <source>Hinweis!</source>
+          <target state="new">Hinweis!</target>
+        </trans-unit>
+        <trans-unit id="DialogOkBtn_Content" translate="yes" xml:space="preserve">
+          <source>Ok</source>
+          <target state="new">Ok</target>
+        </trans-unit>
+        <trans-unit id="ErrorMessageLbl" translate="yes" xml:space="preserve">
+          <source>Fehlermeldung:</source>
+          <target state="new">Fehlermeldung:</target>
+        </trans-unit>
+        <trans-unit id="EXC_ARGUMENT_NULL" translate="yes" xml:space="preserve">
+          <source>Das folgende Argument ist leer oder null:</source>
+          <target state="new">Das folgende Argument ist leer oder null:</target>
+        </trans-unit>
+        <trans-unit id="EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN" translate="yes" xml:space="preserve">
+          <source>Die Applikation muss beendet werden!</source>
+          <target state="new">Die Applikation muss beendet werden!</target>
+        </trans-unit>
+        <trans-unit id="EXC_GUI_UNHANDLED_EXCEPTION_OCCURED" translate="yes" xml:space="preserve">
+          <source>Eine unbehandelte Ausnahme ist aufgetreten:</source>
+          <target state="new">Eine unbehandelte Ausnahme ist aufgetreten:</target>
+        </trans-unit>
+        <trans-unit id="InnerErrorMessageLbl_Text" translate="yes" xml:space="preserve">
+          <source>Innerer Fehler:</source>
+          <target state="new">Innerer Fehler:</target>
+        </trans-unit>
+        <trans-unit id="AboutNavigationItem_Name" translate="yes" xml:space="preserve">
+          <source>Über die App</source>
+          <target state="new">Über die App</target>
+        </trans-unit>
+        <trans-unit id="AppTitleTxt_Text" translate="yes" xml:space="preserve">
+          <source>FinCalcR</source>
+          <target state="new">FinCalcR</target>
+        </trans-unit>
+        <trans-unit id="AppVersionLabelTxt_Text" translate="yes" xml:space="preserve">
+          <source>App Version</source>
+          <target state="new">App Version</target>
+        </trans-unit>
+        <trans-unit id="FinCalcItem_Name" translate="yes" xml:space="preserve">
+          <source>Finanztaschenrechner</source>
+          <target state="new">Finanztaschenrechner</target>
+        </trans-unit>
+        <trans-unit id="MailContactLabel_Text" translate="yes" xml:space="preserve">
+          <source>Mail-Kontakt</source>
+          <target state="new">Mail-Kontakt</target>
+        </trans-unit>
+        <trans-unit id="ProjectHomepageLabelTxt_Text" translate="yes" xml:space="preserve">
+          <source>Projekt-Homepage</source>
+          <target state="new">Projekt-Homepage</target>
+        </trans-unit>
+        <trans-unit id="ExitAppBtn_ToolTip" translate="yes" xml:space="preserve">
+          <source>Anwendung schließen</source>
+          <target state="new">Anwendung schließen</target>
+        </trans-unit>
+        <trans-unit id="MinAppBtn_ToolTip" translate="yes" xml:space="preserve">
+          <source>Anwendung minimieren</source>
+          <target state="new">Anwendung minimieren</target>
+        </trans-unit>
+      </group>
     </body>
   </file>
 </xliff>

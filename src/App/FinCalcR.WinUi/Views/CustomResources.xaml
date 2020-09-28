@@ -51,6 +51,9 @@
 	<Style x:Key="IconButtonMedium" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
 		<Setter Property="Height" Value="36"></Setter>
 	</Style>
+	<Style x:Key="IconButtonRaisedSmall" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+		<Setter Property="Height" Value="26"></Setter>
+	</Style>
 
 	<!-- Buttons.Toolbar -->
 	<Style x:Key="ViewTitleAndToolbarIconButton" TargetType="Button" BasedOn="{StaticResource IconButtonLarge}">
@@ -61,9 +64,15 @@
 		<Setter Property="Margin" Value="0 0 5 0"></Setter>
 	</Style>
 
-	<!-- Buttons.Toolbar -->
+
 	<Style x:Key="ListIconButton" TargetType="Button" BasedOn="{StaticResource IconButtonMedium}">
 		<Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+	</Style>
+
+	<!-- Buttons.Titlebar -->
+	<Style x:Key="TitleBarIconButton" TargetType="Button" BasedOn="{StaticResource IconButtonRaisedSmall}">
+		<Setter Property="HorizontalAlignment" Value="Right"></Setter>
+		<Setter Property="Margin" Value="0 0 5 0"></Setter>
 	</Style>
 
 	<!-- Icons.Base -->

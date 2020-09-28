@@ -61,6 +61,33 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Über die App.
+        /// </summary>
+        public static string AboutNavigationItem_Name {
+            get {
+                return ResourceManager.GetString("AboutNavigationItem_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FinCalcR.
+        /// </summary>
+        public static string AppTitleTxt_Text {
+            get {
+                return ResourceManager.GetString("AppTitleTxt_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App Version.
+        /// </summary>
+        public static string AppVersionLabelTxt_Text {
+            get {
+                return ResourceManager.GetString("AppVersionLabelTxt_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fehler!.
         /// </summary>
         public static string DialogErrorTitleLbl_Text {
@@ -97,6 +124,24 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Das folgende Argument ist leer oder null:.
+        /// </summary>
+        public static string EXC_ARGUMENT_NULL {
+            get {
+                return ResourceManager.GetString("EXC_ARGUMENT_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Applikation muss beendet werden!.
+        /// </summary>
+        public static string EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN {
+            get {
+                return ResourceManager.GetString("EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eine unbehandelte Ausnahme ist aufgetreten:.
         /// </summary>
         public static string EXC_GUI_UNHANDLED_EXCEPTION_OCCURED {
@@ -106,11 +151,56 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anwendung schließen.
+        /// </summary>
+        public static string ExitAppBtn_ToolTip {
+            get {
+                return ResourceManager.GetString("ExitAppBtn_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finanztaschenrechner.
+        /// </summary>
+        public static string FinCalcItem_Name {
+            get {
+                return ResourceManager.GetString("FinCalcItem_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Innerer Fehler:.
         /// </summary>
         public static string InnerErrorMessageLbl_Text {
             get {
                 return ResourceManager.GetString("InnerErrorMessageLbl_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail-Kontakt.
+        /// </summary>
+        public static string MailContactLabel_Text {
+            get {
+                return ResourceManager.GetString("MailContactLabel_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anwendung minimieren.
+        /// </summary>
+        public static string MinAppBtn_ToolTip {
+            get {
+                return ResourceManager.GetString("MinAppBtn_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projekt-Homepage.
+        /// </summary>
+        public static string ProjectHomepageLabelTxt_Text {
+            get {
+                return ResourceManager.GetString("ProjectHomepageLabelTxt_Text", resourceCulture);
             }
         }
     }

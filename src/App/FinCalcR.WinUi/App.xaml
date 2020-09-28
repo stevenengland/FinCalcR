@@ -1,10 +1,10 @@
 ﻿<Application x:Class="StEn.FinCalcR.WinUi.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml"
              xmlns:gui="clr-namespace:StEn.FinCalcR.WinUi"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:converter="clr-namespace:StEn.FinCalcR.WinUi.Converter">
+             xmlns:converter="clr-namespace:StEn.FinCalcR.WinUi.Converter"
+             ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
 		<ResourceDictionary>
 			<BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />

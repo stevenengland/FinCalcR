@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutNavigationItem_Name" xml:space="preserve">
+    <value>Über die App</value>
+  </data>
+  <data name="AppTitleTxt_Text" xml:space="preserve">
+    <value>FinCalcR</value>
+  </data>
+  <data name="AppVersionLabelTxt_Text" xml:space="preserve">
+    <value>App Version</value>
+  </data>
   <data name="DialogErrorTitleLbl_Text" xml:space="preserve">
     <value>Fehler!</value>
   </data>
@@ -129,10 +138,31 @@
   <data name="ErrorMessageLbl" xml:space="preserve">
     <value>Fehlermeldung:</value>
   </data>
+  <data name="EXC_ARGUMENT_NULL" xml:space="preserve">
+    <value>Das folgende Argument ist leer oder null:</value>
+  </data>
+  <data name="EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN" xml:space="preserve">
+    <value>Die Applikation muss beendet werden!</value>
+  </data>
   <data name="EXC_GUI_UNHANDLED_EXCEPTION_OCCURED" xml:space="preserve">
     <value>Eine unbehandelte Ausnahme ist aufgetreten:</value>
   </data>
+  <data name="ExitAppBtn_ToolTip" xml:space="preserve">
+    <value>Anwendung schließen</value>
+  </data>
+  <data name="FinCalcItem_Name" xml:space="preserve">
+    <value>Finanztaschenrechner</value>
+  </data>
   <data name="InnerErrorMessageLbl_Text" xml:space="preserve">
     <value>Innerer Fehler:</value>
+  </data>
+  <data name="MailContactLabel_Text" xml:space="preserve">
+    <value>Mail-Kontakt</value>
+  </data>
+  <data name="MinAppBtn_ToolTip" xml:space="preserve">
+    <value>Anwendung minimieren</value>
+  </data>
+  <data name="ProjectHomepageLabelTxt_Text" xml:space="preserve">
+    <value>Projekt-Homepage</value>
   </data>
 </root>
