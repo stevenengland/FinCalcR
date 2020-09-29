@@ -126,6 +126,12 @@
   <data name="AppVersionLabelTxt_Text" xml:space="preserve">
     <value>App Version</value>
   </data>
+  <data name="CALC_DECIMAL_SEPARATOR" xml:space="preserve">
+    <value>,</value>
+  </data>
+  <data name="CALC_THOUSANDS_SEPARATOR" xml:space="preserve">
+    <value>.</value>
+  </data>
   <data name="DialogErrorTitleLbl_Text" xml:space="preserve">
     <value>Fehler!</value>
   </data>

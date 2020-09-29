@@ -3,7 +3,7 @@
 namespace StEn.FinCalcR.WinUi.Views
 {
 	/// <summary>
-	/// Interaction logic for FinCalcView.xaml
+	/// Interaction logic for FinCalcView.xaml.
 	/// </summary>
 	public partial class FinCalcView : UserControl
 	{

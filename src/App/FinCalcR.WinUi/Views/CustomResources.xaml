@@ -75,6 +75,15 @@
 		<Setter Property="Margin" Value="0 0 5 0"></Setter>
 	</Style>
 
+	<!-- Buttons.Calculator -->
+	<Style x:Key="CalculatorBasic" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
+		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+		<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+		<Setter Property="FontSize" Value="32"></Setter>
+		<Setter Property="FontWeight" Value="Bold"></Setter>
+		<Setter Property="Margin" Value="5 5 5 5"></Setter>
+	</Style>
+
 	<!-- Icons.Base -->
 	<Style x:Key="IconMedium" TargetType="materialDesign:PackIcon">
 		<Setter Property="Height" Value="24"></Setter>

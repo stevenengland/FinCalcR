@@ -20,7 +20,11 @@
         WindowStyle="None"
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         Style="{DynamicResource WindowBaseStyle}"
-        Title="ShellView" Height="450" Width="800"
+        Title="ShellView" 
+        Height="450" 
+        Width="800"
+		MinWidth="600"
+		MinHeight="600"
         d:DataContext="{Binding Source={d:DesignInstance viewModels:ShellViewModel},
                 Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}">
 	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding SbMessageQueue}">

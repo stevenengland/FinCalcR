@@ -12,4 +12,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DialogErrorTitleLbl_Text" xml:space="preserve">
+    <value>Error!</value>
+  </data>
+  <data name="DialogHintTitleLbl_Text" xml:space="preserve">
+    <value>Notice!</value>
+  </data>
+  <data name="ErrorMessageLbl" xml:space="preserve">
+    <value>Error message:</value>
+  </data>
+  <data name="EXC_ARGUMENT_NULL" xml:space="preserve">
+    <value>The following argument is null or emtpy:</value>
+  </data>
+  <data name="EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN" xml:space="preserve">
+    <value>The application needs to be shutdown!</value>
+  </data>
+  <data name="EXC_GUI_UNHANDLED_EXCEPTION_OCCURED" xml:space="preserve">
+    <value>An unhundled exception occured:</value>
+  </data>
+  <data name="InnerErrorMessageLbl_Text" xml:space="preserve">
+    <value>Inner exception:</value>
+  </data>
+  <data name="AboutNavigationItem_Name" xml:space="preserve">
+    <value>About the App</value>
+  </data>
+  <data name="AppVersionLabelTxt_Text" xml:space="preserve">
+    <value>App version</value>
+  </data>
+  <data name="FinCalcItem_Name" xml:space="preserve">
+    <value>Financial calulator</value>
+  </data>
+  <data name="MailContactLabel_Text" xml:space="preserve">
+    <value>Mail contact</value>
+  </data>
+  <data name="ProjectHomepageLabelTxt_Text" xml:space="preserve">
+    <value>Project hompage</value>
+  </data>
+  <data name="ExitAppBtn_ToolTip" xml:space="preserve">
+    <value>Close app</value>
+  </data>
+  <data name="MinAppBtn_ToolTip" xml:space="preserve">
+    <value>Minimize app</value>
+  </data>
+  <data name="CALC_DECIMAL_SEPARATOR" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="CALC_THOUSANDS_SEPARATOR" xml:space="preserve">
+    <value>,</value>
+  </data>
 </root>

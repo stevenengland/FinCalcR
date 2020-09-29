@@ -4,9 +4,103 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StEn.FinCalcR.WinUi.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cal="http://www.caliburnproject.org" 
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:viewModels="clr-namespace:StEn.FinCalcR.WinUi.ViewModels"
+             xmlns:converter="clr-namespace:StEn.FinCalcR.WinUi.Converter"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{Binding Source={d:DesignInstance viewModels:FinCalcViewModel},
+                Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}">
+    <Grid Name="MainGrd">
+	    <Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+	        <RowDefinition Height="2*" />
+	        <RowDefinition Height="*" />
+	        <RowDefinition Height="*" />
+	        <RowDefinition Height="*" />
+	        <RowDefinition Height="*" />
+	        <RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+	       <Label x:Name="ResultText"
+	           FontSize="48"
+			   Height="80"
+	           FontWeight="Bold"
+	           Background="Black"
+	           Content="{Binding ResultText}"
+	           Foreground="White"
+			   VerticalAlignment="Top"
+	           HorizontalContentAlignment="Right"
+	           VerticalContentAlignment="Center"
+			   Padding="40 0 40 0"
+	           Grid.ColumnSpan="4" />
+	       <Button Grid.Row="2"
+	               Grid.Column="0"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="1"
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="1"/>
+	       <Button Grid.Row="2"
+	               Grid.Column="1"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="2"
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="2" />
+	       <Button Grid.Row="2"
+	               Grid.Column="2"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="3" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="3"/>
+	       <Button Grid.Row="3"
+	               Grid.Column="0"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="4" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="4"/>
+	       <Button Grid.Row="3"
+	               Grid.Column="1"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="5" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="5"/>
+	       <Button Grid.Row="3"
+	               Grid.Column="2"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="6" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="6"/>
+	       <Button Grid.Row="4"
+	               Grid.Column="0"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="7" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="7"/>
+	       <Button Grid.Row="4"
+	               Grid.Column="1"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="8" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="8"/>
+	       <Button Grid.Row="4"
+	               Grid.Column="2"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="9" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="9"/>
+	       <Button Grid.Row="5"
+	               Grid.Column="1"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="0" 
+	               Command="{Binding DigitPressedCommand}"
+	               CommandParameter="0"/>
+
+	</Grid>
 </UserControl>

@@ -88,6 +88,24 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ,.
+        /// </summary>
+        public static string CALC_DECIMAL_SEPARATOR {
+            get {
+                return ResourceManager.GetString("CALC_DECIMAL_SEPARATOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ..
+        /// </summary>
+        public static string CALC_THOUSANDS_SEPARATOR {
+            get {
+                return ResourceManager.GetString("CALC_THOUSANDS_SEPARATOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fehler!.
         /// </summary>
         public static string DialogErrorTitleLbl_Text {
