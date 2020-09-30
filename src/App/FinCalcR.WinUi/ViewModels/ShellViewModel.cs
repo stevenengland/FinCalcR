@@ -114,6 +114,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					"RootDialog").ConfigureAwait(true);
 				this.GracefulShutdown();
 			}
+			else if (message.ShowAsSnackbarItem)
+			{
+				this.SbMessageQueue.Enqueue<ErrorEvent>(
+					Resources.EXC_ERROR_EVENT_GENERAL_TITLE,
+					Resources.SnackBar_Action_Content_Details,
+					async (arg) => await this.ShowErrorAsync(arg).ConfigureAwait(true),
+					message);
+			}
 			else
 			{
 				await this.dialogHostMapper.Show(

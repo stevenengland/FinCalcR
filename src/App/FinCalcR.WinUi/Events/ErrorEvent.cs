@@ -16,5 +16,7 @@ namespace StEn.FinCalcR.WinUi.Events
 		public string ErrorMessage { get; }
 
 		public bool ApplicationMustShutdown { get; } = false;
+
+		public bool ShowAsSnackbarItem { get; } = false;
 	}
 }

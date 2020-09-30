@@ -14,7 +14,8 @@ namespace FinCalcR.WinUi.Tests.Mocks
 		public static FinCalcViewModel FinCalcViewModelFactory(Dictionary<string, object> mockObjects)
 		{
 			return new FinCalcViewModel(
-				(ILocalizationService)mockObjects[nameof(ILocalizationService)]);
+				(ILocalizationService)mockObjects[nameof(ILocalizationService)],
+				(IEventAggregator)mockObjects[nameof(IEventAggregator)]);
 		}
 
 		public static Dictionary<string, object> GetMockObjects()

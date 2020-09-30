@@ -160,11 +160,29 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ein Fehler ist aufgetreten!.
+        /// </summary>
+        public static string EXC_ERROR_EVENT_GENERAL_TITLE {
+            get {
+                return ResourceManager.GetString("EXC_ERROR_EVENT_GENERAL_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eine unbehandelte Ausnahme ist aufgetreten:.
         /// </summary>
         public static string EXC_GUI_UNHANDLED_EXCEPTION_OCCURED {
             get {
                 return ResourceManager.GetString("EXC_GUI_UNHANDLED_EXCEPTION_OCCURED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Eingabe ist keine gültige Zahl..
+        /// </summary>
+        public static string EXC_PARSE_DOUBLE_IMPOSSIBLE {
+            get {
+                return ResourceManager.GetString("EXC_PARSE_DOUBLE_IMPOSSIBLE", resourceCulture);
             }
         }
         
@@ -219,6 +237,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         public static string ProjectHomepageLabelTxt_Text {
             get {
                 return ResourceManager.GetString("ProjectHomepageLabelTxt_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string SnackBar_Action_Content_Details {
+            get {
+                return ResourceManager.GetString("SnackBar_Action_Content_Details", resourceCulture);
             }
         }
     }

@@ -78,6 +78,18 @@
           <source>.</source>
           <target state="translated">,</target>
         </trans-unit>
+        <trans-unit id="EXC_ERROR_EVENT_GENERAL_TITLE" translate="yes" xml:space="preserve">
+          <source>Ein Fehler ist aufgetreten!</source>
+          <target state="new">Ein Fehler ist aufgetreten!</target>
+        </trans-unit>
+        <trans-unit id="EXC_PARSE_DOUBLE_IMPOSSIBLE" translate="yes" xml:space="preserve">
+          <source>Die Eingabe ist keine gültige Zahl.</source>
+          <target state="new">Die Eingabe ist keine gültige Zahl.</target>
+        </trans-unit>
+        <trans-unit id="SnackBar_Action_Content_Details" translate="yes" xml:space="preserve">
+          <source>Details</source>
+          <target state="new">Details</target>
+        </trans-unit>
       </group>
     </body>
   </file>

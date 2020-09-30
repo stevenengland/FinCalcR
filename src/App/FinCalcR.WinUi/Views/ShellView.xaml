@@ -21,8 +21,8 @@
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         Style="{DynamicResource WindowBaseStyle}"
         Title="ShellView" 
-        Height="450" 
-        Width="800"
+        Height="600" 
+        Width="600"
 		MinWidth="600"
 		MinHeight="600"
         d:DataContext="{Binding Source={d:DesignInstance viewModels:ShellViewModel},
@@ -37,7 +37,8 @@
                                   HorizontalAlignment="Right" Margin="16"
                                   IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" 
 					              Width="20"
-					              Height="20"/>
+					              Height="20"
+                                  Foreground="White"/>
 					<ListBox x:Name="MenuItemLst" Margin="0 16 0 16" SelectedIndex="0"
 					         ItemsSource="{Binding MenuItems}">
 						<!--cal:Message.Attach="[Event SelectionChanged]=[Action OnMenuItemsSelectionChanged($source,$eventArgs)];"-->

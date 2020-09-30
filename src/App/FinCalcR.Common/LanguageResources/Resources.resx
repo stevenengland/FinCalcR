@@ -150,8 +150,14 @@
   <data name="EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN" xml:space="preserve">
     <value>Die Applikation muss beendet werden!</value>
   </data>
+  <data name="EXC_ERROR_EVENT_GENERAL_TITLE" xml:space="preserve">
+    <value>Ein Fehler ist aufgetreten!</value>
+  </data>
   <data name="EXC_GUI_UNHANDLED_EXCEPTION_OCCURED" xml:space="preserve">
     <value>Eine unbehandelte Ausnahme ist aufgetreten:</value>
+  </data>
+  <data name="EXC_PARSE_DOUBLE_IMPOSSIBLE" xml:space="preserve">
+    <value>Die Eingabe ist keine gültige Zahl.</value>
   </data>
   <data name="ExitAppBtn_ToolTip" xml:space="preserve">
     <value>Anwendung schließen</value>
@@ -170,5 +176,8 @@
   </data>
   <data name="ProjectHomepageLabelTxt_Text" xml:space="preserve">
     <value>Projekt-Homepage</value>
+  </data>
+  <data name="SnackBar_Action_Content_Details" xml:space="preserve">
+    <value>Details</value>
   </data>
 </root>

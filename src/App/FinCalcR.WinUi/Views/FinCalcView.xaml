@@ -27,18 +27,20 @@
 	        <RowDefinition Height="*" />
 	        <RowDefinition Height="*" />
 	        <RowDefinition Height="*" />
+	        <RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
 	       <Label x:Name="ResultText"
 	           FontSize="48"
 			   Height="80"
 	           FontWeight="Bold"
-	           Background="Black"
-	           Content="{Binding ResultText}"
-	           Foreground="White"
+	           Background="#85AD8B"
+	           Content="{Binding DisplayText}"
+	           Foreground="Black"
 			   VerticalAlignment="Top"
 	           HorizontalContentAlignment="Right"
 	           VerticalContentAlignment="Center"
+			   Margin="10 10 10 0"
 			   Padding="40 0 40 0"
 	           Grid.ColumnSpan="4" />
 	       <Button Grid.Row="2"
@@ -101,6 +103,72 @@
 	               Content="0" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="0"/>
+	       <Button Grid.Row="5"
+	               Grid.Column="2"
+	               Style="{StaticResource CalculatorBasic}"
+	               Content="{lex:Loc Key=CALC_DECIMAL_SEPARATOR}" 
+	               Command="{Binding DecimalSeparatorPressedCommand}"/>
+		<Button Grid.Row="2"
+	               Grid.Column="3"
+	               Style="{StaticResource CalculatorBasic}"
+	               Command="{Binding OperatorPressedCommand}"
+	               CommandParameter="/">
+		       <StackPanel Orientation="Horizontal">
+			       <materialDesign:PackIcon Kind="Division"
+			                                Style="{DynamicResource IconLarge}"/>
+		       </StackPanel>
+			</Button>
+	       <Button Grid.Row="3"
+	               Grid.Column="3"
+	               Style="{StaticResource CalculatorBasic}"
+	               Command="{Binding OperatorPressedCommand}"
+	               CommandParameter="*">
+		       <StackPanel Orientation="Horizontal">
+			       <materialDesign:PackIcon Kind="Multiply"
+			                                Style="{DynamicResource IconLarge}"
+			                                Foreground="White"/>
+		       </StackPanel>
+	       </Button>
+	       <Button Grid.Row="4"
+	               Grid.Column="3"
+	               Style="{StaticResource CalculatorBasic}"
+	               Command="{Binding OperatorPressedCommand}"
+	               CommandParameter="-">
+		       <StackPanel Orientation="Horizontal">
+			       <materialDesign:PackIcon Kind="Minus"
+			                                Style="{DynamicResource IconLarge}"/>
+		       </StackPanel>
+	       </Button>
+	       <Button Grid.Row="5"
+	               Grid.Column="3"
+	               Style="{StaticResource CalculatorBasic}"
+	               Command="{Binding OperatorPressedCommand}"
+	               CommandParameter="+">
+		       <StackPanel Orientation="Horizontal">
+			       <materialDesign:PackIcon Kind="Plus"
+			                                Style="{DynamicResource IconLarge}"/>
+		       </StackPanel>
+	       </Button>
+	       <Button Grid.Row="6"
+	               Grid.Column="3"
+	               Style="{StaticResource CalculatorBasic}"
+	               Command="{Binding OperatorPressedCommand}"
+	               CommandParameter="=">
+		       <StackPanel Orientation="Horizontal">
+			       <materialDesign:PackIcon Kind="Equal"
+			                                Style="{DynamicResource IconLarge}"/>
+		       </StackPanel>
+	       </Button>
+	       <Button Grid.Row="5"
+	               Grid.Column="0"
+	               Style="{StaticResource CalculatorBasic}"
+	               Command="{Binding AlgebSignPressedCommand}"
+	               Foreground="White">
+		       <StackPanel Orientation="Horizontal">
+			       <materialDesign:PackIcon Kind="PlusMinus"
+			                                Style="{DynamicResource IconLarge}"/>
+		       </StackPanel>
+		</Button>
 
 	</Grid>
 </UserControl>
