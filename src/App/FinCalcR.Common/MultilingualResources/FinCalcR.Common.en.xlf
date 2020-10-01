@@ -90,6 +90,50 @@
           <source>Details</source>
           <target state="new">Details</target>
         </trans-unit>
+        <trans-unit id="FinCalcFunctionAdvance" translate="yes" xml:space="preserve">
+          <source>vorsch.</source>
+          <target state="new">vorsch.</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionEnd" translate="yes" xml:space="preserve">
+          <source>Ende</source>
+          <target state="new">Ende</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionInterest" translate="yes" xml:space="preserve">
+          <source>Zins</source>
+          <target state="new">Zins</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionNominalInterest" translate="yes" xml:space="preserve">
+          <source>% nom.</source>
+          <target state="new">% nom.</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionPercent" translate="yes" xml:space="preserve">
+          <source>%</source>
+          <target state="new">%</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionRate" translate="yes" xml:space="preserve">
+          <source>Rate</source>
+          <target state="new">Rate</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionRepayment" translate="yes" xml:space="preserve">
+          <source>%Tilgung</source>
+          <target state="new">%Tilgung</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionStart" translate="yes" xml:space="preserve">
+          <source>Start</source>
+          <target state="new">Start</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionYears" translate="yes" xml:space="preserve">
+          <source>Jahre</source>
+          <target state="new">Jahre</target>
+        </trans-unit>
+        <trans-unit id="FinCalcFunctionRatesPerYear" translate="yes" xml:space="preserve">
+          <source>Raten p.a.</source>
+          <target state="new">Raten p.a.</target>
+        </trans-unit>
+        <trans-unit id="NpoHomepageLabelTxt_Text" translate="yes" xml:space="preserve">
+          <source>Vereins-Homepage</source>
+          <target state="new">Vereins-Homepage</target>
+        </trans-unit>
       </group>
     </body>
   </file>

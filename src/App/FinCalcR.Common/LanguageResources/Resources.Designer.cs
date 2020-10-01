@@ -196,6 +196,96 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to vorsch..
+        /// </summary>
+        public static string FinCalcFunctionAdvance {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionAdvance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ende.
+        /// </summary>
+        public static string FinCalcFunctionEnd {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zins.
+        /// </summary>
+        public static string FinCalcFunctionInterest {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionInterest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to % nom..
+        /// </summary>
+        public static string FinCalcFunctionNominalInterest {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionNominalInterest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        public static string FinCalcFunctionPercent {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rate.
+        /// </summary>
+        public static string FinCalcFunctionRate {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raten p.a..
+        /// </summary>
+        public static string FinCalcFunctionRatesPerYear {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionRatesPerYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %Tilgung.
+        /// </summary>
+        public static string FinCalcFunctionRepayment {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionRepayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string FinCalcFunctionStart {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jahre.
+        /// </summary>
+        public static string FinCalcFunctionYears {
+            get {
+                return ResourceManager.GetString("FinCalcFunctionYears", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finanztaschenrechner.
         /// </summary>
         public static string FinCalcItem_Name {
@@ -228,6 +318,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         public static string MinAppBtn_ToolTip {
             get {
                 return ResourceManager.GetString("MinAppBtn_ToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vereins-Homepage.
+        /// </summary>
+        public static string NpoHomepageLabelTxt_Text {
+            get {
+                return ResourceManager.GetString("NpoHomepageLabelTxt_Text", resourceCulture);
             }
         }
         

@@ -25,6 +25,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string rightSide;
 		private double firstNumber = 0;
 		private double secondNumber = 0;
+		private bool resetNeeded = false;
 
 		public FinCalcViewModel(
 			ILocalizationService localizationService,
@@ -98,10 +99,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnDigitPressed(object digitObj)
 		{
-			var digit = (string)digitObj;
+			var digit = digitObj.ToString();
 			if (this.isDecimalSeparatorActive)
 			{
-				if (this.rightSide.Length < 4)
+				if (this.rightSide.Length < 9)
 				{
 					this.rightSide += digit;
 				}
@@ -140,12 +141,18 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetNumbers();
 			this.ResetSides();
 			this.ActiveMathOperator = string.Empty;
+			this.resetNeeded = false;
 
 			this.SetDisplayText();
 		}
 
 		private void OnCalculatePressed()
 		{
+			if (this.resetNeeded)
+			{
+				return;
+			}
+
 			this.SetNumber(out this.secondNumber);
 			var calculatedResult = SimpleCalculator.Calculate(this.firstNumber, this.secondNumber, this.ActiveMathOperator);
 			this.ResetNumbers();
@@ -153,6 +160,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.BuildSidesFromNumber(calculatedResult);
 			this.ActiveMathOperator = string.Empty;
 			this.SetDisplayText();
+			this.resetNeeded = true;
+
 		}
 
 		private void SetNumber(out double number)
@@ -189,7 +198,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void BuildSidesFromNumber(double calculatedResult)
 		{
-			var s = calculatedResult.ToString(CultureInfo.InvariantCulture);
+			var roundedResult = Math.Round(calculatedResult, 9);
+			var s = roundedResult.ToString(CultureInfo.InvariantCulture);
 			var parts = s.Split('.');
 			this.leftSide = parts[0];
 			this.rightSide = parts.Length < 2 ? string.Empty : parts[1];
@@ -199,6 +209,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.rightSide = string.Empty;
 			this.leftSide = "0";
+			this.isDecimalSeparatorActive = false;
 		}
 
 		private void ResetNumbers()

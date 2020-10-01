@@ -31,7 +31,7 @@
 		</Grid.RowDefinitions>
 
 	       <Label x:Name="ResultText"
-	           FontSize="48"
+	           FontSize="42"
 			   Height="80"
 	           FontWeight="Bold"
 	           Background="#85AD8B"
@@ -40,77 +40,140 @@
 			   VerticalAlignment="Top"
 	           HorizontalContentAlignment="Right"
 	           VerticalContentAlignment="Center"
-			   Margin="10 10 10 0"
+			   Margin="0 10 0 0"
 			   Padding="40 0 40 0"
 	           Grid.ColumnSpan="4" />
+		   <Grid Grid.Row="1"
+				 Grid.Column="0"
+		         ColumnSpan="4">
+			   <Grid.ColumnDefinitions>
+				   <ColumnDefinition Width="*" />
+				   <ColumnDefinition Width="*" />
+				   <ColumnDefinition Width="*" />
+				   <ColumnDefinition Width="*" />
+				   <ColumnDefinition Width="*" />
+				   <ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			   <Grid.RowDefinitions>
+				   <RowDefinition Height="*" />
+				   <RowDefinition Height="*" />
+				   <RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			   <TextBlock Grid.Row="0"
+			              Grid.Column="1"
+			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+			              Text="{lex:Loc Key=FinCalcFunctionRatesPerYear}"/>
+			   <TextBlock Grid.Row="0"
+			              Grid.Column="2"
+			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+			              Text="{lex:Loc Key=FinCalcFunctionNominalInterest}"/>
+			   <TextBlock Grid.Row="0"
+			              Grid.Column="3"
+			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+			              Text="{lex:Loc Key=FinCalcFunctionAdvance}"/>
+			   <TextBlock Grid.Row="0"
+			              Grid.Column="4"
+			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+			              Text="{lex:Loc Key=FinCalcFunctionRepayment}"/>
+			   <TextBlock Grid.Row="0"
+			              Grid.Column="5"
+			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+			              Text="{lex:Loc Key=FinCalcFunctionPercent}"/>
+			<Button Grid.Row="1"
+					   Grid.Column="0"
+			           Style="{StaticResource MaterialDesignRaisedAccentButton}"
+			           Margin="0 0 0 0"
+					   FontWeight="Bold"
+			           Content="C" />
+			   <Button Grid.Row="1"
+					   Grid.Column="1"
+			           Style="{StaticResource CalculatorSpecialFunctionButton}"
+					   Content="{lex:Loc Key=FinCalcFunctionYears}" />
+			   <Button Grid.Row="1"
+			           Grid.Column="2"
+			           Style="{StaticResource CalculatorSpecialFunctionButton}"
+			           Content="{lex:Loc Key=FinCalcFunctionInterest}" />
+			   <Button Grid.Row="1"
+			           Grid.Column="3"
+			           Style="{StaticResource CalculatorSpecialFunctionButton}"
+			           Content="{lex:Loc Key=FinCalcFunctionStart}" />
+			   <Button Grid.Row="1"
+			           Grid.Column="4"
+			           Style="{StaticResource CalculatorSpecialFunctionButton}"
+			           Content="{lex:Loc Key=FinCalcFunctionRate}" />
+			   <Button Grid.Row="1"
+			           Grid.Column="5"
+			           Style="{StaticResource CalculatorSpecialFunctionButton}"
+			           Content="{lex:Loc Key=FinCalcFunctionEnd}" />
+		</Grid>
 	       <Button Grid.Row="2"
 	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="1"
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="1"/>
 	       <Button Grid.Row="2"
 	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="2"
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="2" />
 	       <Button Grid.Row="2"
 	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="3" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="3"/>
 	       <Button Grid.Row="3"
 	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="4" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="4"/>
 	       <Button Grid.Row="3"
 	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="5" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="5"/>
 	       <Button Grid.Row="3"
 	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="6" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="6"/>
 	       <Button Grid.Row="4"
 	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="7" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="7"/>
 	       <Button Grid.Row="4"
 	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="8" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="8"/>
 	       <Button Grid.Row="4"
 	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="9" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="9"/>
 	       <Button Grid.Row="5"
 	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="0" 
 	               Command="{Binding DigitPressedCommand}"
 	               CommandParameter="0"/>
 	       <Button Grid.Row="5"
 	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="{lex:Loc Key=CALC_DECIMAL_SEPARATOR}" 
 	               Command="{Binding DecimalSeparatorPressedCommand}"/>
 		<Button Grid.Row="2"
 	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
 	               CommandParameter="/">
 		       <StackPanel Orientation="Horizontal">
@@ -120,7 +183,7 @@
 			</Button>
 	       <Button Grid.Row="3"
 	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
 	               CommandParameter="*">
 		       <StackPanel Orientation="Horizontal">
@@ -131,7 +194,7 @@
 	       </Button>
 	       <Button Grid.Row="4"
 	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
 	               CommandParameter="-">
 		       <StackPanel Orientation="Horizontal">
@@ -141,7 +204,7 @@
 	       </Button>
 	       <Button Grid.Row="5"
 	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
 	               CommandParameter="+">
 		       <StackPanel Orientation="Horizontal">
@@ -151,9 +214,8 @@
 	       </Button>
 	       <Button Grid.Row="6"
 	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasic}"
-	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="=">
+	               Style="{StaticResource CalculatorBasicButton}"
+	               Command="{Binding CalculatePressedCommand}">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="Equal"
 			                                Style="{DynamicResource IconLarge}"/>
@@ -161,7 +223,7 @@
 	       </Button>
 	       <Button Grid.Row="5"
 	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasic}"
+	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding AlgebSignPressedCommand}"
 	               Foreground="White">
 		       <StackPanel Orientation="Horizontal">

@@ -12,10 +12,10 @@ namespace StEn.FinCalcR.Calculations
 
 			switch (mathOperator)
 			{
-				case "÷":
+				case "/":
 					result = value1 / value2;
 					break;
-				case "×":
+				case "*":
 					result = value1 * value2;
 					break;
 				case "+":

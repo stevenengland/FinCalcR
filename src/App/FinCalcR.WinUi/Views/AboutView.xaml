@@ -37,10 +37,23 @@
 		           Text="{Binding AppVersionText}"/>
 		<TextBlock Grid.Column="0" 
 		           Grid.Row="1" 
-		           Name="ProjectHomepageLabelTxt"
+		           Name="NpoHomepageLabelTxt"
 		           Text="{lex:Loc}"/>
 		<TextBlock Grid.Column="1" 
 		           Grid.Row="1">
+			<Hyperlink NavigateUri="https://geldlehrer.org/"
+			           RequestNavigate="Hyperlink_OnRequestNavigate">
+				<Hyperlink.Inlines>
+					<Run Text="https://geldlehrer.org/" />
+				</Hyperlink.Inlines>
+			</Hyperlink>
+		</TextBlock>
+		<TextBlock Grid.Column="0" 
+		           Grid.Row="2" 
+		           Name="ProjectHomepageLabelTxt"
+		           Text="{lex:Loc}"/>
+		<TextBlock Grid.Column="1" 
+		           Grid.Row="2">
 			<Hyperlink NavigateUri="https://github.com/stevenengland/FinCalcR"
 			           RequestNavigate="Hyperlink_OnRequestNavigate">
 				<Hyperlink.Inlines>
@@ -49,12 +62,16 @@
 			</Hyperlink>
 		</TextBlock>
 		<TextBlock Grid.Column="0" 
-		           Grid.Row="2"
+		           Grid.Row="3"
 		           Name="MailContactLabel"
 		           Text="{lex:Loc}"/>
-		<TextBlock Grid.Column="1"
-		           Grid.Row="2"
-		           Text="info@thomaskrosse.de"/>
+
+		<StackPanel Grid.Column="1"
+		            Grid.Row="3"
+		            Orientation="Vertical">
+			<TextBlock Text="Thomas Krosse: info@thomaskrosse.de"/>
+			<TextBlock Text="Steven England: sengland@steven-england.info"/>
+		</StackPanel>
 
 	</Grid>
 </UserControl>

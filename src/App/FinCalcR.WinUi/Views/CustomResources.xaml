@@ -4,6 +4,7 @@
 	<!-- Control -->
 	<Style x:Key="WindowBaseStyle" TargetType="{x:Type Control}">
 		<Setter Property="FontSize" Value="14" />
+		<Setter Property="Foreground" Value="White" />
 		<Setter Property="FontFamily" Value="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"/>
 		<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
 	</Style>
@@ -33,6 +34,11 @@
 	<Style x:Key="CardHeadline" TargetType="TextBlock" BasedOn="{StaticResource Headline2Text}">
 		<Setter Property="FontWeight" Value="Regular"></Setter>
 		<Setter Property="Margin" Value="15,10,10,10" />
+	</Style>
+	<Style x:Key="CalculatorSpecialFunctionTextBlock"  TargetType="TextBlock">
+		<Setter Property="HorizontalAlignment" Value="Center"></Setter>
+		<Setter Property="VerticalAlignment" Value="Center"></Setter>
+		<Setter Property="Margin" Value="0 0 0 5"></Setter>
 	</Style>
 
 	<!-- Borders -->
@@ -76,19 +82,23 @@
 	</Style>
 
 	<!-- Buttons.Calculator -->
-	<Style x:Key="CalculatorBasic" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
+	<Style x:Key="CalculatorBasicButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
 		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
 		<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
 		<Setter Property="FontSize" Value="32"></Setter>
 		<Setter Property="FontWeight" Value="Bold"></Setter>
 		<Setter Property="Margin" Value="5 5 5 5"></Setter>
 	</Style>
-	<Style x:Key="CalculatorBasicWithSecondFunction" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
+	<Style x:Key="CalculatorBasicWithSecondFunctionButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
 		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
 		<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
 		<Setter Property="FontSize" Value="32"></Setter>
 		<Setter Property="FontWeight" Value="Bold"></Setter>
 		<Setter Property="Margin" Value="5 5 5 5"></Setter>
+	</Style>
+	<Style x:Key="CalculatorSpecialFunctionButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
+		<Setter Property="FontWeight" Value="Bold"></Setter>
+		<Setter Property="Margin" Value="5 0 0 0"></Setter>
 	</Style>
 
 	<!-- Icons.Base -->
