@@ -81,6 +81,28 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 40) < Tolerance);
 		}
 
+		[Fact]
+		public void PressingCalculateMultipleTimesHasNoEffect()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(1);
+
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "11,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 11) < Tolerance);
+
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "11,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 11) < Tolerance);
+		}
+
 		/// <summary>
 		/// 3 - 1 = 2
 		/// Clear

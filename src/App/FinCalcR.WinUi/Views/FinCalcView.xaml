@@ -225,7 +225,7 @@
 	       <Button Grid.Row="5"
 	               Grid.Column="0"
 	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding AlgebSignPressedCommand}"
+	               Command="{Binding AlgebSignCommand}"
 	               Foreground="White">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="PlusMinus"

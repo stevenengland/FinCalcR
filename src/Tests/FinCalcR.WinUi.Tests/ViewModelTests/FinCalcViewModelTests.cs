@@ -191,5 +191,32 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		#endregion
+
+		#region Algeb Sign Tests
+
+		[Fact]
+		public void AlgebSignIsShownAndUnshown()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.AlgebSignCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "-0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.AlgebSignCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.DigitPressedCommand.Execute("3");
+			vm.AlgebSignCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "-3,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -3) < Tolerance);
+		}
+
+		#endregion
 	}
 }
