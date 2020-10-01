@@ -81,6 +81,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 40) < Tolerance);
 		}
 
+		/// <summary>
+		/// 3 - 1 = 2
+		/// Clear
+		/// 5 + 3 = 8.
+		/// </summary>
 		[Fact]
 		public void Calculation_Clearing_Calculation()
 		{
@@ -104,6 +109,64 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			Assert.True(vm.DisplayText == "8,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 8) < Tolerance);
+		}
+
+		/// <summary>
+		/// A Calculation is performed.
+		/// A Digit is entered.
+		/// The result text is the digit.
+		/// 2 * 6 = 12
+		/// 1.
+		/// </summary>
+		[Fact]
+		public void Digit_Operator_Digit_Calculate_Digit()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute("2");
+			vm.OperatorPressedCommand.Execute("*");
+			vm.DigitPressedCommand.Execute("6");
+			vm.CalculatePressedCommand.Execute(null);
+
+			vm.DigitPressedCommand.Execute("1");
+
+			Assert.True(vm.DisplayText == "1,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
+		}
+
+		/// <summary>
+		/// A Digit, an operator and a digit are pressed. Instead of pressing Calculation a further operator is pressed.
+		/// A Digit and then the calculation command is pressed.
+		/// 2 * 6 - // here the result of the calculation should be visible because of the second operator that was pressed.
+		/// 4 *     // here the result of the calculation should be visible because of the second operator that was pressed.
+		/// 2 = 16.
+		/// </summary>
+		[Fact]
+		public void Digit_Operator_Digit_Operator_Digit_Calculate()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute("2");
+			vm.OperatorPressedCommand.Execute("*");
+			vm.DigitPressedCommand.Execute("6");
+			vm.OperatorPressedCommand.Execute("-");
+
+			Assert.True(vm.DisplayText == "12,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 12) < Tolerance);
+
+			vm.DigitPressedCommand.Execute("4");
+			vm.OperatorPressedCommand.Execute("*");
+
+			Assert.True(vm.DisplayText == "8,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 8) < Tolerance);
+
+			vm.DigitPressedCommand.Execute("2");
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "16,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 16) < Tolerance);
 		}
 
 		/// <summary>

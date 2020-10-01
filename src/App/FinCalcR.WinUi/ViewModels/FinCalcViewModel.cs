@@ -25,7 +25,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string rightSide;
 		private double firstNumber = 0;
 		private double secondNumber = 0;
-		private bool resetNeeded = false;
+		private bool calcCommandLock = false;
 
 		public FinCalcViewModel(
 			ILocalizationService localizationService,
@@ -99,6 +99,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnDigitPressed(object digitObj)
 		{
+			if (this.calcCommandLock)
+			{
+				this.ResetSides();
+				this.calcCommandLock = false;
+			}
+
 			var digit = digitObj.ToString();
 			if (this.isDecimalSeparatorActive)
 			{
@@ -127,8 +133,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnOperatorPressed(object mathOperatorObj)
 		{
-			this.ActiveMathOperator = (string)mathOperatorObj;
-			this.SetNumber(out this.firstNumber);
+			if (this.ActiveMathOperator != string.Empty)
+			{
+				this.OnCalculatePressed();
+				this.ActiveMathOperator = (string)mathOperatorObj;
+			}
+			else
+			{
+				this.ActiveMathOperator = (string)mathOperatorObj;
+				this.SetNumber(out this.firstNumber);
+			}
 		}
 
 		private void OnDecimalSeparatorPressed()
@@ -141,14 +155,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetNumbers();
 			this.ResetSides();
 			this.ActiveMathOperator = string.Empty;
-			this.resetNeeded = false;
+			this.calcCommandLock = false;
 
 			this.SetDisplayText();
 		}
 
 		private void OnCalculatePressed()
 		{
-			if (this.resetNeeded)
+			if (this.calcCommandLock)
 			{
 				return;
 			}
@@ -167,7 +181,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.BuildSidesFromNumber(calculatedResult);
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText();
-				this.resetNeeded = true;
+				this.calcCommandLock = true;
 			}
 			catch (NotFiniteNumberException ex)
 			{
