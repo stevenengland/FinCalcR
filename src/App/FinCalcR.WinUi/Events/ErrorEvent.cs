@@ -4,11 +4,12 @@ namespace StEn.FinCalcR.WinUi.Events
 {
 	public class ErrorEvent
 	{
-		public ErrorEvent(Exception exception, string errorMessage, bool shutdown = false)
+		public ErrorEvent(Exception exception, string errorMessage, bool shutdown = false, bool showAsSnackbarItem = false)
 		{
 			this.Exception = exception;
 			this.ErrorMessage = errorMessage;
 			this.ApplicationMustShutdown = shutdown;
+			this.ShowAsSnackbarItem = showAsSnackbarItem;
 		}
 
 		public Exception Exception { get; }

@@ -151,6 +151,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eine Division durch 0 ist nicht erlaubt..
+        /// </summary>
+        public static string EXC_DIVISION_BY_ZERO {
+            get {
+                return ResourceManager.GetString("EXC_DIVISION_BY_ZERO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die Applikation muss beendet werden!.
         /// </summary>
         public static string EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN {
@@ -174,6 +183,24 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         public static string EXC_GUI_UNHANDLED_EXCEPTION_OCCURED {
             get {
                 return ResourceManager.GetString("EXC_GUI_UNHANDLED_EXCEPTION_OCCURED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Das Ergebnis der Division von {0} geteilt durch {1} ist infinit..
+        /// </summary>
+        public static string EXC_NOT_FINITE_NUMBER {
+            get {
+                return ResourceManager.GetString("EXC_NOT_FINITE_NUMBER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum..
+        /// </summary>
+        public static string EXC_OVERFLOW_EXCEPTION {
+            get {
+                return ResourceManager.GetString("EXC_OVERFLOW_EXCEPTION", resourceCulture);
             }
         }
         

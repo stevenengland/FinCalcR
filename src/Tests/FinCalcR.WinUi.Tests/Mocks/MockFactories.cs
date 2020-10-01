@@ -11,6 +11,24 @@ namespace FinCalcR.WinUi.Tests.Mocks
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Tests do not care")]
 	public static class MockFactories
 	{
+		public static ShellViewModel ShellViewModelFactory(Dictionary<string, object> mockObjects)
+		{
+			return new ShellViewModel(
+					(ISnackbarMessageQueue)mockObjects[nameof(ISnackbarMessageQueue)],
+					(IEventAggregator)mockObjects[nameof(IEventAggregator)],
+					(IDialogHostMapper)mockObjects[nameof(IDialogHostMapper)],
+					(ILocalizationService)mockObjects[nameof(ILocalizationService)],
+					(IWindowManager)mockObjects[nameof(IWindowManager)],
+					MockFactories.AboutViewModelFactory(GetMockObjects()),
+					MockFactories.FinCalcViewModelFactory(GetMockObjects())
+				);
+		}
+
+		public static AboutViewModel AboutViewModelFactory(Dictionary<string, object> mockObjects)
+		{
+			return new AboutViewModel();
+		}
+
 		public static FinCalcViewModel FinCalcViewModelFactory(Dictionary<string, object> mockObjects)
 		{
 			return new FinCalcViewModel(

@@ -154,14 +154,36 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.SetNumber(out this.secondNumber);
-			var calculatedResult = SimpleCalculator.Calculate(this.firstNumber, this.secondNumber, this.ActiveMathOperator);
-			this.ResetNumbers();
-			this.firstNumber = calculatedResult;
-			this.BuildSidesFromNumber(calculatedResult);
-			this.ActiveMathOperator = string.Empty;
-			this.SetDisplayText();
-			this.resetNeeded = true;
+			try
+			{
+				var calculatedResult = SimpleCalculator.Calculate(this.firstNumber, this.secondNumber, this.ActiveMathOperator);
+				if (double.IsNaN(calculatedResult) || double.IsNegativeInfinity(calculatedResult) || double.IsPositiveInfinity(calculatedResult))
+				{
+					throw new NotFiniteNumberException();
+				}
 
+				this.ResetNumbers();
+				this.firstNumber = calculatedResult;
+				this.BuildSidesFromNumber(calculatedResult);
+				this.ActiveMathOperator = string.Empty;
+				this.SetDisplayText();
+				this.resetNeeded = true;
+			}
+			catch (NotFiniteNumberException ex)
+			{
+				this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_NOT_FINITE_NUMBER, this.firstNumber, this.secondNumber)));
+				this.OnClearPressed();
+			}
+			catch (DivideByZeroException ex)
+			{
+				this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
+				this.OnClearPressed();
+			}
+			catch (OverflowException ex)
+			{
+				this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_OVERFLOW_EXCEPTION, this.firstNumber, this.secondNumber)));
+				this.OnClearPressed();
+			}
 		}
 
 		private void SetNumber(out double number)

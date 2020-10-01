@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,6 +79,31 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			Assert.True(vm.DisplayText == "40,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 40) < Tolerance);
+		}
+
+		[Fact]
+		public void Calculation_Clearing_Calculation()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute("3");
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute("1");
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "2,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(null);
+
+			vm.DigitPressedCommand.Execute("5");
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute("3");
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "8,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 8) < Tolerance);
 		}
 
 		/// <summary>

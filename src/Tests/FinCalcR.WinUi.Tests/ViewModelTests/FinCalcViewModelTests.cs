@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
+using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
 using StEn.FinCalcR.Common.Services.Localization;
+using StEn.FinCalcR.WinUi.Events;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests
@@ -149,9 +151,44 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 11) < Tolerance);
 		}
 
+		[Fact]
+		public void DivisionByZeroThrows()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.OperatorPressedCommand.Execute("/");
+			vm.DigitPressedCommand.Execute(0);
+			vm.CalculatePressedCommand.Execute(null);
+
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+		}
+
 		#endregion
 
 		#region Clear Tests
+
+		[Fact]
+		public void ClearingResetsValues()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute("3");
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute("1");
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "2,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+		}
 
 		#endregion
 	}

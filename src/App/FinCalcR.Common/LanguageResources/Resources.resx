@@ -147,6 +147,9 @@
   <data name="EXC_ARGUMENT_NULL" xml:space="preserve">
     <value>Das folgende Argument ist leer oder null:</value>
   </data>
+  <data name="EXC_DIVISION_BY_ZERO" xml:space="preserve">
+    <value>Eine Division durch 0 ist nicht erlaubt.</value>
+  </data>
   <data name="EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN" xml:space="preserve">
     <value>Die Applikation muss beendet werden!</value>
   </data>
@@ -155,6 +158,12 @@
   </data>
   <data name="EXC_GUI_UNHANDLED_EXCEPTION_OCCURED" xml:space="preserve">
     <value>Eine unbehandelte Ausnahme ist aufgetreten:</value>
+  </data>
+  <data name="EXC_NOT_FINITE_NUMBER" xml:space="preserve">
+    <value>Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</value>
+  </data>
+  <data name="EXC_OVERFLOW_EXCEPTION" xml:space="preserve">
+    <value>Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</value>
   </data>
   <data name="EXC_PARSE_DOUBLE_IMPOSSIBLE" xml:space="preserve">
     <value>Die Eingabe ist keine gültige Zahl.</value>

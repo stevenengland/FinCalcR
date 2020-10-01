@@ -34,6 +34,7 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>C:\Users\steven\.nuget\packages\caliburn.micro.core\3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelInputSequenceTests.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTests.cs" />
+    <Compile Include="ViewModelTests\ShellViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\App\FinCalcR.Common\FinCalcR.Common.csproj">

@@ -134,6 +134,18 @@
           <source>Vereins-Homepage</source>
           <target state="new">Vereins-Homepage</target>
         </trans-unit>
+        <trans-unit id="EXC_DIVISION_BY_ZERO" translate="yes" xml:space="preserve">
+          <source>Eine Division durch 0 ist nicht erlaubt.</source>
+          <target state="new">Eine Division durch 0 ist nicht erlaubt.</target>
+        </trans-unit>
+        <trans-unit id="EXC_NOT_FINITE_NUMBER" translate="yes" xml:space="preserve">
+          <source>Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</source>
+          <target state="new">Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</target>
+        </trans-unit>
+        <trans-unit id="EXC_OVERFLOW_EXCEPTION" translate="yes" xml:space="preserve">
+          <source>Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</source>
+          <target state="new">Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
