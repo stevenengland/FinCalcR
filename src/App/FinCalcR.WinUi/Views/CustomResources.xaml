@@ -100,6 +100,10 @@
 		<Setter Property="FontWeight" Value="Bold"></Setter>
 		<Setter Property="Margin" Value="5 0 0 0"></Setter>
 	</Style>
+	<Style x:Key="CalculatorClearButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatMidBgButton}">
+		<Setter Property="Background" Value="#CF6679"></Setter>
+		<Setter Property="BorderBrush" Value="#CF6679"></Setter>
+	</Style>
 
 	<!-- Icons.Base -->
 	<Style x:Key="IconLarge" TargetType="materialDesign:PackIcon">

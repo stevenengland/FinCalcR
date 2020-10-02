@@ -16,7 +16,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 {
 	public class ShellViewModel : Screen, IHandleWithTask<ErrorEvent>, IHandleWithTask<HintEvent>
 	{
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IEventAggregator eventAggregator;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IDialogHostMapper dialogHostMapper;
 		private readonly AboutViewModel aboutViewModel;
 		private readonly FinCalcViewModel finCalcViewModel;

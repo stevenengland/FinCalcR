@@ -15,7 +15,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 {
 	public class FinCalcViewModel : Screen
 	{
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly ILocalizationService localizationService;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IEventAggregator eventAggregator;
 		private string displayText;
 		private double displayNumber;

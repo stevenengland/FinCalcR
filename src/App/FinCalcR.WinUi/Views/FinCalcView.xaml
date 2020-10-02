@@ -81,8 +81,8 @@
 			              Text="{lex:Loc Key=FinCalcFunctionPercent}"/>
 			<Button Grid.Row="1"
 					   Grid.Column="0"
-			           Style="{StaticResource MaterialDesignRaisedAccentButton}"
-			           Margin="0 0 0 0"
+			           Style="{StaticResource CalculatorClearButton}"
+					   Margin="0 0 0 0"
 					   FontWeight="Bold"
 			           Content="C"
 					   Command="{Binding ClearPressedCommand}"/>
@@ -106,7 +106,7 @@
 			           Grid.Column="5"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
 			           Content="{lex:Loc Key=FinCalcFunctionEnd}" />
-		</Grid>
+		   </Grid>
 	       <Button Grid.Row="2"
 	               Grid.Column="0"
 	               Style="{StaticResource CalculatorBasicButton}"
