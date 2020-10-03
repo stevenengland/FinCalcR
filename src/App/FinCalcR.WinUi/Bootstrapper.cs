@@ -73,14 +73,6 @@ namespace StEn.FinCalcR.WinUi
 
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
-			var proc = Process.GetCurrentProcess();
-			var count = Process.GetProcesses().Count(p => p.ProcessName == proc.ProcessName);
-
-			if (count > 1)
-			{
-				Environment.Exit(1);
-			}
-
 			this.DisplayRootViewFor<ShellViewModel>();
 			if (this.firstErrorEvent != null)
 			{
