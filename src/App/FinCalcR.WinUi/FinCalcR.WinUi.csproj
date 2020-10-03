@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -66,6 +69,8 @@
     <Compile Include="Events\HintEvent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Models\NavigationMenuItem.cs" />
+    <Compile Include="Types\IFrameworkElementGestureHandler.cs" />
+    <Compile Include="Types\IGestureHandler.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\FinCalcViewModel.cs" />
@@ -188,6 +193,8 @@
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="logo.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
