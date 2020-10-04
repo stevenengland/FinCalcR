@@ -48,6 +48,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.OnClearPressed();
 		}
 
+		public LastPressedOperation LastPressedOperation { get; set; } = LastPressedOperation.None;
+
 		public string DisplayText
 		{
 			get => this.displayText;
@@ -190,6 +192,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.calcCommandLock = false;
 
 			this.SetDisplayText();
+
+			this.LastPressedOperation = LastPressedOperation.Clear;
 		}
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
@@ -209,7 +213,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				// Write the value to the memory
 
 				// If last input was an operator restore the firstNumber for upcoming operations
-				if (this.ActiveMathOperator != string.Empty)
+				if (this.LastPressedOperation == LastPressedOperation.Operator)
 				{
 					this.BuildSidesFromNumber(this.firstNumber);
 				}
@@ -221,6 +225,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText(true);
 				this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
+
+				this.LastPressedOperation = LastPressedOperation.Interest;
 			}
 		}
 
@@ -238,6 +244,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.SetDisplayText();
+
+			this.LastPressedOperation = LastPressedOperation.AlgebSign;
 		}
 
 		private void OnDigitPressed(object digitObj)
@@ -274,6 +282,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.SetDisplayText();
+
+			this.LastPressedOperation = LastPressedOperation.Digit;
 		}
 
 		private void OnOperatorPressed(object mathOperatorObj)
@@ -290,6 +300,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ActiveMathOperator = (string)mathOperatorObj;
 				this.SetNumber(out this.firstNumber);
 			}
+
+			this.LastPressedOperation = LastPressedOperation.Operator;
 		}
 
 		private void OnDecimalSeparatorPressed()
@@ -297,6 +309,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 
 			this.isDecimalSeparatorActive = true;
+
+			this.LastPressedOperation = LastPressedOperation.Decimal;
 		}
 
 		private void OnCalculatePressed()
@@ -323,6 +337,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText();
 				this.calcCommandLock = true;
+				this.LastPressedOperation = LastPressedOperation.Calculate;
 			}
 			catch (NotFiniteNumberException ex)
 			{

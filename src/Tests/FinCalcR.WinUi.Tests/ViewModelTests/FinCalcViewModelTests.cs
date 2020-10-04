@@ -23,6 +23,30 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
 		}
 
+		[Fact]
+		public async Task LastPressedOperationIsSetAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
+			vm.DigitPressedCommand.Execute("1");
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Digit);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.AlgebSign);
+			vm.CalculatePressedCommand.Execute(null);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Calculate);
+			vm.OperatorPressedCommand.Execute("+");
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Operator);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Decimal);
+			vm.ClearPressedCommand.Execute(false);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
+		}
+
 		#region Initialization Tests
 
 		[Fact]

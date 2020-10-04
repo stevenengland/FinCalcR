@@ -71,6 +71,7 @@
     <Compile Include="Models\NavigationMenuItem.cs" />
     <Compile Include="Types\IFrameworkElementGestureHandler.cs" />
     <Compile Include="Types\IGestureHandler.cs" />
+    <Compile Include="Types\LastPressedOperation.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\FinCalcViewModel.cs" />
