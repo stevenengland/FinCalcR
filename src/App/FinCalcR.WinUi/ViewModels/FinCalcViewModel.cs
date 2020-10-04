@@ -29,6 +29,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double firstNumber = 0;
 		private double secondNumber = 0;
 		private double interestNumber = 0;
+		private int ratesPerAnnumNumber = 12;
 		private bool calcCommandLock = false;
 		private string advanceStatusBarText;
 		private string yearsStatusBarText;
@@ -206,6 +207,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
+
+				// If last input was an operator restore the firstNumber for upcoming operations
+				if (this.ActiveMathOperator != string.Empty)
+				{
+					this.BuildSidesFromNumber(this.firstNumber);
+				}
+
 				this.SetNumber(out this.interestNumber);
 				this.ResetNumbers();
 				this.firstNumber = this.interestNumber;
@@ -410,6 +418,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (resetSpecialFunctionNumbers)
 			{
 				this.interestNumber = 0;
+				this.ratesPerAnnumNumber = 12;
 			}
 		}
 

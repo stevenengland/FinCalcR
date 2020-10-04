@@ -392,7 +392,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		/// The interest value is loaded from the memory (5).
 		/// A value is subtracted. The result is a calculation with interest as first number.
 		/// 5 Interest
-		/// Interest^ - 3 = // 2, 
+		/// Interest^ - 3 = // 2,
 		/// </summary>
 		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
 		[Fact]
@@ -414,6 +414,50 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			Assert.True(vm.DisplayText == "2,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
+		/// <summary>
+		/// A digit is entered followed by an operator. Then the interest button is pressed.
+		/// 6 - Interest // 6.000 is taken as interest number.
+		/// </summary>
+		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
+		[Fact]
+		public async Task Tc_Interest_0004Async()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(6);
+			vm.OperatorPressedCommand.Execute("-");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			Assert.True(vm.DisplayText == "6,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 6) < Tolerance);
+		}
+
+		/// <summary>
+		/// A digit is added to another followed by an operator. Then the interest button is pressed.
+		/// 2 + 2 - Interest // 4.000 is taken as interest number.
+		/// </summary>
+		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
+		[Fact]
+		public async Task Tc_Interest_0005Async()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("-");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			Assert.True(vm.DisplayText == "4,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
 		}
 
 		#endregion
