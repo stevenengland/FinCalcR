@@ -43,22 +43,22 @@
 				</Grid.ColumnDefinitions>
 					<Label Grid.Column="0" 
 					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{lex:Loc Key=FinCalcFunctionAdvance}"/>
+					       Content="{Binding AdvanceStatusBarText}"/>
 					<Label Grid.Column="1" 
 					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{lex:Loc Key=FinCalcFunctionYears}"/>
+					       Content="{Binding YearsStatusBarText}"/>
 					<Label Grid.Column="2" 
 					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{lex:Loc Key=FinCalcFunctionInterest}"/>
+					       Content="{Binding InterestStatusBarText}"/>
 					<Label Grid.Column="3" 
 					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{lex:Loc Key=FinCalcFunctionStart}"/>
+					       Content="{Binding StartStatusBarText}"/>
 					<Label Grid.Column="4" 
 					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{lex:Loc Key=FinCalcFunctionRate}"/>
+					       Content="{Binding RateStatusBarText}"/>
 					<Label Grid.Column="5" 
 					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{lex:Loc Key=FinCalcFunctionEnd}"/>
+					       Content="{Binding EndStatusBarText}"/>
 			</Grid>
 				<Label x:Name="ResultText"
 					   Style="{StaticResource CalculatorOutputLabel}"

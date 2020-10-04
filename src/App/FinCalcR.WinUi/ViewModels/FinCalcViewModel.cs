@@ -29,6 +29,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double secondNumber = 0;
 		private double interestNumber = 0;
 		private bool calcCommandLock = false;
+		private string advanceStatusBarText;
+		private string yearsStatusBarText;
+		private string interestStatusBarText;
+		private string startStatusBarText;
+		private string rateStatusBarText;
+		private string endStatusBarText;
 
 		public FinCalcViewModel(
 			ILocalizationService localizationService,
@@ -67,6 +73,66 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.activeMathOperator = value;
 				this.NotifyOfPropertyChange(() => this.ActiveMathOperator);
+			}
+		}
+
+		public string AdvanceStatusBarText
+		{
+			get => this.advanceStatusBarText;
+			set
+			{
+				this.advanceStatusBarText = value;
+				this.NotifyOfPropertyChange(() => this.AdvanceStatusBarText);
+			}
+		}
+
+		public string YearsStatusBarText
+		{
+			get => this.yearsStatusBarText;
+			set
+			{
+				this.yearsStatusBarText = value;
+				this.NotifyOfPropertyChange(() => this.YearsStatusBarText);
+			}
+		}
+
+		public string InterestStatusBarText
+		{
+			get => this.interestStatusBarText;
+			set
+			{
+				this.interestStatusBarText = value;
+				this.NotifyOfPropertyChange(() => this.InterestStatusBarText);
+			}
+		}
+
+		public string StartStatusBarText
+		{
+			get => this.startStatusBarText;
+			set
+			{
+				this.startStatusBarText = value;
+				this.NotifyOfPropertyChange(() => this.StartStatusBarText);
+			}
+		}
+
+		public string RateStatusBarText
+		{
+			get => this.rateStatusBarText;
+			set
+			{
+				this.rateStatusBarText = value;
+				this.NotifyOfPropertyChange(() => this.RateStatusBarText);
+			}
+		}
+
+		public string EndStatusBarText
+		{
+			get => this.endStatusBarText;
+			set
+			{
+				this.endStatusBarText = value;
+				this.NotifyOfPropertyChange(() => this.EndStatusBarText);
 			}
 		}
 
@@ -116,11 +182,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.BuildSidesFromNumber(this.interestNumber);
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText(true);
+				this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 			}
 		}
 
 		private void OnAlgebSignPressed()
 		{
+			this.ResetSpecialFunctionLabels();
+
 			if (this.leftSide.StartsWith("-"))
 			{
 				this.leftSide = this.leftSide.Substring(1);
@@ -135,6 +204,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnDigitPressed(object digitObj)
 		{
+			this.ResetSpecialFunctionLabels();
+
 			if (this.calcCommandLock)
 			{
 				this.ResetSides();
@@ -169,6 +240,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnOperatorPressed(object mathOperatorObj)
 		{
+			this.ResetSpecialFunctionLabels();
+
 			if (this.ActiveMathOperator != string.Empty)
 			{
 				this.OnCalculatePressed();
@@ -183,11 +256,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnDecimalSeparatorPressed()
 		{
+			this.ResetSpecialFunctionLabels();
+
 			this.isDecimalSeparatorActive = true;
 		}
 
 		private void OnClearPressed()
 		{
+			this.ResetSpecialFunctionLabels();
 			this.ResetNumbers();
 			this.ResetSides();
 			this.ActiveMathOperator = string.Empty;
@@ -198,6 +274,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnCalculatePressed()
 		{
+			this.ResetSpecialFunctionLabels();
+
 			if (this.calcCommandLock)
 			{
 				return;
@@ -314,6 +392,20 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.interestNumber = 0;
 			}
+		}
+
+		private void ResetSpecialFunctionLabels(bool resetAdvanceStatusBarToo = false)
+		{
+			if (resetAdvanceStatusBarToo)
+			{
+				this.AdvanceStatusBarText = string.Empty;
+			}
+
+			this.YearsStatusBarText = string.Empty;
+			this.InterestStatusBarText = string.Empty;
+			this.StartStatusBarText = string.Empty;
+			this.RateStatusBarText = string.Empty;
+			this.EndStatusBarText = string.Empty;
 		}
 	}
 }

@@ -8,6 +8,7 @@ using Moq;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Types;
+using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests
@@ -57,6 +58,17 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Decimal Separator Tests
 
 		[Fact]
+		public void PressingDecimalSeparatorResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			this.AssertVmStatusLabelsAreEmpty(vm);
+		}
+
+		[Fact]
 		public void RightSideGetsActivated()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
@@ -74,6 +86,17 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Math Operator Tests
 
 		[Fact]
+		public void PressingMathOperatorResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.OperatorPressedCommand.Execute("+");
+			this.AssertVmStatusLabelsAreEmpty(vm);
+		}
+
+		[Fact]
 		public void OperatorIsSet()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
@@ -87,6 +110,17 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#endregion
 
 		#region Digit Input Tests
+
+		[Fact]
+		public void PressingDigitsResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.DigitPressedCommand.Execute("1");
+			this.AssertVmStatusLabelsAreEmpty(vm);
+		}
 
 		[Fact]
 		public void PressingZeroWhenLeftSideIsZeroDoesNotAddAnotherZero()
@@ -139,6 +173,17 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Calculate Tests
 
 		[Fact]
+		public void PressingCalculateResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.CalculatePressedCommand.Execute(null);
+			this.AssertVmStatusLabelsAreEmpty(vm);
+		}
+
+		[Fact]
 		public void PressingCalculateMultipleTimesHasNoEffect()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
@@ -181,6 +226,17 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#endregion
 
 		#region Clear Tests
+
+		[Fact]
+		public void ClearingResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.ClearPressedCommand.Execute(null);
+			this.AssertVmStatusLabelsAreEmpty(vm);
+		}
 
 		[Fact]
 		public void ClearingResetsValuesExceptSpecialFunctionMemory()
@@ -227,6 +283,17 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Algeb Sign Tests
 
 		[Fact]
+		public void AlgebSignResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.AlgebSignCommand.Execute(null);
+			this.AssertVmStatusLabelsAreEmpty(vm);
+		}
+
+		[Fact]
 		public void AlgebSignIsShownAndUnShown()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
@@ -250,5 +317,29 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		#endregion
+
+		private void SetVmStatusLabelTexts(FinCalcViewModel vm)
+		{
+			vm.AdvanceStatusBarText = "test";
+			vm.YearsStatusBarText = "test";
+			vm.InterestStatusBarText = "test";
+			vm.StartStatusBarText = "test";
+			vm.RateStatusBarText = "test";
+			vm.EndStatusBarText = "test";
+		}
+
+		private void AssertVmStatusLabelsAreEmpty(FinCalcViewModel vm, bool checkAdvanceStatusBarTextToo = false)
+		{
+			if (checkAdvanceStatusBarTextToo)
+			{
+				Assert.True(vm.AdvanceStatusBarText == string.Empty);
+			}
+
+			Assert.True(vm.YearsStatusBarText == string.Empty);
+			Assert.True(vm.InterestStatusBarText == string.Empty);
+			Assert.True(vm.StartStatusBarText == string.Empty);
+			Assert.True(vm.RateStatusBarText == string.Empty);
+			Assert.True(vm.EndStatusBarText == string.Empty);
+		}
 	}
 }
