@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
+using StEn.FinCalcR.WinUi.Types;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests
@@ -181,7 +183,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Clear Tests
 
 		[Fact]
-		public void ClearingResetsValues()
+		public void ClearingResetsValuesExceptSpecialFunctionMemory()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
@@ -198,6 +200,26 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			Assert.True(vm.DisplayText == "0,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+		}
+
+		[Fact]
+		public async Task ClearingDoesNotResetSpecialFunctionMemoryAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute("3");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			vm.ClearPressedCommand.Execute(null);
+
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			Assert.True(vm.DisplayText == "3,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
 		}
 
 		#endregion

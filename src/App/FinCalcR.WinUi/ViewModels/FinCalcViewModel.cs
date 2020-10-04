@@ -100,8 +100,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(2));
 			if (longTouch)
 			{
-				// Present the value in the memory
-				Console.WriteLine("long");
+				// Display the value in the memory
+				this.ResetNumbers();
+				this.firstNumber = this.interestNumber;
+				this.BuildSidesFromNumber(this.interestNumber);
+				this.ActiveMathOperator = string.Empty;
+				this.SetDisplayText(true);
 			}
 			else
 			{
@@ -184,7 +188,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnClearPressed()
 		{
-			this.ResetNumbers(true);
+			this.ResetNumbers();
 			this.ResetSides();
 			this.ActiveMathOperator = string.Empty;
 			this.calcCommandLock = false;
