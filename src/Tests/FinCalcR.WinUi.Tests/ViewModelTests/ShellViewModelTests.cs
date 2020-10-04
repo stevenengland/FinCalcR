@@ -49,7 +49,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			await vm.Handle(new ErrorEvent(new Exception(), "test", false, false)).ConfigureAwait(true);
 
-			dialogHostMapperMock.Verify(x => x.Show(It.IsAny<object>(), It.IsAny<object>()));
+			dialogHostMapperMock.Verify(x => x.ShowAsync(It.IsAny<object>(), It.IsAny<object>()));
 		}
 
 		[Fact]

@@ -5,7 +5,7 @@ namespace StEn.FinCalcR.WinUi.LibraryMapper.DialogHost
 {
 	public interface IDialogHostMapper
 	{
-		Task<object> Show(object content, object dialogIdentifier);
+		Task<object> ShowAsync(object content, object dialogIdentifier);
 
 		ErrorView GetErrorView(
 			string errorMessage,

@@ -1,25 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FinCalcR.WinUi.Tests.Mocks;
+using Moq;
+using StEn.FinCalcR.WinUi.Types;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests
 {
-	public class FinCalcViewModelInputSequenceTests
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1651:Do not use placeholder elements", Justification = "Tests do not care")]
+	public class InputSequenceTests
 	{
 		private const double Tolerance = 0.00000001;
 
-		public FinCalcViewModelInputSequenceTests()
+		public InputSequenceTests()
 		{
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
 		}
+
+		#region Basic Arithmetics
 
 		[Fact]
 		public void AddingNumbersSucceeds()
@@ -80,6 +81,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "40,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 40) < Tolerance);
 		}
+
+		#endregion
 
 		[Fact]
 		public void PressingCalculateMultipleTimesHasNoEffect()
@@ -192,6 +195,30 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		/// <summary>
+		/// A calculation is triggered that throws.
+		/// Another calculation should not be harmed by this because of a reset after a throw.
+		/// </summary>
+		[Fact]
+		public void Calculation_Throw_Calculation()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.OperatorPressedCommand.Execute("/");
+			vm.DigitPressedCommand.Execute(0);
+			vm.CalculatePressedCommand.Execute(null);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.DigitPressedCommand.Execute(2);
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "4,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
+		}
+
+		/// <summary>
 		/// First input is a operator. So the first Number is 0.
 		/// Next input is a operator followed by a digit.
 		/// </summary>
@@ -234,5 +261,127 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "5,596363636");
 			Assert.True(Math.Abs(vm.DisplayNumber - 5.596363636) < Tolerance);
 		}
+
+		#region Focus Interest
+
+		/// <summary>
+		/// A subtraction is performed. Instead of = the interest button is pressed. The last number goes into memory without performing the calculation.
+		/// After that another subtraction is performed. The interest value is used as first number.
+		/// 2 - 9 Interest // 9.000
+		/// - 6 =          // 3.
+		/// </summary>
+		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
+		[Fact]
+		public async Task Tc_Interest_0001Async()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute(9);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			Assert.True(vm.DisplayText == "9,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 9) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute(6);
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "3,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
+		}
+
+		[Fact]
+		public async Task Tc_Interest_0002Async()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(0);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(3);
+			vm.DigitPressedCommand.Execute(4);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(6);
+
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			Assert.True(vm.DisplayText == "0,123");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.123456) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(1);
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "1,123456");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.123456) < Tolerance);
+		}
+
+		[Fact]
+		public async Task DecimalPlacesAreFilledCorrectlyAfterInterestButtonWasPressedAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "1,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(null);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(1);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "1,100");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.1) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(null);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(1);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "1,010");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.01) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(null);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(1);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "1,001");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.001) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(null);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(1);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "1,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.0001) < Tolerance);
+		}
+
+		#endregion
+
 	}
 }

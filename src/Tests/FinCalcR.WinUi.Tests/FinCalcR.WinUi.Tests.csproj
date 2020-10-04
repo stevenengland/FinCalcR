@@ -47,8 +47,9 @@
   <ItemGroup>
     <Compile Include="Mocks\MockFactories.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModelTests\FinCalcViewModelInputSequenceTests.cs" />
+    <Compile Include="ViewModelTests\InputSequenceTests.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTests.cs" />
+    <Compile Include="ViewModelTests\CalculatorManualExampleTests.cs" />
     <Compile Include="ViewModelTests\ShellViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

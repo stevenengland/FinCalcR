@@ -57,7 +57,14 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		[Fact]
 		public void RightSideGetsActivated()
 		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute("4");
+
+			Assert.True(vm.DisplayText == "0,4");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.4) < Tolerance);
 		}
 
 		#endregion
@@ -152,7 +159,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
-		public void DivisionByZeroThrows()
+		public void DivisionByZeroThrowsAndResets()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
@@ -164,6 +171,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.CalculatePressedCommand.Execute(null);
 
 			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 		}
 
 		#endregion
@@ -195,7 +205,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Algeb Sign Tests
 
 		[Fact]
-		public void AlgebSignIsShownAndUnshown()
+		public void AlgebSignIsShownAndUnShown()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);

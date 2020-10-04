@@ -6,7 +6,7 @@ namespace StEn.FinCalcR.WinUi.LibraryMapper.DialogHost
 {
 	public class DialogHostMapper : IDialogHostMapper
 	{
-		public Task<object> Show(object content, object dialogIdentifier)
+		public Task<object> ShowAsync(object content, object dialogIdentifier)
 		{
 			return MaterialDesignThemes.Wpf.DialogHost.Show(content, dialogIdentifier);
 		}

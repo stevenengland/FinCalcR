@@ -8,6 +8,6 @@ namespace StEn.FinCalcR.WinUi.Types
 {
 	public interface IGestureHandler
 	{
-		Task<bool> IsLongTouch(TimeSpan duration);
+		Task<bool> IsLongTouchAsync(TimeSpan duration);
 	}
 }

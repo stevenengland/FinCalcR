@@ -20,8 +20,7 @@ namespace FinCalcR.WinUi.Tests.Mocks
 					(ILocalizationService)mockObjects[nameof(ILocalizationService)],
 					(IWindowManager)mockObjects[nameof(IWindowManager)],
 					MockFactories.AboutViewModelFactory(GetMockObjects()),
-					MockFactories.FinCalcViewModelFactory(GetMockObjects())
-				);
+					MockFactories.FinCalcViewModelFactory(GetMockObjects()));
 		}
 
 		public static AboutViewModel AboutViewModelFactory(Dictionary<string, object> mockObjects)

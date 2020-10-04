@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
@@ -9,7 +9,7 @@ using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Commanding;
 using StEn.FinCalcR.WinUi.Events;
-using WPFLocalizeExtension.Deprecated.Extensions;
+using StEn.FinCalcR.WinUi.Types;
 
 namespace StEn.FinCalcR.WinUi.ViewModels
 {
@@ -27,6 +27,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string rightSide;
 		private double firstNumber = 0;
 		private double secondNumber = 0;
+		private double interestNumber = 0;
 		private bool calcCommandLock = false;
 
 		public FinCalcViewModel(
@@ -84,6 +85,35 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		public ICommand ClearPressedCommand => new SyncCommand(this.OnClearPressed);
 
 		public ICommand CalculatePressedCommand => new SyncCommand(this.OnCalculatePressed);
+
+		public IAsyncCommand<IGestureHandler> InterestPressedCommand => new AsyncCommand<IGestureHandler>(this.OnInterestPressedAsync);
+
+		public async Task OnInterestPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		{
+			var element = (FrameworkElement)sender;
+			var gestureHandler = new FrameworkElementGestureHandler(element);
+			await this.OnInterestPressedAsync(gestureHandler);
+		}
+
+		private async Task OnInterestPressedAsync(IGestureHandler handler)
+		{
+			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(2));
+			if (longTouch)
+			{
+				// Present the value in the memory
+				Console.WriteLine("long");
+			}
+			else
+			{
+				// Write the value to the memory
+				this.SetNumber(out this.interestNumber);
+				this.ResetNumbers();
+				this.firstNumber = this.interestNumber;
+				this.BuildSidesFromNumber(this.interestNumber);
+				this.ActiveMathOperator = string.Empty;
+				this.SetDisplayText(true);
+			}
+		}
 
 		private void OnAlgebSignPressed()
 		{
@@ -154,7 +184,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnClearPressed()
 		{
-			this.ResetNumbers();
+			this.ResetNumbers(true);
 			this.ResetSides();
 			this.ActiveMathOperator = string.Empty;
 			this.calcCommandLock = false;
@@ -228,15 +258,36 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 		}
 
-		private void SetDisplayText()
+		private void SetDisplayText(bool isSpecialFunctionNumber = false)
 		{
-			this.DisplayText = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + this.rightSide;
+			var displayRightSide = this.rightSide;
+			if (isSpecialFunctionNumber)
+			{
+				if (string.IsNullOrWhiteSpace(displayRightSide))
+				{
+					displayRightSide = "0";
+				}
+
+				if (displayRightSide.Length > 3)
+				{
+					displayRightSide = displayRightSide.Substring(0, 3);
+				}
+
+				for (var i = displayRightSide.Length; i < 3; i++)
+				{
+#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
+					displayRightSide += "0";
+#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
+				}
+			}
+
+			this.DisplayText = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + displayRightSide;
 			this.SetDisplayNumber();
 		}
 
-		private void BuildSidesFromNumber(double calculatedResult)
+		private void BuildSidesFromNumber(double number)
 		{
-			var roundedResult = Math.Round(calculatedResult, 9);
+			var roundedResult = Math.Round(number, 9);
 			var s = roundedResult.ToString(CultureInfo.InvariantCulture);
 			var parts = s.Split('.');
 			this.leftSide = parts[0];
@@ -250,10 +301,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.isDecimalSeparatorActive = false;
 		}
 
-		private void ResetNumbers()
+		private void ResetNumbers(bool resetSpecialFunctionNumbers = false)
 		{
 			this.firstNumber = 0;
 			this.secondNumber = 0;
+
+			if (resetSpecialFunctionNumbers)
+			{
+				this.interestNumber = 0;
+			}
 		}
 	}
 }

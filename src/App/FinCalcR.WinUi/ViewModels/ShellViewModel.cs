@@ -95,7 +95,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				return;
 			}
 
-			await this.dialogHostMapper.Show(
+			await this.dialogHostMapper.ShowAsync(
 				this.dialogHostMapper.GetHintView(message.Message),
 				"RootDialog").ConfigureAwait(true);
 		}
@@ -111,7 +111,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			if (message.ApplicationMustShutdown)
 			{
-				await this.dialogHostMapper.Show(
+				await this.dialogHostMapper.ShowAsync(
 					this.dialogHostMapper.GetErrorView(message.ErrorMessage, message.Exception?.Message, $"{Resources.EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN}"),
 					"RootDialog").ConfigureAwait(true);
 				this.GracefulShutdown();
@@ -121,12 +121,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.SbMessageQueue.Enqueue<ErrorEvent>(
 					Resources.EXC_ERROR_EVENT_GENERAL_TITLE,
 					Resources.SnackBar_Action_Content_Details,
+#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
 					async (arg) => await this.ShowErrorAsync(arg).ConfigureAwait(true),
+#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
 					message);
 			}
 			else
 			{
-				await this.dialogHostMapper.Show(
+				await this.dialogHostMapper.ShowAsync(
 					this.dialogHostMapper.GetErrorView(message.ErrorMessage, message.Exception?.Message),
 					"RootDialog").ConfigureAwait(true);
 			}
@@ -144,7 +146,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.SbMessageQueue.Enqueue("Application loaded with errors.");
 				if (this.lastErrorEvent.ApplicationMustShutdown)
 				{
-					await this.dialogHostMapper.Show(
+					await this.dialogHostMapper.ShowAsync(
 						this.dialogHostMapper.GetErrorView(this.lastErrorEvent.ErrorMessage, this.lastErrorEvent.Exception.Message, $"{Resources.EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN}"),
 						"RootDialog").ConfigureAwait(true);
 					this.GracefulShutdown();
@@ -192,7 +194,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private async Task ShowErrorAsync(ErrorEvent errorEvent)
 		{
-			await this.dialogHostMapper.Show(
+			await this.dialogHostMapper.ShowAsync(
 				this.dialogHostMapper.GetErrorView(
 					errorEvent.ErrorMessage, errorEvent.Exception?.Message),
 				"RootDialog").ConfigureAwait(true);

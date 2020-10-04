@@ -146,6 +146,10 @@
           <source>Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</source>
           <target state="new">Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</target>
         </trans-unit>
+        <trans-unit id="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" translate="yes" xml:space="preserve">
+          <source>Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</source>
+          <target state="new">Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

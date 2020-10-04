@@ -9,16 +9,16 @@ using System.Windows.Threading;
 
 namespace StEn.FinCalcR.WinUi.Types
 {
-	public class IFrameworkElementGestureHandler : IGestureHandler
+	public class FrameworkElementGestureHandler : IGestureHandler
 	{
 		private readonly FrameworkElement element;
 
-		public IFrameworkElementGestureHandler(FrameworkElement element)
+		public FrameworkElementGestureHandler(FrameworkElement element)
 		{
 			this.element = element;
 		}
 
-		public Task<bool> IsLongTouch(TimeSpan duration)
+		public Task<bool> IsLongTouchAsync(TimeSpan duration)
 		{
 			var timer = new DispatcherTimer();
 			var taskCompletionSource = new TaskCompletionSource<bool>();

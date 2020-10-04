@@ -105,6 +105,16 @@
 		<Setter Property="BorderBrush" Value="#CF6679"></Setter>
 	</Style>
 
+	<!-- Labels -->
+	<Style x:Key="CalculatorOutputLabel" TargetType="Label">
+		<Setter Property="Background" Value="#85AD8B"></Setter>
+		<Setter Property="Foreground" Value="Black"></Setter>
+		<Setter Property="FontWeight" Value="Bold"></Setter>
+	</Style>
+	<Style x:Key="CalculatorOutputTopStatusLabel" TargetType="Label"  BasedOn="{StaticResource CalculatorOutputLabel}">
+		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+	</Style>
+
 	<!-- Icons.Base -->
 	<Style x:Key="IconLarge" TargetType="materialDesign:PackIcon">
 		<Setter Property="Height" Value="36"></Setter>
