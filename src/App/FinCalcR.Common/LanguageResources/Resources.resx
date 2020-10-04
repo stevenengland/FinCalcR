@@ -207,6 +207,9 @@
   <data name="FinCalcItem_Name" xml:space="preserve">
     <value>Finanztaschenrechner</value>
   </data>
+  <data name="HINT_SPECIAL_FUNCTION_MEMORY_RESET" xml:space="preserve">
+    <value>Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt.</value>
+  </data>
   <data name="InnerErrorMessageLbl_Text" xml:space="preserve">
     <value>Innerer Fehler:</value>
   </data>

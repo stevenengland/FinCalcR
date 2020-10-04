@@ -234,8 +234,19 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
 			this.SetVmStatusLabelTexts(vm);
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 			this.AssertVmStatusLabelsAreEmpty(vm);
+		}
+
+		[Fact]
+		public void ClearingLongTouchResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.ClearPressedCommand.Execute(true);
+			this.AssertVmStatusLabelsAreEmpty(vm, true);
 		}
 
 		[Fact]
@@ -252,7 +263,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "2,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
 
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 
 			Assert.True(vm.DisplayText == "0,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
@@ -269,13 +280,45 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.DigitPressedCommand.Execute("3");
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 
 			Assert.True(vm.DisplayText == "3,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
+		}
+
+		[Fact]
+		public async Task ClearingLongTouchResetsSpecialFunctionMemoryAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute("3");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+
+			Assert.True(vm.DisplayText == "0,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+		}
+
+		[Fact]
+		public void ClearingLongTouchShowsResetHint()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<HintEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
 		}
 
 		#endregion
@@ -333,6 +376,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			if (checkAdvanceStatusBarTextToo)
 			{
 				Assert.True(vm.AdvanceStatusBarText == string.Empty);
+			}
+			else
+			{
+				Assert.True(vm.AdvanceStatusBarText == "test");
 			}
 
 			Assert.True(vm.YearsStatusBarText == string.Empty);

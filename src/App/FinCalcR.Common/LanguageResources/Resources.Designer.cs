@@ -331,6 +331,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt..
+        /// </summary>
+        public static string HINT_SPECIAL_FUNCTION_MEMORY_RESET {
+            get {
+                return ResourceManager.GetString("HINT_SPECIAL_FUNCTION_MEMORY_RESET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Innerer Fehler:.
         /// </summary>
         public static string InnerErrorMessageLbl_Text {

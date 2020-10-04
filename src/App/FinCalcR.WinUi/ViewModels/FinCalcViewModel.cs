@@ -19,6 +19,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private readonly ILocalizationService localizationService;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IEventAggregator eventAggregator;
+		private int longTouchDelay = 2;
 		private string displayText;
 		private double displayNumber;
 		private bool isDecimalSeparatorActive = false;
@@ -148,11 +149,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public ICommand DecimalSeparatorPressedCommand => new SyncCommand(this.OnDecimalSeparatorPressed);
 
-		public ICommand ClearPressedCommand => new SyncCommand(this.OnClearPressed);
+		public ICommand ClearPressedCommand => new SyncCommand<bool>(this.OnClearPressed);
 
 		public ICommand CalculatePressedCommand => new SyncCommand(this.OnCalculatePressed);
 
 		public IAsyncCommand<IGestureHandler> InterestPressedCommand => new AsyncCommand<IGestureHandler>(this.OnInterestPressedAsync);
+
+		public async Task OnClearPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		{
+			var element = (FrameworkElement)sender;
+			var gestureHandler = new FrameworkElementGestureHandler(element);
+			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(this.longTouchDelay));
+			this.ClearPressedCommand.Execute(isLongTouch);
+		}
 
 		public async Task OnInterestPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
 		{
@@ -161,9 +170,30 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			await this.OnInterestPressedAsync(gestureHandler);
 		}
 
+		private void OnClearPressed(bool isLongTouch = false)
+		{
+			if (isLongTouch)
+			{
+				this.eventAggregator.PublishOnUIThread(new HintEvent(Resources.HINT_SPECIAL_FUNCTION_MEMORY_RESET));
+				this.ResetSpecialFunctionLabels(true);
+				this.ResetNumbers(true);
+			}
+			else
+			{
+				this.ResetSpecialFunctionLabels();
+				this.ResetNumbers();
+			}
+
+			this.ResetSides();
+			this.ActiveMathOperator = string.Empty;
+			this.calcCommandLock = false;
+
+			this.SetDisplayText();
+		}
+
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
 		{
-			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(2));
+			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(this.longTouchDelay));
 			if (longTouch)
 			{
 				// Display the value in the memory
@@ -259,17 +289,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 
 			this.isDecimalSeparatorActive = true;
-		}
-
-		private void OnClearPressed()
-		{
-			this.ResetSpecialFunctionLabels();
-			this.ResetNumbers();
-			this.ResetSides();
-			this.ActiveMathOperator = string.Empty;
-			this.calcCommandLock = false;
-
-			this.SetDisplayText();
 		}
 
 		private void OnCalculatePressed()

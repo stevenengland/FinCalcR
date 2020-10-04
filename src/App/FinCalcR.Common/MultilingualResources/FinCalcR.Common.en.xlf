@@ -150,6 +150,10 @@
           <source>Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</source>
           <target state="new">Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</target>
         </trans-unit>
+        <trans-unit id="HINT_SPECIAL_FUNCTION_MEMORY_RESET" translate="yes" xml:space="preserve">
+          <source>Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt.</source>
+          <target state="new">Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

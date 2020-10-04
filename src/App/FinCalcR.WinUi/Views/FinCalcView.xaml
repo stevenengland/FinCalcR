@@ -106,23 +106,23 @@
 			   <TextBlock Grid.Row="0"
 			              Grid.Column="5"
 			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
-			              Text="{lex:Loc Key=FinCalcFunctionPercent}"/>
-			<Button Grid.Row="1"
-					   Grid.Column="0"
-			           Style="{StaticResource CalculatorClearButton}"
-					   Margin="0 0 0 0"
-					   FontWeight="Bold"
-			           Content="C"
-					   Command="{Binding ClearPressedCommand}"/>
+			              Text="{lex:Loc Key=FinCalcFunctionPercent}" />
 			   <Button Grid.Row="1"
-					   Grid.Column="1"
-					   Style="{StaticResource CalculatorSpecialFunctionButton}"
-					   Content="{lex:Loc Key=FinCalcFunctionYears}"/>
+			           Grid.Column="0"
+			           Style="{StaticResource CalculatorClearButton}"
+			           Margin="0 0 0 0"
+			           FontWeight="Bold"
+			           Content="C"
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnClearPressedAsync($source, $eventArgs)];" />
+			   <Button Grid.Row="1"
+			           Grid.Column="1"
+			           Style="{StaticResource CalculatorSpecialFunctionButton}"
+			           Content="{lex:Loc Key=FinCalcFunctionYears}" />
 			   <Button Grid.Row="1"
 			           Grid.Column="2"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
 			           Content="{lex:Loc Key=FinCalcFunctionInterest}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnInterestPressedAsync($source, $eventArgs)];"/>
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnInterestPressedAsync($source, $eventArgs)];" />
 			   <Button Grid.Row="1"
 			           Grid.Column="3"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
@@ -130,11 +130,11 @@
 			   <Button Grid.Row="1"
 			           Grid.Column="4"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionRate}"/>
+			           Content="{lex:Loc Key=FinCalcFunctionRate}" />
 			   <Button Grid.Row="1"
 			           Grid.Column="5"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionEnd}"/>
+			           Content="{lex:Loc Key=FinCalcFunctionEnd}" />
 		   </Grid>
 	       <Button Grid.Row="2"
 	               Grid.Column="0"

@@ -125,7 +125,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "2,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
 
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute("5");
 			vm.OperatorPressedCommand.Execute("+");
@@ -277,7 +277,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "1,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
 
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.DecimalSeparatorPressedCommand.Execute(null);
@@ -286,7 +286,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "1,100");
 			Assert.True(Math.Abs(vm.DisplayNumber - 1.1) < Tolerance);
 
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.DecimalSeparatorPressedCommand.Execute(null);
@@ -296,7 +296,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "1,010");
 			Assert.True(Math.Abs(vm.DisplayNumber - 1.01) < Tolerance);
 
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.DecimalSeparatorPressedCommand.Execute(null);
@@ -307,7 +307,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "1,001");
 			Assert.True(Math.Abs(vm.DisplayNumber - 1.001) < Tolerance);
 
-			vm.ClearPressedCommand.Execute(null);
+			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.DecimalSeparatorPressedCommand.Execute(null);
