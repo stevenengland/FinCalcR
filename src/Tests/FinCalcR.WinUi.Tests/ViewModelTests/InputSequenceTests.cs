@@ -318,6 +318,30 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "1,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 1.0001) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(5);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "1,001");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.0005) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(9);
+			vm.DigitPressedCommand.Execute(5);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "1,010");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.0095) < Tolerance);
 		}
 
 		/// <summary>

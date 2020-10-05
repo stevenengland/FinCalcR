@@ -405,7 +405,23 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 				if (displayRightSide.Length > specialNumberDecimalCount)
 				{
-					displayRightSide = displayRightSide.Substring(0, specialNumberDecimalCount);
+					var roundingIdentifier = int.Parse(displayRightSide[specialNumberDecimalCount].ToString());
+					if (roundingIdentifier >= 5)
+					{
+						var charToRound = displayRightSide.Substring(0, specialNumberDecimalCount).TrimStart('0');
+						var numberToRound = string.IsNullOrEmpty(charToRound) ? "0" : charToRound;
+						displayRightSide = (int.Parse(numberToRound) + 1).ToString();
+						for (var i = displayRightSide.Length; i < specialNumberDecimalCount; i++)
+						{
+#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
+							displayRightSide = "0" + displayRightSide;
+#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
+						}
+					}
+					else
+					{
+						displayRightSide = displayRightSide.Substring(0, specialNumberDecimalCount);
+					}
 				}
 
 				for (var i = displayRightSide.Length; i < specialNumberDecimalCount; i++)
