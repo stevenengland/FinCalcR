@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
+using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Types;
@@ -45,6 +46,23 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
+		}
+
+		[Fact]
+		public async Task StatusBarTextsAreSetAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			Assert.True(vm.InterestStatusBarText == string.Empty);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
+			vm.InterestStatusBarText = string.Empty;
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
 		}
 
 		#region Initialization Tests

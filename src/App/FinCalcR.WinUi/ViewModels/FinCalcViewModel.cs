@@ -199,6 +199,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
 		{
 			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(this.longTouchDelay));
+			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 			if (longTouch)
 			{
 				// Display the value in the memory
@@ -224,7 +225,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.BuildSidesFromNumber(this.interestNumber);
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText(true, 3);
-				this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 
 				this.LastPressedOperation = LastPressedOperation.Interest;
 			}
