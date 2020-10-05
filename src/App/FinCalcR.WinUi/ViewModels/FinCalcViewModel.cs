@@ -206,7 +206,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.firstNumber = this.interestNumber;
 				this.BuildSidesFromNumber(this.interestNumber);
 				this.ActiveMathOperator = string.Empty;
-				this.SetDisplayText(true);
+				this.SetDisplayText(true, 3);
 			}
 			else
 			{
@@ -223,7 +223,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.firstNumber = this.interestNumber;
 				this.BuildSidesFromNumber(this.interestNumber);
 				this.ActiveMathOperator = string.Empty;
-				this.SetDisplayText(true);
+				this.SetDisplayText(true, 3);
 				this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 
 				this.LastPressedOperation = LastPressedOperation.Interest;
@@ -393,7 +393,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 		}
 
-		private void SetDisplayText(bool isSpecialFunctionNumber = false)
+		private void SetDisplayText(bool isSpecialFunctionNumber = false, int specialNumberDecimalCount = 2)
 		{
 			var displayRightSide = this.rightSide;
 			if (isSpecialFunctionNumber)
@@ -403,12 +403,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					displayRightSide = "0";
 				}
 
-				if (displayRightSide.Length > 3)
+				if (displayRightSide.Length > specialNumberDecimalCount)
 				{
-					displayRightSide = displayRightSide.Substring(0, 3);
+					displayRightSide = displayRightSide.Substring(0, specialNumberDecimalCount);
 				}
 
-				for (var i = displayRightSide.Length; i < 3; i++)
+				for (var i = displayRightSide.Length; i < specialNumberDecimalCount; i++)
 				{
 #pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
 					displayRightSide += "0";
