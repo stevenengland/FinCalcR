@@ -460,6 +460,30 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
 		}
 
+		/// <summary>
+		/// A digit is set as interest.
+		/// A decimal and a number follows.
+		/// 5 Interest // 5,000
+		/// ,9         // 0,9
+		/// </summary>
+		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
+		[Fact]
+		public async Task Tc_Interest_0006Async()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(5);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(9);
+
+			Assert.True(vm.DisplayText == "0,9");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.9) < Tolerance);
+		}
+
 		#endregion
 
 	}

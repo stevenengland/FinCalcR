@@ -308,6 +308,17 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
+			if (this.LastPressedOperation == LastPressedOperation.Years
+			    || this.LastPressedOperation == LastPressedOperation.Interest
+			    || this.LastPressedOperation == LastPressedOperation.Start
+			    || this.LastPressedOperation == LastPressedOperation.Rate
+			    || this.LastPressedOperation == LastPressedOperation.End)
+			{
+				this.ResetNumbers();
+				this.ResetSides();
+				this.ActiveMathOperator = string.Empty;
+			}
+
 			this.isDecimalSeparatorActive = true;
 
 			this.LastPressedOperation = LastPressedOperation.Decimal;

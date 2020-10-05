@@ -17,6 +17,10 @@ namespace StEn.FinCalcR.WinUi.Types
 		Clear,
 
 		// Special Functions
+		Years,
 		Interest,
+		Start,
+		Rate,
+		End,
 	}
 }
