@@ -28,7 +28,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string rightSide;
 		private double firstNumber = 0;
 		private double secondNumber = 0;
+		private double yearsNumber = 0;
 		private double interestNumber = 0;
+		private double startNumber = 0;
+		private double rateNumber = 0;
+		private double endNumber = 0;
 		private int ratesPerAnnumNumber = 12;
 		private bool calcCommandLock = false;
 		private string advanceStatusBarText;
@@ -241,11 +245,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
 			if (isLongTouch)
 			{
-
+				// Display the value in the memory
+				this.CommonSpecialFunctionsLongPressOperations(this.yearsNumber, 2);
 			}
 			else
 			{
-				
+				// Write the value to the memory
+				this.CommonSpecialFunctionShortPressOperations(out this.yearsNumber, 2);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Years;
@@ -258,28 +264,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (longTouch)
 			{
 				// Display the value in the memory
-				this.ResetNumbers();
-				this.firstNumber = this.interestNumber;
-				this.BuildSidesFromNumber(this.interestNumber);
-				this.ActiveMathOperator = string.Empty;
-				this.SetDisplayText(true, 3);
+				this.CommonSpecialFunctionsLongPressOperations(this.interestNumber, 3);
 			}
 			else
 			{
 				// Write the value to the memory
-
-				// If last input was an operator restore the firstNumber for upcoming operations
-				if (this.LastPressedOperation == LastPressedOperation.Operator)
-				{
-					this.BuildSidesFromNumber(this.firstNumber);
-				}
-
-				this.SetNumber(out this.interestNumber);
-				this.ResetNumbers();
-				this.firstNumber = this.interestNumber;
-				this.BuildSidesFromNumber(this.interestNumber);
-				this.ActiveMathOperator = string.Empty;
-				this.SetDisplayText(true, 3);
+				this.CommonSpecialFunctionShortPressOperations(out this.interestNumber, 3);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Interest;
@@ -290,11 +280,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.StartStatusBarText = Resources.FinCalcFunctionStart;
 			if (isLongTouch)
 			{
-
+				// Display the value in the memory
+				this.CommonSpecialFunctionsLongPressOperations(this.startNumber, 2);
 			}
 			else
 			{
-
+				// Write the value to the memory
+				this.CommonSpecialFunctionShortPressOperations(out this.startNumber, 2);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Start;
@@ -305,11 +297,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.RateStatusBarText = Resources.FinCalcFunctionRate;
 			if (isLongTouch)
 			{
-
+				// Display the value in the memory
+				this.CommonSpecialFunctionsLongPressOperations(this.rateNumber, 2);
 			}
 			else
 			{
-
+				// Write the value to the memory
+				this.CommonSpecialFunctionShortPressOperations(out this.rateNumber, 2);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Rate;
@@ -320,11 +314,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
 			if (isLongTouch)
 			{
-
+				// Display the value in the memory
+				this.CommonSpecialFunctionsLongPressOperations(this.endNumber, 2);
 			}
 			else
 			{
-
+				// Write the value to the memory
+				this.CommonSpecialFunctionShortPressOperations(out this.endNumber, 2);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.End;
@@ -545,6 +541,31 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.rightSide = parts.Length < 2 ? string.Empty : parts[1];
 		}
 
+		private void CommonSpecialFunctionShortPressOperations(out double numberToSet, int specialNumberDecimalCount)
+		{
+			// If last input was an operator restore the firstNumber for upcoming operations
+			if (this.LastPressedOperation == LastPressedOperation.Operator)
+			{
+				this.BuildSidesFromNumber(this.firstNumber);
+			}
+
+			this.SetNumber(out numberToSet);
+			this.ResetNumbers();
+			this.firstNumber = numberToSet;
+			this.BuildSidesFromNumber(numberToSet);
+			this.ActiveMathOperator = string.Empty;
+			this.SetDisplayText(true, specialNumberDecimalCount);
+		}
+
+		private void CommonSpecialFunctionsLongPressOperations(double fistNumberSubstitution, int specialNumberDecimalCount)
+		{
+			this.ResetNumbers();
+			this.firstNumber = fistNumberSubstitution;
+			this.BuildSidesFromNumber(fistNumberSubstitution);
+			this.ActiveMathOperator = string.Empty;
+			this.SetDisplayText(true, specialNumberDecimalCount);
+		}
+
 		private void ResetSides()
 		{
 			this.rightSide = string.Empty;
@@ -559,7 +580,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			if (resetSpecialFunctionNumbers)
 			{
+				this.yearsNumber = 0;
 				this.interestNumber = 0;
+				this.startNumber = 0;
+				this.rateNumber = 0;
+				this.endNumber = 0;
 				this.ratesPerAnnumNumber = 12;
 			}
 		}
