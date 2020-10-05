@@ -156,7 +156,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public ICommand CalculatePressedCommand => new SyncCommand(this.OnCalculatePressed);
 
+		public ICommand YearsPressedCommand => new SyncCommand<bool>(this.OnYearsPressed);
+
 		public IAsyncCommand<IGestureHandler> InterestPressedCommand => new AsyncCommand<IGestureHandler>(this.OnInterestPressedAsync);
+
+		public ICommand StartPressedCommand => new SyncCommand<bool>(this.OnStartPressed);
+
+		public ICommand RatePressedCommand => new SyncCommand<bool>(this.OnRatePressed);
+
+		public ICommand EndPressedCommand => new SyncCommand<bool>(this.OnEndPressed);
 
 		public async Task OnClearPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
 		{
@@ -166,11 +174,43 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ClearPressedCommand.Execute(isLongTouch);
 		}
 
+		public async Task OnYearsPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		{
+			var element = (FrameworkElement)sender;
+			var gestureHandler = new FrameworkElementGestureHandler(element);
+			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			this.YearsPressedCommand.Execute(isLongTouch);
+		}
+
 		public async Task OnInterestPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
 		{
 			var element = (FrameworkElement)sender;
 			var gestureHandler = new FrameworkElementGestureHandler(element);
 			await this.OnInterestPressedAsync(gestureHandler);
+		}
+
+		public async Task OnStartPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		{
+			var element = (FrameworkElement)sender;
+			var gestureHandler = new FrameworkElementGestureHandler(element);
+			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			this.StartPressedCommand.Execute(isLongTouch);
+		}
+
+		public async Task OnRatePressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		{
+			var element = (FrameworkElement)sender;
+			var gestureHandler = new FrameworkElementGestureHandler(element);
+			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			this.RatePressedCommand.Execute(isLongTouch);
+		}
+
+		public async Task OnEndPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		{
+			var element = (FrameworkElement)sender;
+			var gestureHandler = new FrameworkElementGestureHandler(element);
+			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			this.EndPressedCommand.Execute(isLongTouch);
 		}
 
 		private void OnClearPressed(bool isLongTouch = false)
@@ -194,6 +234,20 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.SetDisplayText();
 
 			this.LastPressedOperation = LastPressedOperation.Clear;
+		}
+
+		private void OnYearsPressed(bool isLongTouch = false)
+		{
+			if (isLongTouch)
+			{
+
+			}
+			else
+			{
+				
+			}
+
+			this.LastPressedOperation = LastPressedOperation.Years;
 		}
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
@@ -225,9 +279,51 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.BuildSidesFromNumber(this.interestNumber);
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText(true, 3);
-
-				this.LastPressedOperation = LastPressedOperation.Interest;
 			}
+
+			this.LastPressedOperation = LastPressedOperation.Interest;
+		}
+
+		private void OnStartPressed(bool isLongTouch = false)
+		{
+			if (isLongTouch)
+			{
+
+			}
+			else
+			{
+
+			}
+
+			this.LastPressedOperation = LastPressedOperation.Start;
+		}
+
+		private void OnRatePressed(bool isLongTouch = false)
+		{
+			if (isLongTouch)
+			{
+
+			}
+			else
+			{
+
+			}
+
+			this.LastPressedOperation = LastPressedOperation.Rate;
+		}
+
+		private void OnEndPressed(bool isLongTouch = false)
+		{
+			if (isLongTouch)
+			{
+
+			}
+			else
+			{
+
+			}
+
+			this.LastPressedOperation = LastPressedOperation.End;
 		}
 
 		private void OnAlgebSignPressed()
