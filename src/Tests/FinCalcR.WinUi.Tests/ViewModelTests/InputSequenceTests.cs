@@ -379,7 +379,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		/// Input sequence contains more decimal digits than the number that would be displayed. Internally it is saved completely.
 		/// A calculation uses the last displayed number (interest) as first number for the calculation.
 		/// 0,123456 Interest   // 0,123
-		/// + 1 =				// 1,123456
+		/// + 1 =				// 1,123456 .
 		/// </summary>
 		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
 		[Fact]
@@ -416,7 +416,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		/// The interest value is loaded from the memory (5).
 		/// A value is subtracted. The result is a calculation with interest as first number.
 		/// 5 Interest
-		/// Interest^ - 3 = // 2,
+		/// Interest^ - 3 = // 2, .
 		/// </summary>
 		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
 		[Fact]
@@ -488,7 +488,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		/// A digit is set as interest.
 		/// A decimal and a number follows.
 		/// 5 Interest // 5,000
-		/// ,9         // 0,9
+		/// ,9         // 0,9 .
 		/// </summary>
 		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
 		[Fact]

@@ -15,11 +15,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 {
 	public class FinCalcViewModel : Screen
 	{
+		private const int LongTouchDelay = 2;
 #pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly ILocalizationService localizationService;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IEventAggregator eventAggregator;
-		private int longTouchDelay = 2;
 		private string displayText;
 		private double displayNumber;
 		private bool isDecimalSeparatorActive = false;
@@ -162,7 +162,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			var element = (FrameworkElement)sender;
 			var gestureHandler = new FrameworkElementGestureHandler(element);
-			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(this.longTouchDelay));
+			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.ClearPressedCommand.Execute(isLongTouch);
 		}
 
@@ -198,7 +198,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
 		{
-			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(this.longTouchDelay));
+			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 			if (longTouch)
 			{

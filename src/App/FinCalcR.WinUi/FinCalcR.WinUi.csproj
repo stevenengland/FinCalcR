@@ -69,7 +69,7 @@
     <Compile Include="Events\HintEvent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Models\NavigationMenuItem.cs" />
-    <Compile Include="Types\IFrameworkElementGestureHandler.cs" />
+    <Compile Include="Types\FrameworkElementGestureHandler.cs" />
     <Compile Include="Types\IGestureHandler.cs" />
     <Compile Include="Types\LastPressedOperation.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
