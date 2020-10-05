@@ -238,6 +238,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnYearsPressed(bool isLongTouch = false)
 		{
+			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
 			if (isLongTouch)
 			{
 
@@ -286,6 +287,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnStartPressed(bool isLongTouch = false)
 		{
+			this.StartStatusBarText = Resources.FinCalcFunctionStart;
 			if (isLongTouch)
 			{
 
@@ -300,6 +302,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnRatePressed(bool isLongTouch = false)
 		{
+			this.RateStatusBarText = Resources.FinCalcFunctionRate;
 			if (isLongTouch)
 			{
 
@@ -314,6 +317,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnEndPressed(bool isLongTouch = false)
 		{
+			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
 			if (isLongTouch)
 			{
 

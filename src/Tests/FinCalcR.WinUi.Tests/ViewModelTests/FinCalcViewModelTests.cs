@@ -84,6 +84,13 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
+			Assert.True(vm.YearsStatusBarText == string.Empty);
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.YearsStatusBarText == Resources.FinCalcFunctionYears);
+			vm.YearsStatusBarText = string.Empty;
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.YearsStatusBarText == Resources.FinCalcFunctionYears);
+
 			Assert.True(vm.InterestStatusBarText == string.Empty);
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
@@ -91,6 +98,27 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
+
+			Assert.True(vm.StartStatusBarText == string.Empty);
+			vm.StartPressedCommand.Execute(true);
+			Assert.True(vm.StartStatusBarText == Resources.FinCalcFunctionStart);
+			vm.StartStatusBarText = string.Empty;
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.StartStatusBarText == Resources.FinCalcFunctionStart);
+
+			Assert.True(vm.RateStatusBarText == string.Empty);
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.RateStatusBarText == Resources.FinCalcFunctionRate);
+			vm.RateStatusBarText = string.Empty;
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(vm.RateStatusBarText == Resources.FinCalcFunctionRate);
+
+			Assert.True(vm.EndStatusBarText == string.Empty);
+			vm.EndPressedCommand.Execute(true);
+			Assert.True(vm.EndStatusBarText == Resources.FinCalcFunctionEnd);
+			vm.EndStatusBarText = string.Empty;
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.EndStatusBarText == Resources.FinCalcFunctionEnd);
 		}
 
 		#region Initialization Tests
