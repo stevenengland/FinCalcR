@@ -117,7 +117,8 @@
 			   <Button Grid.Row="1"
 			           Grid.Column="1"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionYears}" />
+			           Content="{lex:Loc Key=FinCalcFunctionYears}"
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnYearsPressedAsync($source, $eventArgs)];"/>
 			   <Button Grid.Row="1"
 			           Grid.Column="2"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
@@ -126,15 +127,18 @@
 			   <Button Grid.Row="1"
 			           Grid.Column="3"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionStart}" />
+			           Content="{lex:Loc Key=FinCalcFunctionStart}"
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnStartPressedAsync($source, $eventArgs)];"/>
 			   <Button Grid.Row="1"
 			           Grid.Column="4"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionRate}" />
+			           Content="{lex:Loc Key=FinCalcFunctionRate}"
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnRatePressedAsync($source, $eventArgs)];"/>
 			   <Button Grid.Row="1"
 			           Grid.Column="5"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionEnd}" />
+			           Content="{lex:Loc Key=FinCalcFunctionEnd}"
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnEndPressedAsync($source, $eventArgs)];"/>
 		   </Grid>
 	       <Button Grid.Row="2"
 	               Grid.Column="0"

@@ -524,6 +524,99 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
+		#region Years Tests
+
+		[Fact]
+		public void PressingYearsResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+			this.SetVmStatusLabelTexts(vm);
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+		}
+
+		#endregion
+
+		#region Interest Tests
+
+		[Fact]
+		public async Task PressingInterestResetsStatusLabelTextsAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			this.SetVmStatusLabelTexts(vm);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+			this.SetVmStatusLabelTexts(vm);
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+		}
+
+		#endregion
+
+		#region Start Tests
+
+		[Fact]
+		public void PressingStartResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.StartPressedCommand.Execute(true);
+			Assert.True(string.IsNullOrWhiteSpace(vm.EndStatusBarText)); // An other label than the one belonging to the command.
+			this.SetVmStatusLabelTexts(vm);
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(string.IsNullOrWhiteSpace(vm.EndStatusBarText)); // An other label than the one belonging to the command.
+		}
+
+		#endregion
+
+		#region Rate Tests
+
+		[Fact]
+		public void PressingRateResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+			this.SetVmStatusLabelTexts(vm);
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+		}
+
+		#endregion
+
+		#region End Tests
+
+		[Fact]
+		public void PressingEndResetsStatusLabelTexts()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			this.SetVmStatusLabelTexts(vm);
+			vm.EndPressedCommand.Execute(true);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+			this.SetVmStatusLabelTexts(vm);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+		}
+
+		#endregion
+
 		private void SetVmStatusLabelTexts(FinCalcViewModel vm)
 		{
 			vm.AdvanceStatusBarText = "test";

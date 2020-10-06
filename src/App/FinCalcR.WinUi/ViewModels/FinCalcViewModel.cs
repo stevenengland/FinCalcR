@@ -242,6 +242,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnYearsPressed(bool isLongTouch = false)
 		{
+			this.ResetSpecialFunctionLabels();
 			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
 			if (isLongTouch)
 			{
@@ -260,6 +261,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
 		{
 			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			this.ResetSpecialFunctionLabels();
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 			if (longTouch)
 			{
@@ -277,6 +279,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnStartPressed(bool isLongTouch = false)
 		{
+			this.ResetSpecialFunctionLabels();
 			this.StartStatusBarText = Resources.FinCalcFunctionStart;
 			if (isLongTouch)
 			{
@@ -294,6 +297,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnRatePressed(bool isLongTouch = false)
 		{
+			this.ResetSpecialFunctionLabels();
 			this.RateStatusBarText = Resources.FinCalcFunctionRate;
 			if (isLongTouch)
 			{
@@ -311,6 +315,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnEndPressed(bool isLongTouch = false)
 		{
+			this.ResetSpecialFunctionLabels();
 			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
 			if (isLongTouch)
 			{
