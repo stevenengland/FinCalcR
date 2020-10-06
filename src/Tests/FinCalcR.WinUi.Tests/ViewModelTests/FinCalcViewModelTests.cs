@@ -207,6 +207,20 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
+		public void FirstNumberIsAssumedToBeZeroIfOperatorIsFirstInput()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute(2);
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "-2,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -2) < Tolerance);
+		}
+
+		[Fact]
 		public async Task OperatorPressedAfterSpecialFunctionDoesNotResetAsync()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
