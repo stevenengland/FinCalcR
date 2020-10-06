@@ -454,8 +454,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.SetNumber(out this.secondNumber);
 			try
 			{
-				var calculatedResult = SimpleCalculator.Calculate(this.firstNumber, this.secondNumber, this.ActiveMathOperator);
-				if (double.IsNaN(calculatedResult) || double.IsNegativeInfinity(calculatedResult) || double.IsPositiveInfinity(calculatedResult))
+				var calculatedResult =
+					SimpleCalculator.Calculate(this.firstNumber, this.secondNumber, this.ActiveMathOperator);
+				if (double.IsNaN(calculatedResult) || double.IsNegativeInfinity(calculatedResult) ||
+				    double.IsPositiveInfinity(calculatedResult))
 				{
 					throw new NotFiniteNumberException();
 				}
@@ -481,6 +483,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			catch (OverflowException ex)
 			{
 				this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_OVERFLOW_EXCEPTION, this.firstNumber, this.secondNumber)));
+				this.OnClearPressed();
+			}
+			catch (NotSupportedException)
+			{
 				this.OnClearPressed();
 			}
 		}

@@ -8,8 +8,7 @@ namespace StEn.FinCalcR.Calculations
 	{
 		public static double Calculate(double value1, double value2, string mathOperator)
 		{
-			double result = 0;
-
+			double result;
 			switch (mathOperator)
 			{
 				case "/":
@@ -24,6 +23,8 @@ namespace StEn.FinCalcR.Calculations
 				case "-":
 					result = value1 - value2;
 					break;
+				default:
+					throw new NotSupportedException();
 			}
 
 			return result;
