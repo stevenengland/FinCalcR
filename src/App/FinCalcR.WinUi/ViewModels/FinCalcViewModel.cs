@@ -344,7 +344,21 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.leftSide = "-" + this.leftSide;
 			}
 
-			this.SetDisplayText();
+			switch (this.LastPressedOperation)
+			{
+				case LastPressedOperation.Interest:
+					this.SetDisplayText(true, 3);
+					break;
+				case LastPressedOperation.Years:
+				case LastPressedOperation.Start:
+				case LastPressedOperation.Rate:
+				case LastPressedOperation.End:
+					this.SetDisplayText(true);
+					break;
+				default:
+					this.SetDisplayText();
+					break;
+			}
 
 			this.LastPressedOperation = LastPressedOperation.AlgebSign;
 		}
@@ -352,6 +366,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnDigitPressed(object digitObj)
 		{
 			this.ResetSpecialFunctionLabels();
+
+			if (this.IsLastPressedOperationSpecialFunction())
+			{
+				this.ResetNumbers();
+				this.ResetSides();
+				this.ActiveMathOperator = string.Empty;
+			}
 
 			if (this.calcCommandLock)
 			{
@@ -409,11 +430,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
-			if (this.LastPressedOperation == LastPressedOperation.Years
-			    || this.LastPressedOperation == LastPressedOperation.Interest
-			    || this.LastPressedOperation == LastPressedOperation.Start
-			    || this.LastPressedOperation == LastPressedOperation.Rate
-			    || this.LastPressedOperation == LastPressedOperation.End)
+			if (this.IsLastPressedOperationSpecialFunction())
 			{
 				this.ResetNumbers();
 				this.ResetSides();
@@ -557,7 +574,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.SetNumber(out numberToSet);
 			this.ResetNumbers();
 			this.firstNumber = numberToSet;
-			this.BuildSidesFromNumber(numberToSet);
+			this.BuildSidesFromNumber(numberToSet); // So that the display text can be set.
 			this.ActiveMathOperator = string.Empty;
 			this.SetDisplayText(true, specialNumberDecimalCount);
 		}
@@ -569,6 +586,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.BuildSidesFromNumber(fistNumberSubstitution);
 			this.ActiveMathOperator = string.Empty;
 			this.SetDisplayText(true, specialNumberDecimalCount);
+		}
+
+		private bool IsLastPressedOperationSpecialFunction()
+		{
+			return this.LastPressedOperation == LastPressedOperation.Years
+					|| this.LastPressedOperation == LastPressedOperation.Interest
+			        || this.LastPressedOperation == LastPressedOperation.Start
+			        || this.LastPressedOperation == LastPressedOperation.Rate
+			        || this.LastPressedOperation == LastPressedOperation.End;
 		}
 
 		private void ResetSides()

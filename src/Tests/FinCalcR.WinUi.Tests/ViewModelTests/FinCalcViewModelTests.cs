@@ -522,6 +522,91 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - -3) < Tolerance);
 		}
 
+		[Fact]
+		public async Task AlgebSignPressedAfterSpecialFunctionDoesNotResetAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+
+			// Short presses
+			vm.DigitPressedCommand.Execute(2);
+			vm.YearsPressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -2) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+			vm.DigitPressedCommand.Execute(3);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-3,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - -3) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.DigitPressedCommand.Execute(4);
+			vm.StartPressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-4,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -4) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.RatePressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-5,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -5) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.DigitPressedCommand.Execute(6);
+			vm.EndPressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-6,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -6) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			// long presses
+			vm.YearsPressedCommand.Execute(true);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -2) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-3,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - -3) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.StartPressedCommand.Execute(true);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-4,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -4) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.RatePressedCommand.Execute(true);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-5,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -5) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.EndPressedCommand.Execute(true);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-6,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -6) < Tolerance);
+		}
+
 		#endregion
 
 		#region Years Tests
