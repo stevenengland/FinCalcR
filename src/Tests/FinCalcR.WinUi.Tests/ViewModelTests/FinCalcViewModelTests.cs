@@ -802,6 +802,19 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
+		public void AlgebSignAsFirstInputFollowedByDigitOutputsDigit()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.AlgebSignCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(9);
+
+			Assert.True(vm.DisplayText == "-9,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -9) < Tolerance);
+		}
+
+		[Fact]
 		public void AlgebSignAfterSpecialFunctionIsCorrectlyFormatted()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
@@ -975,6 +988,21 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "4,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
 		}
+
+		//[Fact]
+		//public async Task InterestValuesLt100PercentThrowAsync()
+		//{
+		//	var mockObjects = MockFactories.GetMockObjects();
+		//	var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+		//	var gestureHandlerMock = new Mock<IGestureHandler>();
+		//	gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+		//	vm.DigitPressedCommand.Execute(1);
+		//	vm.DigitPressedCommand.Execute(0);
+		//	vm.DigitPressedCommand.Execute(0);
+		//	vm.DecimalSeparatorPressedCommand.Execute(null);
+		//	vm.DigitPressedCommand.Execute(1);
+		//}
 
 		#endregion
 

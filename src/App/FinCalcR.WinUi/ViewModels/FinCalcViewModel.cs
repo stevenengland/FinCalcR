@@ -431,7 +431,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					}
 					else
 					{
-						this.leftSide = digit;
+						if (this.leftSide == "-0")
+						{
+							this.leftSide = "-" + digit;
+						}
+						else
+						{
+							this.leftSide = digit;
+						}
 					}
 				}
 			}
