@@ -550,6 +550,46 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 0.9) < Tolerance);
 		}
 
+		[Fact]
+		public async Task Tc_Interest_0007Async()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "4,074");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute(2);
+			vm.CalculatePressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "2,074154292");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2.074154292) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(2);
+			vm.CalculatePressedCommand.Execute(null);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "4,074");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute(2);
+			vm.CalculatePressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "2,074154292");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2.074154292) < Tolerance);
+		}
+
 		#endregion
 
 	}

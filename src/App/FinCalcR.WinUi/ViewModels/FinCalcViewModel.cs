@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.TextFormatting;
 using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
 using StEn.FinCalcR.Common.LanguageResources;
@@ -34,6 +35,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double rateNumber = 0;
 		private double endNumber = 0;
 		private int ratesPerAnnumNumber = 12;
+		private double nominalInterestRate = 0;
 		private bool calcCommandLock = false;
 		private string advanceStatusBarText;
 		private string yearsStatusBarText;
@@ -260,9 +262,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
 		{
+			// Prepare
 			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.ResetSpecialFunctionLabels();
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
+
+			// Check if it is a second function call
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			{
+				this.InterestSecondFunctionPressed(longTouch);
+				return;
+			}
+
+			// Proceed as standard function
 			if (longTouch)
 			{
 				// Display the value in the memory
@@ -272,6 +284,27 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				// Write the value to the memory
 				this.CommonSpecialFunctionShortPressOperations(out this.interestNumber, 3);
+				this.nominalInterestRate = InterestCalculator.GetYearlyNominalInterestRate(this.ratesPerAnnumNumber, this.interestNumber);
+			}
+
+			this.LastPressedOperation = LastPressedOperation.Interest;
+		}
+
+		private void InterestSecondFunctionPressed(bool isLongTouch = false)
+		{
+			if (isLongTouch)
+			{
+				// Output saved nominal interest
+				this.CommonSpecialFunctionsLongPressOperations(this.nominalInterestRate, 3);
+			}
+			else
+			{
+				// Calculate/save effective interest, save nominal interest (as interest) and display the effective interest.
+				this.CommonSpecialFunctionShortPressOperations(out this.nominalInterestRate, 3, false);
+				this.interestNumber = InterestCalculator.GetEffectiveInterestRate(this.ratesPerAnnumNumber, this.nominalInterestRate);
+				this.firstNumber = this.interestNumber;
+				this.BuildSidesFromNumber(this.interestNumber);
+				this.SetDisplayText(true, 3);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Interest;
@@ -569,7 +602,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.rightSide = parts.Length < 2 ? string.Empty : parts[1];
 		}
 
-		private void CommonSpecialFunctionShortPressOperations(out double numberToSet, int specialNumberDecimalCount)
+		private void CommonSpecialFunctionShortPressOperations(out double numberToSet, int specialNumberDecimalCount, bool setDisplayText = true)
 		{
 			// If last input was an operator restore the firstNumber for upcoming operations
 			if (this.LastPressedOperation == LastPressedOperation.Operator)
@@ -582,7 +615,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.firstNumber = numberToSet;
 			this.BuildSidesFromNumber(numberToSet); // So that the display text can be set.
 			this.ActiveMathOperator = string.Empty;
-			this.SetDisplayText(true, specialNumberDecimalCount);
+			if (setDisplayText)
+			{
+				this.SetDisplayText(true, specialNumberDecimalCount);
+			}
 		}
 
 		private void CommonSpecialFunctionsLongPressOperations(double fistNumberSubstitution, int specialNumberDecimalCount)
@@ -623,6 +659,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.rateNumber = 0;
 				this.endNumber = 0;
 				this.ratesPerAnnumNumber = 12;
+				this.nominalInterestRate = 0;
 			}
 		}
 
