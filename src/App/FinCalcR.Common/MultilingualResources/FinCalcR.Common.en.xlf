@@ -154,6 +154,10 @@
           <source>Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt.</source>
           <target state="new">Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt.</target>
         </trans-unit>
+        <trans-unit id="EXC_INTEREST_EXCEEDED_LIMIT" translate="yes" xml:space="preserve">
+          <source>Der Zins darf nicht kleiner als -100 sein.</source>
+          <target state="new">Der Zins darf nicht kleiner als -100 sein.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

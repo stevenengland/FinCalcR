@@ -159,6 +159,9 @@
   <data name="EXC_GUI_UNHANDLED_EXCEPTION_OCCURED" xml:space="preserve">
     <value>Eine unbehandelte Ausnahme ist aufgetreten:</value>
   </data>
+  <data name="EXC_INTEREST_EXCEEDED_LIMIT" xml:space="preserve">
+    <value>Der Zins darf nicht kleiner als -100 sein.</value>
+  </data>
   <data name="EXC_NOT_FINITE_NUMBER" xml:space="preserve">
     <value>Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</value>
   </data>

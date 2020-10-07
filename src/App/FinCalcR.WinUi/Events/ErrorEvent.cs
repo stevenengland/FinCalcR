@@ -12,6 +12,13 @@ namespace StEn.FinCalcR.WinUi.Events
 			this.ShowAsSnackbarItem = showAsSnackbarItem;
 		}
 
+		public ErrorEvent(string errorMessage, bool shutdown = false, bool showAsSnackbarItem = false)
+		{
+			this.ErrorMessage = errorMessage;
+			this.ApplicationMustShutdown = shutdown;
+			this.ShowAsSnackbarItem = showAsSnackbarItem;
+		}
+
 		public Exception Exception { get; }
 
 		public string ErrorMessage { get; }

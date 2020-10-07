@@ -187,6 +187,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Der Zins darf nicht kleiner als -100 sein..
+        /// </summary>
+        public static string EXC_INTEREST_EXCEEDED_LIMIT {
+            get {
+                return ResourceManager.GetString("EXC_INTEREST_EXCEEDED_LIMIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Das Ergebnis der Division von {0} geteilt durch {1} ist infinit..
         /// </summary>
         public static string EXC_NOT_FINITE_NUMBER {
