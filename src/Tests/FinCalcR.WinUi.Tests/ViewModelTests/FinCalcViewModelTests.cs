@@ -75,6 +75,48 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.LastPressedOperation = LastPressedOperation.None;
 			vm.EndPressedCommand.Execute(true);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
+
+			// second function
+			vm.ClearPressedCommand.Execute(true);
+
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Years);
+			vm.LastPressedOperation = LastPressedOperation.None;
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Years);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
+			vm.LastPressedOperation = LastPressedOperation.None;
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Start);
+			vm.LastPressedOperation = LastPressedOperation.None;
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(true);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Start);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Rate);
+			vm.LastPressedOperation = LastPressedOperation.None;
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.Rate);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
+			vm.LastPressedOperation = LastPressedOperation.None;
+			vm.OperatorPressedCommand.Execute("*");
+			vm.EndPressedCommand.Execute(true);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
 		}
 
 		[Fact]
@@ -930,6 +972,22 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
 		}
 
+		[Fact]
+		public void PressingYearsSetsYearsValue()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+			vm.ClearPressedCommand.Execute(false);
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
 		#endregion
 
 		#region Interest Tests
@@ -1071,6 +1129,41 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(string.IsNullOrWhiteSpace(vm.EndStatusBarText)); // An other label than the one belonging to the command.
 		}
 
+		[Fact]
+		public void PressingStartSetsStartValue()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+			vm.ClearPressedCommand.Execute(false);
+			vm.StartPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingStartDeAndActivatesAdvanceFlagAndStatusLabel()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			Assert.False(vm.IsAdvance());
+			Assert.True(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.IsAdvance());
+			Assert.False(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(false);
+			Assert.False(vm.IsAdvance());
+			Assert.True(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
+		}
+
 		#endregion
 
 		#region Rate Tests
@@ -1089,6 +1182,22 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
 		}
 
+		[Fact]
+		public void PressingRateSetsRateValue()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+			vm.ClearPressedCommand.Execute(false);
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
 		#endregion
 
 		#region End Tests
@@ -1105,6 +1214,22 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			this.SetVmStatusLabelTexts(vm);
 			vm.EndPressedCommand.Execute(false);
 			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
+		}
+
+		[Fact]
+		public void PressingEndSetsEndValue()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+			vm.ClearPressedCommand.Execute(false);
+			vm.EndPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
 		}
 
 		#endregion

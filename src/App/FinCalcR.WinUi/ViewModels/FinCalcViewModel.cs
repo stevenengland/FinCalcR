@@ -36,6 +36,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double endNumber = 0;
 		private int ratesPerAnnumNumber = 12;
 		private double nominalInterestRateNumber = 0;
+		private bool isAdvanceActive = false;
 		private bool calcCommandLock = false;
 		private string advanceStatusBarText;
 		private string yearsStatusBarText;
@@ -219,6 +220,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.EndPressedCommand.Execute(isLongTouch);
 		}
 
+		public bool IsAdvance()
+		{
+			return this.isAdvanceActive;
+		}
+
 		private void OnClearPressed(bool isLongTouch = false)
 		{
 			if (isLongTouch)
@@ -254,6 +260,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ResetNumbers();
 			}
 
+			// Check if it is a second function call
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			{
+				this.OnYearsSecondFunctionPressed(isLongTouch);
+				return;
+			}
+
 			if (isLongTouch)
 			{
 				// Display the value in the memory
@@ -265,6 +278,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.CommonSpecialFunctionShortPressOperations(out this.yearsNumber, 2);
 			}
 
+			this.LastPressedOperation = LastPressedOperation.Years;
+		}
+
+		private void OnYearsSecondFunctionPressed(bool isLongTouch)
+		{
+			if (isLongTouch)
+			{
+
+			}
+			else
+			{
+				
+			}
 			this.LastPressedOperation = LastPressedOperation.Years;
 		}
 
@@ -285,7 +311,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// Check if it is a second function call
 			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
 			{
-				this.InterestSecondFunctionPressed(isLongTouch);
+				this.OnInterestSecondFunctionPressed(isLongTouch);
 				return;
 			}
 
@@ -317,7 +343,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.LastPressedOperation = LastPressedOperation.Interest;
 		}
 
-		private void InterestSecondFunctionPressed(bool isLongTouch = false)
+		private void OnInterestSecondFunctionPressed(bool isLongTouch = false)
 		{
 			if (isLongTouch)
 			{
@@ -352,7 +378,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnStartPressed(bool isLongTouch = false)
 		{
 			this.ResetSpecialFunctionLabels();
-			this.StartStatusBarText = Resources.FinCalcFunctionStart;
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -360,6 +385,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ResetSides();
 				this.ResetNumbers();
 			}
+
+			// Check if it is a second function call
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			{
+				this.OnStartSecondFunctionPressed();
+				return;
+			}
+
+			this.StartStatusBarText = Resources.FinCalcFunctionStart;
 
 			if (isLongTouch)
 			{
@@ -370,6 +404,22 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				// Write the value to the memory
 				this.CommonSpecialFunctionShortPressOperations(out this.startNumber, 2);
+			}
+
+			this.LastPressedOperation = LastPressedOperation.Start;
+		}
+
+		private void OnStartSecondFunctionPressed()
+		{
+			if (this.isAdvanceActive)
+			{
+				this.isAdvanceActive = false;
+				this.AdvanceStatusBarText = string.Empty;
+			}
+			else
+			{
+				this.isAdvanceActive = true;
+				this.AdvanceStatusBarText = Resources.FinCalcFunctionAdvance;
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Start;
