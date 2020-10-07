@@ -35,7 +35,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double rateNumber = 0;
 		private double endNumber = 0;
 		private int ratesPerAnnumNumber = 12;
-		private double nominalInterestRate = 0;
+		private double nominalInterestRateNumber = 0;
 		private bool calcCommandLock = false;
 		private string advanceStatusBarText;
 		private string yearsStatusBarText;
@@ -246,6 +246,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
+
+			// Special - if the last pressed operation was a special function this current special function should not work with old values.
+			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			{
+				this.ResetSides();
+				this.ResetNumbers();
+			}
+
 			if (isLongTouch)
 			{
 				// Display the value in the memory
@@ -263,19 +271,26 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
 		{
 			// Prepare
-			var longTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			var isLongTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.ResetSpecialFunctionLabels();
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
+
+			// Special - if the last pressed operation was a special function this current special function should not work with old values.
+			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			{
+				this.ResetSides();
+				this.ResetNumbers();
+			}
 
 			// Check if it is a second function call
 			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
 			{
-				this.InterestSecondFunctionPressed(longTouch);
+				this.InterestSecondFunctionPressed(isLongTouch);
 				return;
 			}
 
 			// Proceed as standard function
-			if (longTouch)
+			if (isLongTouch)
 			{
 				// Display the value in the memory
 				this.CommonSpecialFunctionsLongPressOperations(this.interestNumber, 3);
@@ -283,8 +298,20 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
+				var tmpInterestNumber = this.interestNumber;
 				this.CommonSpecialFunctionShortPressOperations(out this.interestNumber, 3);
-				this.nominalInterestRate = InterestCalculator.GetYearlyNominalInterestRate(this.ratesPerAnnumNumber, this.interestNumber);
+				if (this.interestNumber < -100)
+				{
+					this.ResetSides();
+					this.ResetNumbers();
+					this.SetDisplayText();
+					this.interestNumber = tmpInterestNumber;
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
+				}
+				else
+				{
+					this.nominalInterestRateNumber = InterestCalculator.GetYearlyNominalInterestRate(this.ratesPerAnnumNumber, this.interestNumber);
+				}
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Interest;
@@ -295,16 +322,28 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Output saved nominal interest
-				this.CommonSpecialFunctionsLongPressOperations(this.nominalInterestRate, 3);
+				this.CommonSpecialFunctionsLongPressOperations(this.nominalInterestRateNumber, 3);
 			}
 			else
 			{
 				// Calculate/save effective interest, save nominal interest (as interest) and display the effective interest.
-				this.CommonSpecialFunctionShortPressOperations(out this.nominalInterestRate, 3, false);
-				this.interestNumber = InterestCalculator.GetEffectiveInterestRate(this.ratesPerAnnumNumber, this.nominalInterestRate);
-				this.firstNumber = this.interestNumber;
-				this.BuildSidesFromNumber(this.interestNumber);
-				this.SetDisplayText(true, 3);
+				var tmpNominalInterestNumber = this.nominalInterestRateNumber;
+				this.CommonSpecialFunctionShortPressOperations(out this.nominalInterestRateNumber, 3, false);
+				if (this.nominalInterestRateNumber < -100)
+				{
+					this.ResetSides();
+					this.ResetNumbers();
+					this.SetDisplayText();
+					this.nominalInterestRateNumber = tmpNominalInterestNumber;
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
+				}
+				else
+				{
+					this.interestNumber = InterestCalculator.GetEffectiveInterestRate(this.ratesPerAnnumNumber, this.nominalInterestRateNumber);
+					this.firstNumber = this.interestNumber;
+					this.BuildSidesFromNumber(this.interestNumber);
+					this.SetDisplayText(true, 3);
+				}
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Interest;
@@ -314,6 +353,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.StartStatusBarText = Resources.FinCalcFunctionStart;
+
+			// Special - if the last pressed operation was a special function this current special function should not work with old values.
+			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			{
+				this.ResetSides();
+				this.ResetNumbers();
+			}
+
 			if (isLongTouch)
 			{
 				// Display the value in the memory
@@ -332,6 +379,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.RateStatusBarText = Resources.FinCalcFunctionRate;
+
+			// Special - if the last pressed operation was a special function this current special function should not work with old values.
+			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			{
+				this.ResetSides();
+				this.ResetNumbers();
+			}
+
 			if (isLongTouch)
 			{
 				// Display the value in the memory
@@ -350,6 +405,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
+
+			// Special - if the last pressed operation was a special function this current special function should not work with old values.
+			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			{
+				this.ResetSides();
+				this.ResetNumbers();
+			}
+
 			if (isLongTouch)
 			{
 				// Display the value in the memory
@@ -400,6 +463,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
+			// Special - if the last pressed operation was a special function this operation should not work with old values.
 			if (this.IsLastPressedOperationSpecialFunction())
 			{
 				this.ResetNumbers();
@@ -470,6 +534,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
+			// Special - if the last pressed operation was a special function this operation should not work with old values.
 			if (this.IsLastPressedOperationSpecialFunction())
 			{
 				this.ResetNumbers();
@@ -666,7 +731,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.rateNumber = 0;
 				this.endNumber = 0;
 				this.ratesPerAnnumNumber = 12;
-				this.nominalInterestRate = 0;
+				this.nominalInterestRateNumber = 0;
 			}
 		}
 

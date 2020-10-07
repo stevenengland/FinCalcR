@@ -219,6 +219,48 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		/// <summary>
+		/// 3 Interest Start // 0,
+		/// </summary>
+		[Fact]
+		public async Task MultipleSpecialFunctionsArePressedOneAfterAnotherAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.YearsPressedCommand.Execute(false); // Start should be 1
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object); // Interest is now 0
+			Assert.True(vm.DisplayText == "0,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.DigitPressedCommand.Execute(2);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.DigitPressedCommand.Execute(3);
+			vm.StartPressedCommand.Execute(false);
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.DigitPressedCommand.Execute(4);
+			vm.RatePressedCommand.Execute(false);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.DigitPressedCommand.Execute(4);
+			vm.EndPressedCommand.Execute(false);
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+		}
+
+		/// <summary>
 		/// First input is a operator. So the first Number is 0.
 		/// Next input is a operator followed by a digit.
 		/// </summary>
