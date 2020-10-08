@@ -158,6 +158,10 @@
           <source>Der Zins darf nicht kleiner als -100 sein.</source>
           <target state="new">Der Zins darf nicht kleiner als -100 sein.</target>
         </trans-unit>
+        <trans-unit id="FinCalcRatesPerAnnumPostfix" translate="yes" xml:space="preserve">
+          <source>p.a.</source>
+          <target state="new">p.a.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

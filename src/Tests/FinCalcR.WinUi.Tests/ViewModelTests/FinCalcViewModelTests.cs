@@ -83,11 +83,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
 			vm.OperatorPressedCommand.Execute("*");
 			vm.YearsPressedCommand.Execute(false);
-			Assert.True(vm.LastPressedOperation == LastPressedOperation.Years);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.RatesPerAnnum);
 			vm.LastPressedOperation = LastPressedOperation.None;
 			vm.OperatorPressedCommand.Execute("*");
 			vm.YearsPressedCommand.Execute(true);
-			Assert.True(vm.LastPressedOperation == LastPressedOperation.Years);
+			Assert.True(vm.LastPressedOperation == LastPressedOperation.RatesPerAnnum);
 			vm.OperatorPressedCommand.Execute("*");
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
@@ -986,6 +986,25 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.YearsPressedCommand.Execute(true);
 			Assert.True(vm.DisplayText == "2,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingYearsSecondFunctionShowsRatesPerAnnum()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+
+			Assert.True(vm.DisplayText == "12 " + Resources.FinCalcRatesPerAnnumPostfix);
+			Assert.True(Math.Abs(vm.DisplayNumber - 12) < Tolerance);
+		}
+
+		[Fact]
+		public void RatesPerAnnumDoNotExceedLimitsButThrow()
+		{
+
 		}
 
 		#endregion

@@ -23,6 +23,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private readonly IEventAggregator eventAggregator;
 		private string displayText;
 		private double displayNumber;
+		private bool isDisplayTextNumeric = true;
 		private bool isDecimalSeparatorActive = false;
 		private string activeMathOperator = string.Empty;
 		private string leftSide;
@@ -285,13 +286,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			if (isLongTouch)
 			{
-
+				// Output saved nominal interest
+				this.ResetNumbers();
+				this.firstNumber = ratesPerAnnumNumber;
+				this.BuildSidesFromNumber(ratesPerAnnumNumber);
+				this.ActiveMathOperator = string.Empty;
+				this.SetDisplayText(this.ratesPerAnnumNumber + " " + Resources.FinCalcRatesPerAnnumPostfix);
 			}
 			else
 			{
 				
 			}
-			this.LastPressedOperation = LastPressedOperation.Years;
+
+			this.LastPressedOperation = LastPressedOperation.RatesPerAnnum;
 		}
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
@@ -501,6 +508,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				case LastPressedOperation.End:
 					this.SetDisplayText(true);
 					break;
+				case LastPressedOperation.RatesPerAnnum:
+					this.SetDisplayText();
+					break;
 				default:
 					this.SetDisplayText();
 					break;
@@ -566,6 +576,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
+			if (!this.isDisplayTextNumeric)
+			{
+				this.SetDisplayText();
+			}
+
 			if (this.ActiveMathOperator != string.Empty)
 			{
 				this.OnCalculatePressed();
@@ -583,6 +598,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnDecimalSeparatorPressed()
 		{
 			this.ResetSpecialFunctionLabels();
+
+			if (!this.isDisplayTextNumeric)
+			{
+				this.SetDisplayText();
+			}
 
 			// Special - if the last pressed operation was a special function this operation should not work with old values.
 			if (this.IsLastPressedOperationSpecialFunction())
@@ -672,6 +692,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 		}
 
+		private void SetDisplayText(string text)
+		{
+			this.DisplayText = text;
+			this.SetDisplayNumber();
+			this.isDisplayTextNumeric = false;
+		}
+
 		private void SetDisplayText(bool isSpecialFunctionNumber = false, int specialNumberDecimalCount = 2)
 		{
 			var displayRightSide = this.rightSide;
@@ -713,6 +740,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.DisplayText = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + displayRightSide;
 			this.SetDisplayNumber();
+			this.isDisplayTextNumeric = true;
 		}
 
 		private void BuildSidesFromNumber(double number)
@@ -758,7 +786,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					|| this.LastPressedOperation == LastPressedOperation.Interest
 			        || this.LastPressedOperation == LastPressedOperation.Start
 			        || this.LastPressedOperation == LastPressedOperation.Rate
-			        || this.LastPressedOperation == LastPressedOperation.End;
+			        || this.LastPressedOperation == LastPressedOperation.End
+					|| this.LastPressedOperation == LastPressedOperation.RatesPerAnnum;
 		}
 
 		private void ResetSides()

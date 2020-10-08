@@ -340,6 +340,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to p.a..
+        /// </summary>
+        public static string FinCalcRatesPerAnnumPostfix {
+            get {
+                return ResourceManager.GetString("FinCalcRatesPerAnnumPostfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt..
         /// </summary>
         public static string HINT_SPECIAL_FUNCTION_MEMORY_RESET {

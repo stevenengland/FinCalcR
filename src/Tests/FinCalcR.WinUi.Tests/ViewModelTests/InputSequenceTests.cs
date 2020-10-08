@@ -13,6 +13,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 	public class InputSequenceTests
 	{
 		private const double Tolerance = 0.00000001;
+		private const int ratesPerAnnum = 12;
 
 		public InputSequenceTests()
 		{
@@ -630,6 +631,58 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.CalculatePressedCommand.Execute(null);
 			Assert.True(vm.DisplayText == "2,074154292");
 			Assert.True(Math.Abs(vm.DisplayNumber - 2.074154292) < Tolerance);
+		}
+
+		#endregion
+
+		#region Rates per Annum focused
+
+		[Fact]
+		public void DisplayTextAfterFollowingOperationsToRatesPerAnnumIsCorrect()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			vm.OperatorPressedCommand.Execute("-");
+			Assert.True(vm.DisplayText == "12,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 12) < ratesPerAnnum);
+			vm.DigitPressedCommand.Execute(2);
+			vm.CalculatePressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "10,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 10) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "12,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 12) < Tolerance);
+			vm.DigitPressedCommand.Execute(3);
+			Assert.True(vm.DisplayText == "0,3");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.3) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-12,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -12) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			vm.DigitPressedCommand.Execute(3);
+			Assert.True(vm.DisplayText == "3,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(3);
+			Assert.True(vm.DisplayText == "6,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 6) < Tolerance);
 		}
 
 		#endregion

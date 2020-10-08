@@ -22,5 +22,6 @@ namespace StEn.FinCalcR.WinUi.Types
 		Start,
 		Rate,
 		End,
+		RatesPerAnnum,
 	}
 }
