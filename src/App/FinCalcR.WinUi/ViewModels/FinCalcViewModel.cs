@@ -366,7 +366,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					this.nominalInterestRateNumber = InterestCalculator.GetYearlyNominalInterestRate(this.ratesPerAnnumNumber, this.interestNumber);
+					this.nominalInterestRateNumber = FinancialCalculator.GetYearlyNominalInterestRate(this.ratesPerAnnumNumber, this.interestNumber);
 				}
 			}
 
@@ -395,7 +395,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					this.interestNumber = InterestCalculator.GetEffectiveInterestRate(this.ratesPerAnnumNumber, this.nominalInterestRateNumber);
+					this.interestNumber = FinancialCalculator.GetEffectiveInterestRate(this.ratesPerAnnumNumber, this.nominalInterestRateNumber);
 					this.firstNumber = this.interestNumber;
 					this.BuildSidesFromNumber(this.interestNumber);
 					this.SetDisplayText(true, 3);

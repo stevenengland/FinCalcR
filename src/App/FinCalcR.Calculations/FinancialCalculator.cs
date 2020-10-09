@@ -2,7 +2,7 @@
 
 namespace StEn.FinCalcR.Calculations
 {
-	public static class InterestCalculator
+	public static class FinancialCalculator
 	{
 		public static double GetEffectiveInterestRate(double ratesPerAnnum, double yearlyNominalInterest)
 		{
@@ -14,6 +14,18 @@ namespace StEn.FinCalcR.Calculations
 		{
 			var decimalEffectiveInterestRate = effectiveInterestRate / 100;
 			return ((Math.Pow(decimalEffectiveInterestRate + 1, 1 / ratesPerAnnum) - 1) * ratesPerAnnum) * 100;
+		}
+
+		public static double GetAnnuity(double ratesPerAnnum, double loan, double nominalInterestRate, double repaymentRate)
+		{
+			var annuity = ((loan * nominalInterestRate / 100) + (loan * repaymentRate / 100)) / ratesPerAnnum;
+			return annuity;
+		}
+
+		public static double GetRepayment(double ratesPerAnnum, double loan, double nominalInterestRate, double annuity)
+		{
+			var repayment = ((annuity * ratesPerAnnum) - (loan * nominalInterestRate / 100)) / loan * 100;
+			return repayment;
 		}
 	}
 }
