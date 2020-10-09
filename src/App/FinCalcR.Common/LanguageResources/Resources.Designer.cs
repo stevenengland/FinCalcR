@@ -232,6 +232,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Es dürfen keine negativen Werte für Jahre angegeben werden..
+        /// </summary>
+        public static string EXC_YEARS_EXCEEDED_LIMIT {
+            get {
+                return ResourceManager.GetString("EXC_YEARS_EXCEEDED_LIMIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Anwendung schließen.
         /// </summary>
         public static string ExitAppBtn_ToolTip {

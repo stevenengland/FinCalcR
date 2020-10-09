@@ -276,7 +276,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
+				var tmpYearsNumber = this.yearsNumber;
 				this.CommonSpecialFunctionShortPressOperations(out this.yearsNumber, 2);
+				if (this.yearsNumber < 0)
+				{
+					this.ResetSides();
+					this.ResetNumbers();
+					this.SetDisplayText();
+					this.yearsNumber = tmpYearsNumber;
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
+				}
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Years;

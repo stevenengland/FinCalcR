@@ -174,6 +174,9 @@
   <data name="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" xml:space="preserve">
     <value>Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</value>
   </data>
+  <data name="EXC_YEARS_EXCEEDED_LIMIT" xml:space="preserve">
+    <value>Es dürfen keine negativen Werte für Jahre angegeben werden.</value>
+  </data>
   <data name="ExitAppBtn_ToolTip" xml:space="preserve">
     <value>Anwendung schließen</value>
   </data>

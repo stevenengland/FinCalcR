@@ -1002,6 +1002,35 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
+		public void YearsDoNotExceedLimitsAndReset()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(3);
+			vm.YearsPressedCommand.Execute(false); // put a valid value to the memory
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.AlgebSignCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "-0,1");
+			Assert.True(Math.Abs(vm.DisplayNumber - -0.1) < Tolerance);
+
+			vm.YearsPressedCommand.Execute(false);
+
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "3,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance); // sides are reset
+		}
+
+		[Fact]
 		public void RatesPerAnnumDoNotExceedLimitsButThrow()
 		{
 
@@ -1067,7 +1096,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
-		public async Task InterestValuesLt100PercentThrowsAndResetsAsync()
+		public async Task InterestDoesNotExceedLimitsAndResetsAsync()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);

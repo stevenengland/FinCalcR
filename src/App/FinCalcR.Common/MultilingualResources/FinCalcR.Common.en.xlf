@@ -162,6 +162,10 @@
           <source>p.a.</source>
           <target state="new">p.a.</target>
         </trans-unit>
+        <trans-unit id="EXC_YEARS_EXCEEDED_LIMIT" translate="yes" xml:space="preserve">
+          <source>Es dürfen keine negativen Werte für Jahre angegeben werden.</source>
+          <target state="new">Es dürfen keine negativen Werte für Jahre angegeben werden.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
