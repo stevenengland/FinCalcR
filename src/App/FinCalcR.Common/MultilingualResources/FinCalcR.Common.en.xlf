@@ -16,7 +16,7 @@
         </trans-unit>
         <trans-unit id="DialogOkBtn_Content" translate="yes" xml:space="preserve">
           <source>Ok</source>
-          <target state="new">Ok</target>
+          <target state="translated">Ok</target>
         </trans-unit>
         <trans-unit id="ErrorMessageLbl" translate="yes" xml:space="preserve">
           <source>Fehlermeldung:</source>
@@ -44,7 +44,7 @@
         </trans-unit>
         <trans-unit id="AppTitleTxt_Text" translate="yes" xml:space="preserve">
           <source>FinCalcR</source>
-          <target state="new">FinCalcR</target>
+          <target state="translated">FinCalcR</target>
         </trans-unit>
         <trans-unit id="AppVersionLabelTxt_Text" translate="yes" xml:space="preserve">
           <source>App Version</source>
@@ -80,91 +80,92 @@
         </trans-unit>
         <trans-unit id="EXC_ERROR_EVENT_GENERAL_TITLE" translate="yes" xml:space="preserve">
           <source>Ein Fehler ist aufgetreten!</source>
-          <target state="new">Ein Fehler ist aufgetreten!</target>
+          <target state="translated">An error occured!</target>
         </trans-unit>
         <trans-unit id="EXC_PARSE_DOUBLE_IMPOSSIBLE" translate="yes" xml:space="preserve">
           <source>Die Eingabe ist keine gültige Zahl.</source>
-          <target state="new">Die Eingabe ist keine gültige Zahl.</target>
+          <target state="translated">The input is not a valid number.</target>
         </trans-unit>
         <trans-unit id="SnackBar_Action_Content_Details" translate="yes" xml:space="preserve">
           <source>Details</source>
-          <target state="new">Details</target>
+          <target state="translated">Details</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionAdvance" translate="yes" xml:space="preserve">
           <source>vorsch.</source>
-          <target state="new">vorsch.</target>
+          <target state="translated">adv.</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionEnd" translate="yes" xml:space="preserve">
           <source>Ende</source>
-          <target state="new">Ende</target>
+          <target state="translated">End
+</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionInterest" translate="yes" xml:space="preserve">
           <source>Zins</source>
-          <target state="new">Zins</target>
+          <target state="translated">Interest</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionNominalInterest" translate="yes" xml:space="preserve">
           <source>% nom.</source>
-          <target state="new">% nom.</target>
+          <target state="translated">% nom.</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionPercent" translate="yes" xml:space="preserve">
           <source>%</source>
-          <target state="new">%</target>
+          <target state="translated">%</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionRate" translate="yes" xml:space="preserve">
           <source>Rate</source>
-          <target state="new">Rate</target>
+          <target state="translated">Rate</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionRepayment" translate="yes" xml:space="preserve">
           <source>%Tilgung</source>
-          <target state="new">%Tilgung</target>
+          <target state="translated">%Repayment</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionStart" translate="yes" xml:space="preserve">
           <source>Start</source>
-          <target state="new">Start</target>
+          <target state="translated">Start</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionYears" translate="yes" xml:space="preserve">
           <source>Jahre</source>
-          <target state="new">Jahre</target>
+          <target state="translated">Years</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionRatesPerYear" translate="yes" xml:space="preserve">
           <source>Raten p.a.</source>
-          <target state="new">Raten p.a.</target>
+          <target state="translated">Rates p.a.</target>
         </trans-unit>
         <trans-unit id="NpoHomepageLabelTxt_Text" translate="yes" xml:space="preserve">
           <source>Vereins-Homepage</source>
-          <target state="new">Vereins-Homepage</target>
+          <target state="translated">Homepage of tehe society</target>
         </trans-unit>
         <trans-unit id="EXC_DIVISION_BY_ZERO" translate="yes" xml:space="preserve">
           <source>Eine Division durch 0 ist nicht erlaubt.</source>
-          <target state="new">Eine Division durch 0 ist nicht erlaubt.</target>
+          <target state="translated">A Division by zero is not allowed.</target>
         </trans-unit>
         <trans-unit id="EXC_NOT_FINITE_NUMBER" translate="yes" xml:space="preserve">
           <source>Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</source>
-          <target state="new">Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</target>
+          <target state="translated">The result of dividing {0} by {1} is infinite.</target>
         </trans-unit>
         <trans-unit id="EXC_OVERFLOW_EXCEPTION" translate="yes" xml:space="preserve">
           <source>Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</source>
-          <target state="new">Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</target>
+          <target state="translated">The result of the calculation of {0} and {1} exceeds the supported number space.</target>
         </trans-unit>
         <trans-unit id="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" translate="yes" xml:space="preserve">
           <source>Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</source>
-          <target state="new">Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</target>
+          <target state="translated">The last button pressed has no assigned function. Please report the error.</target>
         </trans-unit>
         <trans-unit id="HINT_SPECIAL_FUNCTION_MEMORY_RESET" translate="yes" xml:space="preserve">
           <source>Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt.</source>
-          <target state="new">Die Werte der Finanztasten wurden auf 0 und die Raten p. a. auf 12 gesetzt.</target>
+          <target state="translated">The values of the finance keys were set to 0 and the rates p. a. to 12.</target>
         </trans-unit>
         <trans-unit id="EXC_INTEREST_EXCEEDED_LIMIT" translate="yes" xml:space="preserve">
           <source>Der Zins darf nicht kleiner als -100 sein.</source>
-          <target state="new">Der Zins darf nicht kleiner als -100 sein.</target>
+          <target state="translated">The interest must not be less than -100.</target>
         </trans-unit>
         <trans-unit id="FinCalcRatesPerAnnumPostfix" translate="yes" xml:space="preserve">
           <source>p.a.</source>
-          <target state="new">p.a.</target>
+          <target state="translated">p.a.</target>
         </trans-unit>
         <trans-unit id="EXC_YEARS_EXCEEDED_LIMIT" translate="yes" xml:space="preserve">
           <source>Es dürfen keine negativen Werte für Jahre angegeben werden.</source>
-          <target state="new">Es dürfen keine negativen Werte für Jahre angegeben werden.</target>
+          <target state="translated">No negative values may be given for years.</target>
         </trans-unit>
       </group>
     </body>

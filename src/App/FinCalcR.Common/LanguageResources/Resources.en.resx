@@ -18,6 +18,9 @@
   <data name="DialogHintTitleLbl_Text" xml:space="preserve">
     <value>Notice!</value>
   </data>
+  <data name="DialogOkBtn_Content" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="ErrorMessageLbl" xml:space="preserve">
     <value>Error message:</value>
   </data>
@@ -35,6 +38,9 @@
   </data>
   <data name="AboutNavigationItem_Name" xml:space="preserve">
     <value>About the App</value>
+  </data>
+  <data name="AppTitleTxt_Text" xml:space="preserve">
+    <value>FinCalcR</value>
   </data>
   <data name="AppVersionLabelTxt_Text" xml:space="preserve">
     <value>App version</value>
@@ -59,5 +65,72 @@
   </data>
   <data name="CALC_THOUSANDS_SEPARATOR" xml:space="preserve">
     <value>,</value>
+  </data>
+  <data name="EXC_ERROR_EVENT_GENERAL_TITLE" xml:space="preserve">
+    <value>An error occured!</value>
+  </data>
+  <data name="EXC_PARSE_DOUBLE_IMPOSSIBLE" xml:space="preserve">
+    <value>The input is not a valid number.</value>
+  </data>
+  <data name="SnackBar_Action_Content_Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="FinCalcFunctionAdvance" xml:space="preserve">
+    <value>adv.</value>
+  </data>
+  <data name="FinCalcFunctionEnd" xml:space="preserve">
+    <value>End
+</value>
+  </data>
+  <data name="FinCalcFunctionInterest" xml:space="preserve">
+    <value>Interest</value>
+  </data>
+  <data name="FinCalcFunctionNominalInterest" xml:space="preserve">
+    <value>% nom.</value>
+  </data>
+  <data name="FinCalcFunctionPercent" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="FinCalcFunctionRate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="FinCalcFunctionRepayment" xml:space="preserve">
+    <value>%Repayment</value>
+  </data>
+  <data name="FinCalcFunctionStart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="FinCalcFunctionYears" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="FinCalcFunctionRatesPerYear" xml:space="preserve">
+    <value>Rates p.a.</value>
+  </data>
+  <data name="NpoHomepageLabelTxt_Text" xml:space="preserve">
+    <value>Homepage of tehe society</value>
+  </data>
+  <data name="EXC_DIVISION_BY_ZERO" xml:space="preserve">
+    <value>A Division by zero is not allowed.</value>
+  </data>
+  <data name="EXC_NOT_FINITE_NUMBER" xml:space="preserve">
+    <value>The result of dividing {0} by {1} is infinite.</value>
+  </data>
+  <data name="EXC_OVERFLOW_EXCEPTION" xml:space="preserve">
+    <value>The result of the calculation of {0} and {1} exceeds the supported number space.</value>
+  </data>
+  <data name="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" xml:space="preserve">
+    <value>The last button pressed has no assigned function. Please report the error.</value>
+  </data>
+  <data name="HINT_SPECIAL_FUNCTION_MEMORY_RESET" xml:space="preserve">
+    <value>The values of the finance keys were set to 0 and the rates p. a. to 12.</value>
+  </data>
+  <data name="EXC_INTEREST_EXCEEDED_LIMIT" xml:space="preserve">
+    <value>The interest must not be less than -100.</value>
+  </data>
+  <data name="FinCalcRatesPerAnnumPostfix" xml:space="preserve">
+    <value>p.a.</value>
+  </data>
+  <data name="EXC_YEARS_EXCEEDED_LIMIT" xml:space="preserve">
+    <value>No negative values may be given for years.</value>
   </data>
 </root>
