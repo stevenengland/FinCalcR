@@ -10,6 +10,7 @@ using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.Models;
 using Xunit;
 
+// ReSharper disable RedundantArgumentDefaultValue
 namespace FinCalcR.WinUi.Tests.ViewModelTests
 {
 	public class ShellViewModelTests

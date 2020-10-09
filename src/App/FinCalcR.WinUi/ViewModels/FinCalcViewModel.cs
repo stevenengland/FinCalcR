@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
 using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
 using StEn.FinCalcR.Common.LanguageResources;

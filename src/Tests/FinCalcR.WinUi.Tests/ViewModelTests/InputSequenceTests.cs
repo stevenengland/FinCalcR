@@ -13,7 +13,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 	public class InputSequenceTests
 	{
 		private const double Tolerance = 0.00000001;
-		private const int ratesPerAnnum = 12;
+		private const int RatesPerAnnum = 12;
 
 		public InputSequenceTests()
 		{
@@ -220,8 +220,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		/// <summary>
-		/// 3 Interest Start // 0,
+		/// If a special function is invoked ´right after another the display shall be zero.
+		/// 3 Interest Start // 0,.
 		/// </summary>
+		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
 		[Fact]
 		public async Task MultipleSpecialFunctionsArePressedOneAfterAnotherAsync()
 		{
@@ -306,7 +308,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
-		public async Task Tc0003()
+		public async Task Tc0003Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
@@ -649,7 +651,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.YearsPressedCommand.Execute(false);
 			vm.OperatorPressedCommand.Execute("-");
 			Assert.True(vm.DisplayText == "7,");
-			Assert.True(Math.Abs(vm.DisplayNumber - 7) < ratesPerAnnum);
+			Assert.True(Math.Abs(vm.DisplayNumber - 7) < RatesPerAnnum);
 			vm.DigitPressedCommand.Execute(2);
 			vm.CalculatePressedCommand.Execute(null);
 			Assert.True(vm.DisplayText == "5,");
@@ -697,7 +699,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.YearsPressedCommand.Execute(true);
 			vm.OperatorPressedCommand.Execute("-");
 			Assert.True(vm.DisplayText == "12,");
-			Assert.True(Math.Abs(vm.DisplayNumber - 12) < ratesPerAnnum);
+			Assert.True(Math.Abs(vm.DisplayNumber - 12) < RatesPerAnnum);
 			vm.DigitPressedCommand.Execute(2);
 			vm.CalculatePressedCommand.Execute(null);
 			Assert.True(vm.DisplayText == "10,");

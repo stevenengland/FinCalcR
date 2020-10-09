@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FinCalcR.WinUi.Tests.Mocks;
-using Moq;
-using StEn.FinCalcR.WinUi.Types;
+﻿using System.Threading.Tasks;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests

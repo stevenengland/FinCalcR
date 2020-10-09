@@ -6,7 +6,6 @@ using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
 using StEn.FinCalcR.Common.LanguageResources;
-using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Types;
 using StEn.FinCalcR.WinUi.ViewModels;
