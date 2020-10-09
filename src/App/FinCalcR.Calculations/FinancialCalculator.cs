@@ -27,5 +27,14 @@ namespace StEn.FinCalcR.Calculations
 			var repayment = ((annuity * ratesPerAnnum) - (loan * nominalInterestRate / 100)) / loan * 100;
 			return repayment;
 		}
+
+		public static double GetFinalCapital(double initialCapital, double regularPayment, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum)
+		{
+			var bracketValue = 1 + (nominalInterestRate / (100 * ratesPerAnnum));
+			var initialSummand = initialCapital * Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum);
+			var regularSummand = regularPayment * ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1));
+			var finalCapital = initialSummand + regularSummand;
+			return finalCapital;
+		}
 	}
 }

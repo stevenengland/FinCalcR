@@ -6,6 +6,8 @@ namespace FinCalcR.Calculations.Tests
 {
 	public class FinancialCalculatorTests
 	{
+		private const double Tolerance = 0.00000001;
+
 		[Theory]
 		[InlineData(12, 4, 4.074)]
 		public void EffectiveInterestRateIsCalculatedCorrectly(double ratesPerAnnum, double yearlyNominalInterest, double expectedEffectiveInterestRate)
@@ -36,6 +38,14 @@ namespace FinCalcR.Calculations.Tests
 		{
 			var repayment = FinancialCalculator.GetRepayment(ratesPerAnnum, loan, nominalInterestRate, annuity);
 			Assert.Equal(repayment, expectedRepayment);
+		}
+
+		[Theory]
+		[InlineData(0, 10, 9.5689685146845171, 10, 12, 1998.63856714)]
+		public void FinalCapitalIsCalculatedCorrectly(double initialCapital, double regularPayment, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum, double expectedFinalCapital)
+		{
+			var finalCapital = FinancialCalculator.GetFinalCapital(initialCapital, regularPayment, nominalInterestRate, paymentPeriod, ratesPerAnnum);
+			Assert.True(Math.Abs(finalCapital - expectedFinalCapital) < Tolerance);
 		}
 	}
 }
