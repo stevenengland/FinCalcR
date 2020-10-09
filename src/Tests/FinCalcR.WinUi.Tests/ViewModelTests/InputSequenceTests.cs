@@ -643,6 +643,56 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
+			// after rpa is set
+			vm.DigitPressedCommand.Execute(7);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			vm.OperatorPressedCommand.Execute("-");
+			Assert.True(vm.DisplayText == "7,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 7) < ratesPerAnnum);
+			vm.DigitPressedCommand.Execute(2);
+			vm.CalculatePressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "5,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.DigitPressedCommand.Execute(7);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "7,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 7) < Tolerance);
+			vm.DigitPressedCommand.Execute(3);
+			Assert.True(vm.DisplayText == "0,3");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.3) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.DigitPressedCommand.Execute(7);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-7,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -7) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.DigitPressedCommand.Execute(7);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(3);
+			Assert.True(vm.DisplayText == "3,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(3);
+			vm.CalculatePressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "6,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 6) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			// after rpa is called from memory
 			vm.OperatorPressedCommand.Execute("*");
 			vm.YearsPressedCommand.Execute(true);
 			vm.OperatorPressedCommand.Execute("-");
@@ -681,6 +731,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
 			vm.OperatorPressedCommand.Execute("+");
 			vm.DigitPressedCommand.Execute(3);
+			vm.CalculatePressedCommand.Execute(null);
 			Assert.True(vm.DisplayText == "6,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 6) < Tolerance);
 		}

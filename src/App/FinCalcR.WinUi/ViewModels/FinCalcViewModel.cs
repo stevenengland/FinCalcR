@@ -295,16 +295,31 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			if (isLongTouch)
 			{
-				// Output saved nominal interest
+				// Output saved rates
 				this.ResetNumbers();
-				this.firstNumber = ratesPerAnnumNumber;
-				this.BuildSidesFromNumber(ratesPerAnnumNumber);
+				this.firstNumber = this.ratesPerAnnumNumber;
+				this.BuildSidesFromNumber(this.ratesPerAnnumNumber);
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText(this.ratesPerAnnumNumber + " " + Resources.FinCalcRatesPerAnnumPostfix);
 			}
 			else
 			{
-				
+				// Write the value to the memory
+				this.CommonSpecialFunctionShortPressOperations(out var tmpRpaNumber, 0, false);
+				if (tmpRpaNumber < -0
+					|| tmpRpaNumber > 365
+				    || tmpRpaNumber != Math.Truncate(tmpRpaNumber))
+				{
+					this.ResetSides();
+					this.ResetNumbers();
+					this.SetDisplayText();
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
+				}
+				else
+				{
+					this.ratesPerAnnumNumber = (int)tmpRpaNumber;
+					this.SetDisplayText(this.ratesPerAnnumNumber + " " + Resources.FinCalcRatesPerAnnumPostfix);
+				}
 			}
 
 			this.LastPressedOperation = LastPressedOperation.RatesPerAnnum;

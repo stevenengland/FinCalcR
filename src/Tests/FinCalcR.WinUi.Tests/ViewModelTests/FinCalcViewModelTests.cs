@@ -989,16 +989,23 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
-		public void PressingYearsSecondFunctionShowsRatesPerAnnum()
+		public void PressingYearsSecondFunctionSetsRatesPerAnnum()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "2 " + Resources.FinCalcRatesPerAnnumPostfix);
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+			vm.ClearPressedCommand.Execute(false);
+
 			vm.OperatorPressedCommand.Execute("*");
 			vm.YearsPressedCommand.Execute(true);
 
-			Assert.True(vm.DisplayText == "12 " + Resources.FinCalcRatesPerAnnumPostfix);
-			Assert.True(Math.Abs(vm.DisplayNumber - 12) < Tolerance);
+			Assert.True(vm.DisplayText == "2 " + Resources.FinCalcRatesPerAnnumPostfix);
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
 		}
 
 		[Fact]
@@ -1033,7 +1040,65 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		[Fact]
 		public void RatesPerAnnumDoNotExceedLimitsButThrow()
 		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
+			vm.DigitPressedCommand.Execute(3);
+			vm.YearsPressedCommand.Execute(false); // put a valid value to the memory
+
+			vm.ClearPressedCommand.Execute(false);
+
+			// negative values
+			vm.AlgebSignCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "-1,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -1) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "3,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance); // sides are reset
+
+			// positive values gt limit
+			vm.DigitPressedCommand.Execute(3);
+			vm.DigitPressedCommand.Execute(6);
+			vm.DigitPressedCommand.Execute(6);
+			Assert.True(vm.DisplayText == "366,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 366) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Exactly(2)); // error expected
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "3,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance); // sides are reset
+
+			// positive values gt limit
+			vm.DigitPressedCommand.Execute(3);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "30,1");
+			Assert.True(Math.Abs(vm.DisplayNumber - 30.1) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Exactly(3)); // error expected
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "3,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance); // sides are reset
 		}
 
 		#endregion
