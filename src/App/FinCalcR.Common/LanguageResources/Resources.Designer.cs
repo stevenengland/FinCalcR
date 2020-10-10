@@ -205,6 +205,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die Operation wird nicht unterstützt..
+        /// </summary>
+        public static string EXC_OPERATION_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("EXC_OPERATION_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum..
         /// </summary>
         public static string EXC_OVERFLOW_EXCEPTION {

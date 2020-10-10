@@ -34,9 +34,9 @@ namespace FinCalcR.Calculations.Tests
 
 		[Theory]
 		[InlineData(12, 150000, 4, 750, 2)]
-		public void RepaymentIsCalculatedCorrectly(double ratesPerAnnum, double loan, double nominalInterestRate, double annuity, double expectedRepayment)
+		public void RepaymentRateIsCalculatedCorrectly(double ratesPerAnnum, double loan, double nominalInterestRate, double annuity, double expectedRepayment)
 		{
-			var repayment = FinancialCalculator.GetRepayment(ratesPerAnnum, loan, nominalInterestRate, annuity);
+			var repayment = FinancialCalculator.GetRepaymentRate(ratesPerAnnum, loan, nominalInterestRate, annuity);
 			Assert.Equal(repayment, expectedRepayment);
 		}
 

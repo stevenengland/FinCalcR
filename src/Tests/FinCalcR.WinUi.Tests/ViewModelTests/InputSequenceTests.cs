@@ -352,6 +352,42 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Focus Interest
 
 		[Fact]
+		public async Task PressingInterestLongTouchAlwaysUpdatesNominalInterestRateButNotEffeectiveInterestRateAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(4);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "4,074");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "4,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
+
+			// Setting rpa to 6
+			vm.DigitPressedCommand.Execute(6);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+
+			// Interest rate is still the same
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "4,074");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
+
+			// Nominal interest rate gets recalculated
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			Assert.True(vm.DisplayText == "4,007");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4.006666667) < Tolerance);
+		}
+
+		[Fact]
 		public async Task DecimalPlacesAreFilledCorrectlyAfterInterestButtonWasPressedAsync()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
@@ -637,7 +673,62 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
-		#region Rates per Annum focused
+		#region Focus Rate
+
+		[Fact]
+		public async Task PressingRateLongTouchAlwaysUpdatesRepaymentRateButNotRepaymentAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(4);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(7);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.AlgebSignCommand.Execute(null);
+			vm.RatePressedCommand.Execute(false);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+
+			// Changing a dependent parameter: Start
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.StartPressedCommand.Execute(false);
+
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "-750,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -750) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "5,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
+		#endregion
+
+		#region Focus Rates per Annum
 
 		[Fact]
 		public void DisplayTextAfterFollowingOperationsToRatesPerAnnumIsCorrect()

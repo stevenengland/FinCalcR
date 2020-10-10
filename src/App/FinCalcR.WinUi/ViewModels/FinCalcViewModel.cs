@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,6 +37,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double endNumber = 0;
 		private int ratesPerAnnumNumber = 12;
 		private double nominalInterestRateNumber = 0;
+		private double repaymentRateNumber = 0;
 		private bool isAdvanceActive = false;
 		private bool calcCommandLock = false;
 		private string advanceStatusBarText;
@@ -366,7 +368,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					this.nominalInterestRateNumber = FinancialCalculator.GetYearlyNominalInterestRate(this.ratesPerAnnumNumber, this.interestNumber);
+					this.nominalInterestRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.ratesPerAnnumNumber, this.interestNumber);
 				}
 			}
 
@@ -378,6 +380,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Output saved nominal interest
+				this.nominalInterestRateNumber = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.ratesPerAnnumNumber, this.interestNumber);
 				this.CommonSpecialFunctionsLongPressOperations(this.nominalInterestRateNumber, 3);
 			}
 			else
@@ -395,7 +398,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					this.interestNumber = FinancialCalculator.GetEffectiveInterestRate(this.ratesPerAnnumNumber, this.nominalInterestRateNumber);
+					this.interestNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetEffectiveInterestRate), this.ratesPerAnnumNumber, this.nominalInterestRateNumber);
 					this.firstNumber = this.interestNumber;
 					this.BuildSidesFromNumber(this.interestNumber);
 					this.SetDisplayText(true, 3);
@@ -467,6 +470,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ResetNumbers();
 			}
 
+			// Check if it is a second function call
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			{
+				this.OnRateSecondFunctionPressed(isLongTouch);
+				return;
+			}
+
 			if (isLongTouch)
 			{
 				// Display the value in the memory
@@ -474,8 +484,31 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			else
 			{
-				// Write the value to the memory
+				// Write the values to the memory
 				this.CommonSpecialFunctionShortPressOperations(out this.rateNumber, 2);
+				this.repaymentRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>(FinancialCalculator.GetRepaymentRate), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
+			}
+
+			this.LastPressedOperation = LastPressedOperation.Rate;
+		}
+
+		private void OnRateSecondFunctionPressed(bool isLongTouch)
+		{
+			if (isLongTouch)
+			{
+				// Output saved repayment rate
+				this.repaymentRateNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double>(FinancialCalculator.GetRepaymentRate), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
+				this.CommonSpecialFunctionsLongPressOperations(this.repaymentRateNumber, 2);
+			}
+			else
+			{
+				// Calculate/save repayment, save repayment (as rate) and display the repayment.
+				this.CommonSpecialFunctionShortPressOperations(out this.repaymentRateNumber, 2, false);
+
+				this.rateNumber = (-1) * this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>(FinancialCalculator.GetAnnuity), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, this.repaymentRateNumber);
+				this.firstNumber = this.rateNumber;
+				this.BuildSidesFromNumber(this.rateNumber);
+				this.SetDisplayText(true, 2);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Rate;
@@ -707,7 +740,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var concatenatedSides = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + realRightSide;
 			if (!double.TryParse(concatenatedSides, out var parsedNumber))
 			{
-				this.eventAggregator.PublishOnUIThread(new ErrorEvent(new ArgumentException(Resources.EXC_PARSE_DOUBLE_IMPOSSIBLE), concatenatedSides));
+				// This number is only for background checks and should not throw -> this.eventAggregator.PublishOnUIThread(new ErrorEvent(new ArgumentException(Resources.EXC_PARSE_DOUBLE_IMPOSSIBLE), concatenatedSides));
+				this.DisplayNumber = double.NaN;
 			}
 			else
 			{
@@ -813,6 +847,58 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					|| this.LastPressedOperation == LastPressedOperation.RatesPerAnnum;
 		}
 
+		private double CalculateAndCheckResult(bool notifyIfResultIsNotValid, Delegate method, params object[] args)
+		{
+			double calculatedResult = 0;
+			try
+			{
+				calculatedResult = (double)method.DynamicInvoke(args);
+				if (double.IsNaN(calculatedResult) || double.IsNegativeInfinity(calculatedResult) ||
+				    double.IsPositiveInfinity(calculatedResult))
+				{
+					throw new NotFiniteNumberException();
+				}
+			}
+			catch (NotFiniteNumberException ex)
+			{
+				if (notifyIfResultIsNotValid)
+				{
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_NOT_FINITE_NUMBER, this.firstNumber, this.secondNumber)));
+				}
+
+				this.OnClearPressed();
+			}
+			catch (DivideByZeroException ex)
+			{
+				if (notifyIfResultIsNotValid)
+				{
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
+				}
+
+				this.OnClearPressed();
+			}
+			catch (OverflowException ex)
+			{
+				if (notifyIfResultIsNotValid)
+				{
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_OVERFLOW_EXCEPTION, this.firstNumber, this.secondNumber)));
+				}
+
+				this.OnClearPressed();
+			}
+			catch (NotSupportedException)
+			{
+				if (notifyIfResultIsNotValid)
+				{
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_OPERATION_NOT_SUPPORTED));
+				}
+
+				this.OnClearPressed();
+			}
+
+			return calculatedResult;
+		}
+
 		private void ResetSides()
 		{
 			this.rightSide = string.Empty;
@@ -834,6 +920,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.endNumber = 0;
 				this.ratesPerAnnumNumber = 12;
 				this.nominalInterestRateNumber = 0;
+				this.repaymentRateNumber = 0;
 			}
 		}
 

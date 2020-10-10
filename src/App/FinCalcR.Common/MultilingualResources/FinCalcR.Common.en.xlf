@@ -167,6 +167,10 @@
           <source>Es dürfen keine negativen Werte für Jahre angegeben werden.</source>
           <target state="translated">No negative values may be given for years.</target>
         </trans-unit>
+        <trans-unit id="EXC_OPERATION_NOT_SUPPORTED" translate="yes" xml:space="preserve">
+          <source>Die Operation wird nicht unterstützt.</source>
+          <target state="new">Die Operation wird nicht unterstützt.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

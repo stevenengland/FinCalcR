@@ -22,7 +22,7 @@ namespace StEn.FinCalcR.Calculations
 			return annuity;
 		}
 
-		public static double GetRepayment(double ratesPerAnnum, double loan, double nominalInterestRate, double annuity)
+		public static double GetRepaymentRate(double ratesPerAnnum, double loan, double nominalInterestRate, double annuity)
 		{
 			var repayment = ((annuity * ratesPerAnnum) - (loan * nominalInterestRate / 100)) / loan * 100;
 			return repayment;

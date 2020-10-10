@@ -152,6 +152,15 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.RatePressedCommand.Execute(true);
 			Assert.True(vm.RateStatusBarText == Resources.FinCalcFunctionRate);
 			vm.RateStatusBarText = string.Empty;
+
+			// To avoid throw because of NaN:
+			vm.DigitPressedCommand.Execute(1);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.DigitPressedCommand.Execute(1);
+			vm.StartPressedCommand.Execute(false);
 			vm.RatePressedCommand.Execute(false);
 			Assert.True(vm.RateStatusBarText == Resources.FinCalcFunctionRate);
 
@@ -723,6 +732,27 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "4,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(6);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "6 p.a.");
+			Assert.True(Math.Abs(vm.DisplayNumber - 6) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "6 p.a.");
+			Assert.True(Math.Abs(vm.DisplayNumber - 6) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+
+			// Repayment rate is already set above. But it gets recalculated when [Rate] is long pressed
+			Assert.True(vm.DisplayText == "-604,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -604) < Tolerance);
 		}
 
 		[Fact]
@@ -776,19 +806,46 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
 			// second functions
+			vm.DigitPressedCommand.Execute(6);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "6 p.a.");
+			Assert.True(Math.Abs(vm.DisplayNumber - 6) < Tolerance);
+
 			vm.ClearPressedCommand.Execute(false);
 			vm.DigitPressedCommand.Execute(4);
 			vm.OperatorPressedCommand.Execute("*");
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
-			Assert.True(vm.DisplayText == "4,074");
-			Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
+			Assert.True(vm.DisplayText == "4,067");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4.06726223) < Tolerance);
 
-			vm.ClearPressedCommand.Execute(true);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.StartPressedCommand.Execute(false); // sets repayment rate also
+
+			vm.ClearPressedCommand.Execute(true); // completely reset
+
+			// To avoid NaN set a few values
+			vm.DigitPressedCommand.Execute(1);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.StartPressedCommand.Execute(false);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "12 p.a.");
+			Assert.True(Math.Abs(vm.DisplayNumber - 12) < Tolerance);
+
 			vm.OperatorPressedCommand.Execute("*");
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "0,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "0,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 		}
 
@@ -1300,6 +1357,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
+			// To avoid throw because of NaN when automatically calculating repayment rate:
+			vm.DigitPressedCommand.Execute(1);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.StartPressedCommand.Execute(false);
+
 			vm.DigitPressedCommand.Execute(2);
 			vm.RatePressedCommand.Execute(false);
 			Assert.True(vm.DisplayText == "2,00");
@@ -1308,6 +1371,100 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.RatePressedCommand.Execute(true);
 			Assert.True(vm.DisplayText == "2,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
+		[Fact]
+		public async Task PressingRateAlsoCalculatesRepaymentRateAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(4);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(7);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.AlgebSignCommand.Execute(null);
+			vm.RatePressedCommand.Execute(false);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
+		[Fact]
+		public async Task PressingRepaymentRateAlsoCalculatesRepaymentButShowsRepaymentRateAsync()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var gestureHandlerMock = new Mock<IGestureHandler>();
+			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(4);
+			vm.OperatorPressedCommand.Execute("*");
+			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "-750,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -750) < Tolerance);
+
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "-750,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -750) < Tolerance);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.DisplayText == "2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingRateDoesNotThrowWhenRepaymentRateIsCalculatedAutomaticallyAndIsInvalidNumber()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(0);
+			vm.RatePressedCommand.Execute(false); // Would throw div by zero, because repayment rate is calculated in the background with invalid result.
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Never);
+		}
+
+		[Fact]
+		public void PressingRateSecondFunctionLongTouchThrowsWhenRepaymentRateIsRecalculatedAndIsInvalidNumber()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
 		}
 
 		#endregion
