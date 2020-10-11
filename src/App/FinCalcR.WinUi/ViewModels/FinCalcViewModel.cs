@@ -57,6 +57,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.OnClearPressed();
 		}
 
+		public double InterestNumber { get => this.interestNumber; }
+
+		public double NominalInterestRateNumber { get => this.nominalInterestRateNumber; }
+
 		public double RepaymentRateNumber { get => this.repaymentRateNumber; }
 
 		public double RateNumber { get => this.rateNumber; }
