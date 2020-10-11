@@ -57,6 +57,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.OnClearPressed();
 		}
 
+		public double RepaymentRateNumber { get => this.repaymentRateNumber; }
+
+		public double RateNumber { get => this.rateNumber; }
+
 		public LastPressedOperation LastPressedOperation { get; set; } = LastPressedOperation.None;
 
 		public string DisplayText
@@ -307,7 +311,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				// Write the value to the memory
 				this.CommonSpecialFunctionShortPressOperations(out var tmpRpaNumber, 0, false);
-				if (tmpRpaNumber < -0
+				if (tmpRpaNumber < 1
 					|| tmpRpaNumber > 365
 				    || tmpRpaNumber != Math.Truncate(tmpRpaNumber))
 				{
@@ -498,7 +502,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				// Output saved repayment rate
 				this.repaymentRateNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double>(FinancialCalculator.GetRepaymentRate), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
-				this.CommonSpecialFunctionsLongPressOperations(this.repaymentRateNumber, 2);
+				if (this.IsNumber(this.repaymentRateNumber))
+				{
+					this.CommonSpecialFunctionsLongPressOperations(this.repaymentRateNumber, 2);
+				}
+				else
+				{
+					// Don't display NaN or other non numeric values that might be the result of the calculation.
+					this.CommonSpecialFunctionsLongPressOperations(0, 2);
+				}
 			}
 			else
 			{
@@ -728,7 +740,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var numberString = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + realRightSide;
 			if (!double.TryParse(numberString, out number))
 			{
-				this.eventAggregator.PublishOnUIThread(new ErrorEvent(new ArgumentException(Resources.EXC_PARSE_DOUBLE_IMPOSSIBLE), numberString));
+				this.eventAggregator.PublishOnUIThread(new ErrorEvent(new ArgumentException(Resources.EXC_PARSE_DOUBLE_IMPOSSIBLE), Resources.EXC_ARGUMENT_INVALID + " " + numberString));
 			}
 
 			this.ResetSides();
@@ -740,7 +752,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var concatenatedSides = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + realRightSide;
 			if (!double.TryParse(concatenatedSides, out var parsedNumber))
 			{
-				// This number is only for background checks and should not throw -> this.eventAggregator.PublishOnUIThread(new ErrorEvent(new ArgumentException(Resources.EXC_PARSE_DOUBLE_IMPOSSIBLE), concatenatedSides));
+				// This number is only for background checks and should not throw
 				this.DisplayNumber = double.NaN;
 			}
 			else
@@ -847,14 +859,18 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					|| this.LastPressedOperation == LastPressedOperation.RatesPerAnnum;
 		}
 
+		private bool IsNumber(double number)
+		{
+			return !double.IsNaN(number) && !double.IsInfinity(number);
+		}
+
 		private double CalculateAndCheckResult(bool notifyIfResultIsNotValid, Delegate method, params object[] args)
 		{
 			double calculatedResult = 0;
 			try
 			{
 				calculatedResult = (double)method.DynamicInvoke(args);
-				if (double.IsNaN(calculatedResult) || double.IsNegativeInfinity(calculatedResult) ||
-				    double.IsPositiveInfinity(calculatedResult))
+				if (!this.IsNumber(calculatedResult))
 				{
 					throw new NotFiniteNumberException();
 				}

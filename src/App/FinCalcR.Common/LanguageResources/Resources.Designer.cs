@@ -142,6 +142,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Das folgende Argument ist ungültig:.
+        /// </summary>
+        public static string EXC_ARGUMENT_INVALID {
+            get {
+                return ResourceManager.GetString("EXC_ARGUMENT_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Das folgende Argument ist leer oder null:.
         /// </summary>
         public static string EXC_ARGUMENT_NULL {

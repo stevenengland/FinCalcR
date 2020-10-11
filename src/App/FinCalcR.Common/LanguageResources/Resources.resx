@@ -144,6 +144,9 @@
   <data name="ErrorMessageLbl" xml:space="preserve">
     <value>Fehlermeldung:</value>
   </data>
+  <data name="EXC_ARGUMENT_INVALID" xml:space="preserve">
+    <value>Das folgende Argument ist ungültig:</value>
+  </data>
   <data name="EXC_ARGUMENT_NULL" xml:space="preserve">
     <value>Das folgende Argument ist leer oder null:</value>
   </data>

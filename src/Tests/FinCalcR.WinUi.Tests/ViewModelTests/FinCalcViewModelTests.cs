@@ -1105,11 +1105,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			vm.ClearPressedCommand.Execute(false);
 
-			// negative values
+			// zero or negative values
 			vm.AlgebSignCommand.Execute(null);
-			vm.DigitPressedCommand.Execute(1);
-			Assert.True(vm.DisplayText == "-1,");
-			Assert.True(Math.Abs(vm.DisplayNumber - -1) < Tolerance);
+			vm.DigitPressedCommand.Execute(0);
+			Assert.True(vm.DisplayText == "-0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
 			vm.OperatorPressedCommand.Execute("*");
 			vm.YearsPressedCommand.Execute(false);
@@ -1465,6 +1465,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.OperatorPressedCommand.Execute("*");
 			vm.RatePressedCommand.Execute(true);
 			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+
+			// Assert display is set back to zero and not NaN or something
+			Assert.True(double.IsNaN(vm.RepaymentRateNumber));
+			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 		}
 
 		#endregion

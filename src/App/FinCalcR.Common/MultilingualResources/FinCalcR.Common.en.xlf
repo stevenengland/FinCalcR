@@ -169,7 +169,11 @@
         </trans-unit>
         <trans-unit id="EXC_OPERATION_NOT_SUPPORTED" translate="yes" xml:space="preserve">
           <source>Die Operation wird nicht unterstützt.</source>
-          <target state="new">Die Operation wird nicht unterstützt.</target>
+          <target state="translated">The operation is not supported.</target>
+        </trans-unit>
+        <trans-unit id="EXC_ARGUMENT_INVALID" translate="yes" xml:space="preserve">
+          <source>Das folgende Argument ist ungültig:</source>
+          <target state="translated">The following argument is not valid:</target>
         </trans-unit>
       </group>
     </body>

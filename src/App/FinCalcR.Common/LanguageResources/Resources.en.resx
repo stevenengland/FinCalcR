@@ -133,4 +133,10 @@
   <data name="EXC_YEARS_EXCEEDED_LIMIT" xml:space="preserve">
     <value>No negative values may be given for years.</value>
   </data>
+  <data name="EXC_OPERATION_NOT_SUPPORTED" xml:space="preserve">
+    <value>The operation is not supported.</value>
+  </data>
+  <data name="EXC_ARGUMENT_INVALID" xml:space="preserve">
+    <value>The following argument is not valid:</value>
+  </data>
 </root>

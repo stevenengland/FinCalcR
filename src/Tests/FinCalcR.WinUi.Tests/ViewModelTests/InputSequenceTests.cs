@@ -2,8 +2,10 @@
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
+using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Types;
 using Xunit;
 
@@ -724,6 +726,33 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.RatePressedCommand.Execute(true);
 			Assert.True(vm.DisplayText == "5,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
+		[Fact]
+		public void CalculationOfRateLeadsToNaNAndUpcomingOperationsAreNotHarmed()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// Produce NaN for repayment rate number
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+
+			// Assert display is set back to zero and not NaN or something
+			Assert.True(double.IsNaN(vm.RepaymentRateNumber));
+			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			// Show rate number that was calculated with NaN of repayment rate number
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(false);
+
+			// Assert values are set back to zero and not NaN or something
+			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+			Assert.True(Math.Abs(vm.RateNumber - 0) < Tolerance);
 		}
 
 		#endregion
