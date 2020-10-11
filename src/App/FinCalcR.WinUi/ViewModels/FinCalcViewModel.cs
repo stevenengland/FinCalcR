@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
+using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Commanding;
@@ -57,15 +58,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.OnClearPressed();
 		}
 
-		public double InterestNumber { get => this.interestNumber; }
+		public double InterestNumber => this.interestNumber;
 
-		public double NominalInterestRateNumber { get => this.nominalInterestRateNumber; }
+		public double NominalInterestRateNumber => this.nominalInterestRateNumber;
 
-		public double RepaymentRateNumber { get => this.repaymentRateNumber; }
+		public double RepaymentRateNumber => this.repaymentRateNumber;
 
-		public double RateNumber { get => this.rateNumber; }
+		public double RateNumber => this.rateNumber;
+
+		public double EndNumber => this.endNumber;
 
 		public LastPressedOperation LastPressedOperation { get; set; } = LastPressedOperation.None;
+
+		public PressedSpecialFunctions PressedSpecialFunctions { get; private set; }
 
 		public string DisplayText
 		{
@@ -245,6 +250,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.eventAggregator.PublishOnUIThread(new HintEvent(Resources.HINT_SPECIAL_FUNCTION_MEMORY_RESET));
 				this.ResetSpecialFunctionLabels(true);
 				this.ResetNumbers(true);
+				this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetAllFlags(false);
 			}
 			else
 			{
@@ -265,6 +271,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -348,6 +355,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// Prepare
 			this.ResetSpecialFunctionLabels();
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -427,6 +435,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnStartPressed(bool isLongTouch = false)
 		{
 			this.ResetSpecialFunctionLabels();
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -478,6 +487,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.RateStatusBarText = Resources.FinCalcFunctionRate;
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -542,6 +552,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.End, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
+using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Types;
@@ -200,6 +201,101 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
 			Assert.True(vm.DisplayText == "0,");
+		}
+
+		[Fact]
+		public void NoSpecialFunctionPressedFlagsAreSet()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Years));
+			Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Interest));
+			Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Start));
+			Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Rate));
+			Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.End));
+		}
+
+		#endregion
+
+		#region General Tests
+
+		[Fact]
+		public void FlagsAreSetByEachSpecialFunction()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// Initial function
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsOnlyFlagSet(PressedSpecialFunctions.Years));
+			vm.ClearPressedCommand.Execute(true);
+			vm.InterestPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsOnlyFlagSet(PressedSpecialFunctions.Interest));
+			vm.ClearPressedCommand.Execute(true);
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsOnlyFlagSet(PressedSpecialFunctions.Start));
+			vm.ClearPressedCommand.Execute(true);
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsOnlyFlagSet(PressedSpecialFunctions.Rate));
+			vm.ClearPressedCommand.Execute(true);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsOnlyFlagSet(PressedSpecialFunctions.End));
+			vm.ClearPressedCommand.Execute(true);
+		}
+
+		/// <summary>
+		/// Normally I would expect a few functions to not set the flag (especially if there is an error). But the physical calculator does, so am I.
+		/// </summary>
+		[Fact]
+		public void FlagsAreSetBySpecificSpecialSecondFunction()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// Initial function
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Years));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.InterestPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Interest));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Start));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Rate));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.End));
+		}
+
+		/// <summary>
+		/// Normally I would expect a few functions to not set the flag (especially if there is an error). But the physical calculator does, so am I.
+		/// </summary>
+		[Fact]
+		public void FlagsAreSetBySpecificLongPressedSpecialSecondFunction()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// Initial function
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(true);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Years));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.InterestPressedCommand.Execute(true);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Interest));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(true);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Start));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(true);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Rate));
+			vm.OperatorPressedCommand.Execute("*");
+			vm.EndPressedCommand.Execute(true);
+			Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.End));
 		}
 
 		#endregion
@@ -859,6 +955,40 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.ClearPressedCommand.Execute(true);
 
 			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<HintEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+		}
+
+		[Fact]
+		public void ClearingShortTouchDoesNotResetsFlags()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.YearsPressedCommand.Execute(false);
+			vm.InterestPressedCommand.Execute(false);
+			vm.StartPressedCommand.Execute(false);
+			vm.RatePressedCommand.Execute(false);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsEveryFlagSet());
+
+			vm.ClearPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsEveryFlagSet());
+		}
+
+		[Fact]
+		public void ClearingLongTouchResetsFlags()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.YearsPressedCommand.Execute(false);
+			vm.InterestPressedCommand.Execute(false);
+			vm.StartPressedCommand.Execute(false);
+			vm.RatePressedCommand.Execute(false);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.PressedSpecialFunctions.IsEveryFlagSet());
+
+			vm.ClearPressedCommand.Execute(true);
+			Assert.True(vm.PressedSpecialFunctions.IsNoFlagSet());
 		}
 
 		#endregion

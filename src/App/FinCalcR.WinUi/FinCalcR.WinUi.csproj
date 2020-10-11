@@ -72,6 +72,7 @@
     <Compile Include="Types\FrameworkElementGestureHandler.cs" />
     <Compile Include="Types\IGestureHandler.cs" />
     <Compile Include="Types\LastPressedOperation.cs" />
+    <Compile Include="Types\PressedSpecialFunctions.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\FinCalcViewModel.cs" />
