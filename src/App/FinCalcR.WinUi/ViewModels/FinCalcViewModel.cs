@@ -175,7 +175,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public ICommand YearsPressedCommand => new SyncCommand<bool>(this.OnYearsPressed);
 
-		public IAsyncCommand<IGestureHandler> InterestPressedCommand => new AsyncCommand<IGestureHandler>(this.OnInterestPressedAsync);
+		public IAsyncCommand<IGestureHandler> InterestPressedCommandAsync => new AsyncCommand<IGestureHandler>(this.OnInterestPressedAsync);
+
+		public ICommand InterestPressedCommand => new SyncCommand<bool>(this.OnInterestPressed);
 
 		public ICommand StartPressedCommand => new SyncCommand<bool>(this.OnStartPressed);
 
@@ -203,7 +205,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			var element = (FrameworkElement)sender;
 			var gestureHandler = new FrameworkElementGestureHandler(element);
-			await this.OnInterestPressedAsync(gestureHandler);
+			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			this.InterestPressedCommand.Execute(isLongTouch);
 		}
 
 		public async Task OnStartPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
@@ -336,8 +339,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
 		{
-			// Prepare
 			var isLongTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			this.OnInterestPressed(isLongTouch);
+		}
+
+		private void OnInterestPressed(bool isLongTouch)
+		{
+			// Prepare
 			this.ResetSpecialFunctionLabels();
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 

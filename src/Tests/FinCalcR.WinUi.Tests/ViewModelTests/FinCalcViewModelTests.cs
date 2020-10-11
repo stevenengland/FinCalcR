@@ -53,11 +53,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.LastPressedOperation = LastPressedOperation.None;
 			vm.YearsPressedCommand.Execute(true);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Years);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
 			vm.LastPressedOperation = LastPressedOperation.None;
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
 			vm.StartPressedCommand.Execute(false);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Start);
@@ -88,12 +88,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.YearsPressedCommand.Execute(true);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.RatesPerAnnum);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
 			vm.LastPressedOperation = LastPressedOperation.None;
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
 			vm.OperatorPressedCommand.Execute("*");
 			vm.StartPressedCommand.Execute(false);
@@ -134,11 +134,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.YearsStatusBarText == Resources.FinCalcFunctionYears);
 
 			Assert.True(vm.InterestStatusBarText == string.Empty);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
 			vm.InterestStatusBarText = string.Empty;
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
 
 			Assert.True(vm.StartStatusBarText == string.Empty);
@@ -158,7 +158,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.YearsPressedCommand.Execute(false);
 			vm.DigitPressedCommand.Execute(1);
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.DigitPressedCommand.Execute(1);
 			vm.StartPressedCommand.Execute(false);
 			vm.RatePressedCommand.Execute(false);
@@ -290,7 +290,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 			vm.DigitPressedCommand.Execute(2);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.OperatorPressedCommand.Execute("-");
 			vm.DigitPressedCommand.Execute(2);
 			vm.OperatorPressedCommand.Execute("-"); // same as calculate
@@ -342,7 +342,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 			vm.DigitPressedCommand.Execute(2);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.OperatorPressedCommand.Execute("-");
 			vm.DigitPressedCommand.Execute(2);
 			vm.OperatorPressedCommand.Execute("-"); // same as calculate
@@ -511,7 +511,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 			vm.DigitPressedCommand.Execute(3);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.CalculatePressedCommand.Execute(null);
 			Assert.True(vm.DisplayText == "0,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
@@ -551,7 +551,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.ClearPressedCommand.Execute(false);
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.CalculatePressedCommand.Execute(null);
 			Assert.True(vm.DisplayText == "0,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
@@ -677,7 +677,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute("3");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute("3");
@@ -698,7 +698,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			vm.ClearPressedCommand.Execute(false);
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "3,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
 
@@ -722,14 +722,14 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.DigitPressedCommand.Execute(4);
 			vm.OperatorPressedCommand.Execute("*");
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "4,074");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
 
 			vm.ClearPressedCommand.Execute(false);
 			vm.OperatorPressedCommand.Execute("*");
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "4,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
 
@@ -768,7 +768,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute("3");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.ClearPressedCommand.Execute(false);
 
 			vm.DigitPressedCommand.Execute("3");
@@ -789,7 +789,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "0,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
@@ -816,7 +816,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.DigitPressedCommand.Execute(4);
 			vm.OperatorPressedCommand.Execute("*");
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "4,067");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4.06726223) < Tolerance);
 
@@ -839,7 +839,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			vm.OperatorPressedCommand.Execute("*");
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "0,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
@@ -943,7 +943,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 			vm.DigitPressedCommand.Execute(3);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.AlgebSignCommand.Execute(null);
 			Assert.True(vm.DisplayText == "-3,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - -3) < Tolerance);
@@ -983,7 +983,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.ClearPressedCommand.Execute(false);
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.AlgebSignCommand.Execute(null);
 			Assert.True(vm.DisplayText == "-3,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - -3) < Tolerance);
@@ -1170,11 +1170,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
 			this.SetVmStatusLabelTexts(vm);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
 			this.SetVmStatusLabelTexts(vm);
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
 		}
 
@@ -1187,10 +1187,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
 			vm.DigitPressedCommand.Execute(4);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "3,928");
 			Assert.True(Math.Abs(vm.DisplayNumber - 3.928487739) < Tolerance);
 		}
@@ -1205,13 +1205,13 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			vm.DigitPressedCommand.Execute(4);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "4,074");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
 
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "4,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
 		}
@@ -1226,7 +1226,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
 			vm.DigitPressedCommand.Execute(3);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object); // put a valid value to the memory
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object); // put a valid value to the memory
 
 			vm.ClearPressedCommand.Execute(false);
 
@@ -1239,13 +1239,13 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "-100,1");
 			Assert.True(Math.Abs(vm.DisplayNumber - -100.1) < Tolerance);
 
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 
 			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
 			Assert.True(vm.DisplayText == "0,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "3,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance); // sides are reset
 
@@ -1254,7 +1254,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 			vm.DigitPressedCommand.Execute(4);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object); // put a valid value to the memory
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object); // put a valid value to the memory
 
 			vm.ClearPressedCommand.Execute(false);
 
@@ -1268,14 +1268,14 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - -100.1) < Tolerance);
 
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 
 			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Exactly(2)); // 1 + 1 from above
 			Assert.True(vm.DisplayText == "0,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			Assert.True(vm.DisplayText == "4,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance); // sides are reset
 		}
@@ -1386,7 +1386,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.YearsPressedCommand.Execute(false);
 			vm.DigitPressedCommand.Execute(4);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.DigitPressedCommand.Execute(1);
 			vm.DigitPressedCommand.Execute(5);
 			vm.DigitPressedCommand.Execute(0);
@@ -1419,7 +1419,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.YearsPressedCommand.Execute(false);
 			vm.DigitPressedCommand.Execute(4);
 			vm.OperatorPressedCommand.Execute("*");
-			await vm.InterestPressedCommand.ExecuteAsync(gestureHandlerMock.Object);
+			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
 			vm.DigitPressedCommand.Execute(1);
 			vm.DigitPressedCommand.Execute(5);
 			vm.DigitPressedCommand.Execute(0);
