@@ -290,13 +290,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionsLongPressOperations(this.yearsNumber, 2);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.yearsNumber, 2);
 			}
 			else
 			{
 				// Write the value to the memory
 				var tmpYearsNumber = this.yearsNumber;
-				this.CommonSpecialFunctionShortPressOperations(out this.yearsNumber, 2);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out this.yearsNumber, 2);
 				if (this.yearsNumber < 0)
 				{
 					this.ResetSides();
@@ -324,7 +324,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				this.CommonSpecialFunctionShortPressOperations(out var tmpRpaNumber, 0, false);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpRpaNumber, 0, false);
 				if (tmpRpaNumber < 1
 					|| tmpRpaNumber > 365
 				    || tmpRpaNumber != Math.Truncate(tmpRpaNumber))
@@ -375,13 +375,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionsLongPressOperations(this.interestNumber, 3);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.interestNumber, 3);
 			}
 			else
 			{
 				// Write the value to the memory
 				var tmpInterestNumber = this.interestNumber;
-				this.CommonSpecialFunctionShortPressOperations(out this.interestNumber, 3);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out this.interestNumber, 3);
 				if (this.interestNumber < -100)
 				{
 					this.ResetSides();
@@ -405,13 +405,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				// Output saved nominal interest
 				this.nominalInterestRateNumber = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.ratesPerAnnumNumber, this.interestNumber);
-				this.CommonSpecialFunctionsLongPressOperations(this.nominalInterestRateNumber, 3);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.nominalInterestRateNumber, 3);
 			}
 			else
 			{
 				// Calculate/save effective interest, save nominal interest (as interest) and display the effective interest.
 				var tmpNominalInterestNumber = this.nominalInterestRateNumber;
-				this.CommonSpecialFunctionShortPressOperations(out this.nominalInterestRateNumber, 3, false);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out this.nominalInterestRateNumber, 3, false);
 				if (this.nominalInterestRateNumber < -100)
 				{
 					this.ResetSides();
@@ -456,12 +456,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionsLongPressOperations(this.startNumber, 2);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.startNumber, 2);
 			}
 			else
 			{
 				// Write the value to the memory
-				this.CommonSpecialFunctionShortPressOperations(out this.startNumber, 2);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out this.startNumber, 2);
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Start;
@@ -506,12 +506,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionsLongPressOperations(this.rateNumber, 2);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.rateNumber, 2);
 			}
 			else
 			{
 				// Write the values to the memory
-				this.CommonSpecialFunctionShortPressOperations(out this.rateNumber, 2);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out this.rateNumber, 2);
 				this.repaymentRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>(FinancialCalculator.GetRepaymentRate), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
 			}
 
@@ -526,18 +526,18 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.repaymentRateNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double>(FinancialCalculator.GetRepaymentRate), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
 				if (this.IsNumber(this.repaymentRateNumber))
 				{
-					this.CommonSpecialFunctionsLongPressOperations(this.repaymentRateNumber, 2);
+					this.CommonSpecialFunctionReadFromMemoryOperations(this.repaymentRateNumber, 2);
 				}
 				else
 				{
 					// Don't display NaN or other non numeric values that might be the result of the calculation.
-					this.CommonSpecialFunctionsLongPressOperations(0, 2);
+					this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
 				}
 			}
 			else
 			{
 				// Calculate/save repayment, save repayment (as rate) and display the repayment.
-				this.CommonSpecialFunctionShortPressOperations(out this.repaymentRateNumber, 2, false);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out this.repaymentRateNumber, 2, false);
 
 				this.rateNumber = (-1) * this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>(FinancialCalculator.GetAnnuity), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, this.repaymentRateNumber);
 				this.firstNumber = this.rateNumber;
@@ -552,7 +552,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
-			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.End, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -564,14 +563,34 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionsLongPressOperations(this.endNumber, 2);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.endNumber, 2);
 			}
 			else
 			{
 				// Write the value to the memory
-				this.CommonSpecialFunctionShortPressOperations(out this.endNumber, 2);
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsLastPressedOperationSpecialFunction())
+					|| this.LastPressedOperation == LastPressedOperation.End)
+				{
+					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, double>(FinancialCalculator.GetFinalCapital), this.startNumber, this.rateNumber, this.nominalInterestRateNumber, this.yearsNumber, this.ratesPerAnnumNumber);
+
+					if (this.IsNumber(tmpEndNumber))
+					{
+						this.BuildSidesFromNumber(tmpEndNumber);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out this.endNumber, 2);
+					}
+					else
+					{
+						// Don't display NaN or other non numeric values that might be the result of the calculation.
+						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
+					}
+				}
+				else
+				{
+					this.CommonSpecialFunctionWriteToMemoryOperations(out this.endNumber, 2);
+				}
 			}
 
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.End, true);
 			this.LastPressedOperation = LastPressedOperation.End;
 		}
 
@@ -844,7 +863,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.rightSide = parts.Length < 2 ? string.Empty : parts[1];
 		}
 
-		private void CommonSpecialFunctionShortPressOperations(out double numberToSet, int specialNumberDecimalCount, bool setDisplayText = true)
+		private void CommonSpecialFunctionWriteToMemoryOperations(out double numberToSet, int specialNumberDecimalCount, bool setDisplayText = true)
 		{
 			// If last input was an operator restore the firstNumber for upcoming operations
 			if (this.LastPressedOperation == LastPressedOperation.Operator)
@@ -863,7 +882,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 		}
 
-		private void CommonSpecialFunctionsLongPressOperations(double fistNumberSubstitution, int specialNumberDecimalCount)
+		private void CommonSpecialFunctionReadFromMemoryOperations(double fistNumberSubstitution, int specialNumberDecimalCount)
 		{
 			this.ResetNumbers();
 			this.firstNumber = fistNumberSubstitution;

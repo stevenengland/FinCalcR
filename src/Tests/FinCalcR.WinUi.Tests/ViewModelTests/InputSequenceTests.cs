@@ -7,6 +7,7 @@ using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Types;
+using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests
@@ -222,29 +223,30 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		/// <summary>
-		/// If a special function is invoked ´right after another the display shall be zero.
-		/// 3 Interest Start // 0,.
+		/// If a special function is invoked ´right after another the display shall be zero (unless there is a reason to calculate the special value).
+		/// 3 Interest Start // 0, etc.
 		/// </summary>
-		/// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
 		[Fact]
-		public async Task MultipleSpecialFunctionsArePressedOneAfterAnotherAsync()
+		public void MultipleSpecialFunctionsArePressedOneAfterAnother()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
-			var gestureHandlerMock = new Mock<IGestureHandler>();
-			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.YearsPressedCommand.Execute(false); // Start should be 1
-			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object); // Interest is now 0
+			vm.InterestPressedCommand.Execute(false); // Interest is now 0
 			Assert.True(vm.DisplayText == "0,000");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
+			vm.ClearPressedCommand.Execute(true);
+
 			vm.DigitPressedCommand.Execute(2);
-			await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
+			vm.InterestPressedCommand.Execute(false);
 			vm.StartPressedCommand.Execute(false);
 			Assert.True(vm.DisplayText == "0,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
 
 			vm.DigitPressedCommand.Execute(3);
 			vm.StartPressedCommand.Execute(false);
@@ -252,11 +254,15 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "0,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
+			vm.ClearPressedCommand.Execute(true);
+
 			vm.DigitPressedCommand.Execute(4);
 			vm.RatePressedCommand.Execute(false);
 			vm.EndPressedCommand.Execute(false);
 			Assert.True(vm.DisplayText == "0,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
 
 			vm.DigitPressedCommand.Execute(4);
 			vm.EndPressedCommand.Execute(false);
@@ -757,6 +763,68 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
+		#region Focus End
+
+		[Fact]
+		public void AfterEndCalculationAllFurtherInputsAreHandledCorrectly()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// Operator
+			this.PerformBasicEndCapitalCalculation(vm);
+
+			vm.OperatorPressedCommand.Execute("+");
+			Assert.True(vm.DisplayText == "-113187,55");
+			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
+			Assert.True(vm.EndStatusBarText == string.Empty);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "1,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "-113186,548818633");
+			Assert.True(Math.Abs(vm.DisplayNumber - -113186.548818633) < Tolerance);
+
+			// Digit
+			vm.ClearPressedCommand.Execute(true);
+			this.PerformBasicEndCapitalCalculation(vm);
+
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "1,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
+			Assert.True(vm.EndStatusBarText == string.Empty);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(1);
+			vm.CalculatePressedCommand.Execute(null);
+
+			Assert.True(vm.DisplayText == "2,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
+
+			// AlgebSign
+			vm.ClearPressedCommand.Execute(true);
+			this.PerformBasicEndCapitalCalculation(vm);
+
+			vm.AlgebSignCommand.Execute(false);
+			Assert.True(vm.EndStatusBarText == string.Empty);
+			Assert.True(vm.DisplayText == "113187,55");
+			Assert.True(Math.Abs(vm.DisplayNumber - 113187.548818633) < Tolerance);
+
+			// Decimal separator
+			vm.ClearPressedCommand.Execute(true);
+			this.PerformBasicEndCapitalCalculation(vm);
+
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.EndStatusBarText == string.Empty);
+			Assert.True(vm.DisplayText == "-113187,55");
+			Assert.True(Math.Abs(vm.DisplayNumber - -113187.548818633) < Tolerance);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "0,1");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.1) < Tolerance);
+		}
+
+		#endregion
+
 		#region Focus Rates per Annum
 
 		[Fact]
@@ -860,5 +928,33 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
+		private void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
+		{
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(4);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.InterestPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.RatePressedCommand.Execute(false);
+			vm.EndPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "-113187,55");
+			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
+			Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
+		}
 	}
 }

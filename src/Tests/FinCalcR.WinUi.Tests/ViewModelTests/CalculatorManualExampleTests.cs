@@ -75,8 +75,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.EndPressedCommand.Execute(false);
 
 			Assert.True(vm.DisplayText == "-113187,55");
-			Assert.True(Math.Abs(vm.DisplayNumber - -113187.55) < Tolerance);
-			Assert.True(Math.Abs(vm.EndNumber - -113187.55) < Tolerance); // might not be exact enough
+			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
+			Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
 		}
 
 		#endregion
