@@ -44,5 +44,12 @@ namespace StEn.FinCalcR.Calculations
 			var regularPayment = (finalCapital - (((-1) * initialCapital) * Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum))) / ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1));
 			return regularPayment;
 		}
+
+		public static double GetInitialCapital(double regularPayment, double finalCapital, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum)
+		{
+			var bracketValue = 1 + (nominalInterestRate / (100 * ratesPerAnnum));
+			var initialCapital = (((-1) * finalCapital) - (regularPayment * ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1)))) / Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum);
+			return initialCapital;
+		}
 	}
 }
