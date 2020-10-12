@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 
 namespace StEn.FinCalcR.Calculations
 {
@@ -35,6 +36,13 @@ namespace StEn.FinCalcR.Calculations
 			var regularSummand = regularPayment * ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1));
 			var finalCapital = initialSummand + regularSummand;
 			return finalCapital;
+		}
+
+		public static double GetRegularPayment(double initialCapital, double finalCapital, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum)
+		{
+			var bracketValue = 1 + (nominalInterestRate / (100 * ratesPerAnnum));
+			var regularPayment = (finalCapital - (((-1) * initialCapital) * Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum))) / ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1));
+			return regularPayment;
 		}
 	}
 }

@@ -41,11 +41,22 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(0, 10, 9.5689685146845171, 10, 12, 1998.63856714)]
+		[InlineData(0, 10, 9.5689685146845171, 10, 12, 1998.63856714)] // With zero start
+		[InlineData(150000, -750, 4, 10, 12, 113187.5488186329)] // From manual
+		[InlineData(150000, -750, 4, 10.123, 12, 112636.9953862361)] // With decimal as years
 		public void FinalCapitalIsCalculatedCorrectly(double initialCapital, double regularPayment, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum, double expectedFinalCapital)
 		{
 			var finalCapital = FinancialCalculator.GetFinalCapital(initialCapital, regularPayment, nominalInterestRate, paymentPeriod, ratesPerAnnum);
 			Assert.True(Math.Abs(finalCapital - expectedFinalCapital) < Tolerance);
+		}
+
+		[Theory]
+		[InlineData(1000, 10, 10, 10, 12, 13.26389109)]
+		[InlineData(0, 200000, 6.784974465, 25, 12, 255.41418004033653)] // From manual
+		public void RegularPaymentIsCalculatedCorrectly(double initialCapital, double finalCapital, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum, double expectedRegularPayment)
+		{
+			var regularPayment = FinancialCalculator.GetRegularPayment(initialCapital, finalCapital, nominalInterestRate, paymentPeriod, ratesPerAnnum);
+			Assert.True(Math.Abs(regularPayment - expectedRegularPayment) < Tolerance);
 		}
 	}
 }
