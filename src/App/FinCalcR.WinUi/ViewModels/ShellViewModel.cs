@@ -7,7 +7,9 @@ using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
+using StEn.FinCalcR.WinUi.Commanding;
 using StEn.FinCalcR.WinUi.Events;
+using StEn.FinCalcR.WinUi.Events.EventArgs;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.Models;
 using SyncCommand = StEn.FinCalcR.WinUi.Commanding.SyncCommand;
@@ -48,11 +50,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.LoadMenuItems();
 		}
 
-		public ICommand MenuItemsSelectionChangedCommand => new Commanding.SyncCommand<object>((arg) => this.OnMenuItemsSelectionChanged(arg));
+		public ICommand MenuItemsSelectionChangedCommand => new SyncCommand<object>(this.OnMenuItemsSelectionChanged);
 
-		public ICommand ExitAppCommand => new SyncCommand(() => this.OnExitApp());
+		public ICommand ExitAppCommand => new SyncCommand(this.OnExitApp);
 
-		public ICommand MinimizeAppCommand => new SyncCommand(() => this.OnMinimizeApp());
+		public ICommand MinimizeAppCommand => new SyncCommand(this.OnMinimizeApp);
+
+		public ICommand KeyboardKeyPressedCommand => new SyncCommand<MappedKeyEventArgs>(this.OnKeyboardKeyPressed);
 
 		public ISnackbarMessageQueue SbMessageQueue { get; private set; }
 
@@ -86,6 +90,18 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.titleBarText = value;
 				this.NotifyOfPropertyChange(() => this.TitleBarText);
 			}
+		}
+
+		public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Caliburn Micro
+		{
+			var eventArgs = new MappedKeyEventArgs(e.Key.ToString());
+			if ((Keyboard.Modifiers & ModifierKeys.Shift) != 0)
+			{
+				eventArgs.IsShiftPressed = true;
+			}
+
+			var mappedEventArgs = eventArgs;
+			this.KeyboardKeyPressedCommand.Execute(mappedEventArgs);
 		}
 
 		public async Task Handle(HintEvent message)
@@ -152,6 +168,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					this.GracefulShutdown();
 				}
 			}
+		}
+
+		private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
+		{
+			this.eventAggregator.PublishOnUIThread(new KeyboardKeyDownEvent(e));
 		}
 
 		private void LoadMenuItems()

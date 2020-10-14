@@ -11,11 +11,12 @@ using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Commanding;
 using StEn.FinCalcR.WinUi.Events;
+using StEn.FinCalcR.WinUi.Events.EventArgs;
 using StEn.FinCalcR.WinUi.Types;
 
 namespace StEn.FinCalcR.WinUi.ViewModels
 {
-	public class FinCalcViewModel : Screen
+	public class FinCalcViewModel : Screen, IHandle<KeyboardKeyDownEvent>
 	{
 		private const int LongTouchDelay = 2;
 #pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
@@ -54,6 +55,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.localizationService = localizationService;
 			this.eventAggregator = eventAggregator;
+
+			this.eventAggregator?.Subscribe(this);
 
 			this.OnClearPressed();
 		}
@@ -190,6 +193,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public ICommand EndPressedCommand => new SyncCommand<bool>(this.OnEndPressed);
 
+		public ICommand KeyboardKeyPressedCommand => new SyncCommand<MappedKeyEventArgs>(this.OnKeyboardKeyPressed);
+
+		public void Handle(KeyboardKeyDownEvent e)
+		{
+			this.KeyboardKeyPressedCommand.Execute(e.KeyEventArgs);
+		}
+
 		public async Task OnClearPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
 		{
 			var element = (FrameworkElement)sender;
@@ -241,6 +251,141 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		public bool IsAdvance()
 		{
 			return this.isAdvanceActive;
+		}
+
+		public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Caliburn Micro
+		{
+			this.KeyboardKeyPressedCommand.Execute(new MappedKeyEventArgs(e.Key.ToString()));
+		}
+
+		private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case "D0":
+				case "NumPad0":
+					this.DigitPressedCommand.Execute(0);
+					break;
+				case "D1":
+				case "NumPad1":
+					this.DigitPressedCommand.Execute(1);
+					break;
+				case "D2":
+				case "NumPad2":
+					this.DigitPressedCommand.Execute(2);
+					break;
+				case "D3":
+				case "NumPad3":
+					this.DigitPressedCommand.Execute(3);
+					break;
+				case "D4":
+				case "NumPad4":
+					this.DigitPressedCommand.Execute(4);
+					break;
+				case "D5":
+				case "NumPad5":
+					this.DigitPressedCommand.Execute(5);
+					break;
+				case "D6":
+				case "NumPad6":
+					this.DigitPressedCommand.Execute(6);
+					break;
+				case "D7":
+					if (e.IsShiftPressed)
+					{
+						this.OperatorPressedCommand.Execute("/");
+					}
+					else
+					{
+						this.DigitPressedCommand.Execute(7);
+					}
+
+					break;
+				case "NumPad7":
+					this.DigitPressedCommand.Execute(7);
+					break;
+				case "D8":
+				case "NumPad8":
+					this.DigitPressedCommand.Execute(8);
+					break;
+				case "D9":
+				case "NumPad9":
+					this.DigitPressedCommand.Execute(9);
+					break;
+				case "Add":
+					this.OperatorPressedCommand.Execute("+");
+					break;
+				case "Subtract":
+					this.OperatorPressedCommand.Execute("-");
+					break;
+				case "Divide":
+					this.OperatorPressedCommand.Execute("/");
+					break;
+				case "Multiply":
+					this.OperatorPressedCommand.Execute("*");
+					break;
+				case "OemPlus":
+					if (e.IsShiftPressed)
+					{
+						this.OperatorPressedCommand.Execute("*");
+					}
+
+					break;
+				case "Return":
+					this.CalculatePressedCommand.Execute(null);
+					break;
+				case "Decimal":
+					this.DecimalSeparatorPressedCommand.Execute(null);
+					break;
+				case "Delete":
+					if (e.IsShiftPressed)
+					{
+						this.ClearPressedCommand.Execute(true);
+					}
+					else
+					{
+						this.ClearPressedCommand.Execute(false);
+					}
+
+					break;
+				case "OemQuestion":
+					this.AlgebSignCommand.Execute(null);
+					break;
+				case "F1":
+					this.YearsPressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F2":
+					this.InterestPressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F3":
+					this.StartPressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F4":
+					this.RatePressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F5":
+					this.EndPressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F6":
+					this.OperatorPressedCommand.Execute("*");
+					this.YearsPressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F7":
+					this.OperatorPressedCommand.Execute("*");
+					this.InterestPressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F8":
+					this.OperatorPressedCommand.Execute("*");
+					this.StartPressedCommand.Execute(e.IsShiftPressed);
+					break;
+				case "F9":
+					this.OperatorPressedCommand.Execute("*");
+					this.RatePressedCommand.Execute(e.IsShiftPressed);
+					break;
+				default:
+					Debug.WriteLine(e.Key);
+					break;
+			}
 		}
 
 		private void OnClearPressed(bool isLongTouch = false)

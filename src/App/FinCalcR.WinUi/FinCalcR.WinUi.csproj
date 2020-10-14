@@ -67,11 +67,13 @@
     <Compile Include="Commanding\SyncCommand.cs" />
     <Compile Include="Commanding\TaskUtilities.cs" />
     <Compile Include="Events\HintEvent.cs" />
+    <Compile Include="Events\KeyboardKeyDownEvent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Models\NavigationMenuItem.cs" />
     <Compile Include="Types\FrameworkElementGestureHandler.cs" />
     <Compile Include="Types\IGestureHandler.cs" />
     <Compile Include="Types\LastPressedOperation.cs" />
+    <Compile Include="Events\EventArgs\MappedKeyEventArgs.cs" />
     <Compile Include="Types\PressedSpecialFunctions.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />

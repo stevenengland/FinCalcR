@@ -26,7 +26,8 @@
 		MinWidth="600"
 		MinHeight="600"
         d:DataContext="{Binding Source={d:DesignInstance viewModels:ShellViewModel},
-                Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}">
+                Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}"
+        cal:Message.Attach="[Event PreviewKeyDown] = [Action OnKeyboardKeyPressed($source, $eventArgs)];">
 	<materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding SbMessageQueue}">
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 			<!-- LEFT MENU -->
