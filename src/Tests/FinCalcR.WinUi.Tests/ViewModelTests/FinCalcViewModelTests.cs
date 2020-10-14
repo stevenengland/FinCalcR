@@ -1089,6 +1089,69 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
+		public void InputsAfterAlgebSignAreHandledCorrectly()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// Digit, AlgebSign, Decimal Separator, Digit
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.AlgebSignCommand.Execute(null);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "-10,1");
+			Assert.True(Math.Abs(vm.DisplayNumber - -10.1) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			// Digit, AlgebSign, Digit
+			vm.DigitPressedCommand.Execute(1);
+			vm.AlgebSignCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "-11,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -11) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			//// Digit, Special Function, AlgebSign, Decimal Separator, Digit
+			vm.DigitPressedCommand.Execute(1);
+			vm.EndPressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-1,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -1) < Tolerance);
+			vm.DigitPressedCommand.Execute(2);
+			Assert.True(vm.DisplayText == "-1,2"); // ToDo: physical calc expects 0,2
+			Assert.True(Math.Abs(vm.DisplayNumber - -1.2) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			// Digit, Special Function, AlgebSign, Decimal Separator, SpecialFunction
+			vm.DigitPressedCommand.Execute(1);
+			vm.EndPressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-1,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -1) < Tolerance);
+			vm.YearsPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "0,"); // ToDo: physical calc expects -1.00
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			// Special function, AlgebSign, Digit
+			vm.DigitPressedCommand.Execute(2);
+			vm.EndPressedCommand.Execute(false);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-2,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - -2) < Tolerance);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "-21,"); // ToDo: physical calc expects -1,
+			Assert.True(Math.Abs(vm.DisplayNumber - -21) < Tolerance);
+		}
+
+		[Fact]
 		public async Task AlgebSignPressedAfterSpecialFunctionDoesNotResetAsync()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
