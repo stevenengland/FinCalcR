@@ -17,5 +17,6 @@
 		Rate,
 		End,
 		RatesPerAnnum,
+		PercentCalculation,
 	}
 }

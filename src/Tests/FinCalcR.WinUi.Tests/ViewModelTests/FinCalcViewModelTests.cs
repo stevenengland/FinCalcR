@@ -117,6 +117,15 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.OperatorPressedCommand.Execute("*");
 			vm.EndPressedCommand.Execute(true);
 			Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "0,10");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.1) < Tolerance);
 		}
 
 		[Fact]
@@ -310,16 +319,44 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
-		public void RightSideGetsActivated()
+		public void InputAfterDecimalWasPressedIsHandledCorrectly()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
+			// Decimal separator as first input
 			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.0) < Tolerance);
 			vm.DigitPressedCommand.Execute("4");
-
 			Assert.True(vm.DisplayText == "0,4");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0.4) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			// Decimal separator after special function
+			vm.DigitPressedCommand.Execute(3);
+			vm.StartPressedCommand.Execute(false);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "3,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "0,1");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.1) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(true);
+
+			// Decimal separator after percentage
+			vm.DigitPressedCommand.Execute(3);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.DigitPressedCommand.Execute(1);
+			vm.EndPressedCommand.Execute(false);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "0,03");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.03) < Tolerance);
+			vm.DigitPressedCommand.Execute(1);
+			Assert.True(vm.DisplayText == "0,1");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0.1) < Tolerance);
 		}
 
 		#endregion
@@ -1633,9 +1670,41 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
-		public void EndCalculationIsTriggeredOnlyIfConditionsAreMet()
+		public void PercentCalculationIsTriggeredOnlyIfConditionsAreMet()
 		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
 
+			// No operator set but last input is a digit
+			vm.DigitPressedCommand.Execute(2);
+			vm.EndPressedCommand.Execute(false);
+
+			Assert.False(vm.LastPressedOperation == LastPressedOperation.PercentCalculation);
+			vm.ClearPressedCommand.Execute(true);
+
+			// Operator set but last input is a not a digit
+			vm.OperatorPressedCommand.Execute("-");
+			vm.EndPressedCommand.Execute(false);
+
+			Assert.False(vm.LastPressedOperation == LastPressedOperation.PercentCalculation);
+			vm.ClearPressedCommand.Execute(true);
+		}
+
+		[Fact]
+		public void PercentCalculationDoesNotSetEndFlag()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// 200 * 5
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+
+			Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.End));
 		}
 
 		#endregion

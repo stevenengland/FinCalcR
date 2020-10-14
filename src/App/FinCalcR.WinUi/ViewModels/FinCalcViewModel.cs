@@ -567,8 +567,56 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			else
 			{
+				// Percentage calculation <-- On the physical calculator it is marked a second function but is triggered as standard function
+				if ((this.LastPressedOperation == LastPressedOperation.Digit
+				     || this.LastPressedOperation == LastPressedOperation.AlgebSign
+				     || this.LastPressedOperation == LastPressedOperation.Decimal)
+				    && this.ActiveMathOperator != string.Empty)
+				{
+					this.SetNumber(out this.secondNumber);
+					var tmpResult = double.NaN;
+					switch (this.ActiveMathOperator)
+					{
+						case "*":
+							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.GetPartValue), this.firstNumber, this.secondNumber);
+							break;
+						case "+":
+							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.AddPartValueToBaseValue), this.firstNumber, this.secondNumber);
+							break;
+						case "-":
+							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.SubPartValueFromBaseValue), this.firstNumber, this.secondNumber);
+							break;
+						case "/": // function is not documented and calculates like below - but makes not much sense...
+							tmpResult = this.CalculateAndCheckResult(
+								true,
+								new Func<double, double, double>(
+									(baseValue, rate) => baseValue / rate * 100),
+								this.firstNumber,
+								this.secondNumber);
+							break;
+					}
+
+					if (this.IsNumber(tmpResult))
+					{
+						this.ResetNumbers();
+						this.firstNumber = tmpResult;
+						this.BuildSidesFromNumber(tmpResult);
+						this.ActiveMathOperator = string.Empty;
+						this.SetDisplayText(true, 2);
+						this.calcCommandLock = true;
+					}
+					else
+					{
+						// Don't display NaN or other non numeric values that might be the result of the calculation.
+						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
+					}
+
+					this.LastPressedOperation = LastPressedOperation.PercentCalculation;
+					return;
+				}
+
 				// Write the value to the memory
-				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsLastPressedOperationSpecialFunction())
+				else if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsLastPressedOperationSpecialFunction())
 					|| this.LastPressedOperation == LastPressedOperation.End)
 				{
 					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, double>(FinancialCalculator.GetFinalCapital), this.startNumber, this.rateNumber, this.nominalInterestRateNumber, this.yearsNumber, this.ratesPerAnnumNumber);
@@ -616,6 +664,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				case LastPressedOperation.Start:
 				case LastPressedOperation.Rate:
 				case LastPressedOperation.End:
+				case LastPressedOperation.PercentCalculation:
 					this.SetDisplayText(true);
 					break;
 				case LastPressedOperation.RatesPerAnnum:
@@ -691,6 +740,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.SetDisplayText();
 			}
 
+			if (this.LastPressedOperation == LastPressedOperation.PercentCalculation)
+			{
+				this.SetDisplayText();
+			}
+
 			if (this.ActiveMathOperator != string.Empty)
 			{
 				this.OnCalculatePressed();
@@ -709,13 +763,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
+			if (this.calcCommandLock)
+			{
+				this.calcCommandLock = false;
+			}
+
 			if (!this.isDisplayTextNumeric)
 			{
 				this.SetDisplayText();
 			}
 
 			// Special - if the last pressed operation was a special function this operation should not work with old values.
-			if (this.IsLastPressedOperationSpecialFunction())
+			if (this.IsLastPressedOperationSpecialFunction()
+			    || this.LastPressedOperation == LastPressedOperation.PercentCalculation) // Percent calc. is not considered a special function yet.
 			{
 				this.ResetNumbers();
 				this.ResetSides();

@@ -20,6 +20,57 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
 		}
 
+		#region Percentage Calculation
+
+		[Fact]
+		public void PercentageCalculationExamples()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			// 200 * 5
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "10,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 10) < Tolerance);
+
+			// 200 + 5
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.OperatorPressedCommand.Execute("+");
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "210,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 210) < Tolerance);
+
+			// 200 - 5
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.OperatorPressedCommand.Execute("-");
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "190,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 190) < Tolerance);
+
+			// 200 / 5 <-- not documented and not very useful
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.OperatorPressedCommand.Execute("/");
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "4000,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 4000) < Tolerance);
+		}
+
+		#endregion
+
 		#region Second Function Examples
 
 		[Fact]
