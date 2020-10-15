@@ -62,10 +62,18 @@ namespace FinCalcR.Calculations.Tests
 		[Theory]
 		[InlineData(0, 1000, 2.471803524, 25, 12, -539.39058942391114)] // From manual
 		[InlineData(100, 1000, 2.471803524, 25, 12, -22900.848016139695)] // Non zero regular payment
-		public void InitialCapitalIsCalculatedCorrectly(double regularPayment, double finalCapital, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum, double expectedInitialCapital)
+		public void InitialCapitalIsCalculatedCorrectly(double E, double Kn, double p, double n, double m, double expectedK0)
 		{
-			var initialCapital = FinancialCalculator.GetInitialCapital(regularPayment, finalCapital, nominalInterestRate, paymentPeriod, ratesPerAnnum);
-			Assert.True(Math.Abs(initialCapital - expectedInitialCapital) < Tolerance);
+			var initialCapital = FinancialCalculator.GetInitialCapital(E, Kn, p, n, m);
+			Assert.True(Math.Abs(initialCapital - expectedK0) < Tolerance);
+		}
+
+		[Theory]
+		[InlineData(-750, 0, 4, 150000, 12, 27.511057340185396)]
+		public void PaymentPeriodIsCalculatedCorrectly(double e, double kn, double p, double k0, double m, double expectedN)
+		{
+			var n = FinancialCalculator.N(e, kn, p, k0, m);
+			Assert.True(Math.Abs(n - expectedN) < Tolerance);
 		}
 	}
 }
