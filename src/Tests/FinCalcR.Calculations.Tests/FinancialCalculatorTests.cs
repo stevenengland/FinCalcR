@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using StEn.FinCalcR.Calculations;
 using Xunit;
 
@@ -41,13 +42,42 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(0, 10, 9.5689685146845171, 10, 12, 1998.63856714)] // With zero start
-		[InlineData(150000, -750, 4, 10, 12, 113187.5488186329)] // From manual
-		[InlineData(150000, -750, 4, 10.123, 12, 112636.9953862361)] // With decimal as years
-		public void Kn_IsCalculatedCorrectly(double k0, double e, double p, double n, double m, double expectedKn)
+		[InlineData(12, 10, 9.5689685146845171, 0, 10, 1998.63856714)] // With zero start
+		[InlineData(12, 10.123, 4, 150000, -750, 112636.9953862361)] // With decimal as years
+		[InlineData(12, 10, 4, 150000, -750, 113187.5488186329)] // From manual
+		[InlineData(12, 25, 2.471803524, -1000, 0, -1853.9440984093485)] // From manual / Book p.19
+		[InlineData(12, 25, 5.841060678, 0, -100, -67628.896204469813)] // Book p. 16
+		[InlineData(12, 10, 4.121255148, 100000, -510.10, 75301.50)] // Book p. 22
+		[InlineData(12, 35, 5.3660387, 0, -550, -678177.09)] // Book p. 30
+		[InlineData(12, 18, 3.928487739, 0, -184, -57655.85)] // Book p. 57
+		[InlineData(12, 1, -22.10816415, -10000, -184, -9997.45)] // Book p. 58
+		[InlineData(12, 17, 7.720836132, -9997.45, -184, -114205.70)] // Book p. 59
+		[InlineData(12, 2, 1.981897562, 0, -2000, -48922.81)] // Book p. 62
+		[InlineData(12, 45, 6.784974465, -48922.81, -282.67, -2027489.70)] // Book p. 64
+		[InlineData(12, 45, 6.266827589, 0, -600, -1798658.87)] // Book p. 65 1
+		[InlineData(12, 10, 6.266827589, 0, -600, -99764.53)] // Book p. 65 2
+		[InlineData(12, 35, 6.266827589, -87764.53, -600, -1691684.55)] // Book p. 66
+		[InlineData(12, 35, 6.266827589, 12000, 0, 106974.32)] // Book p. 67
+		[InlineData(12, 10, 5.841060678, 170000, -1100, 125723.32)] // Book p. 82
+		[InlineData(12, 25, 3.928487739, -300, 0, -799.75)] // Book p. 84 1
+		[InlineData(12, 50, 3.928487739, -300, 0, -2132.01)] // Book p. 84 2
+		[InlineData(12, 26, 4.409771281, -0.7, 0, -2.20)] // Book p. 97
+		[InlineData(12, 15, 0.995445737, -2041, 0, -2369.54)] // Book p. 115
+		[InlineData(12, 15, 1.981897562, -2041, 0, -2746.92)] // Book p. 116
+		[InlineData(12, 25, 0, 0, -100, -30000)] // Book p. 122
+		[InlineData(12, 25, 0, 100, -100, -29900)] // Same as Book p. 122 but with k0 > 0 -> The same result like from the calculator but it's a bug. 
+		[InlineData(12, 20, 3.928487739, 0, -150, -54576.26)] // Book p. 125
+		[InlineData(12, 45, 2.276104576, -2905, 0, -8082.57)] // Book p. 128
+		[InlineData(12, 45, 0.995445737, -1287, 0, -2013.91)] // Book p. 129
+		[InlineData(12, 18, 3.928487739, -10000, -184, -77914.01)] // Book p. 142 1 // Error in the book -> expects 79914.01
+		[InlineData(12, 18, 7.720836132, -10000, -184, -125640.18)] // Book p. 142 2
+		[InlineData(12, 17, 7.720836132, -10000, -184, -114215.13)] // Book p. 143 1
+		[InlineData(12, 1, -22.10816415, -114215.13, -184, -93369.56)] // Book p. 143 2
+		public void Kn_IsCalculatedCorrectly(double m, double n, double p, double k0, double e, double expectedKn)
 		{
+			var localTolerance = 0.01;
 			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m);
-			Assert.True(Math.Abs(finalCapital - expectedKn) < Tolerance);
+			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
 		}
 
 		[Theory]

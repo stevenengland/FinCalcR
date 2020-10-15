@@ -31,6 +31,11 @@ namespace StEn.FinCalcR.Calculations
 
 		public static double Kn(double k0, double e, double p, double n, double m)
 		{
+			if (Math.Abs(p) < 0.00000001)
+			{
+				return k0 + (m * n * e); // Same as the calculator does but it is not correct. k0 must be multiplied by -1 in advance.
+			}
+
 			var bracketValue = 1 + (p / (100 * m));
 			var initialSummand = k0 * Math.Pow(bracketValue, n * m);
 			var regularSummand = e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1));
