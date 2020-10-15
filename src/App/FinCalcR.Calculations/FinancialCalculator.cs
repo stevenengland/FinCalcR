@@ -5,54 +5,54 @@ namespace StEn.FinCalcR.Calculations
 {
 	public static class FinancialCalculator
 	{
-		public static double GetEffectiveInterestRate(double ratesPerAnnum, double yearlyNominalInterest)
+		public static double GetEffectiveInterestRate(double p, double m)
 		{
-			var decimalNominalInterest = yearlyNominalInterest / 100;
-			return (Math.Pow(1 + (decimalNominalInterest / ratesPerAnnum), ratesPerAnnum) - 1) * 100;
+			var decimalNominalInterest = p / 100;
+			return (Math.Pow(1 + (decimalNominalInterest / m), m) - 1) * 100;
 		}
 
-		public static double GetYearlyNominalInterestRate(double ratesPerAnnum, double effectiveInterestRate)
+		public static double GetYearlyNominalInterestRate(double m, double effectiveInterestRate)
 		{
 			var decimalEffectiveInterestRate = effectiveInterestRate / 100;
-			return ((Math.Pow(decimalEffectiveInterestRate + 1, 1 / ratesPerAnnum) - 1) * ratesPerAnnum) * 100;
+			return ((Math.Pow(decimalEffectiveInterestRate + 1, 1 / m) - 1) * m) * 100;
 		}
 
-		public static double GetAnnuity(double ratesPerAnnum, double loan, double nominalInterestRate, double repaymentRate)
+		public static double GetAnnuity(double k0, double e, double p, double m)
 		{
-			var annuity = ((loan * nominalInterestRate / 100) + (loan * repaymentRate / 100)) / ratesPerAnnum;
+			var annuity = ((k0 * p / 100) + (k0 * e / 100)) / m;
 			return annuity;
 		}
 
-		public static double GetRepaymentRate(double ratesPerAnnum, double loan, double nominalInterestRate, double annuity)
+		public static double GetRepaymentRate(double k0, double p, double m, double annuity)
 		{
-			var repayment = ((annuity * ratesPerAnnum) - (loan * nominalInterestRate / 100)) / loan * 100;
-			return repayment;
+			var repaymentRate = ((annuity * m) - (k0 * p / 100)) / k0 * 100;
+			return repaymentRate;
 		}
 
-		public static double GetFinalCapital(double initialCapital, double regularPayment, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum)
+		public static double Kn(double k0, double e, double p, double n, double m)
 		{
-			var bracketValue = 1 + (nominalInterestRate / (100 * ratesPerAnnum));
-			var initialSummand = initialCapital * Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum);
-			var regularSummand = regularPayment * ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1));
-			var finalCapital = initialSummand + regularSummand;
-			return finalCapital;
+			var bracketValue = 1 + (p / (100 * m));
+			var initialSummand = k0 * Math.Pow(bracketValue, n * m);
+			var regularSummand = e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1));
+			var kn = initialSummand + regularSummand;
+			return kn;
 		}
 
-		public static double GetRegularPayment(double initialCapital, double finalCapital, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum)
+		public static double E(double kn, double k0, double p, double n, double m)
 		{
-			var bracketValue = 1 + (nominalInterestRate / (100 * ratesPerAnnum));
-			var regularPayment = (finalCapital - (((-1) * initialCapital) * Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum))) / ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1));
-			return regularPayment;
+			var bracketValue = 1 + (p / (100 * m));
+			var e = (kn - (((-1) * k0) * Math.Pow(bracketValue, n * m))) / ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1));
+			return e;
 		}
 
-		public static double GetInitialCapital(double regularPayment, double finalCapital, double nominalInterestRate, double paymentPeriod, double ratesPerAnnum)
+		public static double K0(double kn, double e, double p, double n, double m)
 		{
-			var bracketValue = 1 + (nominalInterestRate / (100 * ratesPerAnnum));
-			var initialCapital = (((-1) * finalCapital) - (regularPayment * ((Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum) - 1) / (bracketValue - 1)))) / Math.Pow(bracketValue, paymentPeriod * ratesPerAnnum);
-			return initialCapital;
+			var bracketValue = 1 + (p / (100 * m));
+			var k0 = (((-1) * kn) - (e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1)))) / Math.Pow(bracketValue, n * m);
+			return k0;
 		}
 
-		public static double N(double e, double kn, double p, double k0, double m)
+		public static double N(double kn, double k0, double e, double p, double m)
 		{
 			return Math.Log10(((100 * e * m) + (p * kn)) / ((100 * e * m) + (p * k0))) / (m * Math.Log10((p / (100 * m)) + 1));
 		}
