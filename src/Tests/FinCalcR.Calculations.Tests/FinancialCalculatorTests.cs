@@ -230,10 +230,10 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(12, 5.3660387, 10000, 550, -1000000, 39.85)]			//		39,85	++-		39,85
-		[InlineData(12, 5.3660387, 10000, -550, 1000000, 42.89)]			//	n	42,89	+-+		nan
-		[InlineData(12, 5.3660387, -10000, 550, -1000000, 42.89)]			//	n	42,89	-+-		nan
-		[InlineData(12, 5.3660387, -10000, -550, 1000000, 39.85)]           //		39,85	--+		39,85
+		[InlineData(12, 5.3660387, 10000, 550, -1000000, 39.85)]	//	++-
+		[InlineData(12, 5.3660387, 10000, -550, 1000000, 42.89)]	//	+-+
+		[InlineData(12, 5.3660387, -10000, 550, -1000000, 42.89)]	//	-+-
+		[InlineData(12, 5.3660387, -10000, -550, 1000000, 39.85)] //	--+
 		public void N_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var localTolerance = 0.01;
@@ -242,11 +242,34 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(12, 5.3660387, 10000, 550, 1000000)]      //		Error	+++		nan
-		[InlineData(12, 5.3660387, -10000, 550, 1000000)]     //	n	Errorb	-++		42.89
-		[InlineData(12, 5.3660387, 10000, -550, -1000000)]	//	n	Errorb	+--		42.89
-		[InlineData(12, 5.3660387, -10000, -550, -1000000)]	//		Error	---		nan
+		[InlineData(12, 5.3660387, 10000, 550, 1000000)]      //		+++
+		[InlineData(12, 5.3660387, -10000, 550, 1000000)]     //		-++
+		[InlineData(12, 5.3660387, 10000, -550, -1000000)]	//		+--
+		[InlineData(12, 5.3660387, -10000, -550, -1000000)]	//		---
 		public void N_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn)
+		{
+			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			Assert.True(double.IsNaN(n));
+		}
+
+		[Theory]
+		[InlineData(12, 5.3660387, 10000, 550, -1000000, 39.78)]    //	++-
+		[InlineData(12, 5.3660387, 10000, -550, 1000000, 42.81)]    //	+-+
+		[InlineData(12, 5.3660387, -10000, 550, -1000000, 42.81)]   //	-+-
+		[InlineData(12, 5.3660387, -10000, -550, 1000000, 39.78)] //		--+
+		public void NAdvance_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
+		{
+			var localTolerance = 0.01;
+			var n = FinancialCalculator.N(kn, k0, e, p, m, true);
+			Assert.True(Math.Abs(n - expectedN) < localTolerance);
+		}
+
+		[Theory]
+		[InlineData(12, 5.3660387, 10000, 550, 1000000)]      //		+++
+		[InlineData(12, 5.3660387, -10000, 550, 1000000)]     //		-++
+		[InlineData(12, 5.3660387, 10000, -550, -1000000)]  //		+--
+		[InlineData(12, 5.3660387, -10000, -550, -1000000)] //		---
+		public void NAdvance_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn)
 		{
 			var n = FinancialCalculator.N(kn, k0, e, p, m);
 			Assert.True(double.IsNaN(n));

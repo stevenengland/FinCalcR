@@ -75,8 +75,15 @@ namespace StEn.FinCalcR.Calculations
 			return e;
 		}
 
-		public static double N(double kn, double k0, double e, double p, double m)
+		public static double N(double kn, double k0, double e, double p, double m, bool advance = false)
 		{
+			var bracketValue = 1 + (p / (100 * m));
+
+			if (advance)
+			{
+				e *= bracketValue;
+			}
+
 			if ((k0 > 0 && e > 0) || (k0 < 0 && e < 0)
 				|| (e > 0 && kn > 0) || (e < 0 && kn < 0)
 				|| (k0 > 0 && kn > 0) || (k0 < 0 && kn < 0))
@@ -84,7 +91,8 @@ namespace StEn.FinCalcR.Calculations
 				kn *= -1;
 			}
 
-			return Math.Log10(((100 * e * m) + (p * kn)) / ((100 * e * m) + (p * k0))) / (m * Math.Log10((p / (100 * m)) + 1));
+			var n = Math.Log10(((100 * e * m) + (p * kn)) / ((100 * e * m) + (p * k0))) / (m * Math.Log10((p / (100 * m)) + 1));
+			return n;
 		}
 	}
 }
