@@ -49,19 +49,25 @@ namespace StEn.FinCalcR.Calculations
 			return kn;
 		}
 
+		public static double K0(double kn, double e, double p, double n, double m, bool advance = false)
+		{
+			var bracketValue = 1 + (p / (100 * m));
+
+			if (advance)
+			{
+				e *= bracketValue;
+			}
+
+			kn *= -1;
+			var k0 = (kn - (e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1)))) / Math.Pow(bracketValue, n * m);
+			return k0;
+		}
+
 		public static double E(double kn, double k0, double p, double n, double m)
 		{
 			var bracketValue = 1 + (p / (100 * m));
 			var e = (kn - (((-1) * k0) * Math.Pow(bracketValue, n * m))) / ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1));
 			return e;
-		}
-
-		public static double K0(double kn, double e, double p, double n, double m)
-		{
-			kn *= -1;
-			var bracketValue = 1 + (p / (100 * m));
-			var k0 = (kn - (e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1)))) / Math.Pow(bracketValue, n * m);
-			return k0;
 		}
 
 		public static double N(double kn, double k0, double e, double p, double m)

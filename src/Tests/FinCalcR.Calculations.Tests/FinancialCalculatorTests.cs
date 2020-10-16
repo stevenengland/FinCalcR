@@ -81,18 +81,6 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(false, 12, 10, 9.568968515, 100, 1000, 6.30)]
-		[InlineData(false, 12, 25, 6.784974465, 0, 200000, 255.41)] // From manual
-		//[InlineData(false, 1, 25, 1.44538622, -250000, 0, 12000.55)] // From manual, advance = false
-		//[InlineData(true, 1, 25, 1.44538622, -250000, 0, 11827.95)] // From manual, advance = true
-		public void E_IsCalculatedCorrectly(bool advance, double m, double n, double p, double k0, double kn, double expectedE)
-		{
-			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m);
-			Assert.True(Math.Abs(e - expectedE) < localTolerance);
-		}
-
-		[Theory]
 		[InlineData(12, 25, 2.471803524, 0, 1000,  -539.39)] // From manual // Book p. 19
 		[InlineData(12, 25, 2.471803524, 100, 1000, -22900.85)] // Non zero regular payment
 		[InlineData(12, 25, 6.784974465, 0, 200000, -36849.84)] // Book p. 18
@@ -112,6 +100,18 @@ namespace FinCalcR.Calculations.Tests
 			var localTolerance = 0.01;
 			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
+		}
+
+		[Theory]
+		[InlineData(false, 12, 10, 9.568968515, 100, 1000, 6.30)]
+		[InlineData(false, 12, 25, 6.784974465, 0, 200000, 255.41)] // From manual
+		//[InlineData(false, 1, 25, 1.44538622, -250000, 0, 12000.55)] // From manual, advance = false
+		//[InlineData(true, 1, 25, 1.44538622, -250000, 0, 11827.95)] // From manual, advance = true
+		public void E_IsCalculatedCorrectly(bool advance, double m, double n, double p, double k0, double kn, double expectedE)
+		{
+			var localTolerance = 0.01;
+			var e = FinancialCalculator.E(kn, k0, p, n, m);
+			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
 		[Theory]
@@ -178,6 +178,22 @@ namespace FinCalcR.Calculations.Tests
 		{
 			var localTolerance = 0.01;
 			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
+			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
+		}
+
+		[Theory]
+		[InlineData(12, 10, 0.995445737, 100, 1000, -12332.32)] //	+++
+		[InlineData(12, 10, 0.995445737, 100, -1000, -10521.75)] //	++-
+		[InlineData(12, 10, 0.995445737, -100, 1000, 10521.75)] //	+-+
+		[InlineData(12, 10, -1.004612831, 100, 1000, -13724.18)] //	-++
+		[InlineData(12, 10, 0.995445737, -100, -1000, 12332.32)] //	+--
+		[InlineData(12, 10, -1.004612831, 100, -1000, -11512.73)] //	-+-
+		[InlineData(12, 10, -1.004612831, -100, 1000, 11512.73)] //	--+
+		[InlineData(12, 10, -1.004612831, -100, -1000, 13724.18)] //	---
+		public void K0Advance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
+		{
+			var localTolerance = 0.01;
+			var k0 = FinancialCalculator.K0(kn, e, p, n, m, true);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
