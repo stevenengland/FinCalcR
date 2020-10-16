@@ -67,6 +67,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public double RepaymentRateNumber => this.repaymentRateNumber;
 
+		public double StartNumber => this.startNumber;
+
 		public double RateNumber => this.rateNumber;
 
 		public double EndNumber => this.endNumber;
@@ -577,7 +579,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnStartPressed(bool isLongTouch = false)
 		{
 			this.ResetSpecialFunctionLabels();
-			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -603,9 +604,29 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				this.CommonSpecialFunctionWriteToMemoryOperations(out this.startNumber, 2);
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Start) && this.IsLastPressedOperationSpecialFunction())
+				    || this.LastPressedOperation == LastPressedOperation.Start)
+				{
+					var tmpStartNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.K0), this.endNumber, this.rateNumber, this.nominalInterestRateNumber, this.yearsNumber, this.ratesPerAnnumNumber, this.isAdvanceActive);
+
+					if (this.IsNumber(tmpStartNumber))
+					{
+						this.BuildSidesFromNumber(tmpStartNumber);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out this.startNumber, 2);
+					}
+					else
+					{
+						// Don't display NaN or other non numeric values that might be the result of the calculation.
+						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
+					}
+				}
+				else
+				{
+					this.CommonSpecialFunctionWriteToMemoryOperations(out this.startNumber, 2);
+				}
 			}
 
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 			this.LastPressedOperation = LastPressedOperation.Start;
 		}
 
@@ -622,6 +643,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.AdvanceStatusBarText = Resources.FinCalcFunctionAdvance;
 			}
 
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 			this.LastPressedOperation = LastPressedOperation.Start;
 		}
 

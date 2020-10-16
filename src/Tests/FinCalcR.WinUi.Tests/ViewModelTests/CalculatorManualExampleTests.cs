@@ -97,7 +97,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
-		#region K0 Examples
+		#region Kn Examples
 
 		[Fact]
 		public void Manual_LoanQuestion1()
@@ -130,6 +130,44 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "-113187,55");
 			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
 			Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
+		}
+
+		#endregion
+
+		#region K0 Examples
+
+		// [InlineData(12, 35, 5.3660387, -550, 1000000, -49406.13)] // Book p. 31
+		[Fact]
+		public void BookP31()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(3);
+			vm.DigitPressedCommand.Execute(5);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(5);
+			vm.InterestPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.AlgebSignCommand.Execute(null);
+			vm.RatePressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.EndPressedCommand.Execute(false);
+			vm.StartPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "-49406,13");
+			Assert.True(Math.Abs(vm.DisplayNumber - -49406.13) < Tolerance);
+			Assert.True(Math.Abs(vm.StartNumber - -49406.13) < Tolerance);
 		}
 
 		#endregion
