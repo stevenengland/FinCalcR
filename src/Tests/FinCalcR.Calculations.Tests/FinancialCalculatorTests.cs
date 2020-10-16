@@ -104,13 +104,27 @@ namespace FinCalcR.Calculations.Tests
 
 		[Theory]
 		[InlineData(false, 12, 10, 9.568968515, 100, 1000, 6.30)]
-		[InlineData(false, 12, 25, 6.784974465, 0, 200000, 255.41)] // From manual
-		//[InlineData(false, 1, 25, 1.44538622, -250000, 0, 12000.55)] // From manual, advance = false
-		//[InlineData(true, 1, 25, 1.44538622, -250000, 0, 11827.95)] // From manual, advance = true
+		[InlineData(false, 12, 25, 6.784974465, 0, 200000, 255.41)] // From manual, book p. 17
+		[InlineData(true, 1, 25, 1.45461709, -250000, 0, -11827.95)] // From manual, advance = true
+		[InlineData(false, 12, 1.5, 6.784974465, 1000, 0, 58.59)] // From manual, book p. 24
+		[InlineData(false, 12, 50, 3.928487739, 0, 1000000, 536.09)] // Book p. 26
+		[InlineData(false, 12, 40, 3.928487739, 0, 1000000, 861.28)] // Book p. 27 1
+		[InlineData(false, 12, 30, 3.928487739, 0, 1000000, 1459.28)] // Book p. 27 2
+		[InlineData(false, 12, 20, 3.928487739, 0, 1000000, 2748.45)] // Book p. 28 1
+		[InlineData(false, 12, 10, 3.928487739, 0, 1000000, 6816.82)] // Book p. 28 2
+		[InlineData(false, 12, 35, 5.3660387, 0, 1000000, 811.00)] // Book p. 31
+		[InlineData(false, 12, 13, 3.445078463, 0, 55044.38, 280.21)] // Book p. 61
+		[InlineData(false, 12, 45, 6.784974465, 0, 1000000, 282.67)] // Book p. 63 1
+		[InlineData(false, 12, 45, 6.784974465, -48922.81, 1000000, -7.77)] // Book p. 63 2
+		[InlineData(false, 12, 25, 5.841060678, 170000, 0, 1078.86)] // Book p. 81
+		[InlineData(false, 12, 15, 7.720836132, 125723.32, 0, 1181.30)] // Book p. 82
+		[InlineData(false, 12, 45, 2.959523727, 0, 997416, 884.35)] // Book p. 133 1
+		[InlineData(false, 12, 45, 5.841060678, 0, 997416, 380.35)] // Book p. 133 2
+		[InlineData(false, 12, 45, 8.64878798, 0, 997416, 151.89)] // Book p. 133 1
 		public void E_IsCalculatedCorrectly(bool advance, double m, double n, double p, double k0, double kn, double expectedE)
 		{
 			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m);
+			var e = FinancialCalculator.E(kn, k0, p, n, m, advance);
 			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
