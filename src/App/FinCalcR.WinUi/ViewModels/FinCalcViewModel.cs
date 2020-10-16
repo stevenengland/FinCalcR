@@ -761,7 +761,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				else if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsLastPressedOperationSpecialFunction())
 					|| this.LastPressedOperation == LastPressedOperation.End)
 				{
-					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, double>(FinancialCalculator.Kn), this.startNumber, this.rateNumber, this.nominalInterestRateNumber, this.yearsNumber, this.ratesPerAnnumNumber);
+					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.Kn), this.startNumber, this.rateNumber, this.nominalInterestRateNumber, this.yearsNumber, this.ratesPerAnnumNumber, this.isAdvanceActive);
 
 					if (this.IsNumber(tmpEndNumber))
 					{

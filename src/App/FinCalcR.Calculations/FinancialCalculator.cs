@@ -29,7 +29,7 @@ namespace StEn.FinCalcR.Calculations
 			return repaymentRate;
 		}
 
-		public static double Kn(double k0, double e, double p, double n, double m)
+		public static double Kn(double k0, double e, double p, double n, double m, bool advance = false)
 		{
 			if (Math.Abs(p) < 0.00000001)
 			{
@@ -37,6 +37,12 @@ namespace StEn.FinCalcR.Calculations
 			}
 
 			var bracketValue = 1 + (p / (100 * m));
+
+			if (advance)
+			{
+				e *= bracketValue;
+			}
+
 			var initialSummand = k0 * Math.Pow(bracketValue, n * m);
 			var regularSummand = e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1));
 			var kn = initialSummand + regularSummand;

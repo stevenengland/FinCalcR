@@ -81,12 +81,15 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(1000, 10, 10, 10, 12, 13.26389109)]
-		[InlineData(0, 200000, 6.784974465, 25, 12, 255.41418004033653)] // From manual
-		public void E_IsCalculatedCorrectly(double k0, double kn, double p, double n, double m, double expectedE)
+		[InlineData(false, 12, 10, 9.568968515, 100, 1000, 6.30)]
+		[InlineData(false, 12, 25, 6.784974465, 0, 200000, 255.41)] // From manual
+		//[InlineData(false, 1, 25, 1.44538622, -250000, 0, 12000.55)] // From manual, advance = false
+		//[InlineData(true, 1, 25, 1.44538622, -250000, 0, 11827.95)] // From manual, advance = true
+		public void E_IsCalculatedCorrectly(bool advance, double m, double n, double p, double k0, double kn, double expectedE)
 		{
+			var localTolerance = 0.01;
 			var e = FinancialCalculator.E(kn, k0, p, n, m);
-			Assert.True(Math.Abs(e - expectedE) < Tolerance);
+			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
 		[Theory]
@@ -131,6 +134,54 @@ namespace FinCalcR.Calculations.Tests
 #pragma warning disable SA1512 // Single-line comments should not be followed by blank line
 #pragma warning disable S4144 // Methods should not have identical implementations
 		[Theory]
+		[InlineData(12, 10, 0.995445737, 100, 1000, 126231.40)] //		+++
+		[InlineData(12, 10, 0.995445737, 100, -1000, -126010.48)] //		++-
+		[InlineData(12, 10, 0.995445737, -100, 1000, 126010.48)] //		+-+
+		[InlineData(12, 10, -1.004612831, 100, 1000, 114305.10)] //		-++
+		[InlineData(12, 10, 0.995445737, -100, -1000, -126231.40)] //		+--
+		[InlineData(12, 10, -1.004612831, 100, -1000, -114124.22)] //		-+-
+		[InlineData(12, 10, -1.004612831, -100, 1000, 114124.22)] //		--+
+		[InlineData(12, 10, -1.004612831, -100, -1000, -114305.10)] //	---
+		public void Kn_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double e, double expectedKn)
+		{
+			var localTolerance = 0.01;
+			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m);
+			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
+		}
+
+		[Theory]
+		[InlineData(12, 10, 0.995445737, 100, 1000, 126336.02)] //		+++
+		[InlineData(12, 10, 0.995445737, 100, -1000, -126115.10)] //		++-
+		[InlineData(12, 10, 0.995445737, -100, 1000, 126115.10)] //		+-+
+		[InlineData(12, 10, -1.004612831, 100, 1000, 114209.48)] //		-++
+		[InlineData(12, 10, 0.995445737, -100, -1000, -126336.02)] //		+--
+		[InlineData(12, 10, -1.004612831, 100, -1000, -114028.60)] //		-+-
+		[InlineData(12, 10, -1.004612831, -100, 1000, 114028.60)] //		--+
+		[InlineData(12, 10, -1.004612831, -100, -1000, -114209.48)] //	---
+		public void KnAdvance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double e, double expectedKn)
+		{
+			var localTolerance = 0.01;
+			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m, true);
+			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
+		}
+
+		[Theory]
+		[InlineData(12, 10, 0.995445737, 100, 1000, -12322.85)] //	+++
+		[InlineData(12, 10, 0.995445737, 100, -1000, -10512.28)] //	++-
+		[InlineData(12, 10, 0.995445737, -100, 1000, 10512.28)] //	+-+
+		[InlineData(12, 10, -1.004612831, 100, 1000, -13734.75)] //	-++
+		[InlineData(12, 10, 0.995445737, -100, -1000, 12322.85)] //	+--
+		[InlineData(12, 10, -1.004612831, 100, -1000, -11523.30)] //	-+-
+		[InlineData(12, 10, -1.004612831, -100, 1000, 11523.30)] //	--+
+		[InlineData(12, 10, -1.004612831, -100, -1000, 13734.75)] //	---
+		public void K0_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
+		{
+			var localTolerance = 0.01;
+			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
+			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
+		}
+
+		[Theory]
 		[InlineData(12, 5.3660387, 10000, 550, -1000000, 39.85)]			//		39,85	++-		39,85
 		[InlineData(12, 5.3660387, 10000, -550, 1000000, 42.89)]			//	n	42,89	+-+		nan
 		[InlineData(12, 5.3660387, -10000, 550, -1000000, 42.89)]			//	n	42,89	-+-		nan
@@ -168,22 +219,6 @@ namespace FinCalcR.Calculations.Tests
 		//			var n = FinancialCalculator.N(kn, k0, e, p, m);
 		//			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		//		}
-
-		[Theory]
-		[InlineData(12, 10, 0.995445737, 100, 1000, -12322.85)] //	+++	-12322.850978599574
-		[InlineData(12, 10, 0.995445737, 100, -1000, -10512.28)] //	++-	-10512.277069174643
-		[InlineData(12, 10, 0.995445737, -100, 1000, 10512.28)] //	+-+	10512.277069174643
-		[InlineData(12, 10, -1.004612831, 100, 1000, -13734.75)] //	-++	-13727.8035549473
-		[InlineData(12, 10, 0.995445737, -100, -1000, 12322.85)] //	+--	12322.850978599574
-		[InlineData(12, 10, -1.004612831, 100, -1000, -11523.30)] //	-+-	-11518.376865984397
-		[InlineData(12, 10, -1.004612831, -100, 1000, 11523.30)] //	--+	11518.376865984397
-		[InlineData(12, 10, -1.004612831, -100, -1000, 13734.75)] //	---	13727.8035549473
-		public void K0_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
-		{
-			var localTolerance = 0.01;
-			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
-			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
-		}
 	}
 #pragma warning restore SA1005 // Single line comments should begin with single space
 #pragma warning restore S125 // Sections of code should not be commented out
