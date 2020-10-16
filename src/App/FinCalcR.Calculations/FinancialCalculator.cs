@@ -59,6 +59,13 @@ namespace StEn.FinCalcR.Calculations
 
 		public static double N(double kn, double k0, double e, double p, double m)
 		{
+			if ((k0 > 0 && e > 0) || (k0 < 0 && e < 0)
+				|| (e > 0 && kn > 0) || (e < 0 && kn < 0)
+				|| (k0 > 0 && kn > 0) || (k0 < 0 && kn < 0))
+			{
+				kn *= -1;
+			}
+
 			return Math.Log10(((100 * e * m) + (p * kn)) / ((100 * e * m) + (p * k0))) / (m * Math.Log10((p / (100 * m)) + 1));
 		}
 	}
