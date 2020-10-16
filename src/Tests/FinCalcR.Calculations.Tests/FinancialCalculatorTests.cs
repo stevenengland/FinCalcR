@@ -90,12 +90,25 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(0, 1000, 2.471803524, 25, 12, -539.39058942391114)] // From manual
-		[InlineData(100, 1000, 2.471803524, 25, 12, -22900.848016139695)] // Non zero regular payment
-		public void K0_IsCalculatedCorrectly(double e, double kn, double p, double n, double m, double expectedK0)
+		[InlineData(12, 25, 2.471803524, 0, 1000,  -539.39)] // From manual // Book p. 19
+		[InlineData(12, 25, 2.471803524, 100, 1000, -22900.85)] // Non zero regular payment
+		[InlineData(12, 25, 6.784974465, 0, 200000, -36849.84)] // Book p. 18
+		[InlineData(12, 35, 5.3660387, -550, 1000000, -49406.13)] // Book p. 31
+		[InlineData(12, 5, 3.445078463, 1000, 0, -55044.38)] // Book p. 60
+		[InlineData(12, 25, 5.841060678, -800, 0, 126059.52)] // Book p. 80
+		[InlineData(12, 25, 5.841060678, 1000, 0, -157574.40)] // Book p. 81 -> Error in the book. Should be -1000 for the rate.
+		[InlineData(12, 25, 5.841060678, -1000, 0, 157574.40)] // Book p. 81 -> Error in the book. Should be -157574.40 for the start.
+		[InlineData(12, 10, 1.981897562, 0, 100000, -82034.83)] // Book p. 92
+		[InlineData(12, 15, 2.256515397, 0, 2740, -1953.84)] // Book p. 118
+		[InlineData(12, 15, 2.256515397, 0, 2360, -1682.87)] // Book p. 119
+		[InlineData(12, 15, 2.256515397, 0, 2041, -1455.40)] // Book p. 120
+		[InlineData(12, 18, 2.667152753, 8083, 0, -1385363.36)] // Book p. 130
+		[InlineData(12, 18, 1.292317896, 2014, 0, -387946.76)] // Book p. 131
+		public void K0_IsCalculatedCorrectly(double m, double n, double p, double e, double kn, double expectedK0)
 		{
+			var localTolerance = 0.01;
 			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
-			Assert.True(Math.Abs(k0 - expectedK0) < Tolerance);
+			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
 		[Theory]
@@ -119,8 +132,10 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 5.3660387, 10000, 550, -1000000, 39.85)]			//		39,85	++-		39,85
 		[InlineData(12, 5.3660387, 10000, -550, 1000000, 42.89)]			//	n	42,89	+-+		nan
 		[InlineData(12, 5.3660387, -10000, 550, -1000000, 42.89)]			//	n	42,89	-+-		nan
-		[InlineData(12, 5.3660387, -10000, -550, 1000000, 39.85)]			//		39,85	--+		39,85
-		public void N_IsCalculatedCorrectly_permutation_1(double m, double p, double k0, double e, double kn, double expectedN)
+		[InlineData(12, 5.3660387, -10000, -550, 1000000, 39.85)]           //		39,85	--+		39,85
+#pragma warning disable S4144 // Methods should not have identical implementations
+		public void N_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
+#pragma warning restore S4144 // Methods should not have identical implementations
 		{
 			var localTolerance = 0.01;
 			var n = FinancialCalculator.N(kn, k0, e, p, m);
@@ -132,7 +147,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 5.3660387, -10000, 550, 1000000, double.NaN)]     //	n	Errorb	-++		42.89
 		[InlineData(12, 5.3660387, 10000, -550, -1000000, double.NaN)]	//	n	Errorb	+--		42.89
 		[InlineData(12, 5.3660387, -10000, -550, -1000000, double.NaN)]	//		Error	---		nan
-		public void N_IsCalculatedCorrectly_permutation_2(double m, double p, double k0, double e, double kn, double expectedN)
+		public void N_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var n = FinancialCalculator.N(kn, k0, e, p, m);
 			Assert.True(double.IsNaN(n));
@@ -157,6 +172,22 @@ namespace FinCalcR.Calculations.Tests
 		//		}
 		//#pragma warning restore SA1005 // Single line comments should begin with single space
 		//#pragma warning restore S125 // Sections of code should not be commented out
+
+		[Theory]
+		[InlineData(12, 10, 0.995445737, 100, 1000, -12322.85)] //	+++	-12322.850978599574
+		[InlineData(12, 10, 0.995445737, 100, -1000, -10512.28)] //	++-	-10512.277069174643
+		[InlineData(12, 10, 0.995445737, -100, 1000, 10512.28)] //	+-+	10512.277069174643
+		[InlineData(12, 10, -1.004612831, 100, 1000, -13734.75)] //	-++	-13727.8035549473
+		[InlineData(12, 10, 0.995445737, -100, -1000, 12322.85)] //	+--	12322.850978599574
+		[InlineData(12, 10, -1.004612831, 100, -1000, -11523.30)] //	-+-	-11518.376865984397
+		[InlineData(12, 10, -1.004612831, -100, 1000, 11523.30)] //	--+	11518.376865984397
+		[InlineData(12, 10, -1.004612831, -100, -1000, 13734.75)] //	---	13727.8035549473
+		public void K0_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
+		{
+			var localTolerance = 0.01;
+			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
+			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
+		}
 	}
 #pragma warning restore SA1005 // Single line comments should begin with single space
 #pragma warning restore S125 // Sections of code should not be commented out

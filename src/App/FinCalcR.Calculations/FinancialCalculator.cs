@@ -52,8 +52,9 @@ namespace StEn.FinCalcR.Calculations
 
 		public static double K0(double kn, double e, double p, double n, double m)
 		{
+			kn *= -1;
 			var bracketValue = 1 + (p / (100 * m));
-			var k0 = (((-1) * kn) - (e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1)))) / Math.Pow(bracketValue, n * m);
+			var k0 = (kn - (e * ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1)))) / Math.Pow(bracketValue, n * m);
 			return k0;
 		}
 
