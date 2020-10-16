@@ -149,13 +149,13 @@ namespace FinCalcR.Calculations.Tests
 #pragma warning disable S4144 // Methods should not have identical implementations
 		[Theory]
 		[InlineData(12, 10, 0.995445737, 100, 1000, 126231.40)] //		+++
-		//[InlineData(12, 10, 0.995445737, 100, -1000, -126010.48)] //		++-
-		//[InlineData(12, 10, 0.995445737, -100, 1000, 126010.48)] //		+-+
-		//[InlineData(12, 10, -1.004612831, 100, 1000, 114305.10)] //		-++
-		//[InlineData(12, 10, 0.995445737, -100, -1000, -126231.40)] //		+--
-		//[InlineData(12, 10, -1.004612831, 100, -1000, -114124.22)] //		-+-
-		//[InlineData(12, 10, -1.004612831, -100, 1000, 114124.22)] //		--+
-		//[InlineData(12, 10, -1.004612831, -100, -1000, -114305.10)] //	---
+		[InlineData(12, 10, 0.995445737, 100, -1000, -126010.48)] //		++-
+		[InlineData(12, 10, 0.995445737, -100, 1000, 126010.48)] //		+-+
+		[InlineData(12, 10, -1.004612831, 100, 1000, 114305.10)] //		-++
+		[InlineData(12, 10, 0.995445737, -100, -1000, -126231.40)] //		+--
+		[InlineData(12, 10, -1.004612831, 100, -1000, -114124.22)] //		-+-
+		[InlineData(12, 10, -1.004612831, -100, 1000, 114124.22)] //		--+
+		[InlineData(12, 10, -1.004612831, -100, -1000, -114305.10)] //	---
 		public void Kn_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double e, double expectedKn)
 		{
 			var localTolerance = 0.01;
