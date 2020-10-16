@@ -629,7 +629,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.RateStatusBarText = Resources.FinCalcFunctionRate;
-			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -652,11 +651,32 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			else
 			{
-				// Write the values to the memory
-				this.CommonSpecialFunctionWriteToMemoryOperations(out this.rateNumber, 2);
-				this.repaymentRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
+				// Write the value to the memory
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Rate) && this.IsLastPressedOperationSpecialFunction())
+				    || this.LastPressedOperation == LastPressedOperation.Rate)
+				{
+					var tmpRateNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.E), this.endNumber, this.startNumber, this.nominalInterestRateNumber, this.yearsNumber, this.ratesPerAnnumNumber, this.isAdvanceActive);
+
+					if (this.IsNumber(tmpRateNumber))
+					{
+						this.BuildSidesFromNumber(tmpRateNumber);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out this.rateNumber, 2);
+					}
+					else
+					{
+						// Don't display NaN or other non numeric values that might be the result of the calculation.
+						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
+					}
+				}
+				else
+				{
+					// Write the values to the memory
+					this.CommonSpecialFunctionWriteToMemoryOperations(out this.rateNumber, 2);
+					this.repaymentRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.ratesPerAnnumNumber, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
+				}
 			}
 
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 			this.LastPressedOperation = LastPressedOperation.Rate;
 		}
 
@@ -687,6 +707,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.SetDisplayText(true, 2);
 			}
 
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 			this.LastPressedOperation = LastPressedOperation.Rate;
 		}
 

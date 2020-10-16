@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
 using StEn.FinCalcR.Common.Extensions;
@@ -12,7 +14,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 {
 	public class CalculatorManualExampleTests
 	{
-		private const double Tolerance = 0.00000001;
+		private const double Tolerance = 0.01;
 
 		public CalculatorManualExampleTests()
 		{
@@ -95,10 +97,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
-		#region Loan Examples
+		#region K0 Examples
 
 		[Fact]
-		public void LoanQuestion1Example()
+		public void Manual_LoanQuestion1()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
@@ -128,6 +130,79 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.DisplayText == "-113187,55");
 			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
 			Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
+		}
+
+		#endregion
+
+		#region E Examples
+
+		[Fact]
+		public void Manual_IncomeDrawDownQuestion2()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.OperatorPressedCommand.Execute("*");
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(5);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(4);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(4);
+			vm.DigitPressedCommand.Execute(6);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(7);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(9);
+			vm.InterestPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.AlgebSignCommand.Execute(null);
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(0);
+			vm.EndPressedCommand.Execute(false);
+			vm.RatePressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "11827,95");
+			Assert.True(Math.Abs(vm.DisplayNumber - 11827.95) < Tolerance);
+			Assert.True(Math.Abs(vm.RateNumber - 11827.95) < Tolerance);
+		}
+
+		[Fact]
+		public void BookP17E()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(5);
+			vm.YearsPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(7);
+			vm.InterestPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(0);
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.EndPressedCommand.Execute(false);
+			vm.RatePressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "-255,41");
+			Assert.True(Math.Abs(vm.DisplayNumber - -255.41) < Tolerance);
+			Assert.True(Math.Abs(vm.RateNumber - -255.41) < Tolerance);
 		}
 
 		#endregion
