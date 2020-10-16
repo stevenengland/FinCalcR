@@ -63,10 +63,15 @@ namespace StEn.FinCalcR.Calculations
 			return k0;
 		}
 
-		public static double E(double kn, double k0, double p, double n, double m)
+		public static double E(double kn, double k0, double p, double n, double m, bool advance = false)
 		{
 			var bracketValue = 1 + (p / (100 * m));
 			var e = (kn - (((-1) * k0) * Math.Pow(bracketValue, n * m))) / ((Math.Pow(bracketValue, n * m) - 1) / (bracketValue - 1));
+			if (advance)
+			{
+				return e / bracketValue;
+			}
+
 			return e;
 		}
 
