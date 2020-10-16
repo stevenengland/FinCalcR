@@ -65,7 +65,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 15, 0.995445737, -2041, 0, -2369.54)] // Book p. 115
 		[InlineData(12, 15, 1.981897562, -2041, 0, -2746.92)] // Book p. 116
 		[InlineData(12, 25, 0, 0, -100, -30000)] // Book p. 122
-		[InlineData(12, 25, 0, 100, -100, -29900)] // Same as Book p. 122 but with k0 > 0 -> The same result like from the calculator but it's a bug. 
+		[InlineData(12, 25, 0, 100, -100, -29900)] // Same as Book p. 122 but with k0 > 0 -> The same result like from the calculator but it's a bug.
 		[InlineData(12, 20, 3.928487739, 0, -150, -54576.26)] // Book p. 125
 		[InlineData(12, 45, 2.276104576, -2905, 0, -8082.57)] // Book p. 128
 		[InlineData(12, 45, 0.995445737, -1287, 0, -2013.91)] // Book p. 129
@@ -128,14 +128,14 @@ namespace FinCalcR.Calculations.Tests
 #pragma warning disable SA1005 // Single line comments should begin with single space
 #pragma warning disable S125 // Sections of code should not be commented out
 #pragma warning disable SA1025 // Code should not contain multiple whitespace in a row
+#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
+#pragma warning disable S4144 // Methods should not have identical implementations
 		[Theory]
 		[InlineData(12, 5.3660387, 10000, 550, -1000000, 39.85)]			//		39,85	++-		39,85
 		[InlineData(12, 5.3660387, 10000, -550, 1000000, 42.89)]			//	n	42,89	+-+		nan
 		[InlineData(12, 5.3660387, -10000, 550, -1000000, 42.89)]			//	n	42,89	-+-		nan
 		[InlineData(12, 5.3660387, -10000, -550, 1000000, 39.85)]           //		39,85	--+		39,85
-#pragma warning disable S4144 // Methods should not have identical implementations
 		public void N_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
-#pragma warning restore S4144 // Methods should not have identical implementations
 		{
 			var localTolerance = 0.01;
 			var n = FinancialCalculator.N(kn, k0, e, p, m);
@@ -143,18 +143,16 @@ namespace FinCalcR.Calculations.Tests
 		}
 
 		[Theory]
-		[InlineData(12, 5.3660387, 10000, 550, 1000000, double.NaN)]      //		Error	+++		nan
-		[InlineData(12, 5.3660387, -10000, 550, 1000000, double.NaN)]     //	n	Errorb	-++		42.89
-		[InlineData(12, 5.3660387, 10000, -550, -1000000, double.NaN)]	//	n	Errorb	+--		42.89
-		[InlineData(12, 5.3660387, -10000, -550, -1000000, double.NaN)]	//		Error	---		nan
-		public void N_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn, double expectedN)
+		[InlineData(12, 5.3660387, 10000, 550, 1000000)]      //		Error	+++		nan
+		[InlineData(12, 5.3660387, -10000, 550, 1000000)]     //	n	Errorb	-++		42.89
+		[InlineData(12, 5.3660387, 10000, -550, -1000000)]	//	n	Errorb	+--		42.89
+		[InlineData(12, 5.3660387, -10000, -550, -1000000)]	//		Error	---		nan
+		public void N_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn)
 		{
 			var n = FinancialCalculator.N(kn, k0, e, p, m);
 			Assert.True(double.IsNaN(n));
 		}
 
-		//#pragma warning disable SA1005 // Single line comments should begin with single space
-		//#pragma warning disable S125 // Sections of code should not be commented out
 		//		[Theory]
 		//		[InlineData(12, 5.3660387, 10000, 550, 1000000, 39.85)] //		Error	+++		39.85
 		//		[InlineData(12, 5.3660387, 10000, 550, -1000000, 39.85)] //		39,85	++-		Nan
@@ -170,8 +168,6 @@ namespace FinCalcR.Calculations.Tests
 		//			var n = FinancialCalculator.N(kn, k0, e, p, m);
 		//			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		//		}
-		//#pragma warning restore SA1005 // Single line comments should begin with single space
-		//#pragma warning restore S125 // Sections of code should not be commented out
 
 		[Theory]
 		[InlineData(12, 10, 0.995445737, 100, 1000, -12322.85)] //	+++	-12322.850978599574
@@ -192,4 +188,6 @@ namespace FinCalcR.Calculations.Tests
 #pragma warning restore SA1005 // Single line comments should begin with single space
 #pragma warning restore S125 // Sections of code should not be commented out
 #pragma warning restore SA1025 // Code should not contain multiple whitespace in a row
+#pragma warning restore SA1512 // Single-line comments should not be followed by blank line
+#pragma warning restore S4144 // Methods should not have identical implementations
 }

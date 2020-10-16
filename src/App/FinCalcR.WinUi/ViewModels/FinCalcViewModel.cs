@@ -195,10 +195,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public ICommand KeyboardKeyPressedCommand => new SyncCommand<MappedKeyEventArgs>(this.OnKeyboardKeyPressed);
 
-		public void Handle(KeyboardKeyDownEvent e)
-		{
-			this.KeyboardKeyPressedCommand.Execute(e.KeyEventArgs);
-		}
+		public void Handle(KeyboardKeyDownEvent message) => this.KeyboardKeyPressedCommand.Execute(message.KeyEventArgs);
 
 		public async Task OnClearPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
 		{
@@ -920,7 +917,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			// Special - if the last pressed operation was a special function this operation should not work with old values.
 			if (this.IsLastPressedOperationSpecialFunction()
-			    || this.LastPressedOperation == LastPressedOperation.PercentCalculation) // Percent calc. is not considered a special function yet.
+
+			    // Percent calculation -> is not considered a special function yet.
+				|| this.LastPressedOperation == LastPressedOperation.PercentCalculation)
 			{
 				this.ResetNumbers();
 				this.ResetSides();
