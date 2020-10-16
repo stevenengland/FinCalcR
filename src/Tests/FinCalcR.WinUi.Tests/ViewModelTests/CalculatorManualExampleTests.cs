@@ -97,10 +97,51 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
+		#region N Examples
+
+		[Fact]
+		public void N_BookP32()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(5);
+			vm.InterestPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.AlgebSignCommand.Execute(null);
+			vm.StartPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(0);
+			vm.AlgebSignCommand.Execute(null);
+			vm.RatePressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.EndPressedCommand.Execute(false);
+			vm.YearsPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "39,85");
+			Assert.True(Math.Abs(vm.DisplayNumber - 39.85) < Tolerance);
+			Assert.True(Math.Abs(vm.YearsNumber - 39.85) < Tolerance);
+		}
+
+		#endregion
+
 		#region Kn Examples
 
 		[Fact]
-		public void Manual_LoanQuestion1()
+		public void Kn_Manual_LoanQuestion1()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
@@ -138,7 +179,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		// [InlineData(12, 35, 5.3660387, -550, 1000000, -49406.13)] // Book p. 31
 		[Fact]
-		public void BookP31()
+		public void K0_BookP31()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
@@ -175,7 +216,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region E Examples
 
 		[Fact]
-		public void Manual_IncomeDrawDownQuestion2()
+		public void E_Manual_IncomeDrawDownQuestion2()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
@@ -217,7 +258,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		}
 
 		[Fact]
-		public void BookP17E()
+		public void E_BookP17()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
