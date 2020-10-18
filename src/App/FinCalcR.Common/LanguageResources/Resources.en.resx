@@ -139,4 +139,7 @@
   <data name="EXC_ARGUMENT_INVALID" xml:space="preserve">
     <value>The following argument is not valid:</value>
   </data>
+  <data name="EXC_CALC_NOT_POSSIBLE" xml:space="preserve">
+    <value>The calculation was not possible.</value>
+  </data>
 </root>

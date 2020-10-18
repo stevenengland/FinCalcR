@@ -177,7 +177,7 @@
         </trans-unit>
         <trans-unit id="EXC_CALC_NOT_POSSIBLE" translate="yes" xml:space="preserve">
           <source>Die Berechnung war nicht möglich.</source>
-          <target state="new">Die Berechnung war nicht möglich.</target>
+          <target state="translated">The calculation was not possible.</target>
         </trans-unit>
       </group>
     </body>
