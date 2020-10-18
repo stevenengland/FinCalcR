@@ -124,7 +124,7 @@ namespace StEn.FinCalcR.Calculations
 				}
 			}
 
-			throw new CalculationException($"Calculation of n was not possible. Try to increase {nameof(iterations)}.");
+			throw new CalculationException($"Calculation of p was not possible. Try to increase {nameof(iterations)}.");
 
 			double Polynomial(double dKn, double dK0, double dE, double dN, double dM, double dP)
 			{
