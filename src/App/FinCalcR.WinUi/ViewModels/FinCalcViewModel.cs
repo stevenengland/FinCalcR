@@ -521,7 +521,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// Prepare
 			this.ResetSpecialFunctionLabels();
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
-			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
 			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
@@ -546,22 +545,43 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				var tmpInterestNumber = this.interestNumber;
-				this.CommonSpecialFunctionWriteToMemoryOperations(out this.interestNumber, 3);
-				if (this.interestNumber < -100)
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Interest) && this.IsLastPressedOperationSpecialFunction())
+				    || this.LastPressedOperation == LastPressedOperation.Interest)
 				{
-					this.ResetSides();
-					this.ResetNumbers();
-					this.SetDisplayText();
-					this.interestNumber = tmpInterestNumber;
-					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
+					var tmpInterestNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P), (-1) * this.endNumber, this.startNumber, this.rateNumber, this.yearsNumber, this.ratesPerAnnumNumber, this.isAdvanceActive, 50);
+
+					if (this.IsNumber(tmpInterestNumber))
+					{
+						this.BuildSidesFromNumber(tmpInterestNumber);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out this.interestNumber, 3);
+						this.nominalInterestRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.ratesPerAnnumNumber, this.interestNumber);
+					}
+					else
+					{
+						// Don't display NaN or other non numeric values that might be the result of the calculation.
+						this.CommonSpecialFunctionReadFromMemoryOperations(0, 3);
+					}
 				}
 				else
 				{
-					this.nominalInterestRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.ratesPerAnnumNumber, this.interestNumber);
+					var tmpInterestNumber = this.interestNumber;
+					this.CommonSpecialFunctionWriteToMemoryOperations(out this.interestNumber, 3);
+					if (this.interestNumber < -100)
+					{
+						this.ResetSides();
+						this.ResetNumbers();
+						this.SetDisplayText();
+						this.interestNumber = tmpInterestNumber;
+						this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
+					}
+					else
+					{
+						this.nominalInterestRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.ratesPerAnnumNumber, this.interestNumber);
+					}
 				}
 			}
 
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 			this.LastPressedOperation = LastPressedOperation.Interest;
 		}
 
@@ -595,6 +615,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 			}
 
+			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 			this.LastPressedOperation = LastPressedOperation.Interest;
 		}
 
