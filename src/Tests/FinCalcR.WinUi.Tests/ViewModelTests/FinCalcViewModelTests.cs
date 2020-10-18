@@ -378,6 +378,24 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(vm.EndStatusBarText == Resources.FinCalcFunctionEnd);
 		}
 
+		[Fact]
+		public void RoundingDisplayValueWorks()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(4);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(9);
+			vm.DigitPressedCommand.Execute(9);
+			vm.DigitPressedCommand.Execute(9);
+			vm.DigitPressedCommand.Execute(9);
+			vm.InterestPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "5,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
 		#region Initialization Tests
 
 		[Fact]

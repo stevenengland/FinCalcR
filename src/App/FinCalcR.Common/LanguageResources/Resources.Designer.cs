@@ -160,6 +160,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die Berechnung war nicht möglich..
+        /// </summary>
+        public static string EXC_CALC_NOT_POSSIBLE {
+            get {
+                return ResourceManager.GetString("EXC_CALC_NOT_POSSIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eine Division durch 0 ist nicht erlaubt..
         /// </summary>
         public static string EXC_DIVISION_BY_ZERO {

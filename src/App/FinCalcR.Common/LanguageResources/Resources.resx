@@ -150,6 +150,9 @@
   <data name="EXC_ARGUMENT_NULL" xml:space="preserve">
     <value>Das folgende Argument ist leer oder null:</value>
   </data>
+  <data name="EXC_CALC_NOT_POSSIBLE" xml:space="preserve">
+    <value>Die Berechnung war nicht möglich.</value>
+  </data>
   <data name="EXC_DIVISION_BY_ZERO" xml:space="preserve">
     <value>Eine Division durch 0 ist nicht erlaubt.</value>
   </data>

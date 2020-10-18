@@ -142,6 +142,28 @@ namespace FinCalcR.Calculations.Tests
 			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		}
 
+		[Theory]
+		[InlineData(12, 14, -13.94, 0, 29.73, 5.559)] // Book p. 20
+		[InlineData(1, 25, -250000, 12000, 0, 1.455)] // Book p. 21
+		[InlineData(12, 3, 20000, -400, -7500, 4.597)] // Book p. 25
+		[InlineData(12, 35, 0, -550, 1000000, 7.271)] // Book p. 30
+		[InlineData(12, 0.83, 999, -107.9, 0, 17.532)] // Book p. 72 -> Error in the book. Should be 18.516 but is 17.532
+		[InlineData(12, 3, 30000, -850, 0, 1.297)] // Book p. 73
+		[InlineData(12, 4, 30000, -466, -15000, 8.289)] // Book p. 74 1
+		[InlineData(12, 5, 27500, -550, 0, 7.678)] // Book p. 74 2
+		[InlineData(12, 39, -0.1, 0, 0.7, 5.116)] // Book p. 91
+		[InlineData(12, 60, -3.58, 0, 17.98, 2.726)] // Book p. 95
+		[InlineData(12, 25, 0, -50, 30000, 5.169)] // Book p. 123
+		[InlineData(12, 20, 0, -150, 53600, 3.833)] // Book p. 124
+		public void P_IsCalculatedCorrectly(double m, double n, double k0, double e, double kn, double expectedP)
+		{
+			kn *= -1;
+			var localTolerance = 0.001;
+			var pNom = FinancialCalculator.P(kn, k0, e, n, m);
+			var pEff = FinancialCalculator.GetEffectiveInterestRate(pNom, m);
+			Assert.True(Math.Abs(pEff - expectedP) < localTolerance);
+		}
+
 #pragma warning disable SA1005 // Single line comments should begin with single space
 #pragma warning disable S125 // Sections of code should not be commented out
 #pragma warning disable SA1025 // Code should not contain multiple whitespace in a row
