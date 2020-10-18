@@ -1081,6 +1081,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void SetDisplayText(bool isSpecialFunctionNumber = false, int specialNumberDecimalCount = 2)
 		{
+			var displayLeftSide = this.leftSide;
 			var displayRightSide = this.rightSide;
 			if (isSpecialFunctionNumber)
 			{
@@ -1091,22 +1092,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 				if (displayRightSide.Length > specialNumberDecimalCount)
 				{
-					var roundingIdentifier = int.Parse(displayRightSide[specialNumberDecimalCount].ToString());
-					if (roundingIdentifier >= 5)
+					var concatenatedSides = displayLeftSide + Resources.CALC_DECIMAL_SEPARATOR + displayRightSide;
+					if (double.TryParse(concatenatedSides, out var parsedNumber))
 					{
-						var charToRound = displayRightSide.Substring(0, specialNumberDecimalCount).TrimStart('0');
-						var numberToRound = string.IsNullOrEmpty(charToRound) ? "0" : charToRound;
-						displayRightSide = (int.Parse(numberToRound) + 1).ToString();
-						for (var i = displayRightSide.Length; i < specialNumberDecimalCount; i++)
-						{
-#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
-							displayRightSide = "0" + displayRightSide;
-#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
-						}
-					}
-					else
-					{
-						displayRightSide = displayRightSide.Substring(0, specialNumberDecimalCount);
+						var numberToRound = Math.Round(parsedNumber, specialNumberDecimalCount, MidpointRounding.AwayFromZero);
+						var sidesArray = numberToRound.ToString(CultureInfo.CurrentCulture).Split(Resources.CALC_DECIMAL_SEPARATOR.ToCharArray());
+						displayLeftSide = sidesArray[0];
+						displayRightSide = sidesArray.Length > 1 ? sidesArray[1] : "0";
 					}
 				}
 
@@ -1118,7 +1110,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 			}
 
-			this.DisplayText = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + displayRightSide;
+			this.DisplayText = displayLeftSide + Resources.CALC_DECIMAL_SEPARATOR + displayRightSide;
 			this.SetDisplayNumber();
 			this.isDisplayTextNumeric = true;
 		}

@@ -393,7 +393,19 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.InterestPressedCommand.Execute(false);
 
 			Assert.True(vm.DisplayText == "5,000");
-			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+			Assert.True(Math.Abs(vm.DisplayNumber - 4.9999) < Tolerance);
+
+			vm.ClearPressedCommand.Execute(false);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DecimalSeparatorPressedCommand.Execute(null);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(0);
+			vm.DigitPressedCommand.Execute(5);
+			vm.InterestPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "1,001");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1.0005) < Tolerance);
 		}
 
 		#region Initialization Tests
