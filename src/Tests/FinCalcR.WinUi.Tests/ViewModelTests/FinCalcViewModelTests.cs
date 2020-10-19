@@ -408,6 +408,56 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 1.0005) < Tolerance);
 		}
 
+		[Fact]
+		public void ThousandSeparatorIsSetCorrectly()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(3);
+			Assert.True(vm.DisplayText == "123,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 123) < Tolerance);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-123,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -123) < Tolerance);
+			vm.DigitPressedCommand.Execute(4);
+			Assert.True(vm.DisplayText == "-1.234,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -1234) < Tolerance);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "1.234,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1234) < Tolerance);
+			vm.DigitPressedCommand.Execute(5);
+			vm.DigitPressedCommand.Execute(6);
+			vm.DigitPressedCommand.Execute(7);
+			Assert.True(vm.DisplayText == "1.234.567,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1234567) < Tolerance);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-1.234.567,");
+			Assert.True(Math.Abs(vm.DisplayNumber - -1234567) < Tolerance);
+			vm.AlgebSignCommand.Execute(null);
+			vm.DecimalSeparatorPressedCommand.Execute(false);
+			vm.DigitPressedCommand.Execute(1);
+			vm.DigitPressedCommand.Execute(2);
+			vm.DigitPressedCommand.Execute(3);
+			vm.DigitPressedCommand.Execute(4);
+			Assert.True(vm.DisplayText == "1.234.567,1234");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1234567.1234) < Tolerance);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "-1.234.567,1234");
+			Assert.True(Math.Abs(vm.DisplayNumber - -1234567.1234) < Tolerance);
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "-1.234.567,12");
+			Assert.True(Math.Abs(vm.DisplayNumber - -1234567.1234) < Tolerance);
+			vm.AlgebSignCommand.Execute(null);
+			Assert.True(vm.DisplayText == "1.234.567,12");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1234567.1234) < Tolerance);
+			vm.StartPressedCommand.Execute(false);
+			Assert.True(vm.DisplayText == "1.234.567,12");
+			Assert.True(Math.Abs(vm.DisplayNumber - 1234567.1234) < Tolerance);
+		}
+
 		#region Initialization Tests
 
 		[Fact]
@@ -792,7 +842,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 				vm.DigitPressedCommand.Execute(1);
 			}
 
-			Assert.True(vm.DisplayText == "1111111111,");
+			Assert.True(vm.DisplayText == "1.111.111.111,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 1111111111) < Tolerance);
 		}
 

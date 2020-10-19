@@ -1102,7 +1102,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void SetDisplayText(bool isSpecialFunctionNumber = false, int specialNumberDecimalCount = 2)
 		{
-			var displayLeftSide = this.leftSide;
+			var displayLeftSide = this.InsertThousandSeparator(this.leftSide);
 			var displayRightSide = this.rightSide;
 			if (isSpecialFunctionNumber)
 			{
@@ -1118,7 +1118,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					{
 						var numberToRound = Math.Round(parsedNumber, specialNumberDecimalCount, MidpointRounding.AwayFromZero);
 						var sidesArray = numberToRound.ToString(CultureInfo.CurrentCulture).Split(Resources.CALC_DECIMAL_SEPARATOR.ToCharArray());
-						displayLeftSide = sidesArray[0];
+						displayLeftSide = this.InsertThousandSeparator(sidesArray[0]);
 						displayRightSide = sidesArray.Length > 1 ? sidesArray[1] : "0";
 					}
 				}
@@ -1143,6 +1143,36 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var parts = s.Split('.');
 			this.leftSide = parts[0];
 			this.rightSide = parts.Length < 2 ? string.Empty : parts[1];
+		}
+
+		private string InsertThousandSeparator(string inputWithoutSeparator)
+		{
+			bool hasAlgebSign = false;
+			if (inputWithoutSeparator.StartsWith("-"))
+			{
+				hasAlgebSign = true;
+				inputWithoutSeparator = inputWithoutSeparator.Substring(1, inputWithoutSeparator.Length - 1);
+			}
+
+			var len = inputWithoutSeparator.Length;
+			if (len < 4)
+			{
+				return hasAlgebSign ? "-" + inputWithoutSeparator : inputWithoutSeparator;
+			}
+
+			var result = string.Empty;
+			int lastIndex = 1;
+			for (var i = inputWithoutSeparator.Length - 3; i > 0; i -= 3)
+			{
+				lastIndex = i;
+#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
+				result = $"{Resources.CALC_THOUSANDS_SEPARATOR}{inputWithoutSeparator.Substring(i, 3)}" + result;
+#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
+			}
+
+			result = inputWithoutSeparator.Substring(0, lastIndex) + result;
+
+			return hasAlgebSign ? "-" + result : result;
 		}
 
 		private void CommonSpecialFunctionWriteToMemoryOperations(out double numberToSet, int specialNumberDecimalCount, bool setDisplayText = true)

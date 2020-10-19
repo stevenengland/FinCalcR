@@ -775,7 +775,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			this.PerformBasicEndCapitalCalculation(vm);
 
 			vm.OperatorPressedCommand.Execute("+");
-			Assert.True(vm.DisplayText == "-113187,55");
+			Assert.True(vm.DisplayText == "-113.187,55");
 			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
 			Assert.True(vm.EndStatusBarText == string.Empty);
 			vm.DigitPressedCommand.Execute(1);
@@ -783,7 +783,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
 			vm.CalculatePressedCommand.Execute(null);
 
-			Assert.True(vm.DisplayText == "-113186,548818633");
+			Assert.True(vm.DisplayText == "-113.186,548818633");
 			Assert.True(Math.Abs(vm.DisplayNumber - -113186.548818633) < Tolerance);
 
 			// Digit
@@ -807,7 +807,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			vm.AlgebSignCommand.Execute(false);
 			Assert.True(vm.EndStatusBarText == string.Empty);
-			Assert.True(vm.DisplayText == "113187,55");
+			Assert.True(vm.DisplayText == "113.187,55");
 			Assert.True(Math.Abs(vm.DisplayNumber - 113187.548818633) < Tolerance);
 
 			// Decimal separator
@@ -816,7 +816,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 			vm.DecimalSeparatorPressedCommand.Execute(null);
 			Assert.True(vm.EndStatusBarText == string.Empty);
-			Assert.True(vm.DisplayText == "-113187,55");
+			Assert.True(vm.DisplayText == "-113.187,55");
 			Assert.True(Math.Abs(vm.DisplayNumber - -113187.548818633) < Tolerance);
 			vm.DigitPressedCommand.Execute(1);
 			Assert.True(vm.DisplayText == "0,1");
@@ -1046,7 +1046,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.RatePressedCommand.Execute(false);
 			vm.EndPressedCommand.Execute(false);
 
-			Assert.True(vm.DisplayText == "-113187,55");
+			Assert.True(vm.DisplayText == "-113.187,55");
 			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
 			Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
 		}

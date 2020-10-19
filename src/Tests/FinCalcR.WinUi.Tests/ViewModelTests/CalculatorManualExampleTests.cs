@@ -67,7 +67,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.OperatorPressedCommand.Execute("/");
 			vm.DigitPressedCommand.Execute(5);
 			vm.EndPressedCommand.Execute(false);
-			Assert.True(vm.DisplayText == "4000,00");
+			Assert.True(vm.DisplayText == "4.000,00");
 			Assert.True(Math.Abs(vm.DisplayNumber - 4000) < Tolerance);
 		}
 
@@ -168,7 +168,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.RatePressedCommand.Execute(false);
 			vm.EndPressedCommand.Execute(false);
 
-			Assert.True(vm.DisplayText == "-113187,55");
+			Assert.True(vm.DisplayText == "-113.187,55");
 			Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
 			Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
 		}
@@ -205,7 +205,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.EndPressedCommand.Execute(false);
 			vm.StartPressedCommand.Execute(false);
 
-			Assert.True(vm.DisplayText == "-49406,13");
+			Assert.True(vm.DisplayText == "-49.406,13");
 			Assert.True(Math.Abs(vm.DisplayNumber - -49406.13) < Tolerance);
 			Assert.True(Math.Abs(vm.StartNumber - -49406.13) < Tolerance);
 		}
@@ -251,7 +251,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.EndPressedCommand.Execute(false);
 			vm.RatePressedCommand.Execute(false);
 
-			Assert.True(vm.DisplayText == "11827,95");
+			Assert.True(vm.DisplayText == "11.827,95");
 			Assert.True(Math.Abs(vm.DisplayNumber - 11827.95) < Tolerance);
 			Assert.True(Math.Abs(vm.RateNumber - 11827.95) < Tolerance);
 		}
