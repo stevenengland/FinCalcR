@@ -113,10 +113,10 @@
     <value>A Division by zero is not allowed.</value>
   </data>
   <data name="EXC_NOT_FINITE_NUMBER" xml:space="preserve">
-    <value>The result of dividing {0} by {1} is infinite.</value>
+    <value>The result of the calculation isn't a finite number.</value>
   </data>
   <data name="EXC_OVERFLOW_EXCEPTION" xml:space="preserve">
-    <value>The result of the calculation of {0} and {1} exceeds the supported number space.</value>
+    <value>The result of the calculation exceeds the supported number space.</value>
   </data>
   <data name="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" xml:space="preserve">
     <value>The last button pressed has no assigned function. Please report the error.</value>

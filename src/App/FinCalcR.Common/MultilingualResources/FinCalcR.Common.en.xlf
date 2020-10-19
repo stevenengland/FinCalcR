@@ -140,12 +140,12 @@
           <target state="translated">A Division by zero is not allowed.</target>
         </trans-unit>
         <trans-unit id="EXC_NOT_FINITE_NUMBER" translate="yes" xml:space="preserve">
-          <source>Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</source>
-          <target state="translated">The result of dividing {0} by {1} is infinite.</target>
+          <source>Das Ergebnis der Berechnung ist keine finite Zahl.</source>
+          <target state="translated">The result of the calculation isn't a finite number.</target>
         </trans-unit>
         <trans-unit id="EXC_OVERFLOW_EXCEPTION" translate="yes" xml:space="preserve">
-          <source>Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</source>
-          <target state="translated">The result of the calculation of {0} and {1} exceeds the supported number space.</target>
+          <source>Das Ergebnis der Berechnung überchreitet den unterstützten Zahlenraum.</source>
+          <target state="translated">The result of the calculation exceeds the supported number space.</target>
         </trans-unit>
         <trans-unit id="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" translate="yes" xml:space="preserve">
           <source>Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</source>

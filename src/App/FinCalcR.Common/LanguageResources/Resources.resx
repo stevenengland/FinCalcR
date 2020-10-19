@@ -169,13 +169,13 @@
     <value>Der Zins darf nicht kleiner als -100 sein.</value>
   </data>
   <data name="EXC_NOT_FINITE_NUMBER" xml:space="preserve">
-    <value>Das Ergebnis der Division von {0} geteilt durch {1} ist infinit.</value>
+    <value>Das Ergebnis der Berechnung ist keine finite Zahl.</value>
   </data>
   <data name="EXC_OPERATION_NOT_SUPPORTED" xml:space="preserve">
     <value>Die Operation wird nicht unterstützt.</value>
   </data>
   <data name="EXC_OVERFLOW_EXCEPTION" xml:space="preserve">
-    <value>Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum.</value>
+    <value>Das Ergebnis der Berechnung überchreitet den unterstützten Zahlenraum.</value>
   </data>
   <data name="EXC_PARSE_DOUBLE_IMPOSSIBLE" xml:space="preserve">
     <value>Die Eingabe ist keine gültige Zahl.</value>

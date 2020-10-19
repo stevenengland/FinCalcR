@@ -1027,43 +1027,25 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.SetNumber(out this.secondNumber);
-			try
-			{
-				var calculatedResult =
-					SimpleCalculator.Calculate(this.firstNumber, this.secondNumber, this.ActiveMathOperator);
-				if (double.IsNaN(calculatedResult) || double.IsNegativeInfinity(calculatedResult) ||
-				    double.IsPositiveInfinity(calculatedResult))
-				{
-					throw new NotFiniteNumberException();
-				}
 
+			double calculatedResult = 0;
+
+			if (!string.IsNullOrWhiteSpace(this.activeMathOperator))
+			{
+				calculatedResult = this.CalculateAndCheckResult(true, new Func<double, double, string, double>(SimpleCalculator.Calculate), this.firstNumber, this.secondNumber, this.ActiveMathOperator);
+			}
+
+			if (this.IsNumber(calculatedResult))
+			{
 				this.ResetNumbers();
 				this.firstNumber = calculatedResult;
 				this.BuildSidesFromNumber(calculatedResult);
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText();
 				this.calcCommandLock = true;
-				this.LastPressedOperation = LastPressedOperation.Calculate;
 			}
-			catch (NotFiniteNumberException ex)
-			{
-				this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_NOT_FINITE_NUMBER, this.firstNumber, this.secondNumber)));
-				this.OnClearPressed();
-			}
-			catch (DivideByZeroException ex)
-			{
-				this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
-				this.OnClearPressed();
-			}
-			catch (OverflowException ex)
-			{
-				this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_OVERFLOW_EXCEPTION, this.firstNumber, this.secondNumber)));
-				this.OnClearPressed();
-			}
-			catch (NotSupportedException)
-			{
-				this.OnClearPressed();
-			}
+
+			this.LastPressedOperation = LastPressedOperation.Calculate;
 		}
 
 		private void SetNumber(out double number)
@@ -1242,7 +1224,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				if (notifyIfResultIsNotValid)
 				{
-					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_NOT_FINITE_NUMBER, this.firstNumber, this.secondNumber)));
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_NOT_FINITE_NUMBER));
 				}
 
 				this.OnClearPressed();
@@ -1260,7 +1242,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				if (notifyIfResultIsNotValid)
 				{
-					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_OVERFLOW_EXCEPTION, this.firstNumber, this.secondNumber)));
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_OVERFLOW_EXCEPTION));
 				}
 
 				this.OnClearPressed();

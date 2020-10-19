@@ -867,6 +867,16 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		#region Calculate Tests
 
 		[Fact]
+		public void PressingCalculationAsFirstButtonDisplaysZero()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			vm.CalculatePressedCommand.Execute(null);
+			Assert.True(vm.DisplayText == "0,");
+			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+		}
+
+		[Fact]
 		public void PressingCalculateResetsStatusLabelTexts()
 		{
 			var mockObjects = MockFactories.GetMockObjects();

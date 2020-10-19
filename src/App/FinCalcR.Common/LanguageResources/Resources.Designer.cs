@@ -214,7 +214,7 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Das Ergebnis der Division von {0} geteilt durch {1} ist infinit..
+        ///   Looks up a localized string similar to Das Ergebnis der Berechnung ist keine finite Zahl..
         /// </summary>
         public static string EXC_NOT_FINITE_NUMBER {
             get {
@@ -232,7 +232,7 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Das Ergebnis der Berechnung von {0} und {1} überchreitet den unterstützten Zahlenraum..
+        ///   Looks up a localized string similar to Das Ergebnis der Berechnung überchreitet den unterstützten Zahlenraum..
         /// </summary>
         public static string EXC_OVERFLOW_EXCEPTION {
             get {
