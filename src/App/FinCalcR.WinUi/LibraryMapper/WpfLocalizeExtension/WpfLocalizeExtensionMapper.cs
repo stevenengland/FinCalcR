@@ -14,9 +14,13 @@ namespace StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension
 			this.resourcesIdentifier = resourcesIdentifier;
 		}
 
+		/// <summary>
+		/// Sets the culture, thread and threadUI culture at once.
+		/// </summary>
+		/// <param name="cultureInfo">A valid culture info that is supported.</param>
 		public void ChangeCurrentCulture(CultureInfo cultureInfo)
 		{
-			WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
+			WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.SetCurrentThreadCulture = true; // Threads culture and UI culture will be set along with the culture itself.
 			WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = cultureInfo;
 		}
 
