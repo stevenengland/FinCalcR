@@ -336,6 +336,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					this.CalculatePressedCommand.Execute(null);
 					break;
 				case "Decimal":
+				case "OemComma":
+				case "OemPeriod":
 					this.DecimalSeparatorPressedCommand.Execute(null);
 					break;
 				case "Delete":

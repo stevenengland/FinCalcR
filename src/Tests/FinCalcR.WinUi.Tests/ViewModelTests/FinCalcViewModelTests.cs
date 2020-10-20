@@ -172,6 +172,18 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.ClearPressedCommand.Execute(true);
 
 			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemComma")));
+			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+			Assert.True(vm.DisplayText == "1,1");
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemPeriod")));
+			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+			Assert.True(vm.DisplayText == "1,1");
+			vm.ClearPressedCommand.Execute(true);
+
+			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
 			Assert.True(vm.DisplayText == "1,");
 			vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1")));
 			Assert.True(vm.DisplayText == "11,");
