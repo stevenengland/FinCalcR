@@ -1207,7 +1207,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			double calculatedResult = 0;
 			try
 			{
-				calculatedResult = (double) method.DynamicInvoke(args);
+				calculatedResult = (double)method.DynamicInvoke(args);
 				if (!this.IsNumber(calculatedResult))
 				{
 					throw new NotFiniteNumberException();

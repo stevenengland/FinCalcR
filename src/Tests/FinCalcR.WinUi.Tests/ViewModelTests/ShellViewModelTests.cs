@@ -63,7 +63,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.LanguageSelectionChangedCommand.Execute(new KeyValuePair<string, string>("de", "de"));
 
 			localizationServiceMock.Verify(x => x.ChangeCurrentCulture(It.IsAny<CultureInfo>()), Times.Once);
-			windowManagerMock.Verify(x => x.ShowWindow(It.IsAny<object>(), It.IsAny<object>(),It.IsAny<Dictionary<string, object>>()), Times.Once);
+			windowManagerMock.Verify(x => x.ShowWindow(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<Dictionary<string, object>>()), Times.Once);
 		}
 
 		[Fact]
