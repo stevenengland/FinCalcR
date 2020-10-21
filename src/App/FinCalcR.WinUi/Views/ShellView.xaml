@@ -21,10 +21,10 @@
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         Style="{DynamicResource WindowBaseStyle}"
         Title="ShellView" 
-        Height="600" 
-        Width="600"
-		MinWidth="600"
-		MinHeight="600"
+        Height="650" 
+        Width="650"
+		MinWidth="650"
+		MinHeight="650"
         d:DataContext="{Binding Source={d:DesignInstance viewModels:ShellViewModel},
                 Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}"
         cal:Message.Attach="[Event PreviewKeyDown] = [Action OnKeyboardKeyPressed($source, $eventArgs)];">

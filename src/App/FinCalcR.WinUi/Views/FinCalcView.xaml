@@ -22,7 +22,7 @@
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-	        <RowDefinition Height="2*" />
+	        <RowDefinition Height="*" />
 	        <RowDefinition Height="*" />
 	        <RowDefinition Height="*" />
 	        <RowDefinition Height="*" />
@@ -32,7 +32,7 @@
 		</Grid.RowDefinitions>
 			<StackPanel Orientation="Vertical"
 			            Grid.ColumnSpan="4"
-			            Margin="0 10 0 0">
+			            Margin="5 10 0 0">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*" />
@@ -64,7 +64,7 @@
 				<Label x:Name="ResultText"
 					   Style="{StaticResource CalculatorOutputLabel}"
 				       FontSize="42"
-				       Height="80"
+				       Height="60"
 					   Content="{Binding DisplayText}"
 					   VerticalAlignment="Top"
 				       HorizontalContentAlignment="Right"
@@ -74,7 +74,8 @@
 	       
 		   <Grid Grid.Row="1"
 				 Grid.Column="0"
-		         ColumnSpan="4">
+		         ColumnSpan="4"
+				 Margin="0 20 0 30">
 			   <Grid.ColumnDefinitions>
 				   <ColumnDefinition Width="*" />
 				   <ColumnDefinition Width="*" />
@@ -111,7 +112,6 @@
 			   <Button Grid.Row="1"
 			           Grid.Column="0"
 			           Style="{StaticResource CalculatorClearButton}"
-			           Margin="0 0 0 0"
 			           FontWeight="Bold"
 			           Content="C"
 			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnClearPressedAsync($source, $eventArgs)];" />
