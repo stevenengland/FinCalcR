@@ -403,6 +403,33 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Englisch.
+        /// </summary>
+        public static string LANG_ENGLISH {
+            get {
+                return ResourceManager.GetString("LANG_ENGLISH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deutsch.
+        /// </summary>
+        public static string LANG_GERMAN {
+            get {
+                return ResourceManager.GetString("LANG_GERMAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sprache.
+        /// </summary>
+        public static string LANG_LANGUAGE {
+            get {
+                return ResourceManager.GetString("LANG_LANGUAGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mail-Kontakt.
         /// </summary>
         public static string MailContactLabel_Text {

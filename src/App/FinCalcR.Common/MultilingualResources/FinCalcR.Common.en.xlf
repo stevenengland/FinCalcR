@@ -52,7 +52,7 @@
         </trans-unit>
         <trans-unit id="FinCalcItem_Name" translate="yes" xml:space="preserve">
           <source>Finanztaschenrechner</source>
-          <target state="translated">Financial calulator</target>
+          <target state="translated">Financial calculator</target>
         </trans-unit>
         <trans-unit id="MailContactLabel_Text" translate="yes" xml:space="preserve">
           <source>Mail-Kontakt</source>
@@ -96,8 +96,7 @@
         </trans-unit>
         <trans-unit id="FinCalcFunctionEnd" translate="yes" xml:space="preserve">
           <source>Ende</source>
-          <target state="translated">End
-</target>
+          <target state="translated">End</target>
         </trans-unit>
         <trans-unit id="FinCalcFunctionInterest" translate="yes" xml:space="preserve">
           <source>Zins</source>
@@ -178,6 +177,18 @@
         <trans-unit id="EXC_CALC_NOT_POSSIBLE" translate="yes" xml:space="preserve">
           <source>Die Berechnung war nicht möglich.</source>
           <target state="translated">The calculation was not possible.</target>
+        </trans-unit>
+        <trans-unit id="LANG_ENGLISH" translate="yes" xml:space="preserve">
+          <source>Englisch</source>
+          <target state="translated">English</target>
+        </trans-unit>
+        <trans-unit id="LANG_GERMAN" translate="yes" xml:space="preserve">
+          <source>Deutsch</source>
+          <target state="translated">German</target>
+        </trans-unit>
+        <trans-unit id="LANG_LANGUAGE" translate="yes" xml:space="preserve">
+          <source>Sprache</source>
+          <target state="translated">Language</target>
         </trans-unit>
       </group>
     </body>

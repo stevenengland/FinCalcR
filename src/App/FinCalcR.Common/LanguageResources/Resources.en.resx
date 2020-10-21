@@ -46,7 +46,7 @@
     <value>App version</value>
   </data>
   <data name="FinCalcItem_Name" xml:space="preserve">
-    <value>Financial calulator</value>
+    <value>Financial calculator</value>
   </data>
   <data name="MailContactLabel_Text" xml:space="preserve">
     <value>Mail contact</value>
@@ -79,8 +79,7 @@
     <value>adv.</value>
   </data>
   <data name="FinCalcFunctionEnd" xml:space="preserve">
-    <value>End
-</value>
+    <value>End</value>
   </data>
   <data name="FinCalcFunctionInterest" xml:space="preserve">
     <value>Interest</value>
@@ -141,5 +140,14 @@
   </data>
   <data name="EXC_CALC_NOT_POSSIBLE" xml:space="preserve">
     <value>The calculation was not possible.</value>
+  </data>
+  <data name="LANG_ENGLISH" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LANG_GERMAN" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="LANG_LANGUAGE" xml:space="preserve">
+    <value>Language</value>
   </data>
 </root>

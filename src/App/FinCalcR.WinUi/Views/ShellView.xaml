@@ -40,6 +40,26 @@
 					              Width="20"
 					              Height="20"
                                   Foreground="White"/>
+					<ComboBox Name="LanguageCb" 
+					          DockPanel.Dock="Top"
+					          Margin="32 0 0 16"
+					          Width="150"
+							  HorizontalAlignment="Left"
+					          materialDesign:HintAssist.Hint="{lex:Loc Key=LANG_LANGUAGE}"
+					          ItemsSource="{Binding Languages}" 
+					          SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Value}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="SelectionChanged">
+								<i:InvokeCommandAction Command="{Binding LanguageSelectionChangedCommand}"
+								                       CommandParameter="{Binding ElementName=LanguageCb, Path=SelectedItem}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</ComboBox>
 					<ListBox x:Name="MenuItemLst" Margin="0 16 0 16" SelectedIndex="0"
 					         ItemsSource="{Binding MenuItems}">
 						<!--cal:Message.Attach="[Event SelectionChanged]=[Action OnMenuItemsSelectionChanged($source,$eventArgs)];"-->

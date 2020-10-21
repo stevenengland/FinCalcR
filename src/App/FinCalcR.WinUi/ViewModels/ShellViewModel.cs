@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,12 +25,17 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private readonly IEventAggregator eventAggregator;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IDialogHostMapper dialogHostMapper;
+		private readonly ILocalizationService localizationService;
+		private readonly IWindowManager windowManager;
 		private readonly AboutViewModel aboutViewModel;
 		private readonly FinCalcViewModel finCalcViewModel;
 		private ErrorEvent lastErrorEvent;
 		private WindowState curWindowState;
 		private bool isMenuBarVisible;
 		private string titleBarText;
+		private ObservableCollection<KeyValuePair<string, string>> languages = new ObservableCollection<KeyValuePair<string, string>>();
+		private KeyValuePair<string, string> selectedLanguage;
+		private ObservableCollection<NavigationMenuItem> menuItems;
 
 		public ShellViewModel(
 			ISnackbarMessageQueue snackbarMessageQueue,
@@ -41,6 +49,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.SbMessageQueue = snackbarMessageQueue;
 			this.eventAggregator = eventAggregator;
 			this.dialogHostMapper = dialogHostMapper;
+			this.localizationService = localizationService;
+			this.windowManager = windowManager;
 
 			this.aboutViewModel = aboutViewModel;
 			this.finCalcViewModel = finCalcViewModel;
@@ -48,9 +58,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.eventAggregator?.Subscribe(this);
 
 			this.LoadMenuItems();
+			this.LoadLanguages();
+			this.TitleBarText = Resources.AppTitleTxt_Text + " - " + Resources.FinCalcItem_Name;
 		}
 
 		public ICommand MenuItemsSelectionChangedCommand => new SyncCommand<object>(this.OnMenuItemsSelectionChanged);
+
+		public ICommand LanguageSelectionChangedCommand => new SyncCommand<object>(this.OnLanguageSelectionChanged);
 
 		public ICommand ExitAppCommand => new SyncCommand(this.OnExitApp);
 
@@ -60,7 +74,25 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public ISnackbarMessageQueue SbMessageQueue { get; private set; }
 
-		public NavigationMenuItem[] MenuItems { get; private set; }
+		public ObservableCollection<NavigationMenuItem> MenuItems
+		{
+			get => this.menuItems;
+			set
+			{
+				this.menuItems = value;
+				this.NotifyOfPropertyChange(() => this.MenuItems);
+			}
+		}
+
+		public ObservableCollection<KeyValuePair<string, string>> Languages
+		{
+			get => this.languages;
+			set
+			{
+				this.languages = value;
+				this.NotifyOfPropertyChange(() => this.Languages);
+			}
+		}
 
 		public WindowState CurWindowState
 		{
@@ -89,6 +121,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.titleBarText = value;
 				this.NotifyOfPropertyChange(() => this.TitleBarText);
+			}
+		}
+
+		public KeyValuePair<string, string> SelectedLanguage
+		{
+			get => this.selectedLanguage;
+			set
+			{
+				this.selectedLanguage = value;
+				this.NotifyOfPropertyChange(() => this.SelectedLanguage);
 			}
 		}
 
@@ -175,9 +217,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.eventAggregator.PublishOnUIThread(new KeyboardKeyDownEvent(e));
 		}
 
+		private void LoadLanguages()
+		{
+			this.Languages.Clear();
+			this.Languages.Add(new KeyValuePair<string, string>("de", Resources.LANG_GERMAN));
+			this.Languages.Add(new KeyValuePair<string, string>("en", Resources.LANG_ENGLISH));
+		}
+
 		private void LoadMenuItems()
 		{
-			this.MenuItems = new[]
+			this.MenuItems = new ObservableCollection<NavigationMenuItem>()
 			{
 				new NavigationMenuItem()
 				{
@@ -201,6 +250,30 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.IsMenuBarVisible = false;
 			var navItem = (NavigationMenuItem)item;
 			this.TitleBarText = Resources.AppTitleTxt_Text + " - " + navItem.Name;
+		}
+
+		private void OnLanguageSelectionChanged(object item)
+		{
+			var langItem = (KeyValuePair<string, string>)item;
+			var lang = langItem.Key;
+			switch (lang)
+			{
+				case "de":
+					this.localizationService.ChangeCurrentCulture(new CultureInfo("de"));
+					break;
+				case "en":
+					this.localizationService.ChangeCurrentCulture(new CultureInfo("en"));
+					break;
+				default:
+					break;
+			}
+
+			// Open an new instance of vm (avoid using IoC.Get to be testable). The new vm will not take over the old values.
+			this.windowManager.ShowWindow(new ShellViewModel(this.SbMessageQueue, this.eventAggregator, this.dialogHostMapper, this.localizationService, this.windowManager, this.aboutViewModel, this.finCalcViewModel), null, null);
+
+			// Close this instance
+			// One could check the success in a static bootstrapper void that takes a look at the Application.Current.Windows ("How much windows of type xyz do exist?").
+			this.TryClose();
 		}
 
 		private void OnMinimizeApp()

@@ -231,6 +231,15 @@
   <data name="InnerErrorMessageLbl_Text" xml:space="preserve">
     <value>Innerer Fehler:</value>
   </data>
+  <data name="LANG_ENGLISH" xml:space="preserve">
+    <value>Englisch</value>
+  </data>
+  <data name="LANG_GERMAN" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="LANG_LANGUAGE" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
   <data name="MailContactLabel_Text" xml:space="preserve">
     <value>Mail-Kontakt</value>
   </data>

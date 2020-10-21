@@ -33,7 +33,19 @@ namespace StEn.FinCalcR.WinUi
 			try
 			{
 				this.LocalizationService = new WpfLocalizeExtensionMapper("Resources");
-				this.LocalizationService.ChangeCurrentCulture(new CultureInfo("de"));
+				if (CultureInfo.CurrentCulture.ToString().StartsWith("en") || CultureInfo.CurrentCulture.ToString().StartsWith("en-"))
+				{
+					this.LocalizationService.ChangeCurrentCulture(new CultureInfo("en"));
+				}
+				else if (CultureInfo.CurrentCulture.ToString().StartsWith("de") || CultureInfo.CurrentCulture.ToString().StartsWith("de-"))
+				{
+					this.LocalizationService.ChangeCurrentCulture(new CultureInfo("de"));
+				}
+				else
+				{
+					this.LocalizationService.ChangeCurrentCulture(new CultureInfo("en"));
+				}
+
 				this.simpleContainer.Instance<ILocalizationService>(this.LocalizationService);
 			}
 			catch (Exception e)
