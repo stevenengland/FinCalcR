@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FinCalcR.WinUi")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("FinCalcR")]
+[assembly: AssemblyDescription("FinCalcR is a financial calculator that helps you to calculate frequently asked questions in the financial world with a few clicks.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("StEn Open Source - https://github.com/stevenengland/FinCalcR")]
 [assembly: AssemblyProduct("FinCalcR.WinUi")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCopyright("Copyright © Steven England 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

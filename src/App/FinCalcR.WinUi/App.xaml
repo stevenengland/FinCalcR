@@ -32,6 +32,7 @@
 				<!--<ResourceDictionary Source="NotifyIconResources.xaml" />-->
 
 				<ResourceDictionary Source="Views/CustomResources.xaml"/>
+				<ResourceDictionary Source="Views/Graphics.xaml"></ResourceDictionary>
 
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
