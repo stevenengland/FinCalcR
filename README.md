@@ -8,11 +8,12 @@
 ╚═╝     ╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝
 ```                                                             
 
-|README|
-||
-|![logo](https://raw.githubusercontent.com/stevenengland/FinCalcR/master/eng/Logo/logo.png)|
-|In [Deutsch ansehen](#fincalcr-in-deutsch)|
-|View [in English](#fincalcr-in-english)|
+<table>
+<tr>
+<td><image src="https://raw.githubusercontent.com/stevenengland/FinCalcR/master/eng/Logo/logo.png" width="150"></td>
+<td>README<br/><a href="#fincalcr-in-deutsch">In Deutsch ansehen</a></br><a href="#fincalcr-in-english">View in English</a></td>
+</tr>
+</table>
 
 | Branch        | Status  |
 | ------------- | :-------------:|
