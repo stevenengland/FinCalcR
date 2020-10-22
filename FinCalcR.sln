@@ -19,6 +19,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinCalcR.WinUi", "src\App\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinCalcR.WinUi.Tests", "src\Tests\FinCalcR.WinUi.Tests\FinCalcR.WinUi.Tests.csproj", "{79225A91-FB51-4873-B2B0-E605B4E8A25A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_RepoDocs", "_RepoDocs", "{51191075-D149-4EAA-9797-5C89CCADF4C8}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_AppDocs", "_AppDocs", "{3460309B-6FBA-48E3-89FF-3CF9A00AB240}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Keyboard_de.MD = docs\Keyboard_de.MD
+		docs\Keyboard_en.MD = docs\Keyboard_en.MD
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
