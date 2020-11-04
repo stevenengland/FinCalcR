@@ -2,10 +2,10 @@
 Der Taschenrechner kann mit folgenden Tasten bedient werden:
 
 | Taste | Funktion |
-|||
+|---|---|
 |0-9|Ziffern|
 |, oder .|Dezimaltrennzeichen|
-|+-*/|Addieren etc.|
+|+-\*/|Addieren etc.|
 |Enter|Die selbe Funktion wie "="|
 |Umschalt|Langes Drücken simulieren (Bsp. Umschalt + F1 = lange F1 drücken)|
 |Entf (+ Umschalt)|Eingaben löschen (inkl. Funktionsspeicher)|

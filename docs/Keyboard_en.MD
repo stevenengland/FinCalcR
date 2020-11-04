@@ -2,10 +2,10 @@
 The calculator can be operated with the following keys:
 
 | Key | Function |
-|||
+|---|---|
 |0-9|Digits|
 |, or .|Decimal|
-|+-*/|Add etc.|
+|+-\*/|Add etc.|
 |Return|The same function as "="|
 |Shift|Long press simulation (e. g. Shift + F1 = long press F1)|
 |Del (+ Shift)|Delete input (incl. function memory)|
