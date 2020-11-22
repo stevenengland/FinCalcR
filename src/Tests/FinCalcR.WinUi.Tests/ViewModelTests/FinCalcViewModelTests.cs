@@ -1685,6 +1685,31 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance); // sides are reset
 		}
 
+		[Fact]
+		public void PressingYearsShouldDisplaySpecialOutputText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.YearsPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "5,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingYearsShouldSetRateLabelText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.YearsPressedCommand.Execute(false);
+
+			Assert.True(vm.YearsStatusBarText == Resources.FinCalcFunctionYears);
+		}
+
 		#endregion
 
 		#region Interest Tests
@@ -1808,6 +1833,31 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance); // sides are reset
 		}
 
+		[Fact]
+		public void PressingInterestShouldDisplaySpecialOutputText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.InterestPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "5,000");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingInterestShouldSetRateLabelText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.InterestPressedCommand.Execute(false);
+
+			Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
+		}
+
 		#endregion
 
 		#region Start Tests
@@ -1859,6 +1909,31 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.StartPressedCommand.Execute(false);
 			Assert.False(vm.IsAdvance());
 			Assert.True(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
+		}
+
+		[Fact]
+		public void PressingStartShouldDisplaySpecialOutputText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.StartPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "5,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingStartShouldSetRateLabelText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.StartPressedCommand.Execute(false);
+
+			Assert.True(vm.StartStatusBarText == Resources.FinCalcFunctionStart);
 		}
 
 		#endregion
@@ -2000,6 +2075,31 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 		}
 
+		[Fact]
+		public void PressingRateShouldDisplaySpecialOutputText()
+        {
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.RatePressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "5,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingRateShouldSetRateLabelText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.RatePressedCommand.Execute(false);
+
+			Assert.True(vm.RateStatusBarText == Resources.FinCalcFunctionRate);
+		}
+
 		#endregion
 
 		#region End Tests
@@ -2070,6 +2170,31 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			vm.EndPressedCommand.Execute(false);
 
 			Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.End));
+		}
+
+		[Fact]
+		public void PressingEndShouldDisplaySpecialOutputText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+
+			Assert.True(vm.DisplayText == "5,00");
+			Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
+		}
+
+		[Fact]
+		public void PressingEndShouldSetRateLabelText()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.DigitPressedCommand.Execute(5);
+			vm.EndPressedCommand.Execute(false);
+
+			Assert.True(vm.EndStatusBarText == Resources.FinCalcFunctionEnd);
 		}
 
 		#endregion

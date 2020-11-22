@@ -1218,45 +1218,40 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_CALC_NOT_POSSIBLE));
+					this.OnClearPressed();
 				}
-
-				this.OnClearPressed();
 			}
 			catch (NotFiniteNumberException ex)
 			{
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_NOT_FINITE_NUMBER));
+					this.OnClearPressed();
 				}
-
-				this.OnClearPressed();
 			}
 			catch (DivideByZeroException ex)
 			{
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
+					this.OnClearPressed();
 				}
-
-				this.OnClearPressed();
 			}
 			catch (OverflowException ex)
 			{
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_OVERFLOW_EXCEPTION));
+					this.OnClearPressed();
 				}
-
-				this.OnClearPressed();
 			}
 			catch (NotSupportedException)
 			{
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_OPERATION_NOT_SUPPORTED));
+					this.OnClearPressed();
 				}
-
-				this.OnClearPressed();
 			}
 
 			return calculatedResult;
