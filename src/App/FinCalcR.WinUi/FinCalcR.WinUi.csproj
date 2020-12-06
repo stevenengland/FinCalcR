@@ -61,10 +61,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Calculator\Display\IOutputText.cs" />
-    <Compile Include="Calculator\Display\IOutputTextProcessor.cs" />
-    <Compile Include="Calculator\Display\OutputText.cs" />
-    <Compile Include="Calculator\Display\OutputTextProcessor.cs" />
     <Compile Include="Commanding\AsyncCommand.cs" />
     <Compile Include="Commanding\IAsyncCommand.cs" />
     <Compile Include="Commanding\IErrorHandler.cs" />
@@ -200,6 +196,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Calculator\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

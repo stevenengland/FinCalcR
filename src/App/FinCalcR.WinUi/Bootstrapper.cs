@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
+using StEn.FinCalcR.Calculations.Calculator;
+using StEn.FinCalcR.Calculations.Calculator.Display;
+using StEn.FinCalcR.Calculations.Commands;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
@@ -64,23 +68,40 @@ namespace StEn.FinCalcR.WinUi
 					new ErrorEvent(e, $"Could not load {nameof(this.SbMessageQueue)}:" + e.Message, true));
 			}
 
-// Register itself
+			// Register itself
 			this.simpleContainer.Instance(this.simpleContainer);
 
-// .PerRequest
+			// .PerRequest
 			this.simpleContainer
 				.Singleton<IWindowManager, WindowManager>()
 				.Singleton<IEventAggregator, EventAggregator>()
 				.PerRequest<IDialogHostMapper, DialogHostMapper>();
 
-// Registers every ViewModel to the container
+			// Registers every ViewModel to the container
 			this.GetType().Assembly.GetTypes()
 				.Where(type => type.IsClass)
 				.Where(type => type.Name.EndsWith("ViewModel"))
 				.ToList()
 				.ForEach(viewModelType => this.simpleContainer.RegisterPerRequest(
 					viewModelType, viewModelType.ToString(), viewModelType));
-		}
+
+			// Register all Calculator Commands and stuff
+			var assemblies = new[]
+			{
+				Assembly.GetAssembly(typeof(ICalculatorCommand)),
+			};
+
+			foreach (var assembly in assemblies)
+			{
+				assembly.GetTypes()
+					.Where(type => type.BaseType == typeof(BaseCommand))
+					.ToList().ForEach(commandType => this.simpleContainer.RegisterSingleton(typeof(ICalculatorCommand), commandType.ToString(), commandType));
+			}
+
+			this.simpleContainer.Singleton<IEnumerable<ICalculatorCommand>, CommandList>();
+			this.simpleContainer.Instance(new Calculator(new SingleNumberOutputText(new ResultTextFormatter()), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9)));
+			this.simpleContainer.Singleton<ICommandInvoker, CalculatorRemote>();
+        }
 
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
@@ -109,7 +130,7 @@ namespace StEn.FinCalcR.WinUi
 		protected override void BuildUp(object instance)
 		{
 			this.simpleContainer.BuildUp(instance);
-		}
+        }
 
 		protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
