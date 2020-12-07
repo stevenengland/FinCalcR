@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
+using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
@@ -23,6 +24,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private readonly ILocalizationService localizationService;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IEventAggregator eventAggregator;
+		private readonly ICommandInvoker calculatorRemote;
+		private readonly ICalculationCommandReceiver calculator;
 		private string displayText;
 		private double displayNumber;
 		private bool isDisplayTextNumeric = true;
@@ -51,15 +54,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public FinCalcViewModel2(
 			ILocalizationService localizationService,
-			IEventAggregator eventAggregator)
+			IEventAggregator eventAggregator,
+			ICommandInvoker calculatorRemote,
+			ICalculationCommandReceiver calculator)
 		{
 			this.localizationService = localizationService;
 			this.eventAggregator = eventAggregator;
+			this.calculatorRemote = calculatorRemote;
+			this.calculator = calculator;
 
 			this.eventAggregator?.Subscribe(this);
 
 			this.OnClearPressed();
-		}
+        }
 
 		public double YearsNumber => this.yearsNumber;
 

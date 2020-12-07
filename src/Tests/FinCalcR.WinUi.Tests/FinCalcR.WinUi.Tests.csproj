@@ -57,6 +57,10 @@
     <Compile Include="ViewModelTests\ShellViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\App\FinCalcR.Calculations\FinCalcR.Calculations.csproj">
+      <Project>{9CC27354-F3D8-4327-9841-AA6E9DA97569}</Project>
+      <Name>FinCalcR.Calculations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\App\FinCalcR.Common\FinCalcR.Common.csproj">
       <Project>{1D3A1651-A2BA-4886-8D87-A4C27EFFBBBA}</Project>
       <Name>FinCalcR.Common</Name>
