@@ -36,13 +36,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string rightSide;
 		private double firstNumber = 0;
 		private double secondNumber = 0;
-		private double yearsNumber = 0;
-		private double interestNumber = 0;
-		private double startNumber = 0;
-		private double rateNumber = 0;
 
-		private double nominalInterestRateNumber = 0;
-		private double repaymentRateNumber = 0;
 		private bool isAdvanceActive = false;
 		private string advanceStatusBarText;
 		private string yearsStatusBarText;
@@ -68,17 +62,17 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.OnClearPressed();
 		}
 
-		public double YearsNumber => this.yearsNumber;
+		public double YearsNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
 
-		public double InterestNumber => this.interestNumber;
+		public double InterestNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value;
 
-		public double NominalInterestRateNumber => this.nominalInterestRateNumber;
+		public double NominalInterestRateNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value;
 
-		public double RepaymentRateNumber => this.repaymentRateNumber;
+		public double RepaymentRateNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value;
 
-		public double StartNumber => this.startNumber;
+		public double StartNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value;
 
-		public double RateNumber => this.rateNumber;
+		public double RateNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
 
 		public double EndNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value;
 
@@ -444,7 +438,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.yearsNumber, 2);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, 2);
 			}
 			else
 			{
@@ -456,16 +450,17 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						true,
 						new Func<double, double, double, double, double, bool, double>(FinancialCalculator.N),
 						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
-						this.startNumber,
-						this.rateNumber,
-						this.nominalInterestRateNumber,
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
 						this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
 						this.isAdvanceActive);
 
 					if (this.IsNumber(tmpYearsNumber))
 					{
 						this.BuildSidesFromNumber(tmpYearsNumber);
-						this.CommonSpecialFunctionWriteToMemoryOperations(out this.yearsNumber, 2);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpVar;
 					}
 					else
 					{
@@ -475,14 +470,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					var tmpYearsNumber = this.yearsNumber;
-					this.CommonSpecialFunctionWriteToMemoryOperations(out this.yearsNumber, 2);
-					if (this.yearsNumber < 0)
+					var tmpYearsNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
+					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpVar;
+					if (this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value < 0)
 					{
 						this.ResetSides();
 						this.ResetNumbers();
 						this.SetDisplayText();
-						this.yearsNumber = tmpYearsNumber;
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpYearsNumber;
 						this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
 					}
 				}
@@ -557,7 +553,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.interestNumber, 3);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value, 3);
 			}
 			else
 			{
@@ -565,13 +561,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Interest) && this.IsLastPressedOperationSpecialFunction())
 					|| this.LastPressedOperation == LastPressedOperation.Interest)
 				{
-					var tmpInterestNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P), (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.startNumber, this.rateNumber, this.yearsNumber, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive, 50);
+					var tmpInterestNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P), (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive, 50);
 
 					if (this.IsNumber(tmpInterestNumber))
 					{
 						this.BuildSidesFromNumber(tmpInterestNumber);
-						this.CommonSpecialFunctionWriteToMemoryOperations(out this.interestNumber, 3);
-						this.nominalInterestRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.interestNumber);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3);
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value = tmpVar;
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
 					}
 					else
 					{
@@ -581,19 +578,20 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					var tmpInterestNumber = this.interestNumber;
-					this.CommonSpecialFunctionWriteToMemoryOperations(out this.interestNumber, 3);
-					if (this.interestNumber < -100)
+					var tmpInterestNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value;
+					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3);
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value = tmpVar;
+					if (this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value < -100)
 					{
 						this.ResetSides();
 						this.ResetNumbers();
 						this.SetDisplayText();
-						this.interestNumber = tmpInterestNumber;
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value = tmpInterestNumber;
 						this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
 					}
 					else
 					{
-						this.nominalInterestRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.interestNumber);
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
 					}
 				}
 			}
@@ -607,27 +605,28 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Output saved nominal interest
-				this.nominalInterestRateNumber = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.interestNumber);
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.nominalInterestRateNumber, 3);
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, 3);
 			}
 			else
 			{
 				// Calculate/save effective interest, save nominal interest (as interest) and display the effective interest.
-				var tmpNominalInterestNumber = this.nominalInterestRateNumber;
-				this.CommonSpecialFunctionWriteToMemoryOperations(out this.nominalInterestRateNumber, 3, false);
-				if (this.nominalInterestRateNumber < -100)
+				var tmpNominalInterestNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value;
+				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3, false);
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = tmpVar;
+				if (this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value < -100)
 				{
 					this.ResetSides();
 					this.ResetNumbers();
 					this.SetDisplayText();
-					this.nominalInterestRateNumber = tmpNominalInterestNumber;
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = tmpNominalInterestNumber;
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
 				}
 				else
 				{
-					this.interestNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>((m, p) => FinancialCalculator.GetEffectiveInterestRate(p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.nominalInterestRateNumber);
-					this.firstNumber = this.interestNumber;
-					this.BuildSidesFromNumber(this.interestNumber);
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>((m, p) => FinancialCalculator.GetEffectiveInterestRate(p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value);
+					this.firstNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value;
+					this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
 					this.SetDisplayText(true, 3);
 				}
 			}
@@ -659,7 +658,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.startNumber, 2);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, 2);
 			}
 			else
 			{
@@ -667,12 +666,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Start) && this.IsLastPressedOperationSpecialFunction())
 					|| this.LastPressedOperation == LastPressedOperation.Start)
 				{
-					var tmpStartNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.K0), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.rateNumber, this.nominalInterestRateNumber, this.yearsNumber, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive);
+					var tmpStartNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.K0), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive);
 
 					if (this.IsNumber(tmpStartNumber))
 					{
 						this.BuildSidesFromNumber(tmpStartNumber);
-						this.CommonSpecialFunctionWriteToMemoryOperations(out this.startNumber, 2);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value = tmpVar;
 					}
 					else
 					{
@@ -682,7 +682,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					this.CommonSpecialFunctionWriteToMemoryOperations(out this.startNumber, 2);
+					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value = tmpVar;
 				}
 			}
 
@@ -729,7 +730,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.rateNumber, 2);
+				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, 2);
 			}
 			else
 			{
@@ -737,12 +738,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Rate) && this.IsLastPressedOperationSpecialFunction())
 					|| this.LastPressedOperation == LastPressedOperation.Rate)
 				{
-					var tmpRateNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.E), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.startNumber, this.nominalInterestRateNumber, this.yearsNumber, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive);
+					var tmpRateNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.E), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive);
 
 					if (this.IsNumber(tmpRateNumber))
 					{
 						this.BuildSidesFromNumber(tmpRateNumber);
-						this.CommonSpecialFunctionWriteToMemoryOperations(out this.rateNumber, 2);
+						this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value = tmpVar;
 					}
 					else
 					{
@@ -753,8 +755,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				else
 				{
 					// Write the values to the memory
-					this.CommonSpecialFunctionWriteToMemoryOperations(out this.rateNumber, 2);
-					this.repaymentRateNumber = this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
+					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value = tmpVar;
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
 				}
 			}
 
@@ -767,10 +770,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Output saved repayment rate
-				this.repaymentRateNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.startNumber, this.nominalInterestRateNumber, (-1) * this.rateNumber);
-				if (this.IsNumber(this.repaymentRateNumber))
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
+				if (this.IsNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value))
 				{
-					this.CommonSpecialFunctionReadFromMemoryOperations(this.repaymentRateNumber, 2);
+					this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value, 2);
 				}
 				else
 				{
@@ -781,11 +784,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Calculate/save repayment, save repayment (as rate) and display the repayment.
-				this.CommonSpecialFunctionWriteToMemoryOperations(out this.repaymentRateNumber, 2, false);
+				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2, false);
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = tmpVar;
 
-				this.rateNumber = (-1) * this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, e) => FinancialCalculator.GetAnnuity(k0, e, p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.startNumber, this.nominalInterestRateNumber, this.repaymentRateNumber);
-				this.firstNumber = this.rateNumber;
-				this.BuildSidesFromNumber(this.rateNumber);
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value = (-1) * this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, e) => FinancialCalculator.GetAnnuity(k0, e, p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value);
+				this.firstNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
+				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
 				this.SetDisplayText(true, 2);
 			}
 
@@ -864,7 +868,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				else if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsLastPressedOperationSpecialFunction())
 					|| this.LastPressedOperation == LastPressedOperation.End)
 				{
-					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.Kn), this.startNumber, this.rateNumber, this.nominalInterestRateNumber, this.yearsNumber, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive);
+					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.Kn), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.isAdvanceActive);
 
 					if (this.IsNumber(tmpEndNumber))
 					{
@@ -1288,14 +1292,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			if (resetSpecialFunctionNumbers)
 			{
-				this.yearsNumber = 0;
-				this.interestNumber = 0;
-				this.startNumber = 0;
-				this.rateNumber = 0;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = 0;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value = 0;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value = 0;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value = 0;
 				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value = 0;
 				this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value = 12;
-				this.nominalInterestRateNumber = 0;
-				this.repaymentRateNumber = 0;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = 0;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = 0;
 			}
 		}
 
