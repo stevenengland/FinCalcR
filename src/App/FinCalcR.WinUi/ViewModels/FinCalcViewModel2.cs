@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
 using StEn.FinCalcR.Calculations.Calculator;
+using StEn.FinCalcR.Calculations.Calculator.Events;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
@@ -64,6 +65,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.calculator = calculator;
 
 			this.eventAggregator?.Subscribe(this);
+			this.calculator.OutputText.TextChanged += this.OnOutputTextChanged;
 
 			this.OnClearPressed();
         }
@@ -1301,6 +1303,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.StartStatusBarText = string.Empty;
 			this.RateStatusBarText = string.Empty;
 			this.EndStatusBarText = string.Empty;
+		}
+
+		private void OnOutputTextChanged(object sender, OutputTextChangedEventArgs e)
+        {
+            this.DisplayText = e.NewText;
+            this.DisplayNumber = double.TryParse(this.DisplayText, out var value) ? value : double.NaN;
 		}
 	}
 }
