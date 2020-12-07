@@ -678,9 +678,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
-            Assert.True(vm.ActiveMathOperator == string.Empty);
+            Assert.True(vm.ActiveMathOperator == MathOperator.None);
             vm.OperatorPressedCommand.Execute("-");
-            Assert.True(vm.ActiveMathOperator == "-");
+            Assert.True(vm.ActiveMathOperator == MathOperator.Subtract);
         }
 
         [Fact]

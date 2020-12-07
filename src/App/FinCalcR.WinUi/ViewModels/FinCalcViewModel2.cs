@@ -31,7 +31,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double displayNumber;
 		private bool isDisplayTextNumeric = true;
 		private bool isDecimalSeparatorActive = false;
-		private string activeMathOperator = string.Empty;
 		private string leftSide;
 		private string rightSide;
 		private double firstNumber = 0;
@@ -100,12 +99,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 		}
 
-		public string ActiveMathOperator
+		public MathOperator ActiveMathOperator
 		{
-			get => this.activeMathOperator;
+			get => this.calculator.ActiveMathOperator;
 			set
 			{
-				this.activeMathOperator = value;
+				this.calculator.ActiveMathOperator = value;
 				this.NotifyOfPropertyChange(() => this.ActiveMathOperator);
 			}
 		}
@@ -408,7 +407,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.ResetSides();
-			this.ActiveMathOperator = string.Empty;
+			this.ActiveMathOperator = MathOperator.None;
 			this.calculator.IsCalcCommandLock = false;
 
 			this.SetDisplayText();
@@ -429,7 +428,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnYearsSecondFunctionPressed(isLongTouch);
 				return;
@@ -496,7 +495,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ResetNumbers();
 				this.firstNumber = this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
 				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
-				this.ActiveMathOperator = string.Empty;
+				this.ActiveMathOperator = MathOperator.None;
 				this.SetDisplayText(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " " + Resources.FinCalcRatesPerAnnumPostfix);
 			}
 			else
@@ -543,7 +542,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnInterestSecondFunctionPressed(isLongTouch);
 				return;
@@ -647,7 +646,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnStartSecondFunctionPressed();
 				return;
@@ -721,7 +720,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == "*")
+			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnRateSecondFunctionPressed(isLongTouch);
 				return;
@@ -820,22 +819,22 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				if ((this.LastPressedOperation == LastPressedOperation.Digit
 					 || this.LastPressedOperation == LastPressedOperation.AlgebSign
 					 || this.LastPressedOperation == LastPressedOperation.Decimal)
-					&& this.ActiveMathOperator != string.Empty)
+					&& this.ActiveMathOperator != MathOperator.None)
 				{
 					this.SetNumber(out this.secondNumber);
 					var tmpResult = double.NaN;
 					switch (this.ActiveMathOperator)
 					{
-						case "*":
+						case MathOperator.Multiply:
 							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.GetPartValue), this.firstNumber, this.secondNumber);
 							break;
-						case "+":
+						case MathOperator.Add:
 							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.AddPartValueToBaseValue), this.firstNumber, this.secondNumber);
 							break;
-						case "-":
+						case MathOperator.Subtract:
 							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.SubPartValueFromBaseValue), this.firstNumber, this.secondNumber);
 							break;
-						case "/": // function is not documented and calculates like below - but makes not much sense...
+						case MathOperator.Divide: // function is not documented and calculates like below - but makes not much sense...
 							tmpResult = this.CalculateAndCheckResult(
 								true,
 								new Func<double, double, double>(
@@ -850,7 +849,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						this.ResetNumbers();
 						this.firstNumber = tmpResult;
 						this.BuildSidesFromNumber(tmpResult);
-						this.ActiveMathOperator = string.Empty;
+						this.ActiveMathOperator = MathOperator.None;
 						this.SetDisplayText(true, 2);
 						this.calculator.IsCalcCommandLock = true;
 					}
@@ -938,7 +937,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.ResetNumbers();
 				this.ResetSides();
-				this.ActiveMathOperator = string.Empty;
+				this.ActiveMathOperator = MathOperator.None;
 			}
 
 			if (this.calculator.IsCalcCommandLock)
@@ -996,14 +995,34 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.SetDisplayText();
 			}
 
-			if (this.ActiveMathOperator != string.Empty)
+			var tmpOperator = MathOperator.None;
+			var strOperator = (string)mathOperatorObj;
+			switch (strOperator)
+			{
+				case "+":
+					tmpOperator = MathOperator.Add;
+					break;
+				case "-":
+					tmpOperator = MathOperator.Subtract;
+					break;
+				case "*":
+					tmpOperator = MathOperator.Multiply;
+					break;
+				case "/":
+					tmpOperator = MathOperator.Divide;
+					break;
+				default:
+					break;
+			}
+
+			if (this.ActiveMathOperator != MathOperator.None)
 			{
 				this.OnCalculatePressed();
-				this.ActiveMathOperator = (string)mathOperatorObj;
+				this.ActiveMathOperator = tmpOperator;
 			}
 			else
 			{
-				this.ActiveMathOperator = (string)mathOperatorObj;
+				this.ActiveMathOperator = tmpOperator;
 				this.SetNumber(out this.firstNumber);
 			}
 
@@ -1032,7 +1051,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.ResetNumbers();
 				this.ResetSides();
-				this.ActiveMathOperator = string.Empty;
+				this.ActiveMathOperator = MathOperator.None;
 			}
 
 			this.isDecimalSeparatorActive = true;
@@ -1053,9 +1072,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			double calculatedResult = 0;
 
-			if (!string.IsNullOrWhiteSpace(this.activeMathOperator))
+			if (this.ActiveMathOperator != MathOperator.None)
 			{
-				calculatedResult = this.CalculateAndCheckResult(true, new Func<double, double, string, double>(SimpleCalculator.Calculate), this.firstNumber, this.secondNumber, this.ActiveMathOperator);
+				calculatedResult = this.CalculateAndCheckResult(
+					true,
+					new Func<double, double, string, double>(SimpleCalculator.Calculate),
+					this.firstNumber,
+					this.secondNumber,
+					this.TranslateMathOperator(this.ActiveMathOperator));
 			}
 
 			if (this.IsNumber(calculatedResult))
@@ -1063,12 +1087,32 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ResetNumbers();
 				this.firstNumber = calculatedResult;
 				this.BuildSidesFromNumber(calculatedResult);
-				this.ActiveMathOperator = string.Empty;
+				this.ActiveMathOperator = MathOperator.None;
 				this.SetDisplayText();
 				this.calculator.IsCalcCommandLock = true;
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Calculate;
+		}
+
+		private string TranslateMathOperator(MathOperator activeMathOperator)
+		{
+			// TODO: Remove whole function as soon as VMv2 is finished so the old VM does not rely on SimpleCalculator anymore.
+			switch (activeMathOperator)
+			{
+				case MathOperator.None:
+					return string.Empty;
+				case MathOperator.Add:
+					return "+";
+				case MathOperator.Subtract:
+					return "-";
+				case MathOperator.Divide:
+					return "/";
+				case MathOperator.Multiply:
+					return "*";
+				default:
+					throw new ArgumentOutOfRangeException(nameof(activeMathOperator), activeMathOperator, null);
+			}
 		}
 
 		private void SetNumber(out double number)
@@ -1192,7 +1236,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetNumbers();
 			this.firstNumber = numberToSet;
 			this.BuildSidesFromNumber(numberToSet); // So that the display text can be set.
-			this.ActiveMathOperator = string.Empty;
+			this.ActiveMathOperator = MathOperator.None;
 			if (setDisplayText)
 			{
 				this.SetDisplayText(true, specialNumberDecimalCount);
@@ -1204,7 +1248,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetNumbers();
 			this.firstNumber = fistNumberSubstitution;
 			this.BuildSidesFromNumber(fistNumberSubstitution);
-			this.ActiveMathOperator = string.Empty;
+			this.ActiveMathOperator = MathOperator.None;
 			this.SetDisplayText(true, specialNumberDecimalCount);
 		}
 
