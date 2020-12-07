@@ -26,7 +26,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.RepaymentRateNumber, 0, MemoryFieldNames.Categories.Standard));
         }
 
-        public List<IMemoryField> MemoryFields { get; }
+        public List<IMemoryField> MemoryFields { get; } = new List<IMemoryField>();
 
         public IOutputText OutputText { get; }
 
