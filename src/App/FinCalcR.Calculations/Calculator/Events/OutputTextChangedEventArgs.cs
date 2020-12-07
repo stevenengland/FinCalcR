@@ -11,6 +11,6 @@ namespace StEn.FinCalcR.Calculations.Calculator.Events
             this.NewText = newText;
         }
 
-        private string NewText { get; }
+        public string NewText { get; }
     }
 }
