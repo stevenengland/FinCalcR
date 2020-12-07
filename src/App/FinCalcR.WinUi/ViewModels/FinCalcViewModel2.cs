@@ -45,7 +45,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private double nominalInterestRateNumber = 0;
 		private double repaymentRateNumber = 0;
 		private bool isAdvanceActive = false;
-		private bool calcCommandLock = false;
 		private string advanceStatusBarText;
 		private string yearsStatusBarText;
 		private string interestStatusBarText;
@@ -417,7 +416,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.ResetSides();
 			this.ActiveMathOperator = string.Empty;
-			this.calcCommandLock = false;
+			this.calculator.IsCalcCommandLock = false;
 
 			this.SetDisplayText();
 
@@ -842,7 +841,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						this.BuildSidesFromNumber(tmpResult);
 						this.ActiveMathOperator = string.Empty;
 						this.SetDisplayText(true, 2);
-						this.calcCommandLock = true;
+						this.calculator.IsCalcCommandLock = true;
 					}
 					else
 					{
@@ -929,10 +928,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ActiveMathOperator = string.Empty;
 			}
 
-			if (this.calcCommandLock)
+			if (this.calculator.IsCalcCommandLock)
 			{
 				this.ResetSides();
-				this.calcCommandLock = false;
+				this.calculator.IsCalcCommandLock = false;
 			}
 
 			var digit = digitObj.ToString();
@@ -1002,9 +1001,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
-			if (this.calcCommandLock)
+			if (this.calculator.IsCalcCommandLock)
 			{
-				this.calcCommandLock = false;
+				this.calculator.IsCalcCommandLock = false;
 			}
 
 			if (!this.isDisplayTextNumeric)
@@ -1032,7 +1031,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
-			if (this.calcCommandLock)
+			if (this.calculator.IsCalcCommandLock)
 			{
 				return;
 			}
@@ -1053,7 +1052,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.BuildSidesFromNumber(calculatedResult);
 				this.ActiveMathOperator = string.Empty;
 				this.SetDisplayText();
-				this.calcCommandLock = true;
+				this.calculator.IsCalcCommandLock = true;
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Calculate;
