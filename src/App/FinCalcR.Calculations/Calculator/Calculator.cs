@@ -14,19 +14,19 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.OutputText = outputText;
             this.InputText = inputText;
 
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.PreOperatorNumber, 0, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.PostOperatorNumber, 0, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.YearsNumber, 0, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.InterestNumber, 0, MemoryFieldNames.Categories.Special));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.StartNumber, 0, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.RateNumber, 0, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.EndNumber, 0, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.RatesPerAnnumNumber, 12, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.NominalInterestRateNumber, 0, MemoryFieldNames.Categories.Standard));
-            this.MemoryFields.Add(new SimpleMemoryField(MemoryFieldNames.RepaymentRateNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.PreOperatorNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.PostOperatorNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.YearsNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.InterestNumber, 0, MemoryFieldNames.Categories.Special));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.StartNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.RateNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.EndNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<int>(MemoryFieldNames.RatesPerAnnumNumber, 12, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.NominalInterestRateNumber, 0, MemoryFieldNames.Categories.Standard));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.RepaymentRateNumber, 0, MemoryFieldNames.Categories.Standard));
         }
 
-        public List<IMemoryField> MemoryFields { get; } = new List<IMemoryField>();
+        public IMemoryFieldContainer MemoryFields { get; } = new MemoryFieldContainer();
 
         public IOutputText OutputText { get; }
 
@@ -35,29 +35,5 @@ namespace StEn.FinCalcR.Calculations.Calculator
         public MathOperator ActiveMathOperator { get; set; }
 
         public bool IsCalcCommandLock { get; set; }
-
-        public void ResetMemoryFields(IList<string> categories = null)
-        {
-            if (categories == null || !categories.Any())
-            {
-                foreach (var memoryField in this.MemoryFields)
-                {
-                    memoryField.Reset();
-                }
-            }
-            else
-            {
-                foreach (var category in categories)
-                {
-                    foreach (var memoryField in this.MemoryFields)
-                    {
-                        if (memoryField.Category == category)
-                        {
-                            memoryField.Reset();
-                        }
-                    }
-                }
-            }
-        }
     }
 }

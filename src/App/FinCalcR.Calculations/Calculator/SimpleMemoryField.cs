@@ -4,12 +4,13 @@ using System.Text;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
-    public class SimpleMemoryField : IMemoryField
+    public class SimpleMemoryField<T> : IMemoryField<T>
     {
-        public SimpleMemoryField(string id, double defaultValue, string category)
+        public SimpleMemoryField(string id, T defaultValue, string category)
         {
             this.Id = id;
             this.DefaultValue = defaultValue;
+            this.Value = defaultValue;
             this.Category = category;
         }
 
@@ -17,9 +18,9 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public string Category { get; }
 
-        public double DefaultValue { get; }
+        public T DefaultValue { get; }
 
-        public double Value { get; set; }
+        public T Value { get; set; }
 
         public void Reset()
         {

@@ -4,15 +4,15 @@ using System.Text;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
-    public interface IMemoryField
+    public interface IMemoryField<T>
     {
         string Id { get; }
 
         string Category { get; }
 
-        double DefaultValue { get; }
+        T DefaultValue { get; }
 
-        double Value { get; set; }
+        T Value { get; set; }
 
         void Reset();
     }

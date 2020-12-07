@@ -8,7 +8,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 {
     public interface ICalculationCommandReceiver
     {
-        List<IMemoryField> MemoryFields { get; }
+        IMemoryFieldContainer MemoryFields { get; }
 
         IOutputText OutputText { get; }
 
@@ -17,7 +17,5 @@ namespace StEn.FinCalcR.Calculations.Calculator
         MathOperator ActiveMathOperator { get; set; }
 
         bool IsCalcCommandLock { get; set; }
-
-        void ResetMemoryFields(IList<string> categories = null);
     }
 }

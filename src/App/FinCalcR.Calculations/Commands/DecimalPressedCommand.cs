@@ -33,7 +33,7 @@ namespace StEn.FinCalcR.Calculations.Commands
                 // Percent calculation -> is not considered a special function yet but also needs cleanup.
                || this.PreviousCommandWord == CommandWord.PercentCalculation)
             {
-                this.calculator.ResetMemoryFields(new List<string>() { MemoryFieldNames.Categories.Standard });
+                this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
                 this.calculator.InputText.ResetInternalState();
                 this.calculator.ActiveMathOperator = MathOperator.None;
             }
