@@ -3,27 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StEn.FinCalcR.Calculations.Calculator.Events;
 
 namespace StEn.FinCalcR.Calculations.Calculator.Display
 {
     public class SingleNumberOutputText : IOutputText
     {
-        private IResultTextFormatter formatter;
-
-        public SingleNumberOutputText(IResultTextFormatter formatter)
-        {
-            this.formatter = formatter;
-        }
-
-        public event EventHandler TextChanged;
+        public event EventHandler<OutputTextChangedEventArgs> TextChanged;
 
         public string TextValue { get; private set; }
-
-        public bool IsTemporaryOverlay { get; }
 
         public void Set(string inputText)
         {
             this.TextValue = inputText;
+            this.TextChanged?.Invoke(this, new OutputTextChangedEventArgs(this.TextValue));
         }
 
         public double GetTextValueAsNumber()

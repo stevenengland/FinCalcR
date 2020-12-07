@@ -26,6 +26,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         public void Set(double number, int precisionLimit = 0)
         {
+            this.BuildInternalStateFromNumber(number);
             this.BuildInputText(precisionLimit);
         }
 
@@ -80,8 +81,10 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             this.CurrentInputText = formattedWholeNumberPart + this.decimalSeparator + formattedFractionalNumberPart;
         }
 
-        private void BuildSidesFromNumber(double number)
+        private void BuildInternalStateFromNumber(double number)
         {
+            this.ResetInternalState();
+
             var roundedResult = Math.Round(number, this.maxArithmeticPrecision);
             var s = roundedResult.ToString(CultureInfo.InvariantCulture);
             var parts = s.Split('.');
