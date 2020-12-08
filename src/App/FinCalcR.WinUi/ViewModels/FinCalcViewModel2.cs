@@ -33,8 +33,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private bool isDecimalSeparatorActive = false;
 		private string leftSide;
 		private string rightSide;
-		private double firstNumber = 0;
-		private double secondNumber = 0;
 
 		private string advanceStatusBarText; // Remains in VM
 		private string yearsStatusBarText; // Remains in VM
@@ -492,7 +490,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				// Output saved rates
 				this.ResetNumbers();
-				this.firstNumber = this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
 				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
 				this.ActiveMathOperator = MathOperator.None;
 				this.SetDisplayText(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " " + Resources.FinCalcRatesPerAnnumPostfix);
@@ -623,7 +621,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				else
 				{
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>((m, p) => FinancialCalculator.GetEffectiveInterestRate(p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value);
-					this.firstNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value;
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value;
 					this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
 					this.SetDisplayText(true, 3);
 				}
@@ -786,7 +784,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = tmpVar;
 
 				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value = (-1) * this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, e) => FinancialCalculator.GetAnnuity(k0, e, p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value);
-				this.firstNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
 				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
 				this.SetDisplayText(true, 2);
 			}
@@ -820,33 +818,34 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					 || this.LastPressedOperation == LastPressedOperation.Decimal)
 					&& this.ActiveMathOperator != MathOperator.None)
 				{
-					this.SetNumber(out this.secondNumber);
+					this.SetNumber(out var tmpVar);
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value = tmpVar;
 					var tmpResult = double.NaN;
 					switch (this.ActiveMathOperator)
 					{
 						case MathOperator.Multiply:
-							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.GetPartValue), this.firstNumber, this.secondNumber);
+							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.GetPartValue), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
 							break;
 						case MathOperator.Add:
-							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.AddPartValueToBaseValue), this.firstNumber, this.secondNumber);
+							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.AddPartValueToBaseValue), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
 							break;
 						case MathOperator.Subtract:
-							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.SubPartValueFromBaseValue), this.firstNumber, this.secondNumber);
+							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.SubPartValueFromBaseValue), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
 							break;
 						case MathOperator.Divide: // function is not documented and calculates like below - but makes not much sense...
 							tmpResult = this.CalculateAndCheckResult(
 								true,
 								new Func<double, double, double>(
 									(baseValue, rate) => baseValue / rate * 100),
-								this.firstNumber,
-								this.secondNumber);
+								this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+								this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
 							break;
 					}
 
 					if (this.IsNumber(tmpResult))
 					{
 						this.ResetNumbers();
-						this.firstNumber = tmpResult;
+						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = tmpResult;
 						this.BuildSidesFromNumber(tmpResult);
 						this.ActiveMathOperator = MathOperator.None;
 						this.SetDisplayText(true, 2);
@@ -1022,7 +1021,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				this.ActiveMathOperator = tmpOperator;
-				this.SetNumber(out this.firstNumber);
+				this.SetNumber(out var tmpVar);
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = tmpVar;
 			}
 
 			this.LastPressedOperation = LastPressedOperation.Operator;
@@ -1067,7 +1067,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				return;
 			}
 
-			this.SetNumber(out this.secondNumber);
+			this.SetNumber(out var tmpVar);
+			this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value = tmpVar;
 
 			double calculatedResult = 0;
 
@@ -1076,15 +1077,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				calculatedResult = this.CalculateAndCheckResult(
 					true,
 					new Func<double, double, string, double>(SimpleCalculator.Calculate),
-					this.firstNumber,
-					this.secondNumber,
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value,
 					this.TranslateMathOperator(this.ActiveMathOperator));
 			}
 
 			if (this.IsNumber(calculatedResult))
 			{
 				this.ResetNumbers();
-				this.firstNumber = calculatedResult;
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = calculatedResult;
 				this.BuildSidesFromNumber(calculatedResult);
 				this.ActiveMathOperator = MathOperator.None;
 				this.SetDisplayText();
@@ -1228,12 +1229,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// If last input was an operator restore the firstNumber for upcoming operations
 			if (this.LastPressedOperation == LastPressedOperation.Operator)
 			{
-				this.BuildSidesFromNumber(this.firstNumber);
+				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value);
 			}
 
 			this.SetNumber(out numberToSet);
 			this.ResetNumbers();
-			this.firstNumber = numberToSet;
+			this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = numberToSet;
 			this.BuildSidesFromNumber(numberToSet); // So that the display text can be set.
 			this.ActiveMathOperator = MathOperator.None;
 			if (setDisplayText)
@@ -1245,7 +1246,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void CommonSpecialFunctionReadFromMemoryOperations(double fistNumberSubstitution, int specialNumberDecimalCount)
 		{
 			this.ResetNumbers();
-			this.firstNumber = fistNumberSubstitution;
+			this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = fistNumberSubstitution;
 			this.BuildSidesFromNumber(fistNumberSubstitution);
 			this.ActiveMathOperator = MathOperator.None;
 			this.SetDisplayText(true, specialNumberDecimalCount);
@@ -1330,8 +1331,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void ResetNumbers(bool resetSpecialFunctionNumbers = false)
 		{
-			this.firstNumber = 0;
-			this.secondNumber = 0;
+			this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = 0;
+			this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value = 0;
 
 			if (resetSpecialFunctionNumbers)
 			{
