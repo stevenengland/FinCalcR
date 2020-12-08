@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
+using FluentAssertions;
 using Moq;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
@@ -1073,6 +1074,19 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 			this.SetVmStatusLabelTexts(vm);
 			vm.ClearPressedCommand.Execute(true);
 			this.AssertVmStatusLabelsAreEmpty(vm, true);
+		}
+
+		[Fact]
+		public void ClearingLongTouchResetsAdvance()
+		{
+			var mockObjects = MockFactories.GetMockObjects();
+			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+
+			vm.OperatorPressedCommand.Execute("*");
+			vm.StartPressedCommand.Execute(false);
+			vm.IsAdvance().Should().BeTrue();
+			vm.ClearPressedCommand.Execute(true);
+			vm.IsAdvance().Should().BeFalse();
 		}
 
 		[Fact]

@@ -1279,6 +1279,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ratesPerAnnumNumber = 12;
 				this.nominalInterestRateNumber = 0;
 				this.repaymentRateNumber = 0;
+				this.isAdvanceActive = false;
 			}
 		}
 
