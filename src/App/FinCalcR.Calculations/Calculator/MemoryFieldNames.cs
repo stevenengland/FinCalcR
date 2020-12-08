@@ -26,6 +26,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public static string PostOperatorNumber => nameof(PostOperatorNumber);
 
+        public static string IsAdvance => nameof(IsAdvance);
+
         public static class Categories
         {
             public static string Special => nameof(Special);
