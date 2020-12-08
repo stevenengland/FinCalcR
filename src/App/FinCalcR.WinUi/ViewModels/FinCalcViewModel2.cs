@@ -30,8 +30,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private readonly ICalculationCommandReceiver calculator;
 		private string displayText;
 		private double displayNumber; // Remains in VM
-		private string leftSide;
-		private string rightSide;
 
 		private string advanceStatusBarText; // Remains in VM
 		private string yearsStatusBarText; // Remains in VM
@@ -892,14 +890,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnAlgebSignPressed()
 		{
 			this.ResetSpecialFunctionLabels();
-
-			if (this.leftSide.StartsWith("-"))
+			
+			if (this.calculator.InputText.WholeNumberPart.StartsWith("-"))
 			{
-				this.leftSide = this.leftSide.Substring(1);
+				this.calculator.InputText.WholeNumberPart = this.calculator.InputText.WholeNumberPart.Substring(1);
 			}
 			else
 			{
-				this.leftSide = "-" + this.leftSide;
+				this.calculator.InputText.WholeNumberPart = "-" + this.calculator.InputText.WholeNumberPart;
 			}
 
 			switch (this.LastPressedOperation)
@@ -946,28 +944,28 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var digit = digitObj.ToString();
 			if (this.calculator.InputText.IsDecimalSeparatorActive)
 			{
-				if (this.rightSide.Length < 9)
+				if (this.calculator.InputText.FractionalNumberPart.Length < 9)
 				{
-					this.rightSide += digit;
+					this.calculator.InputText.FractionalNumberPart += digit;
 				}
 			}
 			else
 			{
-				if (this.leftSide.Length < 10)
+				if (this.calculator.InputText.WholeNumberPart.Length < 10)
 				{
-					if (!this.leftSide.StartsWith("0") && !this.leftSide.StartsWith("-0"))
+					if (!this.calculator.InputText.WholeNumberPart.StartsWith("0") && !this.calculator.InputText.WholeNumberPart.StartsWith("-0"))
 					{
-						this.leftSide += digit;
+						this.calculator.InputText.WholeNumberPart += digit;
 					}
 					else
 					{
-						if (this.leftSide == "-0")
+						if (this.calculator.InputText.WholeNumberPart == "-0")
 						{
-							this.leftSide = "-" + digit;
+							this.calculator.InputText.WholeNumberPart = "-" + digit;
 						}
 						else
 						{
-							this.leftSide = digit;
+							this.calculator.InputText.WholeNumberPart = digit;
 						}
 					}
 				}
@@ -1116,8 +1114,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void SetNumber(out double number)
 		{
-			var realRightSide = string.IsNullOrEmpty(this.rightSide) ? "0" : this.rightSide;
-			var numberString = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + realRightSide;
+			var realRightSide = string.IsNullOrEmpty(this.calculator.InputText.FractionalNumberPart) ? "0" : this.calculator.InputText.FractionalNumberPart;
+			var numberString = this.calculator.InputText.WholeNumberPart + Resources.CALC_DECIMAL_SEPARATOR + realRightSide;
 			if (!double.TryParse(numberString, out number))
 			{
 				this.eventAggregator.PublishOnUIThread(new ErrorEvent(new ArgumentException(Resources.EXC_PARSE_DOUBLE_IMPOSSIBLE), Resources.EXC_ARGUMENT_INVALID + " " + numberString));
@@ -1128,8 +1126,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void SetDisplayNumber()
 		{
-			var realRightSide = string.IsNullOrEmpty(this.rightSide) ? "0" : this.rightSide;
-			var concatenatedSides = this.leftSide + Resources.CALC_DECIMAL_SEPARATOR + realRightSide;
+			var realRightSide = string.IsNullOrEmpty(this.calculator.InputText.FractionalNumberPart) ? "0" : this.calculator.InputText.FractionalNumberPart;
+			var concatenatedSides = this.calculator.InputText.WholeNumberPart + Resources.CALC_DECIMAL_SEPARATOR + realRightSide;
 			if (!double.TryParse(concatenatedSides, out var parsedNumber))
 			{
 				// This number is only for background checks and should not throw
@@ -1149,8 +1147,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void SetDisplayText(bool isSpecialFunctionNumber = false, int specialNumberDecimalCount = 2)
 		{
-			var displayLeftSide = this.InsertThousandSeparator(this.leftSide);
-			var displayRightSide = this.rightSide;
+			var displayLeftSide = this.InsertThousandSeparator(this.calculator.InputText.WholeNumberPart);
+			var displayRightSide = this.calculator.InputText.FractionalNumberPart;
 			if (isSpecialFunctionNumber)
 			{
 				if (string.IsNullOrWhiteSpace(displayRightSide))
@@ -1187,8 +1185,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var roundedResult = Math.Round(number, 9);
 			var s = roundedResult.ToString(CultureInfo.InvariantCulture);
 			var parts = s.Split('.');
-			this.leftSide = parts[0];
-			this.rightSide = parts.Length < 2 ? string.Empty : parts[1];
+			this.calculator.InputText.WholeNumberPart = parts[0];
+			this.calculator.InputText.FractionalNumberPart = parts.Length < 2 ? string.Empty : parts[1];
 		}
 
 		private string InsertThousandSeparator(string inputWithoutSeparator)
@@ -1321,8 +1319,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void ResetSides()
 		{
-			this.rightSide = string.Empty;
-			this.leftSide = "0";
+			this.calculator.InputText.FractionalNumberPart = string.Empty;
+			this.calculator.InputText.WholeNumberPart = "0";
 			this.calculator.InputText.IsDecimalSeparatorActive = false;
 		}
 

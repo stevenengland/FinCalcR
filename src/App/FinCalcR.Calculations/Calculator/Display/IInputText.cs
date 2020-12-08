@@ -16,5 +16,11 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         // ToDo: Remove function
         bool IsDecimalSeparatorActive { get; set; }
+        
+        // ToDo: Remove function
+        string WholeNumberPart { get; set; }
+        
+        // ToDo: Remove function
+        string FractionalNumberPart { get; set; }
     }
 }

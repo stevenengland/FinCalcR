@@ -29,6 +29,20 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             set { this.isDecimalSeparatorActive = value; }
         }
 
+        // TODO: Remove this Property
+        public string WholeNumberPart
+        {
+            get { return this.wholeNumberPart; }
+            set { this.wholeNumberPart = value; }
+        }
+
+        // TODO: Remove this Property
+        public string FractionalNumberPart
+        {
+            get { return this.fractionalNumberPart; }
+            set { this.fractionalNumberPart = value; }
+        }
+
         public string CurrentInputText { get; private set; }
 
         public void Set(double number, int precisionLimit = 0)
