@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,8 +37,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
             {
                 foreach (var memoryField in this.container.Values)
                 {
-                    var typedField = (IMemoryField<dynamic>)memoryField;
-                    typedField.Reset();
+                    var memoryFieldDescriptor = (IMemoryFieldDescriptor)memoryField;
+                    memoryFieldDescriptor.Reset();
                 }
             }
             else
@@ -46,10 +47,10 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 {
                     foreach (var memoryField in this.container.Values)
                     {
-                        var typedField = (IMemoryField<dynamic>)memoryField;
-                        if (typedField.Category == category)
+                        var memoryFieldDescriptor = (IMemoryFieldDescriptor)memoryField;
+                        if (memoryFieldDescriptor.Category == category)
                         {
-                            typedField.Reset();
+                            memoryFieldDescriptor.Reset();
                         }
                     }
                 }
