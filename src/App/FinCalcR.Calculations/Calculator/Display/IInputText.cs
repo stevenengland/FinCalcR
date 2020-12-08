@@ -13,5 +13,8 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         void DecimalSeparator();
 
         void ResetInternalState(bool updateCurrentInputText = false);
+
+        // ToDo: Remove function
+        bool IsDecimalSeparatorActive { get; set; }
     }
 }

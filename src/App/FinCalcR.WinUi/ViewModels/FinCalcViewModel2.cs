@@ -29,8 +29,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private readonly ICommandInvoker calculatorRemote;
 		private readonly ICalculationCommandReceiver calculator;
 		private string displayText;
-		private double displayNumber;
-		private bool isDecimalSeparatorActive = false;
+		private double displayNumber; // Remains in VM
 		private string leftSide;
 		private string rightSide;
 
@@ -945,7 +944,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			var digit = digitObj.ToString();
-			if (this.isDecimalSeparatorActive)
+			if (this.calculator.InputText.IsDecimalSeparatorActive)
 			{
 				if (this.rightSide.Length < 9)
 				{
@@ -1053,7 +1052,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.ActiveMathOperator = MathOperator.None;
 			}
 
-			this.isDecimalSeparatorActive = true;
+			this.calculator.InputText.IsDecimalSeparatorActive = true;
 
 			this.LastPressedOperation = LastPressedOperation.Decimal;
 		}
@@ -1324,7 +1323,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.rightSide = string.Empty;
 			this.leftSide = "0";
-			this.isDecimalSeparatorActive = false;
+			this.calculator.InputText.IsDecimalSeparatorActive = false;
 		}
 
 		private void ResetSpecialFunctionLabels(bool resetAdvanceStatusBarToo = false)
@@ -1347,6 +1346,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.DisplayNumber = double.TryParse(this.DisplayText, out var value) ? value : double.NaN;
 		}
 
+		// TODO: Remove as soon as IOutput text is implemented
 		private bool IsDisplayTextAFiniteNumber(string displayText)
 		{
 			if (!double.TryParse(displayText, out var value))

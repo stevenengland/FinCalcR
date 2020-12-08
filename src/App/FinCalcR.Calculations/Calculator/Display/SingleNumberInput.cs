@@ -22,6 +22,13 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             this.maxArithmeticPrecision = maxArithmeticPrecision;
         }
 
+        // TODO: Remove this Property
+        public bool IsDecimalSeparatorActive
+        {
+            get { return this.isDecimalSeparatorActive; }
+            set { this.isDecimalSeparatorActive = value; }
+        }
+
         public string CurrentInputText { get; private set; }
 
         public void Set(double number, int precisionLimit = 0)
