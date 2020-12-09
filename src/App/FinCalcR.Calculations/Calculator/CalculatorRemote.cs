@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using StEn.FinCalcR.Calculations.Commands;
 
@@ -17,6 +18,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.commandList = commandList;
         }
 
+        public event EventHandler<CommandWord> CommandExecuted;
+
         public void InvokeCommand(CommandWord commandWord, params object[] parameter)
         {
             ICalculatorCommand command = this.commandList.FirstOrDefault(c => c.ShouldExecute(commandWord));
@@ -26,6 +29,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
 
             command.PreviousCommandWord = this.commandJournal.LastOrDefault();
+            this.CommandExecuted?.Invoke(this, command.PreviousCommandWord);
 
             this.AddCommandToJournal(commandWord);
             command.Execute(parameter);

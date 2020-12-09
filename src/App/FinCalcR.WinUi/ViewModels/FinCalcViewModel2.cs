@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Events;
+using StEn.FinCalcR.Calculations.Commands;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
@@ -51,6 +52,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.eventAggregator?.Subscribe(this);
 			this.calculator.OutputText.TextChanged += this.OnOutputTextChanged;
+			this.calculatorRemote.CommandExecuted += this.OnCommandExecuted;
 
 			this.OnClearPressed();
 		}
@@ -69,7 +71,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public double EndNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value;
 
-		public LastPressedOperation LastPressedOperation { get; set; } = LastPressedOperation.None;
+		public CommandWord LastPressedOperation { get; set; } = CommandWord.None;
 
 		public PressedSpecialFunctions PressedSpecialFunctions { get; private set; }
 
@@ -406,7 +408,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.SetDisplayText();
 
-			this.LastPressedOperation = LastPressedOperation.Clear;
+			this.LastPressedOperation = CommandWord.Clear;
 		}
 
 		private void OnYearsPressed(bool isLongTouch = false)
@@ -415,14 +417,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			if (!isLongTouch && this.IsCommandWordSpecialFunction())
 			{
 				this.ResetSides();
 				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnYearsSecondFunctionPressed(isLongTouch);
 				return;
@@ -436,8 +438,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Years) && this.IsLastPressedOperationSpecialFunction())
-					|| this.LastPressedOperation == LastPressedOperation.Years)
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Years) && this.IsCommandWordSpecialFunction())
+					|| this.LastPressedOperation == CommandWord.Years)
 				{
 					var tmpYearsNumber = this.CalculateAndCheckResult(
 						true,
@@ -478,7 +480,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
-			this.LastPressedOperation = LastPressedOperation.Years;
+			this.LastPressedOperation = CommandWord.Years;
 		}
 
 		private void OnYearsSecondFunctionPressed(bool isLongTouch)
@@ -513,7 +515,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
-			this.LastPressedOperation = LastPressedOperation.RatesPerAnnum;
+			this.LastPressedOperation = CommandWord.RatesPerAnnum;
 		}
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
@@ -529,14 +531,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			if (!isLongTouch && this.IsCommandWordSpecialFunction())
 			{
 				this.ResetSides();
 				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnInterestSecondFunctionPressed(isLongTouch);
 				return;
@@ -551,8 +553,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Interest) && this.IsLastPressedOperationSpecialFunction())
-					|| this.LastPressedOperation == LastPressedOperation.Interest)
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Interest) && this.IsCommandWordSpecialFunction())
+					|| this.LastPressedOperation == CommandWord.Interest)
 				{
 					var tmpInterestNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P), (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value, 50);
 
@@ -590,7 +592,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
-			this.LastPressedOperation = LastPressedOperation.Interest;
+			this.LastPressedOperation = CommandWord.Interest;
 		}
 
 		private void OnInterestSecondFunctionPressed(bool isLongTouch = false)
@@ -625,7 +627,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
-			this.LastPressedOperation = LastPressedOperation.Interest;
+			this.LastPressedOperation = CommandWord.Interest;
 		}
 
 		private void OnStartPressed(bool isLongTouch = false)
@@ -633,14 +635,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			if (!isLongTouch && this.IsCommandWordSpecialFunction())
 			{
 				this.ResetSides();
 				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnStartSecondFunctionPressed();
 				return;
@@ -656,8 +658,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Start) && this.IsLastPressedOperationSpecialFunction())
-					|| this.LastPressedOperation == LastPressedOperation.Start)
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Start) && this.IsCommandWordSpecialFunction())
+					|| this.LastPressedOperation == CommandWord.Start)
 				{
 					var tmpStartNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.K0), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
 
@@ -681,7 +683,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
-			this.LastPressedOperation = LastPressedOperation.Start;
+			this.LastPressedOperation = CommandWord.Start;
 		}
 
 		private void OnStartSecondFunctionPressed()
@@ -698,7 +700,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
-			this.LastPressedOperation = LastPressedOperation.Start;
+			this.LastPressedOperation = CommandWord.Start;
 		}
 
 		private void OnRatePressed(bool isLongTouch = false)
@@ -707,14 +709,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.RateStatusBarText = Resources.FinCalcFunctionRate;
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			if (!isLongTouch && this.IsCommandWordSpecialFunction())
 			{
 				this.ResetSides();
 				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == LastPressedOperation.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
 			{
 				this.OnRateSecondFunctionPressed(isLongTouch);
 				return;
@@ -728,8 +730,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Rate) && this.IsLastPressedOperationSpecialFunction())
-					|| this.LastPressedOperation == LastPressedOperation.Rate)
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Rate) && this.IsCommandWordSpecialFunction())
+					|| this.LastPressedOperation == CommandWord.Rate)
 				{
 					var tmpRateNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.E), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
 
@@ -755,7 +757,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
-			this.LastPressedOperation = LastPressedOperation.Rate;
+			this.LastPressedOperation = CommandWord.Rate;
 		}
 
 		private void OnRateSecondFunctionPressed(bool isLongTouch)
@@ -787,7 +789,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
-			this.LastPressedOperation = LastPressedOperation.Rate;
+			this.LastPressedOperation = CommandWord.Rate;
 		}
 
 		private void OnEndPressed(bool isLongTouch = false)
@@ -796,7 +798,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
 
 			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsLastPressedOperationSpecialFunction())
+			if (!isLongTouch && this.IsCommandWordSpecialFunction())
 			{
 				this.ResetSides();
 				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
@@ -810,9 +812,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Percentage calculation <-- On the physical calculator it is marked a second function but is triggered as standard function
-				if ((this.LastPressedOperation == LastPressedOperation.Digit
-					 || this.LastPressedOperation == LastPressedOperation.AlgebSign
-					 || this.LastPressedOperation == LastPressedOperation.Decimal)
+				if ((this.LastPressedOperation == CommandWord.Digit
+					 || this.LastPressedOperation == CommandWord.AlgebSign
+					 || this.LastPressedOperation == CommandWord.DecimalSeparator)
 					&& this.ActiveMathOperator != MathOperator.None)
 				{
 					this.SetNumber(out var tmpVar);
@@ -854,13 +856,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
 					}
 
-					this.LastPressedOperation = LastPressedOperation.PercentCalculation;
+					this.LastPressedOperation = CommandWord.PercentCalculation;
 					return;
 				}
 
 				// Write the value to the memory
-				else if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsLastPressedOperationSpecialFunction())
-					|| this.LastPressedOperation == LastPressedOperation.End)
+				else if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsCommandWordSpecialFunction())
+					|| this.LastPressedOperation == CommandWord.End)
 				{
 					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.Kn), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
 
@@ -884,7 +886,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.End, true);
-			this.LastPressedOperation = LastPressedOperation.End;
+			this.LastPressedOperation = CommandWord.End;
 		}
 
 		private void OnAlgebSignPressed()
@@ -902,17 +904,17 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			switch (this.LastPressedOperation)
 			{
-				case LastPressedOperation.Interest:
+				case CommandWord.Interest:
 					this.SetDisplayText(true, 3);
 					break;
-				case LastPressedOperation.Years:
-				case LastPressedOperation.Start:
-				case LastPressedOperation.Rate:
-				case LastPressedOperation.End:
-				case LastPressedOperation.PercentCalculation:
+				case CommandWord.Years:
+				case CommandWord.Start:
+				case CommandWord.Rate:
+				case CommandWord.End:
+				case CommandWord.PercentCalculation:
 					this.SetDisplayText(true);
 					break;
-				case LastPressedOperation.RatesPerAnnum:
+				case CommandWord.RatesPerAnnum:
 					this.SetDisplayText();
 					break;
 				default:
@@ -920,7 +922,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					break;
 			}
 
-			this.LastPressedOperation = LastPressedOperation.AlgebSign;
+			this.LastPressedOperation = CommandWord.AlgebSign;
 		}
 
 		private void OnDigitPressed(object digitObj)
@@ -928,7 +930,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 
 			// Special - if the last pressed operation was a special function this operation should not work with old values.
-			if (this.IsLastPressedOperationSpecialFunction())
+			if (this.IsCommandWordSpecialFunction())
 			{
 				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
 				this.ResetSides();
@@ -973,7 +975,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.SetDisplayText();
 
-			this.LastPressedOperation = LastPressedOperation.Digit;
+			this.LastPressedOperation = CommandWord.Digit;
 		}
 
 		private void OnOperatorPressed(object mathOperatorObj)
@@ -985,7 +987,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.SetDisplayText();
 			}
 
-			if (this.LastPressedOperation == LastPressedOperation.PercentCalculation)
+			if (this.LastPressedOperation == CommandWord.PercentCalculation)
 			{
 				this.SetDisplayText();
 			}
@@ -1022,7 +1024,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = tmpVar;
 			}
 
-			this.LastPressedOperation = LastPressedOperation.Operator;
+			this.LastPressedOperation = CommandWord.Operator;
 		}
 
 		private void OnDecimalSeparatorPressed()
@@ -1040,10 +1042,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Special - if the last pressed operation was a special function this operation should not work with old values.
-			if (this.IsLastPressedOperationSpecialFunction()
+			if (this.IsCommandWordSpecialFunction()
 
 				// Percent calculation -> is not considered a special function yet.
-				|| this.LastPressedOperation == LastPressedOperation.PercentCalculation)
+				|| this.LastPressedOperation == CommandWord.PercentCalculation)
 			{
 				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
 				this.ResetSides();
@@ -1052,7 +1054,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.calculator.InputText.IsDecimalSeparatorActive = true;
 
-			this.LastPressedOperation = LastPressedOperation.Decimal;
+			//this.LastPressedOperation = this.calculatorRemote.LastCommandWord;
+			this.LastPressedOperation = CommandWord.DecimalSeparator;
+
 		}
 
 		private void OnCalculatePressed()
@@ -1089,7 +1093,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.calculator.IsCalcCommandLock = true;
 			}
 
-			this.LastPressedOperation = LastPressedOperation.Calculate;
+			this.LastPressedOperation = CommandWord.Calculate;
 		}
 
 		private string TranslateMathOperator(MathOperator activeMathOperator)
@@ -1222,7 +1226,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void CommonSpecialFunctionWriteToMemoryOperations(out double numberToSet, int specialNumberDecimalCount, bool setDisplayText = true)
 		{
 			// If last input was an operator restore the firstNumber for upcoming operations
-			if (this.LastPressedOperation == LastPressedOperation.Operator)
+			if (this.LastPressedOperation == CommandWord.Operator)
 			{
 				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value);
 			}
@@ -1247,14 +1251,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.SetDisplayText(true, specialNumberDecimalCount);
 		}
 
-		private bool IsLastPressedOperationSpecialFunction()
+		private bool IsCommandWordSpecialFunction()
 		{
-			return this.LastPressedOperation == LastPressedOperation.Years
-					|| this.LastPressedOperation == LastPressedOperation.Interest
-					|| this.LastPressedOperation == LastPressedOperation.Start
-					|| this.LastPressedOperation == LastPressedOperation.Rate
-					|| this.LastPressedOperation == LastPressedOperation.End
-					|| this.LastPressedOperation == LastPressedOperation.RatesPerAnnum;
+			return this.LastPressedOperation == CommandWord.Years
+					|| this.LastPressedOperation == CommandWord.Interest
+					|| this.LastPressedOperation == CommandWord.Start
+					|| this.LastPressedOperation == CommandWord.Rate
+					|| this.LastPressedOperation == CommandWord.End
+					|| this.LastPressedOperation == CommandWord.RatesPerAnnum;
 		}
 
 		private bool IsNumber(double number)
@@ -1342,6 +1346,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.DisplayText = e.NewText;
 			this.DisplayNumber = double.TryParse(this.DisplayText, out var value) ? value : double.NaN;
+		}
+
+		// TODO REMOVE
+		private void OnCommandExecuted(object sender, CommandWord e)
+		{
+			this.LastPressedOperation = e;
 		}
 
 		// TODO: Remove as soon as IOutput text is implemented

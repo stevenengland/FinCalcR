@@ -251,91 +251,91 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
             var gestureHandlerMock = new Mock<IGestureHandler>();
             gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
 
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
+            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             vm.DigitPressedCommand.Execute("1");
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Digit);
+            Assert.True(vm.LastPressedOperation == CommandWord.Digit);
             vm.AlgebSignCommand.Execute(null);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.AlgebSign);
+            Assert.True(vm.LastPressedOperation == CommandWord.AlgebSign);
             vm.OperatorPressedCommand.Execute("-"); // needed to be set before calculation
             vm.CalculatePressedCommand.Execute(null);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Calculate);
+            Assert.True(vm.LastPressedOperation == CommandWord.Calculate);
             vm.OperatorPressedCommand.Execute("+");
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Operator);
+            Assert.True(vm.LastPressedOperation == CommandWord.Operator);
             vm.DecimalSeparatorPressedCommand.Execute(null);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Decimal);
+            Assert.True(vm.LastPressedOperation == CommandWord.DecimalSeparator);
             vm.ClearPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
+            vm.LastPressedOperation = CommandWord.None;
             vm.ClearPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
+            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Years);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Years);
+            vm.LastPressedOperation = CommandWord.None;
             vm.YearsPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Years);
+            Assert.True(vm.LastPressedOperation == CommandWord.Years);
             await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Interest);
+            vm.LastPressedOperation = CommandWord.None;
             gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
             await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
+            Assert.True(vm.LastPressedOperation == CommandWord.Interest);
             vm.StartPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Start);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Start);
+            vm.LastPressedOperation = CommandWord.None;
             vm.StartPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Start);
+            Assert.True(vm.LastPressedOperation == CommandWord.Start);
             vm.RatePressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Rate);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Rate);
+            vm.LastPressedOperation = CommandWord.None;
             vm.RatePressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Rate);
+            Assert.True(vm.LastPressedOperation == CommandWord.Rate);
             vm.EndPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.End);
+            vm.LastPressedOperation = CommandWord.None;
             vm.EndPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
+            Assert.True(vm.LastPressedOperation == CommandWord.End);
 
             // second function
             vm.ClearPressedCommand.Execute(true);
 
             gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Clear);
+            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.RatesPerAnnum);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.RatesPerAnnum);
+            vm.LastPressedOperation = CommandWord.None;
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.RatesPerAnnum);
+            Assert.True(vm.LastPressedOperation == CommandWord.RatesPerAnnum);
             vm.OperatorPressedCommand.Execute("*");
             await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Interest);
+            vm.LastPressedOperation = CommandWord.None;
             gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
             vm.OperatorPressedCommand.Execute("*");
             await vm.InterestPressedCommandAsync.ExecuteAsync(gestureHandlerMock.Object);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Interest);
+            Assert.True(vm.LastPressedOperation == CommandWord.Interest);
             vm.OperatorPressedCommand.Execute("*");
             vm.StartPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Start);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Start);
+            vm.LastPressedOperation = CommandWord.None;
             vm.OperatorPressedCommand.Execute("*");
             vm.StartPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Start);
+            Assert.True(vm.LastPressedOperation == CommandWord.Start);
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Rate);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.Rate);
+            vm.LastPressedOperation = CommandWord.None;
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.Rate);
+            Assert.True(vm.LastPressedOperation == CommandWord.Rate);
             vm.OperatorPressedCommand.Execute("*");
             vm.EndPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
-            vm.LastPressedOperation = LastPressedOperation.None;
+            Assert.True(vm.LastPressedOperation == CommandWord.End);
+            vm.LastPressedOperation = CommandWord.None;
             vm.OperatorPressedCommand.Execute("*");
             vm.EndPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == LastPressedOperation.End);
+            Assert.True(vm.LastPressedOperation == CommandWord.End);
 
             vm.ClearPressedCommand.Execute(true);
 
@@ -2164,14 +2164,14 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
             vm.DigitPressedCommand.Execute(2);
             vm.EndPressedCommand.Execute(false);
 
-            Assert.False(vm.LastPressedOperation == LastPressedOperation.PercentCalculation);
+            Assert.False(vm.LastPressedOperation == CommandWord.PercentCalculation);
             vm.ClearPressedCommand.Execute(true);
 
             // Operator set but last input is a not a digit
             vm.OperatorPressedCommand.Execute("-");
             vm.EndPressedCommand.Execute(false);
 
-            Assert.False(vm.LastPressedOperation == LastPressedOperation.PercentCalculation);
+            Assert.False(vm.LastPressedOperation == CommandWord.PercentCalculation);
             vm.ClearPressedCommand.Execute(true);
         }
 

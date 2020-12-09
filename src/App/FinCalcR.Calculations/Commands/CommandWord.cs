@@ -15,5 +15,10 @@ namespace StEn.FinCalcR.Calculations.Commands
         End,
         RatesPerAnnum,
         PercentCalculation,
+        Clear,
+        Operator,
+        Digit,
+        AlgebSign,
+        Calculate,
     }
 }

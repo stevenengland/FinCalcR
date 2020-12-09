@@ -7,6 +7,9 @@ namespace StEn.FinCalcR.Calculations.Calculator
 {
     public interface ICommandInvoker
     {
+        // TODO: Remove Event
+        event EventHandler<CommandWord> CommandExecuted;
+
         void InvokeCommand(CommandWord commandWord, params object[] parameter);
     }
 }
