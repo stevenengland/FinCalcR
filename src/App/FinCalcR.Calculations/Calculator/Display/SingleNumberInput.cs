@@ -20,6 +20,8 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             this.thousandSeparator = thousandSeparator;
             this.decimalSeparator = decimalSeparator;
             this.maxArithmeticPrecision = maxArithmeticPrecision;
+
+            this.BuildInputTextFromInternalState();
         }
 
         // TODO: Remove this Property
@@ -48,12 +50,12 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         public void Set(double number, int precisionLimit = 0)
         {
             this.BuildInternalStateFromNumber(number);
-            this.BuildInputText(precisionLimit);
+            this.BuildInputTextFromInternalState(precisionLimit);
         }
 
         public void DecimalSeparator()
         {
-            this.isDecimalSeparatorActive = !this.isDecimalSeparatorActive;
+            this.isDecimalSeparatorActive = true;
         }
 
         public void ResetInternalState(bool updateCurrentInputText = false)
@@ -64,11 +66,11 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
             if (updateCurrentInputText)
             {
-                this.BuildInputText();
+                this.BuildInputTextFromInternalState();
             }
         }
 
-        private void BuildInputText(int precisionLimit = 0)
+        private void BuildInputTextFromInternalState(int precisionLimit = 0)
         {
             var formattedWholeNumberPart = this.InsertThousandSeparator(this.wholeNumberPart);
             var formattedFractionalNumberPart = this.fractionalNumberPart;

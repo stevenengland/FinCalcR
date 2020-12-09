@@ -29,13 +29,14 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
 
             command.PreviousCommandWord = this.commandJournal.LastOrDefault();
-            this.CommandExecuted?.Invoke(this, command.PreviousCommandWord);
+            this.CommandExecuted?.Invoke(this, command.CommandWord);
 
             this.AddCommandToJournal(commandWord);
             command.Execute(parameter);
         }
 
-        private void AddCommandToJournal(CommandWord commandWord)
+        // TODO: MAKE PRIVATE
+        public void AddCommandToJournal(CommandWord commandWord)
         {
             if (this.commandJournal.Count >= 20)
             {

@@ -13,25 +13,19 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         public string TextValue { get; private set; }
 
-        public void Set(string inputText)
+        public bool IsTemporaryOverlay { get; private set; }
+
+        public void Set(string inputText, bool isTemporaryOverlay = false)
         {
             this.TextValue = inputText;
             this.TextChanged?.Invoke(this, new OutputTextChangedEventArgs(this.TextValue));
+
+            this.IsTemporaryOverlay = isTemporaryOverlay;
         }
 
         public double GetTextValueAsNumber()
         {
             return double.TryParse(this.TextValue, out var value) ? value : double.NaN;
-        }
-
-        public string GetWholeNumberPart()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetFractionalPart()
-        {
-            throw new NotImplementedException();
         }
 
         public bool IsTextValueAFiniteNumber()

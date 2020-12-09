@@ -13,7 +13,9 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         string TextValue { get; }
 
-        void Set(string inputText);
+        bool IsTemporaryOverlay { get; }
+
+        void Set(string inputText, bool isTemporaryOverlay = false);
 
         double GetTextValueAsNumber();
 

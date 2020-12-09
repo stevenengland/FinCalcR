@@ -11,5 +11,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
         event EventHandler<CommandWord> CommandExecuted;
 
         void InvokeCommand(CommandWord commandWord, params object[] parameter);
+
+        // TODO: REMOVE HERE AND MAKE PRIVATE IN IMPL.
+        void AddCommandToJournal(CommandWord commandWord);
     }
 }

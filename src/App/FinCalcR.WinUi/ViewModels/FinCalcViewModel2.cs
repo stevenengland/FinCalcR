@@ -409,6 +409,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.SetDisplayText();
 
 			this.LastPressedOperation = CommandWord.Clear;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Clear);
 		}
 
 		private void OnYearsPressed(bool isLongTouch = false)
@@ -481,6 +482,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
 			this.LastPressedOperation = CommandWord.Years;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Years);
 		}
 
 		private void OnYearsSecondFunctionPressed(bool isLongTouch)
@@ -516,6 +518,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
 			this.LastPressedOperation = CommandWord.RatesPerAnnum;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.RatesPerAnnum);
 		}
 
 		private async Task OnInterestPressedAsync(IGestureHandler handler)
@@ -593,6 +596,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 			this.LastPressedOperation = CommandWord.Interest;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 		}
 
 		private void OnInterestSecondFunctionPressed(bool isLongTouch = false)
@@ -628,6 +632,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 			this.LastPressedOperation = CommandWord.Interest;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 		}
 
 		private void OnStartPressed(bool isLongTouch = false)
@@ -684,6 +689,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 			this.LastPressedOperation = CommandWord.Start;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
 		}
 
 		private void OnStartSecondFunctionPressed()
@@ -701,6 +707,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 			this.LastPressedOperation = CommandWord.Start;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
 		}
 
 		private void OnRatePressed(bool isLongTouch = false)
@@ -758,6 +765,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 			this.LastPressedOperation = CommandWord.Rate;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
 		}
 
 		private void OnRateSecondFunctionPressed(bool isLongTouch)
@@ -790,6 +798,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 			this.LastPressedOperation = CommandWord.Rate;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
 		}
 
 		private void OnEndPressed(bool isLongTouch = false)
@@ -857,6 +866,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					}
 
 					this.LastPressedOperation = CommandWord.PercentCalculation;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.PercentCalculation);
 					return;
 				}
 
@@ -887,6 +897,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.End, true);
 			this.LastPressedOperation = CommandWord.End;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.End);
 		}
 
 		private void OnAlgebSignPressed()
@@ -923,6 +934,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.LastPressedOperation = CommandWord.AlgebSign;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.AlgebSign);
 		}
 
 		private void OnDigitPressed(object digitObj)
@@ -976,6 +988,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.SetDisplayText();
 
 			this.LastPressedOperation = CommandWord.Digit;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Digit);
 		}
 
 		private void OnOperatorPressed(object mathOperatorObj)
@@ -1025,38 +1038,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.LastPressedOperation = CommandWord.Operator;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Operator);
 		}
 
 		private void OnDecimalSeparatorPressed()
 		{
 			this.ResetSpecialFunctionLabels();
 
-			if (this.calculator.IsCalcCommandLock)
-			{
-				this.calculator.IsCalcCommandLock = false;
-			}
-
-			if (!this.IsDisplayTextAFiniteNumber(this.DisplayText))
-			{
-				this.SetDisplayText();
-			}
-
-			// Special - if the last pressed operation was a special function this operation should not work with old values.
-			if (this.IsCommandWordSpecialFunction()
-
-				// Percent calculation -> is not considered a special function yet.
-				|| this.LastPressedOperation == CommandWord.PercentCalculation)
-			{
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				this.ResetSides();
-				this.ActiveMathOperator = MathOperator.None;
-			}
-
-			this.calculator.InputText.IsDecimalSeparatorActive = true;
-
-			//this.LastPressedOperation = this.calculatorRemote.LastCommandWord;
-			this.LastPressedOperation = CommandWord.DecimalSeparator;
-
+			this.calculatorRemote.InvokeCommand(CommandWord.DecimalSeparator);
 		}
 
 		private void OnCalculatePressed()
@@ -1094,6 +1083,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.LastPressedOperation = CommandWord.Calculate;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.Calculate);
 		}
 
 		private string TranslateMathOperator(MathOperator activeMathOperator)
@@ -1145,7 +1135,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void SetDisplayText(string text)
 		{
-			this.DisplayText = text;
+			// this.DisplayText = text;
+			this.calculator.OutputText.Set(text, true);
 			this.SetDisplayNumber();
 		}
 
