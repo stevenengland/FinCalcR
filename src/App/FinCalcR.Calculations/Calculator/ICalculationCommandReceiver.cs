@@ -17,5 +17,10 @@ namespace StEn.FinCalcR.Calculations.Calculator
         MathOperator ActiveMathOperator { get; set; }
 
         bool IsCalcCommandLock { get; set; }
+
+        // TODO: MAKE PRIVATE OR REMOVE
+        CommandWord LastCommand { get; set; }
+
+        void PressDecimalSeparator();
     }
 }

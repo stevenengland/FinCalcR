@@ -38,6 +38,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string startStatusBarText; // Remains in VM
 		private string rateStatusBarText; // Remains in VM
 		private string endStatusBarText; // Remains in VM
+		private CommandWord lastPressedOperation = CommandWord.None;
 
 		public FinCalcViewModel2(
 			ILocalizationService localizationService,
@@ -71,7 +72,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public double EndNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value;
 
-		public CommandWord LastPressedOperation { get; set; } = CommandWord.None;
+		// TODO: RMOVE PROPERTY
+		public CommandWord LastPressedOperation
+		{
+			get => this.lastPressedOperation;
+			set
+			{
+				this.lastPressedOperation = value;
+				this.calculator.LastCommand = value;
+			}
+		}
 
 		public PressedSpecialFunctions PressedSpecialFunctions { get; private set; }
 

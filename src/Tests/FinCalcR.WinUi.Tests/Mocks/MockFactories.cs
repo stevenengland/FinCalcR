@@ -114,7 +114,7 @@ namespace FinCalcR.WinUi.Tests.Mocks
         {
             var commands = new List<ICalculatorCommand>();
 
-            var tmpReceiver = new Calculator(new SingleNumberOutputText(), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9));
+            var tmpReceiver = new TwoOperandsCalculator(new SingleNumberOutputText(), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9));
 
             var assemblies = new[]
             {

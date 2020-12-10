@@ -29,10 +29,10 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
 
             command.PreviousCommandWord = this.commandJournal.LastOrDefault();
-            this.CommandExecuted?.Invoke(this, command.CommandWord);
-
-            this.AddCommandToJournal(commandWord);
             command.Execute(parameter);
+
+            this.CommandExecuted?.Invoke(this, command.CommandWord);
+            this.AddCommandToJournal(commandWord);
         }
 
         // TODO: MAKE PRIVATE
