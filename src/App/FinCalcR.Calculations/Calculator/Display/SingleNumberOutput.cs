@@ -42,7 +42,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         {
             var numberParts = result.Split(Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator.ToCharArray());
             var wholeNumberPart = this.InsertGroupSeparator(numberParts[0]);
-            var fractionalNumberPart = this.SetMaxArithmeticPrecision(numberParts.Length < 2 ? string.Empty : numberParts[1]);
+            var fractionalNumberPart = this.SetMaxArithmeticPrecision(numberParts.Length < 2 ? string.Empty : numberParts[1], precisionLimit);
             this.TextValue = wholeNumberPart
                              + Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator
                              + fractionalNumberPart;

@@ -65,5 +65,30 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             this.InputText.DecimalSeparator();
         }
+
+        public void PressAlgebSign()
+        {
+            this.InputText.AlgebSign();
+
+            switch (this.LastCommand)
+            {
+                case CommandWord.Interest:
+                    this.OutputText.SetResult(this.InputText.EvaluatedResult, 3);
+                    break;
+                case CommandWord.Years:
+                case CommandWord.Start:
+                case CommandWord.Rate:
+                case CommandWord.End:
+                case CommandWord.PercentCalculation:
+                    this.OutputText.SetResult(this.InputText.EvaluatedResult, 2);
+                    break;
+                case CommandWord.RatesPerAnnum:
+                    this.OutputText.SetResult(this.InputText.EvaluatedResult);
+                    break;
+                default:
+                    this.OutputText.SetResult(this.InputText.EvaluatedResult);
+                    break;
+            }
+        }
     }
 }

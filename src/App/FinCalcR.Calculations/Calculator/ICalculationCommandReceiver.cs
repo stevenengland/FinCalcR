@@ -22,5 +22,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         CommandWord LastCommand { get; set; }
 
         void PressDecimalSeparator();
+
+        void PressAlgebSign();
     }
 }

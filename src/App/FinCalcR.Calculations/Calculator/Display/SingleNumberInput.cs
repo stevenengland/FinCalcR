@@ -8,7 +8,6 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 {
     public class SingleNumberInput : IInputText
     {
-        private readonly string thousandSeparator;
         private readonly int maxArithmeticPrecision;
 
         private bool isDecimalSeparatorActive = false;
@@ -17,7 +16,6 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         public SingleNumberInput(string thousandSeparator, string decimalSeparator, int maxArithmeticPrecision)
         {
-            this.thousandSeparator = thousandSeparator;
             this.maxArithmeticPrecision = maxArithmeticPrecision;
 
             this.BuildInputTextFromInternalState();
@@ -52,6 +50,18 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         /// The evaluated result will be the same as the <see cref="CurrentInputFormula"/> in this implementation.
         public string EvaluatedResult { get; private set; }
 
+        public void ResetInternalState(bool updateCurrentInputText = false)
+        {
+            this.fractionalNumberPart = string.Empty;
+            this.wholeNumberPart = "0";
+            this.isDecimalSeparatorActive = false;
+
+            if (updateCurrentInputText)
+            {
+                this.BuildInputTextFromInternalState();
+            }
+        }
+
         public void Set(double number)
         {
             this.BuildInternalStateFromNumber(number);
@@ -63,16 +73,18 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             this.isDecimalSeparatorActive = true;
         }
 
-        public void ResetInternalState(bool updateCurrentInputText = false)
+        public void AlgebSign()
         {
-            this.fractionalNumberPart = string.Empty;
-            this.wholeNumberPart = "0";
-            this.isDecimalSeparatorActive = false;
-
-            if (updateCurrentInputText)
+            if (this.wholeNumberPart.StartsWith("-"))
             {
-                this.BuildInputTextFromInternalState();
+                this.wholeNumberPart = this.wholeNumberPart.Substring(1);
             }
+            else
+            {
+                this.wholeNumberPart = "-" + this.wholeNumberPart;
+            }
+
+            this.BuildInputTextFromInternalState();
         }
 
         private void BuildInputTextFromInternalState()
@@ -115,7 +127,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             {
                 lastIndex = i;
 #pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
-                result = $"{this.thousandSeparator}{numberText.Substring(i, 3)}" + result;
+                result = $"{Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberGroupSeparator}{numberText.Substring(i, 3)}" + result;
 #pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
             }
 

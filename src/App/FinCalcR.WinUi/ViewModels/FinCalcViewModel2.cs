@@ -913,38 +913,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnAlgebSignPressed()
 		{
 			this.ResetSpecialFunctionLabels();
-			
-			if (this.calculator.InputText.WholeNumberPart.StartsWith("-"))
-			{
-				this.calculator.InputText.WholeNumberPart = this.calculator.InputText.WholeNumberPart.Substring(1);
-			}
-			else
-			{
-				this.calculator.InputText.WholeNumberPart = "-" + this.calculator.InputText.WholeNumberPart;
-			}
-
-			switch (this.LastPressedOperation)
-			{
-				case CommandWord.Interest:
-					this.SetDisplayText(true, 3);
-					break;
-				case CommandWord.Years:
-				case CommandWord.Start:
-				case CommandWord.Rate:
-				case CommandWord.End:
-				case CommandWord.PercentCalculation:
-					this.SetDisplayText(true);
-					break;
-				case CommandWord.RatesPerAnnum:
-					this.SetDisplayText();
-					break;
-				default:
-					this.SetDisplayText();
-					break;
-			}
-
-			this.LastPressedOperation = CommandWord.AlgebSign;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.AlgebSign);
+			this.calculatorRemote.InvokeCommand(CommandWord.AlgebSign);
 		}
 
 		private void OnDigitPressed(object digitObj)
@@ -1346,7 +1315,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnOutputTextChanged(object sender, OutputTextChangedEventArgs e)
 		{
 			this.DisplayText = e.NewText;
-			this.DisplayNumber = double.TryParse(this.DisplayText, out var value) ? value : double.NaN;
+			this.DisplayNumber = double.TryParse(this.calculator.InputText.EvaluatedResult, out var value) ? value : double.NaN;
 		}
 
 		// TODO REMOVE
