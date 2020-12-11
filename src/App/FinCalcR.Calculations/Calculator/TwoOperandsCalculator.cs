@@ -48,7 +48,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             // I.e.: After pressing rates per annum a different text is shown to the user than the input text was before.
             if (this.OutputText.IsTemporaryOverlay)
             {
-                this.OutputText.SetResult(this.InputText.EvaluatedResult);
+                this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
             }
 
             // Special - if the last pressed operation was a special function a few things have to be reset.
@@ -73,20 +73,20 @@ namespace StEn.FinCalcR.Calculations.Calculator
             switch (this.LastCommand)
             {
                 case CommandWord.Interest:
-                    this.OutputText.SetResult(this.InputText.EvaluatedResult, 3);
+                    this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 3);
                     break;
                 case CommandWord.Years:
                 case CommandWord.Start:
                 case CommandWord.Rate:
                 case CommandWord.End:
                 case CommandWord.PercentCalculation:
-                    this.OutputText.SetResult(this.InputText.EvaluatedResult, 2);
+                    this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
                     break;
                 case CommandWord.RatesPerAnnum:
-                    this.OutputText.SetResult(this.InputText.EvaluatedResult);
+                    this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
                     break;
                 default:
-                    this.OutputText.SetResult(this.InputText.EvaluatedResult);
+                    this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
                     break;
             }
         }

@@ -1315,7 +1315,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnOutputTextChanged(object sender, OutputTextChangedEventArgs e)
 		{
 			this.DisplayText = e.NewText;
-			this.DisplayNumber = double.TryParse(this.calculator.InputText.EvaluatedResult, out var value) ? value : double.NaN;
+			this.DisplayNumber = double.TryParse(this.calculator.InputText.GetEvaluatedResult(), out var value) ? value : double.NaN;
 		}
 
 		// TODO REMOVE

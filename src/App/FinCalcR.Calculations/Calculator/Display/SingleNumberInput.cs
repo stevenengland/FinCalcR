@@ -13,6 +13,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         private bool isDecimalSeparatorActive = false;
         private string wholeNumberPart = "0";
         private string fractionalNumberPart = string.Empty;
+        private string currentInputFormula;
 
         public SingleNumberInput(string thousandSeparator, string decimalSeparator, int maxArithmeticPrecision)
         {
@@ -44,11 +45,18 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         /// <inheritdoc />
         /// The formula will only consist of a typed number in this implementation.
-        public string CurrentInputFormula { get; private set; }
+        public string GetCurrentInputFormula()
+        {
+            this.BuildInputTextFromInternalState();
+            return this.currentInputFormula;
+        }
 
         /// <inheritdoc />
         /// The evaluated result will be the same as the <see cref="CurrentInputFormula"/> in this implementation.
-        public string EvaluatedResult { get; private set; }
+        public string GetEvaluatedResult()
+        {
+            return this.GetCurrentInputFormula();
+        }
 
         public void ResetInternalState(bool updateCurrentInputText = false)
         {
@@ -83,16 +91,13 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             {
                 this.wholeNumberPart = "-" + this.wholeNumberPart;
             }
-
-            this.BuildInputTextFromInternalState();
         }
 
         private void BuildInputTextFromInternalState()
         {
-            this.CurrentInputFormula = this.wholeNumberPart
+            this.currentInputFormula = this.wholeNumberPart
                                        + Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator
                                        + this.fractionalNumberPart;
-            this.EvaluatedResult = this.CurrentInputFormula; // In a single Number input scenario the evaluated result is also the current input formula.
         }
 
         private void BuildInternalStateFromNumber(double number)
@@ -104,36 +109,6 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             var parts = s.Split('.');
             this.wholeNumberPart = parts[0];
             this.fractionalNumberPart = parts.Length < 2 ? string.Empty : parts[1];
-        }
-
-        private string InsertThousandSeparator(string numberText)
-        {
-            var hasAlgebSign = false;
-            if (numberText.StartsWith("-"))
-            {
-                hasAlgebSign = true;
-                numberText = numberText.Substring(1, numberText.Length - 1);
-            }
-
-            var len = numberText.Length;
-            if (len < 4)
-            {
-                return hasAlgebSign ? "-" + numberText : numberText;
-            }
-
-            var result = string.Empty;
-            var lastIndex = 1;
-            for (var i = numberText.Length - 3; i > 0; i -= 3)
-            {
-                lastIndex = i;
-#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
-                result = $"{Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberGroupSeparator}{numberText.Substring(i, 3)}" + result;
-#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
-            }
-
-            result = numberText.Substring(0, lastIndex) + result;
-
-            return hasAlgebSign ? "-" + result : result;
         }
     }
 }

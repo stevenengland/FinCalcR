@@ -18,12 +18,12 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         /// <summary>
         /// Gets the typed formula like "(4 + 5) + 1".
         /// </summary>
-        string CurrentInputFormula { get; }
+        string GetCurrentInputFormula();
 
         /// <summary>
         /// Gets the evaluated result of the current currently typed formula.
         /// </summary>
-        string EvaluatedResult { get; }
+        string GetEvaluatedResult();
 
         void ResetInternalState(bool updateCurrentInputText = false);
 
