@@ -15,10 +15,10 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         bool IsTemporaryOverlay { get; }
 
-        void Set(string inputText, bool isTemporaryOverlay = false);
+        void SetOverlay(string overlayText);
 
-        double GetTextValueAsNumber();
+        void SetFormula(string formula);
 
-        bool IsTextValueAFiniteNumber();
+        void SetResult(string result, int precisionLimit = -1);
     }
 }

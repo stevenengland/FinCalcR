@@ -1146,7 +1146,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void SetDisplayText(string text)
 		{
 			// this.DisplayText = text;
-			this.calculator.OutputText.Set(text, true);
+			this.calculator.OutputText.SetOverlay(text);
 			this.SetDisplayNumber();
 		}
 

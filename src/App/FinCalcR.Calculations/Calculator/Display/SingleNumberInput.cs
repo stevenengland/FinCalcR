@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Threading;
 
 namespace StEn.FinCalcR.Calculations.Calculator.Display
 {
     public class SingleNumberInput : IInputText
     {
         private readonly string thousandSeparator;
-        private readonly string decimalSeparator;
         private readonly int maxArithmeticPrecision;
 
         private bool isDecimalSeparatorActive = false;
@@ -18,7 +18,6 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         public SingleNumberInput(string thousandSeparator, string decimalSeparator, int maxArithmeticPrecision)
         {
             this.thousandSeparator = thousandSeparator;
-            this.decimalSeparator = decimalSeparator;
             this.maxArithmeticPrecision = maxArithmeticPrecision;
 
             this.BuildInputTextFromInternalState();
@@ -45,12 +44,18 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             set { this.fractionalNumberPart = value; }
         }
 
-        public string CurrentInputText { get; private set; }
+        /// <inheritdoc />
+        /// The formula will only consist of a typed number in this implementation.
+        public string CurrentInputFormula { get; private set; }
 
-        public void Set(double number, int precisionLimit = 0)
+        /// <inheritdoc />
+        /// The evaluated result will be the same as the <see cref="CurrentInputFormula"/> in this implementation.
+        public string EvaluatedResult { get; private set; }
+
+        public void Set(double number)
         {
             this.BuildInternalStateFromNumber(number);
-            this.BuildInputTextFromInternalState(precisionLimit);
+            this.BuildInputTextFromInternalState();
         }
 
         public void DecimalSeparator()
@@ -70,38 +75,12 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             }
         }
 
-        private void BuildInputTextFromInternalState(int precisionLimit = 0)
+        private void BuildInputTextFromInternalState()
         {
-            var formattedWholeNumberPart = this.InsertThousandSeparator(this.wholeNumberPart);
-            var formattedFractionalNumberPart = this.fractionalNumberPart;
-            if (precisionLimit > 0)
-            {
-                if (string.IsNullOrWhiteSpace(formattedFractionalNumberPart))
-                {
-                    formattedFractionalNumberPart = "0";
-                }
-
-                if (formattedFractionalNumberPart.Length > precisionLimit)
-                {
-                    var concatenatedSides = formattedWholeNumberPart + this.decimalSeparator + formattedFractionalNumberPart;
-                    if (double.TryParse(concatenatedSides, out var parsedNumber))
-                    {
-                        var numberToRound = Math.Round(parsedNumber, precisionLimit, MidpointRounding.AwayFromZero);
-                        var sidesArray = numberToRound.ToString(CultureInfo.CurrentCulture).Split(this.decimalSeparator.ToCharArray());
-                        formattedWholeNumberPart = this.InsertThousandSeparator(sidesArray[0]);
-                        formattedFractionalNumberPart = sidesArray.Length > 1 ? sidesArray[1] : "0";
-                    }
-                }
-
-                for (var i = formattedFractionalNumberPart.Length; i < precisionLimit; i++)
-                {
-#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
-                    formattedFractionalNumberPart += "0";
-#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
-                }
-            }
-
-            this.CurrentInputText = formattedWholeNumberPart + this.decimalSeparator + formattedFractionalNumberPart;
+            this.CurrentInputFormula = this.wholeNumberPart
+                                       + Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator
+                                       + this.fractionalNumberPart;
+            this.EvaluatedResult = this.CurrentInputFormula; // In a single Number input scenario the evaluated result is also the current input formula.
         }
 
         private void BuildInternalStateFromNumber(double number)

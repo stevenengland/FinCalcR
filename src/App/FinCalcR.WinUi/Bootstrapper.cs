@@ -99,7 +99,7 @@ namespace StEn.FinCalcR.WinUi
 			}
 
 			this.simpleContainer.Singleton<IEnumerable<ICalculatorCommand>, CommandList>();
-			this.simpleContainer.Instance(new TwoOperandsCalculator(new SingleNumberOutputText(), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9)));
+			this.simpleContainer.Instance(new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9)));
 			this.simpleContainer.Singleton<ICommandInvoker, CalculatorRemote>();
         }
 

@@ -6,9 +6,17 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 {
     public interface IInputText
     {
-        string CurrentInputText { get; }
+        /// <summary>
+        /// Gets the typed formula like "(4 + 5) + 1".
+        /// </summary>
+        string CurrentInputFormula { get; }
 
-        void Set(double number, int fractionalDigitCount = -1);
+        /// <summary>
+        /// Gets the evaluated result of the current currently typed formula.
+        /// </summary>
+        string EvaluatedResult { get; }
+
+        void Set(double number);
 
         void DecimalSeparator();
 
@@ -16,10 +24,10 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         // ToDo: Remove function
         bool IsDecimalSeparatorActive { get; set; }
-        
+
         // ToDo: Remove function
         string WholeNumberPart { get; set; }
-        
+
         // ToDo: Remove function
         string FractionalNumberPart { get; set; }
     }

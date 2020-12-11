@@ -48,7 +48,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             // I.e.: After pressing rates per annum a different text is shown to the user than the input text was before.
             if (this.OutputText.IsTemporaryOverlay)
             {
-                this.OutputText.Set(this.InputText.CurrentInputText);
+                this.OutputText.SetResult(this.InputText.EvaluatedResult);
             }
 
             // Special - if the last pressed operation was a special function a few things have to be reset.
