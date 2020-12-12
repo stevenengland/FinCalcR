@@ -29,7 +29,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         void PressAlgebSign();
 
-        void PressOperator(MathOperator mathOperator);
+        void PressOperator(string mathOperatorToken);
 
         void PressCalculate();
 

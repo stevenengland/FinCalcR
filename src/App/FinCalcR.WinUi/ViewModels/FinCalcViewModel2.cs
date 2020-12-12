@@ -966,50 +966,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
-			if (!this.IsDisplayTextAFiniteNumber(this.DisplayText))
-            {
-                this.SetDisplayText();
-            }
-
-			if (this.LastPressedOperation == CommandWord.PercentCalculation)
-            {
-                this.SetDisplayText();
-            }
-
-			var tmpOperator = MathOperator.None;
-			var strOperator = (string)mathOperatorObj;
-			switch (strOperator)
-            {
-                case "+":
-                    tmpOperator = MathOperator.Add;
-                    break;
-                case "-":
-                    tmpOperator = MathOperator.Subtract;
-                    break;
-                case "*":
-                    tmpOperator = MathOperator.Multiply;
-                    break;
-                case "/":
-                    tmpOperator = MathOperator.Divide;
-                    break;
-                default:
-                    break;
-            }
-
-			if (this.ActiveMathOperator != MathOperator.None)
-            {
-                this.OnCalculatePressed();
-                this.ActiveMathOperator = tmpOperator;
-            }
-            else
-            {
-                this.ActiveMathOperator = tmpOperator;
-                this.SetNumber(out var tmpVar);
-                this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = tmpVar;
-            }
-
-			this.LastPressedOperation = CommandWord.Operator;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Operator);
+			this.calculatorRemote.InvokeCommand(CommandWord.Operator, mathOperatorObj);
         }
 
 		private void OnDecimalSeparatorPressed()
@@ -1024,27 +981,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 
 			this.calculatorRemote.InvokeCommand(CommandWord.Calculate);
-		}
-
-		// TODO: REMOVE
-		private string TranslateMathOperator(MathOperator activeMathOperator)
-		{
-			// TODO: Remove whole function as soon as VMv2 is finished so the old VM does not rely on SimpleCalculator anymore.
-			switch (activeMathOperator)
-			{
-				case MathOperator.None:
-					return string.Empty;
-				case MathOperator.Add:
-					return "+";
-				case MathOperator.Subtract:
-					return "-";
-				case MathOperator.Divide:
-					return "/";
-				case MathOperator.Multiply:
-					return "*";
-				default:
-					throw new ArgumentOutOfRangeException(nameof(activeMathOperator), activeMathOperator, null);
-			}
 		}
 
 		private void SetNumber(out double number)
@@ -1193,6 +1129,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					|| this.LastPressedOperation == CommandWord.RatesPerAnnum;
 		}
 
+		// TODO: REMOVE OR REPLACE
 		private bool IsNumber(double number)
 		{
 			return !double.IsNaN(number) && !double.IsInfinity(number);

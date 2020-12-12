@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StEn.FinCalcR.Calculations.Calculator.Attributes;
 using StEn.FinCalcR.Calculations.Calculator.Display;
 using StEn.FinCalcR.Calculations.Commands;
 using StEn.FinCalcR.Calculations.Validation;
+using StEn.FinCalcR.Common.Converter;
+using StEn.FinCalcR.Common.Extensions;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
@@ -88,8 +91,10 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
         }
 
-        public void PressOperator(MathOperator mathOperator)
+        public void PressOperator(string mathOperatorToken)
         {
+            var mathOperator = EnumConverter.ParseToEnum<MathOperator, TokenAttribute>(mathOperatorToken);
+
             this.HandleTemporaryOverlay();
 
             if (this.LastCommand == CommandWord.PercentCalculation)

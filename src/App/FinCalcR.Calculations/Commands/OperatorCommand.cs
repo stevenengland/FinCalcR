@@ -7,7 +7,7 @@ namespace StEn.FinCalcR.Calculations.Commands
 {
     public class OperatorCommand : BaseCommand
     {
-        private ICalculationCommandReceiver calculator;
+        private readonly ICalculationCommandReceiver calculator;
 
         public OperatorCommand(ICalculationCommandReceiver calculator)
         {
@@ -19,8 +19,8 @@ namespace StEn.FinCalcR.Calculations.Commands
 
         public override void Execute(params object[] parameter)
         {
-            var mathOperator = (MathOperator)parameter[0];
-            this.calculator.PressOperator(mathOperator);
+            var mathOperatorToken = (string)parameter[0];
+            this.calculator.PressOperator(mathOperatorToken);
         }
     }
 }

@@ -9,4 +9,8 @@
     <Version>0.0.4</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FinCalcR.Common\FinCalcR.Common.csproj" />
+  </ItemGroup>
+
 </Project>
