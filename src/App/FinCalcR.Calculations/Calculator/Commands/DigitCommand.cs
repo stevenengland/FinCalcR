@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace StEn.FinCalcR.Calculations.Calculator.Commands
 {
-    public class OperatorCommand : BaseCommand
+    public class DigitCommand : BaseCommand
     {
         private readonly ICalculationCommandReceiver calculator;
 
-        public OperatorCommand(ICalculationCommandReceiver calculator)
+        public DigitCommand(ICalculationCommandReceiver calculator)
         {
             this.calculator = calculator;
-            this.CommandWord = CommandWord.Operator;
+            this.CommandWord = CommandWord.Digit;
         }
 
         public override CommandWord CommandWord { get; }
@@ -21,9 +23,9 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
                 throw new ArgumentException();
             }
 
-            var mathOperatorToken = (string)parameter[0];
+            var digit = (string)parameter[0];
 
-            this.calculator.PressOperator(mathOperatorToken);
+            this.calculator.PressDigit(digit);
         }
     }
 }
