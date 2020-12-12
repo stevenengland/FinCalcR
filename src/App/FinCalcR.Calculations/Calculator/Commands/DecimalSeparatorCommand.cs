@@ -2,7 +2,7 @@
 {
     public class DecimalSeparatorCommand : BaseCommand
     {
-        private readonly ICalculationCommandReceiver calculator;
+        private ICalculationCommandReceiver calculator;
 
         public DecimalSeparatorCommand(ICalculationCommandReceiver calculator)
         {

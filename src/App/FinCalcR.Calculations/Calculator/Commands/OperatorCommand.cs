@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StEn.FinCalcR.Calculations.Calculator.Commands
+﻿namespace StEn.FinCalcR.Calculations.Calculator.Commands
 {
     public class OperatorCommand : BaseCommand
     {
@@ -16,13 +14,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
 
         public override void Execute(params object[] parameter)
         {
-            if (parameter == null || parameter.Length == 0)
-            {
-                throw new ArgumentException();
-            }
-
             var mathOperatorToken = (string)parameter[0];
-
             this.calculator.PressOperator(mathOperatorToken);
         }
     }
