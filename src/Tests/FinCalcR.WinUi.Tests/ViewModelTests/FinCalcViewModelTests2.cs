@@ -1052,6 +1052,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
             eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
 
+            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
         }

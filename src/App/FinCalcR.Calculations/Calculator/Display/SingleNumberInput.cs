@@ -70,10 +70,10 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             }
         }
 
-        public void Set(double number)
+        public void SetInternalState(double number)
         {
             this.BuildInternalStateFromNumber(number);
-            this.BuildInputTextFromInternalState();
+            this.BuildInputTextFromInternalState(); // TODO REMOVE BECAUSE IT IS NOT NECCESSARY
         }
 
         public void DecimalSeparator()
@@ -91,6 +91,18 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             {
                 this.wholeNumberPart = "-" + this.wholeNumberPart;
             }
+        }
+
+        public void Operator()
+        {
+            // Nothing to do in the case of an number-only-input.
+            return;
+        }
+
+        public void Calculate()
+        {
+            // Nothing to do in the case of an number-only-input.
+            return;
         }
 
         private void BuildInputTextFromInternalState()

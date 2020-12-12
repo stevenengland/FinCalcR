@@ -27,10 +27,14 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         void ResetInternalState(bool updateCurrentInputText = false);
 
-        void Set(double number);
+        void SetInternalState(double number);
 
         void DecimalSeparator();
 
         void AlgebSign();
+
+        void Operator();
+
+        void Calculate();
     }
 }

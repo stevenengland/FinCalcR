@@ -20,6 +20,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public event EventHandler<CommandWord> CommandExecuted;
 
+        public event EventHandler<Exception> CommandFailed;
+
         public void InvokeCommand(CommandWord commandWord, params object[] parameter)
         {
             ICalculatorCommand command = this.commandList.FirstOrDefault(c => c.ShouldExecute(commandWord));
@@ -29,10 +31,20 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
 
             command.PreviousCommandWord = this.commandJournal.LastOrDefault();
-            command.Execute(parameter);
 
-            this.CommandExecuted?.Invoke(this, command.CommandWord);
-            this.AddCommandToJournal(commandWord);
+            try
+            {
+                command.Execute(parameter);
+
+                // REMARK: This might be an issue as soon as I want to implement undo operations...
+                // Maybe an can-undo flag is required then but a command shouldn't have a status...
+                this.CommandExecuted?.Invoke(this, command.CommandWord);
+                this.AddCommandToJournal(commandWord);
+            }
+            catch (Exception ex)
+            {
+                this.CommandFailed?.Invoke(this, ex);
+            }
         }
 
         // TODO: MAKE PRIVATE

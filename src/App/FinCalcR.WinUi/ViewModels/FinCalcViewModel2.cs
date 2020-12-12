@@ -54,6 +54,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.eventAggregator?.Subscribe(this);
 			this.calculator.OutputText.TextChanged += this.OnOutputTextChanged;
 			this.calculatorRemote.CommandExecuted += this.OnCommandExecuted;
+			this.calculatorRemote.CommandFailed += this.OnCommandFailed;
 
 			this.OnClearPressed();
 		}
@@ -403,23 +404,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.eventAggregator.PublishOnUIThread(new HintEvent(Resources.HINT_SPECIAL_FUNCTION_MEMORY_RESET));
 				this.ResetSpecialFunctionLabels(true);
-				this.calculator.MemoryFields.Reset();
 				this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetAllFlags(false);
+				this.calculatorRemote.InvokeCommand(CommandWord.Clear);
 			}
 			else
 			{
 				this.ResetSpecialFunctionLabels();
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+				this.calculatorRemote.InvokeCommand(CommandWord.Clear, new List<string>() { MemoryFieldNames.Categories.Standard });
 			}
-
-			this.ResetSides();
-			this.ActiveMathOperator = MathOperator.None;
-			this.calculator.IsCalcCommandLock = false;
-
-			this.SetDisplayText();
-
-			this.LastPressedOperation = CommandWord.Clear;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Clear);
 		}
 
 		private void OnYearsPressed(bool isLongTouch = false)
@@ -975,50 +967,50 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 
 			if (!this.IsDisplayTextAFiniteNumber(this.DisplayText))
-			{
-				this.SetDisplayText();
-			}
+            {
+                this.SetDisplayText();
+            }
 
 			if (this.LastPressedOperation == CommandWord.PercentCalculation)
-			{
-				this.SetDisplayText();
-			}
+            {
+                this.SetDisplayText();
+            }
 
 			var tmpOperator = MathOperator.None;
 			var strOperator = (string)mathOperatorObj;
 			switch (strOperator)
-			{
-				case "+":
-					tmpOperator = MathOperator.Add;
-					break;
-				case "-":
-					tmpOperator = MathOperator.Subtract;
-					break;
-				case "*":
-					tmpOperator = MathOperator.Multiply;
-					break;
-				case "/":
-					tmpOperator = MathOperator.Divide;
-					break;
-				default:
-					break;
-			}
+            {
+                case "+":
+                    tmpOperator = MathOperator.Add;
+                    break;
+                case "-":
+                    tmpOperator = MathOperator.Subtract;
+                    break;
+                case "*":
+                    tmpOperator = MathOperator.Multiply;
+                    break;
+                case "/":
+                    tmpOperator = MathOperator.Divide;
+                    break;
+                default:
+                    break;
+            }
 
 			if (this.ActiveMathOperator != MathOperator.None)
-			{
-				this.OnCalculatePressed();
-				this.ActiveMathOperator = tmpOperator;
-			}
-			else
-			{
-				this.ActiveMathOperator = tmpOperator;
-				this.SetNumber(out var tmpVar);
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = tmpVar;
-			}
+            {
+                this.OnCalculatePressed();
+                this.ActiveMathOperator = tmpOperator;
+            }
+            else
+            {
+                this.ActiveMathOperator = tmpOperator;
+                this.SetNumber(out var tmpVar);
+                this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = tmpVar;
+            }
 
 			this.LastPressedOperation = CommandWord.Operator;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Operator);
-		}
+        }
 
 		private void OnDecimalSeparatorPressed()
 		{
@@ -1031,40 +1023,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
-			if (this.calculator.IsCalcCommandLock)
-			{
-				return;
-			}
-
-			this.SetNumber(out var tmpVar);
-			this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value = tmpVar;
-
-			double calculatedResult = 0;
-
-			if (this.ActiveMathOperator != MathOperator.None)
-			{
-				calculatedResult = this.CalculateAndCheckResult(
-					true,
-					new Func<double, double, string, double>(SimpleCalculator.Calculate),
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value,
-					this.TranslateMathOperator(this.ActiveMathOperator));
-			}
-
-			if (this.IsNumber(calculatedResult))
-			{
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = calculatedResult;
-				this.BuildSidesFromNumber(calculatedResult);
-				this.ActiveMathOperator = MathOperator.None;
-				this.SetDisplayText();
-				this.calculator.IsCalcCommandLock = true;
-			}
-
-			this.LastPressedOperation = CommandWord.Calculate;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Calculate);
+			this.calculatorRemote.InvokeCommand(CommandWord.Calculate);
 		}
 
+		// TODO: REMOVE
 		private string TranslateMathOperator(MathOperator activeMathOperator)
 		{
 			// TODO: Remove whole function as soon as VMv2 is finished so the old VM does not rely on SimpleCalculator anymore.
@@ -1312,10 +1274,35 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.EndStatusBarText = string.Empty;
 		}
 
+		// TODO: REMOVE?
 		private void OnOutputTextChanged(object sender, OutputTextChangedEventArgs e)
 		{
 			this.DisplayText = e.NewText;
 			this.DisplayNumber = double.TryParse(this.calculator.InputText.GetEvaluatedResult(), out var value) ? value : double.NaN;
+		}
+
+		private void OnCommandFailed(object sender, Exception ex)
+		{
+			switch (ex)
+			{
+				case CalculationException _:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_CALC_NOT_POSSIBLE));
+					break;
+				case NotFiniteNumberException _:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_NOT_FINITE_NUMBER));
+					break;
+				case DivideByZeroException _:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
+					break;
+				case OverflowException _:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_OVERFLOW_EXCEPTION));
+					break;
+				case NotSupportedException _:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_OPERATION_NOT_SUPPORTED));
+					return;
+			}
+
+			this.calculatorRemote.InvokeCommand(CommandWord.Clear, new List<string>() { MemoryFieldNames.Categories.Standard });
 		}
 
 		// TODO REMOVE

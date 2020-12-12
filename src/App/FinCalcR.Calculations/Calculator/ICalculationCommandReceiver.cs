@@ -16,6 +16,10 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         MathOperator ActiveMathOperator { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether calculation is locked.
+        /// That is the case if calculation was just triggered and another calculation without further input should be avoided.
+        /// </summary>
         bool IsCalcCommandLock { get; set; }
 
         // TODO: MAKE PRIVATE OR REMOVE
@@ -24,5 +28,11 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void PressDecimalSeparator();
 
         void PressAlgebSign();
+
+        void PressOperator(MathOperator mathOperator);
+
+        void PressCalculate();
+
+        void PressClear(IList<string> memoryFieldCategories);
     }
 }
