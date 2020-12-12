@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
-using StEn.FinCalcR.Calculations.Commands;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {

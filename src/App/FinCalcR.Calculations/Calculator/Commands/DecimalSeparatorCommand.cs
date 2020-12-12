@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using StEn.FinCalcR.Calculations.Calculator;
-
-namespace StEn.FinCalcR.Calculations.Commands
+﻿namespace StEn.FinCalcR.Calculations.Calculator.Commands
 {
     public class DecimalSeparatorCommand : BaseCommand
     {

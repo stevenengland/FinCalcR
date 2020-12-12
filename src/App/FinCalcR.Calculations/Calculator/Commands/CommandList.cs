@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace StEn.FinCalcR.Calculations.Commands
+namespace StEn.FinCalcR.Calculations.Calculator.Commands
 {
     public class CommandList : IEnumerable<ICalculatorCommand>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using StEn.FinCalcR.Calculations.Commands;
+using StEn.FinCalcR.Calculations.Calculator.Commands;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
