@@ -169,6 +169,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculation of p was not possible. Try to increase {0}..
+        /// </summary>
+        public static string EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE {
+            get {
+                return ResourceManager.GetString("EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eine Division durch 0 ist nicht erlaubt..
         /// </summary>
         public static string EXC_DIVISION_BY_ZERO {

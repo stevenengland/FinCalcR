@@ -70,6 +70,7 @@
     <Compile Include="Events\HintEvent.cs" />
     <Compile Include="Events\KeyboardKeyDownEvent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtension.cs" />
+    <Compile Include="Messages\LocalizedErrorMessages.cs" />
     <Compile Include="Models\NavigationMenuItem.cs" />
     <Compile Include="Types\FrameworkElementGestureHandler.cs" />
     <Compile Include="Types\IGestureHandler.cs" />

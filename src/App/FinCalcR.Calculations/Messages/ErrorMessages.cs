@@ -10,7 +10,7 @@ namespace StEn.FinCalcR.Calculations.Messages
         {
         }
 
-        public static ErrorMessages Instance { get; } = new ErrorMessages();
+        public static ErrorMessages Instance { get; set; } = new ErrorMessages();
 
         public virtual string CalculationOfPercentIsNotPossible(int iterations)
         {

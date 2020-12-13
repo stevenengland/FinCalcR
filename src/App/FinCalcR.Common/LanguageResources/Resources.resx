@@ -150,6 +150,9 @@
   <data name="EXC_ARGUMENT_NULL" xml:space="preserve">
     <value>Das folgende Argument ist leer oder null:</value>
   </data>
+  <data name="EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE" xml:space="preserve">
+    <value>Calculation of p was not possible. Try to increase {0}.</value>
+  </data>
   <data name="EXC_CALC_NOT_POSSIBLE" xml:space="preserve">
     <value>Die Berechnung war nicht möglich.</value>
   </data>

@@ -9,11 +9,13 @@ using MaterialDesignThemes.Wpf;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
+using StEn.FinCalcR.Calculations.Messages;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension;
+using StEn.FinCalcR.WinUi.Messages;
 using StEn.FinCalcR.WinUi.ViewModels;
 
 namespace StEn.FinCalcR.WinUi
@@ -101,6 +103,9 @@ namespace StEn.FinCalcR.WinUi
 			this.simpleContainer.Singleton<IEnumerable<ICalculatorCommand>, CommandList>();
 			this.simpleContainer.Instance(new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9)));
 			this.simpleContainer.Singleton<ICommandInvoker, CalculatorRemote>();
+
+			// Configure Message override
+			ErrorMessages.Instance = new LocalizedErrorMessages();
         }
 
 		protected override void OnStartup(object sender, StartupEventArgs e)
