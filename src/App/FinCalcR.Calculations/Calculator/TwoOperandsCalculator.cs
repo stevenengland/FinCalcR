@@ -155,6 +155,27 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
         }
 
+        public void PressDigit(string digit)
+        {
+            // Special - if the last pressed operation was a special function this operation should not work with old values.
+            if (this.LastCommand.IsSpecialCommandWord())
+            {
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+                this.InputText.ResetInternalState();
+                this.ActiveMathOperator = MathOperator.None;
+            }
+
+            if (this.IsCalcCommandLock)
+            {
+                this.InputText.ResetInternalState();
+                this.IsCalcCommandLock = false;
+            }
+
+            this.InputText.Digit(digit);
+
+            this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
+        }
+
         private void SetMemoryFieldValue(IMemoryFieldValue<double> memoryField)
         {
             var value = double.Parse(this.InputText.GetEvaluatedResult());

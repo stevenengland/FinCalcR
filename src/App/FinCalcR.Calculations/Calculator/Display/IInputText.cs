@@ -36,5 +36,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         void Operator();
 
         void Calculate();
+
+        void Digit(string digit);
     }
 }

@@ -105,6 +105,38 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             return;
         }
 
+        public void Digit(string digit)
+        {
+            if (this.IsDecimalSeparatorActive)
+            {
+                if (this.FractionalNumberPart.Length < this.maxArithmeticPrecision)
+                {
+                    this.FractionalNumberPart += digit;
+                }
+            }
+            else
+            {
+                if (this.WholeNumberPart.Length < 10)
+                {
+                    if (!this.WholeNumberPart.StartsWith("0") && !this.WholeNumberPart.StartsWith("-0"))
+                    {
+                        this.WholeNumberPart += digit;
+                    }
+                    else
+                    {
+                        if (this.WholeNumberPart == "-0")
+                        {
+                            this.WholeNumberPart = "-" + digit;
+                        }
+                        else
+                        {
+                            this.WholeNumberPart = digit;
+                        }
+                    }
+                }
+            }
+        }
+
         private void BuildInputTextFromInternalState()
         {
             this.currentInputFormula = this.wholeNumberPart

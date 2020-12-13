@@ -912,54 +912,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
-			// Special - if the last pressed operation was a special function this operation should not work with old values.
-			if (this.IsCommandWordSpecialFunction())
-			{
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				this.ResetSides();
-				this.ActiveMathOperator = MathOperator.None;
-			}
-
-			if (this.calculator.IsCalcCommandLock)
-			{
-				this.ResetSides();
-				this.calculator.IsCalcCommandLock = false;
-			}
-
-			var digit = digitObj.ToString();
-			if (this.calculator.InputText.IsDecimalSeparatorActive)
-			{
-				if (this.calculator.InputText.FractionalNumberPart.Length < 9)
-				{
-					this.calculator.InputText.FractionalNumberPart += digit;
-				}
-			}
-			else
-			{
-				if (this.calculator.InputText.WholeNumberPart.Length < 10)
-				{
-					if (!this.calculator.InputText.WholeNumberPart.StartsWith("0") && !this.calculator.InputText.WholeNumberPart.StartsWith("-0"))
-					{
-						this.calculator.InputText.WholeNumberPart += digit;
-					}
-					else
-					{
-						if (this.calculator.InputText.WholeNumberPart == "-0")
-						{
-							this.calculator.InputText.WholeNumberPart = "-" + digit;
-						}
-						else
-						{
-							this.calculator.InputText.WholeNumberPart = digit;
-						}
-					}
-				}
-			}
-
-			this.SetDisplayText();
-
-			this.LastPressedOperation = CommandWord.Digit;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Digit);
+			this.calculatorRemote.InvokeCommand(CommandWord.Digit, digitObj);
 		}
 
 		private void OnOperatorPressed(object mathOperatorObj)

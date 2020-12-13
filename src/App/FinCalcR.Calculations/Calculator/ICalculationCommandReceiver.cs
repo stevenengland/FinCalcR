@@ -34,5 +34,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void PressCalculate();
 
         void PressClear(IList<string> memoryFieldCategories);
+
+        void PressDigit(string digit);
     }
 }
