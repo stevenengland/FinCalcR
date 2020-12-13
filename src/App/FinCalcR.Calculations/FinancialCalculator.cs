@@ -2,6 +2,7 @@
 using System.ComponentModel.Design.Serialization;
 using System.Net.Http.Headers;
 using System.Runtime.Versioning;
+using StEn.FinCalcR.Calculations.Messages;
 
 namespace StEn.FinCalcR.Calculations
 {
@@ -124,7 +125,7 @@ namespace StEn.FinCalcR.Calculations
 				}
 			}
 
-			throw new CalculationException($"Calculation of p was not possible. Try to increase {nameof(iterations)}.");
+			throw new CalculationException(ErrorMessages.Instance.CalculationOfPercentIsNotPossible(iterations));
 
 			double Polynomial(double dKn, double dK0, double dE, double dN, double dM, double dP)
 			{
