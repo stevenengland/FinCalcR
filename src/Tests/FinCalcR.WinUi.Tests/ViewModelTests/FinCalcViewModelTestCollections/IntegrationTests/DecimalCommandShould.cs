@@ -19,50 +19,50 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
         }
 
-        public static IEnumerable<object[]> SpecialDecimalDigit =>
-            new List<object[]>
+        public static TheoryData<Ca[], Ca, Ca[], string> SpecialDecimalDigit =>
+            new TheoryData<Ca[], Ca, Ca[], string>()
             {
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetYears }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetYears }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetInt }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetInt }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetStart }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetStart }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRate }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetRate }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetEnd }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetEnd}, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRpa }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetRpa }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetNom }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetNom }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.ToggleAdv }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRep }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.GetRep }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
-                new object[] { new Ca[] { Ca.PerA }, Ca.Dec, new Ca[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetYears }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetYears }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetInt }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetInt }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetStart }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetStart }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetRate }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetRate }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetEnd }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetEnd}, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetRpa }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetRpa }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetNom }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetNom }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.ToggleAdv }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.SetRep }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetRep }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.PerA }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
             };
 
-        public static IEnumerable<object[]> SpecialDecimal =>
-            new List<object[]>
+        public static TheoryData<Ca[], Ca, Ca[], string> SpecialDecimal =>
+            new TheoryData<Ca[], Ca, Ca[], string>()
             {
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetYears }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetYears, Ca.ClearP, Ca.GetYears }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetInt }, Ca.Dec, null, "1,000" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetInt, Ca.ClearP, Ca.GetInt }, Ca.Dec, null, "1,000" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetStart }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetStart, Ca.ClearP, Ca.GetStart }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRate }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRate, Ca.ClearP, Ca.GetRate }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetEnd }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetEnd, Ca.ClearP, Ca.GetEnd }, Ca.Dec, null, "1,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRpa }, Ca.Dec, null, "1," },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRpa, Ca.ClearP, Ca.GetRpa }, Ca.Dec, null, "1," },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetNom }, Ca.Dec, null, "1,005" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetNom, Ca.ClearP, Ca.GetNom }, Ca.Dec, null, "1,000" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.ToggleAdv }, Ca.Dec, null, "1," }, // ToDo: special to the physical calculator: Should be "0,"
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRep }, Ca.Dec, null, "0,00" },
-                new object[] { new Ca[] { Ca.Nr1, Ca.SetRep, Ca.ClearP, Ca.GetRep }, Ca.Dec, null, "0,00" },
-                new object[] { new Ca[] { Ca.PerA }, Ca.Dec, null, "210,00" },
+                 { new[] { Ca.Nr1, Ca.SetYears }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetYears, Ca.ClearP, Ca.GetYears }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetInt }, Ca.Dec, null, "1,000" },
+                 { new[] { Ca.Nr1, Ca.SetInt, Ca.ClearP, Ca.GetInt }, Ca.Dec, null, "1,000" },
+                 { new[] { Ca.Nr1, Ca.SetStart }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetStart, Ca.ClearP, Ca.GetStart }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetRate }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetRate, Ca.ClearP, Ca.GetRate }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetEnd }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetEnd, Ca.ClearP, Ca.GetEnd }, Ca.Dec, null, "1,00" },
+                 { new[] { Ca.Nr1, Ca.SetRpa }, Ca.Dec, null, "1," },
+                 { new[] { Ca.Nr1, Ca.SetRpa, Ca.ClearP, Ca.GetRpa }, Ca.Dec, null, "1," },
+                 { new[] { Ca.Nr1, Ca.SetNom }, Ca.Dec, null, "1,005" },
+                 { new[] { Ca.Nr1, Ca.SetNom, Ca.ClearP, Ca.GetNom }, Ca.Dec, null, "1,000" },
+                 { new[] { Ca.Nr1, Ca.ToggleAdv }, Ca.Dec, null, "1," }, // ToDo: special to the physical calculator: Should be "0,"
+                 { new[] { Ca.Nr1, Ca.SetRep }, Ca.Dec, null, "0,00" },
+                 { new[] { Ca.Nr1, Ca.SetRep, Ca.ClearP, Ca.GetRep }, Ca.Dec, null, "0,00" },
+                 { new[] { Ca.PerA }, Ca.Dec, null, "210,00" },
             };
 
         [Theory]
@@ -84,7 +84,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
 
             // Act
-            FinCalcViewModelHelper.ExecuteOperations(vm, preOperations.Concat(new Ca[] { mainOperation }).Concat(postOperations).ToArray());
+            FinCalcViewModelHelper.ExecuteDummyOperations(vm, preOperations.Concat(new[] { mainOperation }).Concat(postOperations).ToArray());
 
             // Assert
             vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
