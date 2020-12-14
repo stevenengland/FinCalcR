@@ -40,6 +40,8 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         public void SetResult(string result, int precisionLimit = -1)
         {
+            this.IsTemporaryOverlay = false;
+
             var numberParts = result.Split(Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator.ToCharArray());
             var wholeNumberPart = this.InsertGroupSeparator(numberParts[0]);
             var fractionalNumberPart = this.SetMaxArithmeticPrecision(numberParts.Length < 2 ? string.Empty : numberParts[1], precisionLimit);

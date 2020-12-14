@@ -10,7 +10,7 @@ using StEn.FinCalcR.WinUi.Types;
 using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
-namespace FinCalcR.WinUi.Tests.ViewModelTests
+namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1651:Do not use placeholder elements", Justification = "Tests do not care")]
 	public class InputSequenceTests
@@ -30,7 +30,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void AddingNumbersSucceeds()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			vm.DigitPressedCommand.Execute(2);
 			vm.DigitPressedCommand.Execute(0);
 			vm.OperatorPressedCommand.Execute("+");
@@ -45,7 +45,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void SubstractingNumbersSucceeds()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			vm.DigitPressedCommand.Execute(2);
 			vm.DigitPressedCommand.Execute(0);
 			vm.OperatorPressedCommand.Execute("-");
@@ -60,7 +60,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void DividingNumbersSucceeds()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			vm.DigitPressedCommand.Execute(2);
 			vm.DigitPressedCommand.Execute(0);
 			vm.OperatorPressedCommand.Execute("/");
@@ -75,7 +75,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void MultiplyingNumbersSucceeds()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			vm.DigitPressedCommand.Execute(2);
 			vm.DigitPressedCommand.Execute(0);
 			vm.OperatorPressedCommand.Execute("*");
@@ -92,7 +92,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void PressingCalculateMultipleTimesHasNoEffect()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.DigitPressedCommand.Execute(0);
@@ -119,7 +119,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void Calculation_Clearing_Calculation()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute("3");
 			vm.OperatorPressedCommand.Execute("-");
@@ -151,7 +151,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void Digit_Operator_Digit_Calculate_Digit()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute("2");
 			vm.OperatorPressedCommand.Execute("*");
@@ -175,7 +175,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void Digit_Operator_Digit_Operator_Digit_Calculate()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute("2");
 			vm.OperatorPressedCommand.Execute("*");
@@ -206,7 +206,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void Calculation_Throw_Calculation()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.OperatorPressedCommand.Execute("/");
@@ -230,7 +230,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void MultipleSpecialFunctionsArePressedOneAfterAnother()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.YearsPressedCommand.Execute(false); // Start should be 1
@@ -279,7 +279,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void Tc0001()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			vm.OperatorPressedCommand.Execute("-");
 			vm.DigitPressedCommand.Execute("3");
@@ -297,7 +297,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void Tc0002()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			// 123,12 / 22 = 5,5963636363636363636363636363636
 			vm.DigitPressedCommand.Execute(1);
@@ -319,7 +319,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc0003Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -363,7 +363,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task PressingInterestLongTouchAlwaysUpdatesNominalInterestRateButNotEffeectiveInterestRateAsync()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -399,7 +399,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task DecimalPlacesAreFilledCorrectlyAfterInterestButtonWasPressedAsync()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -486,7 +486,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc_Interest_0001Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -517,7 +517,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc_Interest_0002Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -554,7 +554,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc_Interest_0003Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -580,7 +580,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc_Interest_0004Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -601,7 +601,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc_Interest_0005Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -626,7 +626,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc_Interest_0006Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -643,7 +643,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task Tc_Interest_0007Async()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -687,7 +687,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public async Task PressingRateLongTouchAlwaysUpdatesRepaymentRateButNotRepaymentAsync()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 			var gestureHandlerMock = new Mock<IGestureHandler>();
 			gestureHandlerMock.Setup(x => x.IsLongTouchAsync(It.IsAny<TimeSpan>())).ReturnsAsync(false);
 
@@ -739,7 +739,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		{
 			var mockObjects = MockFactories.GetMockObjects();
 			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			// Produce NaN for repayment rate number
 			vm.OperatorPressedCommand.Execute("*");
@@ -769,7 +769,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void AfterEndCalculationAllFurtherInputsAreHandledCorrectly()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			// Operator
 			this.PerformBasicEndCapitalCalculation(vm);
@@ -827,7 +827,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void PercentageCalculationIsTriggered()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			// AlgebSign
 			vm.DigitPressedCommand.Execute(2);
@@ -857,7 +857,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void AfterPercentageCalculationTheResultIsUsedAsFirstNumber()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			// Operator
 			vm.DigitPressedCommand.Execute(2);
@@ -925,7 +925,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 		public void DisplayTextAfterFollowingOperationsToRatesPerAnnumIsCorrect()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModelFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
 			// after rpa is set
 			vm.DigitPressedCommand.Execute(7);
@@ -1022,7 +1022,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
 		#endregion
 
-		private void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
+		private void PerformBasicEndCapitalCalculation(FinCalcViewModel2 vm)
 		{
 			vm.DigitPressedCommand.Execute(1);
 			vm.DigitPressedCommand.Execute(2);

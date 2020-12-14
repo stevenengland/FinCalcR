@@ -1200,16 +1200,5 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.LastPressedOperation = e;
 		}
-
-		// TODO: Remove as soon as IOutput text is implemented
-		private bool IsDisplayTextAFiniteNumber(string displayText)
-		{
-			if (!double.TryParse(displayText, out var value))
-			{
-				return false;
-			}
-
-			return !double.IsInfinity(value) && !double.IsNaN(value);
-		}
 	}
 }
