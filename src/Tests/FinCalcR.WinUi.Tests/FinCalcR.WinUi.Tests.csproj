@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\Ca.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\DecimalCommandShould.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinancialCalculationShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinCalcViewModelHelper.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinCalcViewModelTests2.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\InputSequenceTests.cs" />
@@ -69,6 +70,10 @@
     <ProjectReference Include="..\..\App\FinCalcR.WinUi\FinCalcR.WinUi.csproj">
       <Project>{5a0abae5-5d51-42a9-b82e-a369bb371feb}</Project>
       <Name>FinCalcR.WinUi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FinCalcR.Tests.Shared\FinCalcR.Tests.Shared.csproj">
+      <Project>{39061318-0fd4-4a5f-a380-b0ea93c2085b}</Project>
+      <Name>FinCalcR.Tests.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

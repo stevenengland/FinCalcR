@@ -17,5 +17,6 @@
         AlgebSign,
         Calculate,
         LoadMemoryValue,
+        NominalInterestRate
     }
 }

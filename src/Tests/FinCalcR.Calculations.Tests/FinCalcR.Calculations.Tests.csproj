@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\App\FinCalcR.Calculations\FinCalcR.Calculations.csproj" />
+    <ProjectReference Include="..\FinCalcR.Tests.Shared\FinCalcR.Tests.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,19 +1,104 @@
 ﻿using System;
+using System.Globalization;
+using FluentAssertions.Numeric;
+using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.WinUi.ViewModels;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
     public static class FinCalcViewModelHelper
     {
-        public static void ExecuteOperations(FinCalcViewModel2 vm, Ca[] operations)
+        public static void SetFinancialValue(FinCalcViewModel2 vm, double valueToAssign, CommandWord variableToAssignValueTo)
         {
-            foreach (Ca operation in operations)
+            InputNumberWithCommands(vm, valueToAssign);
+            switch (variableToAssignValueTo)
             {
-                ExecuteOperation(vm, operation);
+                case CommandWord.None:
+                    break;
+                case CommandWord.DecimalSeparator:
+                    break;
+                case CommandWord.Years:
+                    vm.YearsPressedCommand.Execute(false);
+                    break;
+                case CommandWord.Interest:
+                    vm.InterestPressedCommand.Execute(false);
+                    break;
+                case CommandWord.NominalInterestRate:
+                    vm.OperatorPressedCommand.Execute("*");
+                    vm.InterestPressedCommand.Execute(false);
+                    break;
+                case CommandWord.Start:
+                    vm.StartPressedCommand.Execute(false);
+                    break;
+                case CommandWord.Rate:
+                    vm.RatePressedCommand.Execute(false);
+                    break;
+                case CommandWord.End:
+                    vm.EndPressedCommand.Execute(false);
+                    break;
+                case CommandWord.RatesPerAnnum:
+                    vm.OperatorPressedCommand.Execute("*");
+                    vm.YearsPressedCommand.Execute(false);
+                    break;
+                case CommandWord.PercentCalculation:
+                    break;
+                case CommandWord.Clear:
+                    break;
+                case CommandWord.Operator:
+                    break;
+                case CommandWord.Digit:
+                    break;
+                case CommandWord.AlgebSign:
+                    break;
+                case CommandWord.Calculate:
+                    break;
+                case CommandWord.LoadMemoryValue:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(variableToAssignValueTo), variableToAssignValueTo, null);
             }
         }
 
-        private static void ExecuteOperation(FinCalcViewModel2 vm, Ca operation)
+        public static void ExecuteDummyOperations(FinCalcViewModel2 vm, Ca[] operations)
+        {
+            foreach (Ca operation in operations)
+            {
+                ExecuteDummyOperation(vm, operation);
+            }
+        }
+
+        private static void InputNumberWithCommands(FinCalcViewModel2 vm, double number)
+        {
+            var numberAsText = number.ToString(CultureInfo.CurrentUICulture);
+            var inputs = numberAsText.ToCharArray();
+
+            foreach (var input in inputs)
+            {
+                if (char.IsDigit(input))
+                {
+                    vm.DigitPressedCommand.Execute(int.Parse(input.ToString()));
+                }
+                else
+                {
+                    switch (input)
+                    {
+                        case '-':
+                            vm.AlgebSignCommand.Execute(false);
+                            break;
+                        case ',':
+                            vm.DecimalSeparatorPressedCommand.Execute(false);
+                            break;
+                        case '.':
+                            vm.DecimalSeparatorPressedCommand.Execute(false);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+            }
+        }
+
+        private static void ExecuteDummyOperation(FinCalcViewModel2 vm, Ca operation)
         {
             switch (operation)
             {
