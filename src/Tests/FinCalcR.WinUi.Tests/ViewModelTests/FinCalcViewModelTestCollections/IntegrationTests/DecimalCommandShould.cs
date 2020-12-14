@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
-using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
-namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections
+namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
     // ToDo: Pull all the related tests for this command to this place and dito for other commands.
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "MemberData needs public property")]

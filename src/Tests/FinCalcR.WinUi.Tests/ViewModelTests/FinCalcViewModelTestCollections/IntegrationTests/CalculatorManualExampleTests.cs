@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Data;
 using FinCalcR.WinUi.Tests.Mocks;
-using Moq;
-using StEn.FinCalcR.Common.Extensions;
-using StEn.FinCalcR.WinUi.Types;
 using Xunit;
 
-namespace FinCalcR.WinUi.Tests.ViewModelTests
+namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
 	public class CalculatorManualExampleTests
 	{

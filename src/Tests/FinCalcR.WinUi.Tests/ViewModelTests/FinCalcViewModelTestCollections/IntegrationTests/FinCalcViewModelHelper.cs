@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StEn.FinCalcR.WinUi.ViewModels;
 
-namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections
+namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
     public static class FinCalcViewModelHelper
     {

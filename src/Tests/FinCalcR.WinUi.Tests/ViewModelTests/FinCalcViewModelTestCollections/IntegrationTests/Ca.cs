@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections
+﻿namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
     /// <summary>
     /// Calculator Actions, abbreviated for a more convenient usage.

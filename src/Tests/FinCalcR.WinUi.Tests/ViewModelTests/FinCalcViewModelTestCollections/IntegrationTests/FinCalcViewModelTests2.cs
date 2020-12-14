@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
@@ -11,7 +8,6 @@ using FluentAssertions;
 using Moq;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
-using StEn.FinCalcR.Calculations.Calculator.Display;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.WinUi.Events;
@@ -20,7 +16,7 @@ using StEn.FinCalcR.WinUi.Types;
 using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
-namespace FinCalcR.WinUi.Tests.ViewModelTests
+namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
     public class FinCalcViewModelTests2
     {
