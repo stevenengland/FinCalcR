@@ -436,7 +436,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, 2);
+				this.calculatorRemote.InvokeCommand(CommandWord.LoadMemoryValue, MemoryFieldNames.YearsNumber);
 			}
 			else
 			{

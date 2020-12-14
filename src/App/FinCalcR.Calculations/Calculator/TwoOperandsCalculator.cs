@@ -176,6 +176,46 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
         }
 
+        public void PressLoadMemoryValue(string memoryFieldId)
+        {
+            var memoryFieldDescriptor = this.MemoryFields.Get(memoryFieldId);
+            if (memoryFieldDescriptor.Id == MemoryFieldNames.RatesPerAnnumNumber)
+            {
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+                this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
+                this.InputText.SetInternalState(this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
+                this.ActiveMathOperator = MathOperator.None;
+                this.OutputText.SetOverlay(this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " p.a.");
+            }
+            else if (memoryFieldDescriptor.Id == MemoryFieldNames.InterestNumber
+                     || memoryFieldDescriptor.Id == MemoryFieldNames.NominalInterestRateNumber)
+            {
+                var memoryField = this.MemoryFields.Get<double>(memoryFieldId);
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+                this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = memoryField.Value;
+                this.InputText.SetInternalState(memoryField.Value);
+                this.ActiveMathOperator = MathOperator.None;
+                this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 3);
+            }
+            else if (memoryFieldDescriptor.Id == MemoryFieldNames.YearsNumber
+                     || memoryFieldDescriptor.Id == MemoryFieldNames.StartNumber
+                     || memoryFieldDescriptor.Id == MemoryFieldNames.RateNumber
+                     || memoryFieldDescriptor.Id == MemoryFieldNames.RepaymentRateNumber
+                     || memoryFieldDescriptor.Id == MemoryFieldNames.EndNumber)
+            {
+                var memoryField = this.MemoryFields.Get<double>(memoryFieldId);
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+                this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = memoryField.Value;
+                this.InputText.SetInternalState(memoryField.Value);
+                this.ActiveMathOperator = MathOperator.None;
+                this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         private void SetMemoryFieldValue(IMemoryFieldValue<double> memoryField)
         {
             var value = double.Parse(this.InputText.GetEvaluatedResult());

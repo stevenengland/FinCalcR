@@ -49,7 +49,9 @@
     <Compile Include="CalculatorTests\OutputTextShould.cs" />
     <Compile Include="Mocks\MockFactories.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\YearsCommandShould.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\Ca.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\DecimalCommandShould.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\FinCalcViewModelHelper.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTests2.cs" />
     <Compile Include="ViewModelTests\InputSequenceTests.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTests.cs" />

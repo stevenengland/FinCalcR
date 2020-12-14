@@ -31,6 +31,22 @@ namespace StEn.FinCalcR.Calculations.Calculator
             throw new KeyNotFoundException($"An item with key {key} does not exist.");
         }
 
+        public IMemoryFieldDescriptor Get(string key)
+        {
+            if (this.container.ContainsKey(key))
+            {
+                var value = this.container[key];
+                if (value is IMemoryFieldDescriptor field)
+                {
+                    return field;
+                }
+
+                throw new KeyNotFoundException("An item with the key was found but it is not of the correct type.");
+            }
+
+            throw new KeyNotFoundException($"An item with key {key} does not exist.");
+        }
+
         public void Reset(IList<string> categories = null)
         {
             if (categories == null || !categories.Any())

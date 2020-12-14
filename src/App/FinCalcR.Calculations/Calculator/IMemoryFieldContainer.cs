@@ -8,6 +8,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         IMemoryField<T> Get<T>(string key);
 
+        IMemoryFieldDescriptor Get(string key);
+
         void Reset(IList<string> categories = null);
     }
 }

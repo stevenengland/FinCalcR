@@ -16,5 +16,6 @@
         Digit,
         AlgebSign,
         Calculate,
+        LoadMemoryValue,
     }
 }
