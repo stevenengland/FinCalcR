@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -261,13 +262,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			return this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value;
 		}
 
-		public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Caliburn Micro
-		{
-			this.KeyboardKeyPressedCommand.Execute(new MappedKeyEventArgs(e.Key.ToString()));
-		}
-
 		private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
 		{
+			if (e.ActiveWindowContent is FinCalcViewModel2 == false)
+			{
+				return;
+			}
+
 			switch (e.Key)
 			{
 				case "D0":

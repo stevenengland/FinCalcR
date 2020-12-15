@@ -29,6 +29,23 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         }
 
         [Fact]
+        public void KeyboardEventsAreIgnoredIfCallerIsNotOfTheSameTypeAsTheHandlingVm()
+        {
+            // Arrange
+            var mockObjects = MockFactories.GetMockObjects();
+            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            eventAggregatorMock.Verify(x => x.Subscribe(It.IsAny<object>()), Times.Once);
+
+            // Act
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", "test")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", "test")));
+
+            // Assert
+            vm.DisplayText.Should().Be("0,");
+        }
+
+        [Fact]
         public void KeyboardEventsAreHandled()
         {
             var mockObjects = MockFactories.GetMockObjects();
@@ -37,204 +54,204 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             eventAggregatorMock.Verify(x => x.Subscribe(It.IsAny<object>()), Times.Once);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm)));
             Assert.True(vm.DisplayText == "2,000");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2,000");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm)));
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5", vm)));
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6", vm)));
             Assert.True(vm.DisplayText == "2 p.a.");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2 p.a.");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7", vm)));
             Assert.True(vm.DisplayText == "2,018");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2,000");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8", vm)));
             Assert.True(vm.AdvanceStatusBarText != string.Empty);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8", vm) { IsShiftPressed = true }));
             Assert.True(vm.AdvanceStatusBarText == string.Empty);
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9", vm)));
             Assert.True(vm.DisplayText == "-0,01");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = false }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm)));
             Assert.True(vm.DisplayText == "0,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete") { IsShiftPressed = true }));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1") { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = true }));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }));
             Assert.True(vm.DisplayText == "0,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Multiply")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Multiply", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
             Assert.True(vm.DisplayText == "6,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Divide")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Divide", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
             Assert.True(vm.DisplayText == "2,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Subtract")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Subtract", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
             Assert.True(vm.DisplayText == "-2,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Add")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Add", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
             Assert.True(vm.DisplayText == "4,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemQuestion")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemQuestion", vm)));
             Assert.True(vm.DisplayText == "-1,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Decimal")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Decimal", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
             Assert.True(vm.DisplayText == "1,1");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemComma")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemComma", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
             Assert.True(vm.DisplayText == "1,1");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemPeriod")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemPeriod", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
             Assert.True(vm.DisplayText == "1,1");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
             Assert.True(vm.DisplayText == "1,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)));
             Assert.True(vm.DisplayText == "11,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
             Assert.True(vm.DisplayText == "2,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D2")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D2", vm)));
             Assert.True(vm.DisplayText == "22,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
             Assert.True(vm.DisplayText == "3,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D3")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D3", vm)));
             Assert.True(vm.DisplayText == "33,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4", vm)));
             Assert.True(vm.DisplayText == "4,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D4")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D4", vm)));
             Assert.True(vm.DisplayText == "44,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad5")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad5", vm)));
             Assert.True(vm.DisplayText == "5,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D5")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D5", vm)));
             Assert.True(vm.DisplayText == "55,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad6")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad6", vm)));
             Assert.True(vm.DisplayText == "6,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D6")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D6", vm)));
             Assert.True(vm.DisplayText == "66,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad7")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad7", vm)));
             Assert.True(vm.DisplayText == "7,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D7")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D7", vm)));
             Assert.True(vm.DisplayText == "77,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad8")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad8", vm)));
             Assert.True(vm.DisplayText == "8,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D8")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D8", vm)));
             Assert.True(vm.DisplayText == "88,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad9")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad9", vm)));
             Assert.True(vm.DisplayText == "9,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D9")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D9", vm)));
             Assert.True(vm.DisplayText == "99,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad0")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad0", vm)));
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D0")));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D0", vm)));
             Assert.True(vm.DisplayText == "10,");
             vm.ClearPressedCommand.Execute(true);
         }

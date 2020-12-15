@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -134,9 +135,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 		}
 
+		public object ActiveWindowContent { get; set; }
+
 		public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Caliburn Micro
 		{
-			var eventArgs = new MappedKeyEventArgs(e.Key.ToString());
+			var eventArgs = new MappedKeyEventArgs(e.Key.ToString(), this.ActiveWindowContent);
 			if ((Keyboard.Modifiers & ModifierKeys.Shift) != 0)
 			{
 				eventArgs.IsShiftPressed = true;
@@ -243,6 +246,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					VerticalScrollBarVisibilityRequirement = ScrollBarVisibility.Auto,
 				},
 			};
+			this.ActiveWindowContent = this.MenuItems.First().Content;
 		}
 
 		private void OnMenuItemsSelectionChanged(object item)
@@ -250,6 +254,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.IsMenuBarVisible = false;
 			var navItem = (NavigationMenuItem)item;
 			this.TitleBarText = Resources.AppTitleTxt_Text + " - " + navItem.Name;
+			this.ActiveWindowContent = navItem.Content;
 		}
 
 		private void OnLanguageSelectionChanged(object item)

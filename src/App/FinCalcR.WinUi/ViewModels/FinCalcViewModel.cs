@@ -254,13 +254,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			return this.isAdvanceActive;
 		}
 
-		public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Caliburn Micro
-		{
-			this.KeyboardKeyPressedCommand.Execute(new MappedKeyEventArgs(e.Key.ToString()));
-		}
-
 		private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
 		{
+			if (e.ActiveWindowContent is FinCalcViewModel == false)
+			{
+				return;
+			}
+
 			switch (e.Key)
 			{
 				case "D0":
