@@ -195,8 +195,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public ICommand YearsPressedCommand => new SyncCommand<bool>(this.OnYearsPressed);
 
-		public IAsyncCommand<IGestureHandler> InterestPressedCommandAsync => new AsyncCommand<IGestureHandler>(this.OnInterestPressedAsync);
-
 		public ICommand InterestPressedCommand => new SyncCommand<bool>(this.OnInterestPressed);
 
 		public ICommand StartPressedCommand => new SyncCommand<bool>(this.OnStartPressed);
@@ -521,12 +519,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.LastPressedOperation = CommandWord.RatesPerAnnum;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.RatesPerAnnum);
-		}
-
-		private async Task OnInterestPressedAsync(IGestureHandler handler)
-		{
-			var isLongTouch = await handler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
-			this.OnInterestPressed(isLongTouch);
 		}
 
 		private void OnInterestPressed(bool isLongTouch)
