@@ -67,38 +67,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
         }
 
-        private static void InputNumberWithCommands(FinCalcViewModel2 vm, double number)
-        {
-            var numberAsText = number.ToString(CultureInfo.CurrentUICulture);
-            var inputs = numberAsText.ToCharArray();
-
-            foreach (var input in inputs)
-            {
-                if (char.IsDigit(input))
-                {
-                    vm.DigitPressedCommand.Execute(int.Parse(input.ToString()));
-                }
-                else
-                {
-                    switch (input)
-                    {
-                        case '-':
-                            vm.AlgebSignCommand.Execute(false);
-                            break;
-                        case ',':
-                            vm.DecimalSeparatorPressedCommand.Execute(false);
-                            break;
-                        case '.':
-                            vm.DecimalSeparatorPressedCommand.Execute(false);
-                            break;
-                        default:
-                            throw new NotImplementedException();
-                    }
-                }
-            }
-        }
-
-        private static void ExecuteDummyOperation(FinCalcViewModel2 vm, Ca operation)
+        public static void ExecuteDummyOperation(FinCalcViewModel2 vm, Ca operation)
         {
             switch (operation)
             {
@@ -223,6 +192,44 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(operation), operation, null);
+            }
+        }
+
+        private static void InputNumberWithCommands(FinCalcViewModel2 vm, double number)
+        {
+            var numberAsText = number.ToString(CultureInfo.CurrentUICulture);
+            var inputs = numberAsText.ToCharArray();
+
+            var needsAlgebSign = false;
+            foreach (var input in inputs)
+            {
+                if (char.IsDigit(input))
+                {
+                    vm.DigitPressedCommand.Execute(int.Parse(input.ToString()));
+                }
+                else
+                {
+                    switch (input)
+                    {
+                        case '-':
+                            needsAlgebSign = true;
+                            break;
+                        case ',':
+                            vm.DecimalSeparatorPressedCommand.Execute(false);
+                            break;
+                        case '.':
+                            vm.DecimalSeparatorPressedCommand.Execute(false);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+            }
+
+            // Algeb sign needs to be pressed not as the first command after a special function to avoid conflicts (see #4)
+            if (needsAlgebSign)
+            {
+                vm.AlgebSignCommand.Execute(false);
             }
         }
     }
