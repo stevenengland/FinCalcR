@@ -504,7 +504,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         }
 
         [Fact]
-        public void NoSpecialFunctionPressedFlagsAreSet()
+        public void NoSpecialFunctionPressedFlagsAreSetInFreshVm()
         {
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
@@ -555,9 +555,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             // Initial function
             vm.OperatorPressedCommand.Execute("*");
-            vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Years));
-            vm.OperatorPressedCommand.Execute("*");
             vm.InterestPressedCommand.Execute(false);
             Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Interest));
             vm.OperatorPressedCommand.Execute("*");
@@ -581,9 +578,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
             // Initial function
-            vm.OperatorPressedCommand.Execute("*");
-            vm.YearsPressedCommand.Execute(true);
-            Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Years));
             vm.OperatorPressedCommand.Execute("*");
             vm.InterestPressedCommand.Execute(true);
             Assert.True(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Interest));
@@ -1725,6 +1719,22 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.YearsPressedCommand.Execute(false);
 
             Assert.True(vm.YearsStatusBarText == Resources.FinCalcFunctionYears);
+        }
+
+        [Fact]
+        public void YearsSecondFunctionDoesNotSetYearsFlag()
+        {
+            // Arrange
+            var mockObjects = MockFactories.GetMockObjects();
+            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+
+            // Act
+            vm.DigitPressedCommand.Execute(1);
+            vm.OperatorPressedCommand.Execute("*");
+            vm.YearsPressedCommand.Execute(true);
+
+            // Assert
+            Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Years));
         }
 
         #endregion

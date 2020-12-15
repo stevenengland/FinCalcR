@@ -518,7 +518,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 			}
 
-			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
 			this.LastPressedOperation = CommandWord.RatesPerAnnum;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.RatesPerAnnum);
 		}
