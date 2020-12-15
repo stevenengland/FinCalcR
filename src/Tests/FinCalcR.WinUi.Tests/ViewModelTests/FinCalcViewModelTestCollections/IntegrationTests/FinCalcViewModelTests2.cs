@@ -1453,9 +1453,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DecimalSeparatorPressedCommand.Execute(null);
             Assert.True(vm.DisplayText == "-1,00");
             Assert.True(Math.Abs(vm.DisplayNumber - -1) < Tolerance);
-            vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "0,"); // ToDo: physical calc expects -1.00
-            Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
+            vm.InterestPressedCommand.Execute(false);
+            Assert.True(vm.DisplayText == "-1,000");
+            Assert.True(Math.Abs(vm.DisplayNumber - -1) < Tolerance);
 
             vm.ClearPressedCommand.Execute(true);
 
