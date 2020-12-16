@@ -40,6 +40,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string rateStatusBarText; // Remains in VM
 		private string endStatusBarText; // Remains in VM
 		private CommandWord lastPressedOperation = CommandWord.None;
+		private bool secondFunctionTrigger;
 
 		public FinCalcViewModel2(
 			ILocalizationService localizationService,
@@ -174,6 +175,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.endStatusBarText = value;
 				this.NotifyOfPropertyChange(() => this.EndStatusBarText);
+			}
+		}
+
+		public bool SecondFunctionTrigger
+		{
+			get => this.secondFunctionTrigger;
+			set
+			{
+				this.secondFunctionTrigger = value;
+				this.NotifyOfPropertyChange(() => this.SecondFunctionTrigger);
 			}
 		}
 
@@ -904,28 +915,29 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private void OnDigitPressed(object digitObj)
 		{
 			this.ResetSpecialFunctionLabels();
-
 			this.calculatorRemote.InvokeCommand(CommandWord.Digit, digitObj);
 		}
 
 		private void OnOperatorPressed(object mathOperatorObj)
 		{
 			this.ResetSpecialFunctionLabels();
-
 			this.calculatorRemote.InvokeCommand(CommandWord.Operator, mathOperatorObj);
+
+			if ((string)mathOperatorObj == "*")
+			{
+				this.SecondFunctionTrigger = true;
+			}
         }
 
 		private void OnDecimalSeparatorPressed()
 		{
 			this.ResetSpecialFunctionLabels();
-
 			this.calculatorRemote.InvokeCommand(CommandWord.DecimalSeparator);
 		}
 
 		private void OnCalculatePressed()
 		{
 			this.ResetSpecialFunctionLabels();
-
 			this.calculatorRemote.InvokeCommand(CommandWord.Calculate);
 		}
 
@@ -1188,10 +1200,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.calculatorRemote.InvokeCommand(CommandWord.Clear, new List<string>() { MemoryFieldNames.Categories.Standard });
 		}
 
-		// TODO REMOVE
 		private void OnCommandExecuted(object sender, CommandWord e)
 		{
+			// TODO REMOVE
 			this.LastPressedOperation = e;
+
+			this.SecondFunctionTrigger = false;
 		}
 	}
 }

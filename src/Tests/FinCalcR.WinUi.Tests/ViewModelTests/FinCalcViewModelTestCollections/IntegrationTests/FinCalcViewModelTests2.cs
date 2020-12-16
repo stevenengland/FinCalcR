@@ -533,6 +533,21 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         #region General Tests
 
         [Fact]
+        public void CommandsResetSecondFunctionTrigger_WhenExecuted()
+        {
+            // Arrange
+            var mockObjects = MockFactories.GetMockObjects();
+            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+
+            // Act
+            vm.OperatorPressedCommand.Execute("*");
+            vm.DigitPressedCommand.Execute(1);
+
+            // Assert
+            vm.SecondFunctionTrigger.Should().BeFalse();
+        }
+
+        [Fact]
         public void FlagsAreSetByEachSpecialFunction()
         {
             var mockObjects = MockFactories.GetMockObjects();

@@ -11,9 +11,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     // ToDo: Pull all the related tests for this command to this place and dito for other commands.
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "MemberData needs public property")]
-    public class DecimalCommandShould
+    public class DecimalSeparatorCommandShould
     {
-        public DecimalCommandShould()
+        public DecimalSeparatorCommandShould()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");

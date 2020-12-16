@@ -49,11 +49,12 @@
     <Compile Include="Mocks\MockFactories.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\Ca.cs" />
-    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\DecimalCommandShould.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\DecimalSeparatorCommandShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinancialCalculationShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinCalcViewModelHelper.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinCalcViewModelTests2.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\InputSequenceTests.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\OperatorCommandShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTests.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\CalculatorManualExampleTests.cs" />
     <Compile Include="ViewModelTests\ShellViewModelTests.cs" />
