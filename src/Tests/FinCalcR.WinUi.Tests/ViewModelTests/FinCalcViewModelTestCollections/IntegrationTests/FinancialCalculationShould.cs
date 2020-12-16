@@ -134,7 +134,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.InterestPressedCommand.Execute(false);
 
             // Assert
-            vm.DisplayNumber.Should().BeApproximately(vm.InterestNumber, localTolerance);
+            vm.DisplayNumber.Should().BeApproximately(expectedP, localTolerance);
         }
     }
 }
