@@ -437,7 +437,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.SecondFunctionTrigger)
 			{
 				this.OnYearsSecondFunctionPressed(isLongTouch);
 				return;
@@ -495,6 +495,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
 			this.LastPressedOperation = CommandWord.Years;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Years);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnYearsSecondFunctionPressed(bool isLongTouch)
@@ -530,6 +531,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.LastPressedOperation = CommandWord.RatesPerAnnum;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.RatesPerAnnum);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnInterestPressed(bool isLongTouch)
@@ -603,6 +605,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 			this.LastPressedOperation = CommandWord.Interest;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnInterestSecondFunctionPressed(bool isLongTouch = false)
@@ -639,6 +642,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
 			this.LastPressedOperation = CommandWord.Interest;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnStartPressed(bool isLongTouch = false)
@@ -696,6 +700,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 			this.LastPressedOperation = CommandWord.Start;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnStartSecondFunctionPressed()
@@ -714,6 +719,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 			this.LastPressedOperation = CommandWord.Start;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnRatePressed(bool isLongTouch = false)
@@ -772,6 +778,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 			this.LastPressedOperation = CommandWord.Rate;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnRateSecondFunctionPressed(bool isLongTouch)
@@ -805,6 +812,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);
 			this.LastPressedOperation = CommandWord.Rate;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnEndPressed(bool isLongTouch = false)
@@ -904,6 +912,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.End, true);
 			this.LastPressedOperation = CommandWord.End;
 			this.calculatorRemote.AddCommandToJournal(CommandWord.End);
+			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnAlgebSignPressed()
@@ -1106,6 +1115,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			catch (CalculationException ex)
 			{
+				this.SecondFunctionTrigger = false;
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_CALC_NOT_POSSIBLE));
@@ -1114,6 +1124,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			catch (NotFiniteNumberException ex)
 			{
+				this.SecondFunctionTrigger = false;
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_NOT_FINITE_NUMBER));
@@ -1122,6 +1133,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			catch (DivideByZeroException ex)
 			{
+				this.SecondFunctionTrigger = false;
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
@@ -1130,6 +1142,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			catch (OverflowException ex)
 			{
+				this.SecondFunctionTrigger = false;
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_OVERFLOW_EXCEPTION));
@@ -1138,6 +1151,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			catch (NotSupportedException)
 			{
+				this.SecondFunctionTrigger = false;
 				if (notifyIfResultIsNotValid)
 				{
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_OPERATION_NOT_SUPPORTED));
