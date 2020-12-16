@@ -429,13 +429,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
 
-			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsCommandWordSpecialFunction())
-			{
-				this.ResetSides();
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-			}
-
 			// Check if it is a second function call
 			if (this.SecondFunctionTrigger)
 			{
@@ -451,9 +444,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			else
 			{
 				// Write the value to the memory
-				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Years) && this.IsCommandWordSpecialFunction())
+				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Years) && this.LastPressedOperation.IsSpecialCommandWord())
 					|| this.LastPressedOperation == CommandWord.Years)
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old/same values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					var tmpYearsNumber = this.CalculateAndCheckResult(
 						true,
 						new Func<double, double, double, double, double, bool, double>(FinancialCalculator.N),
@@ -478,6 +478,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old/same values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					var tmpYearsNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
 					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpVar;
@@ -500,6 +507,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnYearsSecondFunctionPressed(bool isLongTouch)
 		{
+			// Special - if the last pressed operation was a special function this current special function should not work with old values.
+			if (!isLongTouch && this.IsCommandWordSpecialFunction())
+			{
+				this.ResetSides();
+				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+			}
+
 			if (isLongTouch)
 			{
 				// Output saved rates
