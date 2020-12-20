@@ -75,7 +75,9 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 case CommandWord.Interest:
                     this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 3);
                     break;
-                case CommandWord.Years:
+                case CommandWord.SetYears:
+                case CommandWord.GetYears:
+                case CommandWord.CalculateYears:
                 case CommandWord.Start:
                 case CommandWord.Rate:
                 case CommandWord.End:
@@ -213,6 +215,48 @@ namespace StEn.FinCalcR.Calculations.Calculator
             else
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        public void CalculateYears()
+        {
+            // Special - if the last pressed operation was a special function this current special function should not work with old/same values.
+            if (this.LastCommand.IsSpecialCommandWord())
+            {
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+                this.InputText.ResetInternalState();
+            }
+
+            var calculatedResult = CalculationProxy.CalculateAndCheckResult(
+                true,
+                new Func<double, double, double, double, double, bool, double>(FinancialCalculator.N),
+                this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
+
+            this.InputText.SetInternalState(calculatedResult);
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber), 2);
+        }
+
+        private void CommonSpecialFunctionWriteToMemoryOperations(IMemoryFieldValue<double> memoryField, int specialNumberDecimalCount, bool setDisplayText = true)
+        {
+            // If last input was an operator restore the firstNumber for upcoming operations
+            if (this.LastCommand == CommandWord.Operator)
+            {
+                this.InputText.SetInternalState(this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value);
+            }
+
+            this.SetMemoryFieldValue(memoryField);
+            this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = memoryField.Value;
+            this.InputText.SetInternalState(memoryField.Value); // So that the display text can be set.
+            this.ActiveMathOperator = MathOperator.None;
+            if (setDisplayText)
+            {
+                this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), specialNumberDecimalCount);
             }
         }
 

@@ -438,43 +438,18 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			if (isLongTouch)
 			{
-				// Display the value in the memory
-				this.calculatorRemote.InvokeCommand(CommandWord.LoadMemoryValue, MemoryFieldNames.YearsNumber);
+				// Display the value from the memory
+				this.calculatorRemote.InvokeCommand(CommandWord.GetYears);
 			}
 			else
 			{
 				// Write the value to the memory
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Years) && this.LastPressedOperation.IsSpecialCommandWord())
-					|| this.LastPressedOperation == CommandWord.Years)
+					|| (this.LastPressedOperation == CommandWord.SetYears
+					    || this.LastPressedOperation == CommandWord.GetYears
+					    || this.LastPressedOperation == CommandWord.CalculateYears))
 				{
-					// Special - if the last pressed operation was a special function this current special function should not work with old/same values.
-					if (!isLongTouch && this.IsCommandWordSpecialFunction())
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					}
-
-					var tmpYearsNumber = this.CalculateAndCheckResult(
-						true,
-						new Func<double, double, double, double, double, bool, double>(FinancialCalculator.N),
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-						this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
-						this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
-
-					if (this.IsNumber(tmpYearsNumber))
-					{
-						this.BuildSidesFromNumber(tmpYearsNumber);
-						this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpVar;
-					}
-					else
-					{
-						// Don't display NaN or other non numeric values that might be the result of the calculation.
-						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
-					}
+					this.calculatorRemote.InvokeCommand(CommandWord.CalculateYears);
 				}
 				else
 				{
@@ -496,12 +471,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpYearsNumber;
 						this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
 					}
+
+					this.LastPressedOperation = CommandWord.SetYears;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.SetYears);
 				}
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Years, true);
-			this.LastPressedOperation = CommandWord.Years;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Years);
 			this.SecondFunctionTrigger = false;
 		}
 
@@ -1102,7 +1078,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private bool IsCommandWordSpecialFunction()
 		{
-			return this.LastPressedOperation == CommandWord.Years
+			return this.LastPressedOperation == CommandWord.SetYears
+				   || this.lastPressedOperation == CommandWord.GetYears
+				   || this.lastPressedOperation == CommandWord.CalculateYears
 					|| this.LastPressedOperation == CommandWord.Interest
 					|| this.LastPressedOperation == CommandWord.Start
 					|| this.LastPressedOperation == CommandWord.Rate

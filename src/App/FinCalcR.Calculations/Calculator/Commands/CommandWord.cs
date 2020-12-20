@@ -4,7 +4,6 @@
     {
         None = 0,
         DecimalSeparator = 1,
-        Years,
         Interest,
         Start,
         Rate,
@@ -17,6 +16,9 @@
         AlgebSign,
         Calculate,
         LoadMemoryValue,
-        NominalInterestRate
+        NominalInterestRate,
+        CalculateYears,
+        GetYears,
+        SetYears,
     }
 }

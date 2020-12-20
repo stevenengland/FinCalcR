@@ -17,7 +17,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                     break;
                 case CommandWord.DecimalSeparator:
                     break;
-                case CommandWord.Years:
+                case CommandWord.SetYears:
                     vm.YearsPressedCommand.Execute(false);
                     break;
                 case CommandWord.Interest:

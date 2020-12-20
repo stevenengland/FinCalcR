@@ -4,7 +4,9 @@
     {
         public static bool IsSpecialCommandWord(this CommandWord commandWord)
         {
-            return commandWord == CommandWord.Years
+            return commandWord == CommandWord.SetYears
+                   || commandWord == CommandWord.GetYears
+                   || commandWord == CommandWord.CalculateYears
                    || commandWord == CommandWord.Interest
                    || commandWord == CommandWord.Start
                    || commandWord == CommandWord.Rate

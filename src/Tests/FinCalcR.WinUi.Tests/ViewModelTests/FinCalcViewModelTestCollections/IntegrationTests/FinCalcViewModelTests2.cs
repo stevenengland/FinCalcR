@@ -280,10 +280,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.ClearPressedCommand.Execute(true);
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == CommandWord.Years);
+            Assert.True(vm.LastPressedOperation == CommandWord.SetYears);
             vm.LastPressedOperation = CommandWord.None;
             vm.YearsPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == CommandWord.Years);
+            Assert.True(vm.LastPressedOperation == CommandWord.GetYears);
             vm.InterestPressedCommand.Execute(true);
             Assert.True(vm.LastPressedOperation == CommandWord.Interest);
             vm.LastPressedOperation = CommandWord.None;
