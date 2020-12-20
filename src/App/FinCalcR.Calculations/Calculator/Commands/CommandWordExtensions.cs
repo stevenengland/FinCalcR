@@ -11,7 +11,8 @@
                    || commandWord == CommandWord.Start
                    || commandWord == CommandWord.Rate
                    || commandWord == CommandWord.End
-                   || commandWord == CommandWord.RatesPerAnnum;
+                   || commandWord == CommandWord.SetRatesPerAnnum
+                   || commandWord == CommandWord.GetRatesPerAnnum;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             expectedKn *= -1;
 
             // Act
-            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.RatesPerAnnum);
+            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, n, CommandWord.SetYears);
             FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, k0, CommandWord.Start);
@@ -56,7 +56,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
             // Act
-            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.RatesPerAnnum);
+            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, n, CommandWord.SetYears);
             FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, e, CommandWord.Rate);
@@ -84,7 +84,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                 FinCalcViewModelHelper.ExecuteDummyOperation(vm, Ca.ToggleAdv);
             }
 
-            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.RatesPerAnnum);
+            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, n, CommandWord.SetYears);
             FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, k0, CommandWord.Start);
@@ -104,7 +104,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
             // Act
-            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.RatesPerAnnum);
+            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, k0, CommandWord.Start);
             FinCalcViewModelHelper.SetFinancialValue(vm, e, CommandWord.Rate);
@@ -126,7 +126,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var localTolerance = 0.001;
 
             // Act
-            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.RatesPerAnnum);
+            FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, n, CommandWord.SetYears);
             FinCalcViewModelHelper.SetFinancialValue(vm, k0, CommandWord.Start);
             FinCalcViewModelHelper.SetFinancialValue(vm, e, CommandWord.Rate);

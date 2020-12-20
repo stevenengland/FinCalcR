@@ -314,11 +314,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == CommandWord.RatesPerAnnum);
+            Assert.True(vm.LastPressedOperation == CommandWord.SetRatesPerAnnum);
             vm.LastPressedOperation = CommandWord.None;
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == CommandWord.RatesPerAnnum);
+            Assert.True(vm.LastPressedOperation == CommandWord.GetRatesPerAnnum);
             vm.OperatorPressedCommand.Execute("*");
             vm.InterestPressedCommand.Execute(true);
             Assert.True(vm.LastPressedOperation == CommandWord.Interest);

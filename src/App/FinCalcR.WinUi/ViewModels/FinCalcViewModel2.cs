@@ -464,24 +464,20 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnYearsSecondFunctionPressed(bool isLongTouch)
 		{
-			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsCommandWordSpecialFunction())
-			{
-				this.ResetSides();
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-			}
-
 			if (isLongTouch)
 			{
 				// Output saved rates
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
-				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
-				this.ActiveMathOperator = MathOperator.None;
-				this.SetDisplayText(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " " + Resources.FinCalcRatesPerAnnumPostfix);
+				this.calculatorRemote.InvokeCommand(CommandWord.GetRatesPerAnnum);
 			}
 			else
 			{
+				// Special - if the last pressed operation was a special function this current special function should not work with old values.
+				if (this.IsCommandWordSpecialFunction())
+				{
+					this.ResetSides();
+					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+				}
+
 				// Write the value to the memory
 				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpRpaNumber, 0, false);
 				if (tmpRpaNumber < 1
@@ -492,16 +488,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
 					this.SetDisplayText();
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
+					this.LastPressedOperation = CommandWord.SetRatesPerAnnum;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.SetRatesPerAnnum);
 				}
 				else
 				{
 					this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value = (int)tmpRpaNumber;
 					this.SetDisplayText(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " " + Resources.FinCalcRatesPerAnnumPostfix);
+
+					this.LastPressedOperation = CommandWord.SetRatesPerAnnum;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.SetRatesPerAnnum);
 				}
 			}
 
-			this.LastPressedOperation = CommandWord.RatesPerAnnum;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.RatesPerAnnum);
 			this.SecondFunctionTrigger = false;
 		}
 
@@ -1059,14 +1058,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private bool IsCommandWordSpecialFunction()
 		{
-			return this.LastPressedOperation == CommandWord.SetYears
-				   || this.lastPressedOperation == CommandWord.GetYears
-				   || this.lastPressedOperation == CommandWord.CalculateYears
-					|| this.LastPressedOperation == CommandWord.Interest
-					|| this.LastPressedOperation == CommandWord.Start
-					|| this.LastPressedOperation == CommandWord.Rate
-					|| this.LastPressedOperation == CommandWord.End
-					|| this.LastPressedOperation == CommandWord.RatesPerAnnum;
+			return this.LastPressedOperation.IsSpecialCommandWord();
 		}
 
 		// TODO: REMOVE OR REPLACE

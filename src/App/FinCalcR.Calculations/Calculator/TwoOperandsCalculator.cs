@@ -86,7 +86,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 case CommandWord.PercentCalculation:
                     this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
                     break;
-                case CommandWord.RatesPerAnnum:
+                case CommandWord.SetRatesPerAnnum:
+                case CommandWord.GetRatesPerAnnum:
                     this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
                     break;
                 default:
