@@ -40,5 +40,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void PressLoadMemoryValue(string memoryFieldId);
 
         void CalculateYears();
+
+        void SetYears();
     }
 }

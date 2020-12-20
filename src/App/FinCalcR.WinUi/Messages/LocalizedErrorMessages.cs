@@ -14,5 +14,7 @@ namespace StEn.FinCalcR.WinUi.Messages
         {
             return string.Format(Resources.EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE, nameof(iterations));
         }
+
+        public override string YearsMustNotBeNegative() => Resources.EXC_YEARS_EXCEEDED_LIMIT;
     }
 }

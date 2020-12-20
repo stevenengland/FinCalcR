@@ -16,5 +16,7 @@ namespace StEn.FinCalcR.Calculations.Messages
         {
             return $"Calculation of p was not possible. Try to increase {nameof(iterations)}.";
         }
+
+        public virtual string YearsMustNotBeNegative() => $"Years must not be negative!";
     }
 }

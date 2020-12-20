@@ -11,6 +11,7 @@ using StEn.FinCalcR.Calculations;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Events;
+using StEn.FinCalcR.Calculations.Exceptions;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
@@ -453,27 +454,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					// Special - if the last pressed operation was a special function this current special function should not work with old/same values.
-					if (!isLongTouch && this.IsCommandWordSpecialFunction())
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					}
-
-					var tmpYearsNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
-					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpVar;
-					if (this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value < 0)
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-						this.SetDisplayText();
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpYearsNumber;
-						this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
-					}
-
-					this.LastPressedOperation = CommandWord.SetYears;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.SetYears);
+					this.calculatorRemote.InvokeCommand(CommandWord.SetYears);
 				}
 			}
 
@@ -1187,7 +1168,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			switch (ex)
 			{
 				case CalculationException _:
-					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_CALC_NOT_POSSIBLE));
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, ex.Message));
 					break;
 				case NotFiniteNumberException _:
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_NOT_FINITE_NUMBER));
@@ -1200,7 +1181,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					break;
 				case NotSupportedException _:
 					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_OPERATION_NOT_SUPPORTED));
-					return;
+					break;
+				case ValidationException _:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, ex.Message));
+					break;
+				default:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, ex.Message));
+					break;
 			}
 
 			this.calculatorRemote.InvokeCommand(CommandWord.Clear, new List<string>() { MemoryFieldNames.Categories.Standard });

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using StEn.FinCalcR.Calculations;
+using StEn.FinCalcR.Calculations.Exceptions;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;

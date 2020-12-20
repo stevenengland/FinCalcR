@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace StEn.FinCalcR.Calculations
+namespace StEn.FinCalcR.Calculations.Exceptions
 {
 	public class CalculationException : Exception
 	{

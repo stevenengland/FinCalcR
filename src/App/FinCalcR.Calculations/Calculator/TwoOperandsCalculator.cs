@@ -5,6 +5,8 @@ using System.Text;
 using StEn.FinCalcR.Calculations.Calculator.Attributes;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
+using StEn.FinCalcR.Calculations.Exceptions;
+using StEn.FinCalcR.Calculations.Messages;
 using StEn.FinCalcR.Calculations.Validation;
 using StEn.FinCalcR.Common.Converter;
 using StEn.FinCalcR.Common.Extensions;
@@ -239,6 +241,24 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             this.InputText.SetInternalState(calculatedResult);
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber), 2);
+        }
+
+        public void SetYears()
+        {
+            // Special - if the last pressed operation was a special function this current special function should not work with old/same values.
+            if (this.LastCommand.IsSpecialCommandWord())
+            {
+                this.InputText.ResetInternalState();
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+            }
+
+            var tmpYearsNumber = this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber), 2);
+            if (this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value < 0)
+            {
+                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpYearsNumber;
+                throw new ValidationException(ErrorMessages.Instance.YearsMustNotBeNegative());
+            }
         }
 
         private void CommonSpecialFunctionWriteToMemoryOperations(IMemoryFieldValue<double> memoryField, int specialNumberDecimalCount, bool setDisplayText = true)

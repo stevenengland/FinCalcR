@@ -8,10 +8,12 @@ using FluentAssertions;
 using Moq;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
+using StEn.FinCalcR.Calculations.Messages;
 using StEn.FinCalcR.Common.Extensions;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Events.EventArgs;
+using StEn.FinCalcR.WinUi.Messages;
 using StEn.FinCalcR.WinUi.Types;
 using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
@@ -26,6 +28,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
+            ErrorMessages.Instance = new LocalizedErrorMessages();
         }
 
         [Fact]
@@ -1619,7 +1622,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(3);
-            vm.YearsPressedCommand.Execute(false); // put a valid value to the memory
+            vm.YearsPressedCommand.Execute(false); // put a valid value to the memory that will be used to reset to
 
             vm.ClearPressedCommand.Execute(false);
 
@@ -1632,7 +1635,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.YearsMustNotBeNegative()), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);
