@@ -151,6 +151,6 @@
     <value>Language</value>
   </data>
   <data name="EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE" xml:space="preserve">
-    <value>Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung.</value>
+    <value>Calculation of p was not possible. Try to increase {0}.</value>
   </data>
 </root>

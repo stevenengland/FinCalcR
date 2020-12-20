@@ -191,8 +191,8 @@
           <target state="translated">Language</target>
         </trans-unit>
         <trans-unit id="EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE" translate="yes" xml:space="preserve">
-          <source>Calculation of p was not possible. Try to increase {0}.</source>
-          <target state="translated">Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung.</target>
+          <source>Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung.</source>
+          <target state="translated">Calculation of p was not possible. Try to increase {0}.</target>
         </trans-unit>
       </group>
     </body>

@@ -169,7 +169,7 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calculation of p was not possible. Try to increase {0}..
+        ///   Looks up a localized string similar to Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung..
         /// </summary>
         public static string EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE {
             get {
