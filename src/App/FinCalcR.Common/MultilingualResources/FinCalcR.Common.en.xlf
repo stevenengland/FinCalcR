@@ -194,6 +194,10 @@
           <source>Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung.</source>
           <target state="translated">Calculation of p was not possible. Try to increase {0}.</target>
         </trans-unit>
+        <trans-unit id="EXC_RATES_PER_ANNUM_OUT_OF_RANGE" translate="yes" xml:space="preserve">
+          <source>Die Raten pro Jahr müssen zwischen 1 und 365 liegen sowie eine ganze Zahl darstellen.</source>
+          <target state="translated">The rates per annum must be between 1 and 365 and must be an integer.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

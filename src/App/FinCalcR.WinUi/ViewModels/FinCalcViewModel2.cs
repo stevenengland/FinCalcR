@@ -430,7 +430,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 			this.YearsStatusBarText = Resources.FinCalcFunctionYears;
 
-			// Check if it is a second function call
 			if (this.SecondFunctionTrigger)
 			{
 				this.OnYearsSecondFunctionPressed(isLongTouch);
@@ -439,12 +438,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			if (isLongTouch)
 			{
-				// Display the value from the memory
 				this.calculatorRemote.InvokeCommand(CommandWord.GetYears);
 			}
 			else
 			{
-				// Write the value to the memory
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Years) && this.LastPressedOperation.IsSpecialCommandWord())
 					|| (this.LastPressedOperation == CommandWord.SetYears
 					    || this.LastPressedOperation == CommandWord.GetYears
@@ -466,39 +463,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			if (isLongTouch)
 			{
-				// Output saved rates
 				this.calculatorRemote.InvokeCommand(CommandWord.GetRatesPerAnnum);
 			}
 			else
 			{
-				// Special - if the last pressed operation was a special function this current special function should not work with old values.
-				if (this.IsCommandWordSpecialFunction())
-				{
-					this.ResetSides();
-					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				}
-
-				// Write the value to the memory
-				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpRpaNumber, 0, false);
-				if (tmpRpaNumber < 1
-					|| tmpRpaNumber > 365
-					|| tmpRpaNumber != Math.Truncate(tmpRpaNumber))
-				{
-					this.ResetSides();
-					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					this.SetDisplayText();
-					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
-					this.LastPressedOperation = CommandWord.SetRatesPerAnnum;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.SetRatesPerAnnum);
-				}
-				else
-				{
-					this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value = (int)tmpRpaNumber;
-					this.SetDisplayText(this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " " + Resources.FinCalcRatesPerAnnumPostfix);
-
-					this.LastPressedOperation = CommandWord.SetRatesPerAnnum;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.SetRatesPerAnnum);
-				}
+				this.calculatorRemote.InvokeCommand(CommandWord.SetRatesPerAnnum);
 			}
 
 			this.SecondFunctionTrigger = false;

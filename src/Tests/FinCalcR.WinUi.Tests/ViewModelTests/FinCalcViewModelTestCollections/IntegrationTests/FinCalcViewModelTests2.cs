@@ -312,6 +312,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.ClearPressedCommand.Execute(true);
 
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);
+            vm.DigitPressedCommand.Execute(1); // So that rpa will be in range when set in the next command
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
             Assert.True(vm.LastPressedOperation == CommandWord.SetRatesPerAnnum);
@@ -1664,7 +1665,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);
@@ -1681,7 +1682,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Exactly(2)); // error expected
+            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Exactly(2)); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);
@@ -1699,7 +1700,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Exactly(3)); // error expected
+            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Exactly(3)); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);

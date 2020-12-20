@@ -183,6 +183,9 @@
   <data name="EXC_PARSE_DOUBLE_IMPOSSIBLE" xml:space="preserve">
     <value>Die Eingabe ist keine gültige Zahl.</value>
   </data>
+  <data name="EXC_RATES_PER_ANNUM_OUT_OF_RANGE" xml:space="preserve">
+    <value>Die Raten pro Jahr müssen zwischen 1 und 365 liegen sowie eine ganze Zahl darstellen.</value>
+  </data>
   <data name="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" xml:space="preserve">
     <value>Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</value>
   </data>

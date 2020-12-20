@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using StEn.FinCalcR.Calculations.Calculator.Attributes;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
@@ -262,6 +263,33 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
         }
 
+        public void SetRatesPerAnnum()
+        {
+            // Special - if the last pressed operation was a special function this current special function should not work with old values.
+            if (this.LastCommand.IsSpecialCommandWord())
+            {
+                this.InputText.ResetInternalState();
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+            }
+
+            // Write the value to the memory
+            var backupRpaNumber = this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
+            var tmpRpaNumberField = new SimpleMemoryField<double>("tmpRpaNumberField", default(double), "temp");
+            this.CommonSpecialFunctionWriteToMemoryOperations(tmpRpaNumberField, 0, false);
+            if (tmpRpaNumberField.Value < 1
+                || tmpRpaNumberField.Value > 365
+                || tmpRpaNumberField.Value != Math.Truncate(tmpRpaNumberField.Value))
+            {
+                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value = backupRpaNumber;
+                throw new ValidationException(ErrorMessages.Instance.RatesPerAnnumExceedsRange());
+            }
+            else
+            {
+                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value = (int)tmpRpaNumberField.Value;
+                this.OutputText.SetOverlay(this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " p.a.");
+            }
+        }
+
         private void CommonSpecialFunctionWriteToMemoryOperations(IMemoryFieldValue<double> memoryField, int specialNumberDecimalCount, bool setDisplayText = true)
         {
             // If last input was an operator restore the firstNumber for upcoming operations
@@ -281,10 +309,20 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
         }
 
-        private void SetMemoryFieldValue(IMemoryFieldValue<double> memoryField)
+        private void SetMemoryFieldValue<T>(IMemoryFieldValue<T> memoryField)
         {
             var value = double.Parse(this.InputText.GetEvaluatedResult());
-            memoryField.Value = value;
+            switch (memoryField)
+            {
+                case IMemoryField<int> intField:
+                    intField.Value = (int)value;
+                    break;
+                case IMemoryField<double> doubleField:
+                    doubleField.Value = value;
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
 
             this.InputText.ResetInternalState();
         }

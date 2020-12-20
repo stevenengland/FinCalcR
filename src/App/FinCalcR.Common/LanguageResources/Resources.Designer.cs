@@ -259,6 +259,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die Raten pro Jahr müssen zwischen 1 und 365 liegen sowie eine ganze Zahl darstellen..
+        /// </summary>
+        public static string EXC_RATES_PER_ANNUM_OUT_OF_RANGE {
+            get {
+                return ResourceManager.GetString("EXC_RATES_PER_ANNUM_OUT_OF_RANGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler..
         /// </summary>
         public static string EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON {
