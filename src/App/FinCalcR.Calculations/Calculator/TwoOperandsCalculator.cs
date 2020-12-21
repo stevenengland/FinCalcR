@@ -131,27 +131,26 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             this.SetMemoryFieldValue(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
 
-            double calculatedResult = 0;
+            double result = 0;
 
             if (this.ActiveMathOperator != MathOperator.None)
             {
-                calculatedResult = CalculationProxy.CalculateAndCheckResult(
+                var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                     true,
                     new Func<double, double, string, double>(SimpleCalculator.Calculate),
                     this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value,
                     this.TranslateMathOperator(this.ActiveMathOperator));
+
+                result = calculatedResult;
             }
 
-            if (NumberValidations.IsValidNumber(calculatedResult))
-            {
-                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-                this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = calculatedResult;
-                this.InputText.SetInternalState(calculatedResult);
-                this.ActiveMathOperator = MathOperator.None;
-                this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
-                this.IsCalcCommandLock = true;
-            }
+            this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = result;
+            this.InputText.SetInternalState(result);
+            this.ActiveMathOperator = MathOperator.None;
+            this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
+            this.IsCalcCommandLock = true;
         }
 
         public void PressClear(IList<string> memoryFieldCategories)
@@ -227,7 +226,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         {
             this.HandleCommonTasksIfLastCommandWasSpecial();
 
-            var calculatedResult = CalculationProxy.CalculateAndCheckResult(
+            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                 true,
                 new Func<double, double, double, double, double, bool, double>(FinancialCalculator.N),
                 this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
@@ -292,7 +291,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         {
             this.HandleCommonTasksIfLastCommandWasSpecial();
 
-            var calculatedResult = (-1) * CalculationProxy.CalculateAndCheckResult(
+            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                                        true,
                                        new Func<double, double, double, double, double, bool, double>(
                                            FinancialCalculator.Kn),
@@ -302,6 +301,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
                                        this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
                                        this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                                        this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
+
+            calculatedResult *= -1;
 
             this.InputText.SetInternalState(calculatedResult);
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
