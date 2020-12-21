@@ -771,54 +771,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					 || this.LastPressedOperation == CommandWord.DecimalSeparator)
 					&& this.ActiveMathOperator != MathOperator.None)
 				{
-					// Special - if the last pressed operation was a special function this current special function should not work with old values.
-					if (!isLongTouch && this.IsCommandWordSpecialFunction())
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					}
-
-					this.SetNumber(out var tmpVar);
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value = tmpVar;
-					var tmpResult = double.NaN;
-					switch (this.ActiveMathOperator)
-					{
-						case MathOperator.Multiply:
-							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.GetPartValue), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
-							break;
-						case MathOperator.Add:
-							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.AddPartValueToBaseValue), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
-							break;
-						case MathOperator.Subtract:
-							tmpResult = this.CalculateAndCheckResult(true, new Func<double, double, double>(SimpleCalculator.SubPartValueFromBaseValue), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
-							break;
-						case MathOperator.Divide: // function is not documented and calculates like below - but makes not much sense...
-							tmpResult = this.CalculateAndCheckResult(
-								true,
-								new Func<double, double, double>(
-									(baseValue, rate) => baseValue / rate * 100),
-								this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
-								this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value);
-							break;
-					}
-
-					if (this.IsNumber(tmpResult))
-					{
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = tmpResult;
-						this.BuildSidesFromNumber(tmpResult);
-						this.ActiveMathOperator = MathOperator.None;
-						this.SetDisplayText(true, 2);
-						this.calculator.IsCalcCommandLock = true;
-					}
-					else
-					{
-						// Don't display NaN or other non numeric values that might be the result of the calculation.
-						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
-					}
-
-					this.LastPressedOperation = CommandWord.PercentCalculation;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.PercentCalculation);
+					this.calculatorRemote.InvokeCommand(CommandWord.PercentCalculation);
 					return;
 				}
 

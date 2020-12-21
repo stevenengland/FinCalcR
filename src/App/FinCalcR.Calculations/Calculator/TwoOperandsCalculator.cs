@@ -308,6 +308,58 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
         }
 
+        public void CalculatePercent()
+        {
+            this.HandleCommonTasksIfLastCommandWasSpecial();
+
+            this.SetMemoryFieldValue(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
+            var calculation = double.NaN;
+            switch (this.ActiveMathOperator)
+            {
+                case MathOperator.Multiply:
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>(SimpleCalculator.GetPartValue),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                case MathOperator.Add:
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>(SimpleCalculator.AddPartValueToBaseValue),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                case MathOperator.Subtract:
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>(SimpleCalculator.SubPartValueFromBaseValue),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                case MathOperator.Divide: // ToDo: function is not documented and calculates like below - but makes not much sense...
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>((baseValue, rate) => baseValue / rate * 100),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            this.MemoryFields.Reset(new List<string>() {MemoryFieldNames.Categories.Standard});
+            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = calculation;
+            this.ActiveMathOperator = MathOperator.None;
+            this.IsCalcCommandLock = true;
+            this.InputText.SetInternalState(calculation);
+            this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
+        }
+
         private void HandleCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.

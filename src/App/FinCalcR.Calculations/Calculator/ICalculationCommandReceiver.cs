@@ -48,5 +48,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void SetEnd();
 
         void CalculateEnd();
+
+        void CalculatePercent();
     }
 }
