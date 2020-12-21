@@ -360,6 +360,11 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
         }
 
+        public void CalculateRepaymentRate()
+        {
+            throw new NotImplementedException();
+        }
+
         private void HandleCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.
