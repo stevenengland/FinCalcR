@@ -761,10 +761,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			if (isLongTouch)
 			{
-				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, 2);
-				this.LastPressedOperation = CommandWord.GetEnd;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.GetEnd);
+				this.calculatorRemote.InvokeCommand(CommandWord.GetEnd);
 			}
 			else
 			{
@@ -922,13 +919,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				this.DisplayNumber = parsedNumber;
 			}
-		}
-
-		private void SetDisplayText(string text)
-		{
-			// this.DisplayText = text;
-			this.calculator.OutputText.SetOverlay(text);
-			this.SetDisplayNumber();
 		}
 
 		private void SetDisplayText(bool isSpecialFunctionNumber = false, int specialNumberDecimalCount = 2)
