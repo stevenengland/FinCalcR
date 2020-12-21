@@ -302,11 +302,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.LastPressedOperation = CommandWord.None;
             vm.RatePressedCommand.Execute(true);
             Assert.True(vm.LastPressedOperation == CommandWord.Rate);
+            vm.LastPressedOperation = CommandWord.None;
             vm.EndPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == CommandWord.End);
+            Assert.True(vm.LastPressedOperation == CommandWord.SetEnd);
             vm.LastPressedOperation = CommandWord.None;
             vm.EndPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == CommandWord.End);
+            Assert.True(vm.LastPressedOperation == CommandWord.GetEnd);
 
             // second function
             vm.ClearPressedCommand.Execute(true);
@@ -341,13 +342,15 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(true);
             Assert.True(vm.LastPressedOperation == CommandWord.Rate);
+
+            // End command does not have a second function
             vm.OperatorPressedCommand.Execute("*");
             vm.EndPressedCommand.Execute(false);
-            Assert.True(vm.LastPressedOperation == CommandWord.End);
+            Assert.True(vm.LastPressedOperation == CommandWord.SetEnd);
             vm.LastPressedOperation = CommandWord.None;
             vm.OperatorPressedCommand.Execute("*");
             vm.EndPressedCommand.Execute(true);
-            Assert.True(vm.LastPressedOperation == CommandWord.End);
+            Assert.True(vm.LastPressedOperation == CommandWord.GetEnd);
 
             vm.ClearPressedCommand.Execute(true);
 

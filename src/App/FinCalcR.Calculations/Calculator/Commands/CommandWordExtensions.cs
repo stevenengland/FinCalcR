@@ -10,7 +10,9 @@
                    || commandWord == CommandWord.Interest
                    || commandWord == CommandWord.Start
                    || commandWord == CommandWord.Rate
-                   || commandWord == CommandWord.End
+                   || commandWord == CommandWord.GetEnd
+                   || commandWord == CommandWord.SetEnd
+                   || commandWord == CommandWord.CalculateEnd
                    || commandWord == CommandWord.SetRatesPerAnnum
                    || commandWord == CommandWord.GetRatesPerAnnum;
         }

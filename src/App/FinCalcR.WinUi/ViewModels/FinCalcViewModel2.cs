@@ -759,20 +759,22 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 			this.EndStatusBarText = Resources.FinCalcFunctionEnd;
 
-			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsCommandWordSpecialFunction())
-			{
-				this.ResetSides();
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-			}
-
 			if (isLongTouch)
 			{
 				// Display the value in the memory
 				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, 2);
+				this.LastPressedOperation = CommandWord.GetEnd;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.GetEnd);
 			}
 			else
 			{
+				// Special - if the last pressed operation was a special function this current special function should not work with old values.
+				if (!isLongTouch && this.IsCommandWordSpecialFunction())
+				{
+					this.ResetSides();
+					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+				}
+
 				// Percentage calculation <-- On the physical calculator it is marked a second function but is triggered as standard function
 				if ((this.LastPressedOperation == CommandWord.Digit
 					 || this.LastPressedOperation == CommandWord.AlgebSign
@@ -825,7 +827,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 				// Write the value to the memory
 				else if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.End) && this.IsCommandWordSpecialFunction())
-					|| this.LastPressedOperation == CommandWord.End)
+					|| (this.LastPressedOperation == CommandWord.GetEnd
+					    || this.lastPressedOperation == CommandWord.SetEnd
+					    || this.lastPressedOperation == CommandWord.CalculateEnd))
 				{
 					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.Kn), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
 
@@ -840,17 +844,21 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						// Don't display NaN or other non numeric values that might be the result of the calculation.
 						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
 					}
+
+					this.LastPressedOperation = CommandWord.CalculateEnd;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.CalculateEnd);
 				}
 				else
 				{
 					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value = tmpVar;
+
+					this.LastPressedOperation = CommandWord.SetEnd;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.SetEnd);
 				}
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.End, true);
-			this.LastPressedOperation = CommandWord.End;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.End);
 			this.SecondFunctionTrigger = false;
 		}
 
