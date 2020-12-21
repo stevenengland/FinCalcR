@@ -46,5 +46,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void SetRatesPerAnnum();
 
         void SetEnd();
+
+        void CalculateEnd();
     }
 }

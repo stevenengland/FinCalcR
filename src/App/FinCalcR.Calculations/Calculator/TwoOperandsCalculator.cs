@@ -288,6 +288,25 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
         }
 
+        public void CalculateEnd()
+        {
+            this.HandleCommonTasksIfLastCommandWasSpecial();
+
+            var calculatedResult = (-1) * CalculationProxy.CalculateAndCheckResult(
+                                       true,
+                                       new Func<double, double, double, double, double, bool, double>(
+                                           FinancialCalculator.Kn),
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
+                                       this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                                       this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
+
+            this.InputText.SetInternalState(calculatedResult);
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
+        }
+
         private void HandleCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.
