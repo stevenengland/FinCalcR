@@ -292,6 +292,18 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
         }
 
+        public void SetEnd()
+        {
+            // Special - if the last pressed operation was a special function this current special function should not work with old values.
+            if (this.LastCommand.IsSpecialCommandWord())
+            {
+                this.InputText.ResetInternalState();
+                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+            }
+
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
+        }
+
         private void CommonSpecialFunctionWriteToMemoryOperations(IMemoryFieldValue<double> memoryField, int specialNumberDecimalCount, bool setDisplayText = true)
         {
             // If last input was an operator restore the firstNumber for upcoming operations

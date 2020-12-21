@@ -765,19 +765,19 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 			else
 			{
-				// Special - if the last pressed operation was a special function this current special function should not work with old values.
-				if (!isLongTouch && this.IsCommandWordSpecialFunction())
-				{
-					this.ResetSides();
-					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				}
-
 				// Percentage calculation <-- On the physical calculator it is marked a second function but is triggered as standard function
 				if ((this.LastPressedOperation == CommandWord.Digit
 					 || this.LastPressedOperation == CommandWord.AlgebSign
 					 || this.LastPressedOperation == CommandWord.DecimalSeparator)
 					&& this.ActiveMathOperator != MathOperator.None)
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					this.SetNumber(out var tmpVar);
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value = tmpVar;
 					var tmpResult = double.NaN;
@@ -828,6 +828,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					    || this.lastPressedOperation == CommandWord.SetEnd
 					    || this.lastPressedOperation == CommandWord.CalculateEnd))
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					var tmpEndNumber = (-1) * this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.Kn), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
 
 					if (this.IsNumber(tmpEndNumber))
@@ -847,11 +854,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value = tmpVar;
-
-					this.LastPressedOperation = CommandWord.SetEnd;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.SetEnd);
+					this.calculatorRemote.InvokeCommand(CommandWord.SetEnd);
 				}
 			}
 
