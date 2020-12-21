@@ -487,7 +487,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.SecondFunctionTrigger)
 			{
 				this.OnInterestSecondFunctionPressed(isLongTouch);
 				return;
@@ -596,7 +596,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.SecondFunctionTrigger)
 			{
 				this.OnStartSecondFunctionPressed();
 				return;
@@ -667,7 +667,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.RateStatusBarText = Resources.FinCalcFunctionRate;
 
 			// Check if it is a second function call
-			if (this.LastPressedOperation == CommandWord.Operator && this.ActiveMathOperator == MathOperator.Multiply)
+			if (this.SecondFunctionTrigger)
 			{
 				this.OnRateSecondFunctionPressed(isLongTouch);
 				return;
