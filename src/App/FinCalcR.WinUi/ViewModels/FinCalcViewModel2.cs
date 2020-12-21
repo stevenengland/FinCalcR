@@ -603,14 +603,17 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				// Display the value in the memory
 				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, 2);
 
-				this.LastPressedOperation = CommandWord.Start;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
+				this.LastPressedOperation = CommandWord.GetStart;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.GetStart);
 			}
 			else
 			{
 				// CalculateStart
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Start) && this.IsCommandWordSpecialFunction())
-					|| this.LastPressedOperation == CommandWord.Start)
+					|| (this.LastPressedOperation == CommandWord.GetStart
+						|| this.LastPressedOperation == CommandWord.SetStart
+						|| this.lastPressedOperation == CommandWord.CalculateStart
+						|| this.LastPressedOperation == CommandWord.SetAdvance))
 				{
 					// Special - if the last pressed operation was a special function this current special function should not work with old values.
 					if (!isLongTouch && this.IsCommandWordSpecialFunction())
@@ -633,8 +636,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
 					}
 
-					this.LastPressedOperation = CommandWord.Start;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
+					this.LastPressedOperation = CommandWord.CalculateStart;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.CalculateStart);
 				}
 
 				// SetStart
@@ -650,8 +653,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value = tmpVar;
 
-					this.LastPressedOperation = CommandWord.Start;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
+					this.LastPressedOperation = CommandWord.SetStart;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.SetStart);
 				}
 			}
 
@@ -681,8 +684,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
-			this.LastPressedOperation = CommandWord.Start;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
+			this.LastPressedOperation = CommandWord.SetAdvance;
+			this.calculatorRemote.AddCommandToJournal(CommandWord.SetAdvance);
 			this.SecondFunctionTrigger = false;
 		}
 

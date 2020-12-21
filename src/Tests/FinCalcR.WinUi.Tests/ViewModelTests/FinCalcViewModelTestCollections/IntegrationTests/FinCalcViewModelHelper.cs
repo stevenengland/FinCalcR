@@ -27,7 +27,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                     vm.OperatorPressedCommand.Execute("*");
                     vm.InterestPressedCommand.Execute(false);
                     break;
-                case CommandWord.Start:
+                case CommandWord.SetStart:
                     vm.StartPressedCommand.Execute(false);
                     break;
                 case CommandWord.SetRate:

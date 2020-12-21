@@ -81,7 +81,10 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 case CommandWord.SetYears:
                 case CommandWord.GetYears:
                 case CommandWord.CalculateYears:
-                case CommandWord.Start:
+                case CommandWord.GetStart:
+                case CommandWord.SetStart:
+                case CommandWord.CalculateStart:
+                case CommandWord.SetAdvance:
                 case CommandWord.SetRate:
                 case CommandWord.GetRate:
                 case CommandWord.CalculateRate:

@@ -8,7 +8,10 @@
                    || commandWord == CommandWord.GetYears
                    || commandWord == CommandWord.CalculateYears
                    || commandWord == CommandWord.Interest
-                   || commandWord == CommandWord.Start
+                   || commandWord == CommandWord.GetStart
+                   || commandWord == CommandWord.SetStart
+                   || commandWord == CommandWord.CalculateStart
+                   || commandWord == CommandWord.SetAdvance
                    || commandWord == CommandWord.GetRate
                    || commandWord == CommandWord.SetRate
                    || commandWord == CommandWord.GetRepaymentRate
