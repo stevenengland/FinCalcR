@@ -165,11 +165,10 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void PressDigit(string digit)
         {
-            // Special - if the last pressed operation was a special function this operation should not work with old values.
+            this.HandleCommonTasksIfLastCommandWasSpecial();
+
             if (this.LastCommand.IsSpecialCommandWord())
             {
-                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-                this.InputText.ResetInternalState();
                 this.ActiveMathOperator = MathOperator.None;
             }
 
@@ -226,12 +225,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void CalculateYears()
         {
-            // Special - if the last pressed operation was a special function this current special function should not work with old/same values.
-            if (this.LastCommand.IsSpecialCommandWord())
-            {
-                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-                this.InputText.ResetInternalState();
-            }
+            this.HandleCommonTasksIfLastCommandWasSpecial();
 
             var calculatedResult = CalculationProxy.CalculateAndCheckResult(
                 true,
@@ -249,12 +243,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void SetYears()
         {
-            // Special - if the last pressed operation was a special function this current special function should not work with old/same values.
-            if (this.LastCommand.IsSpecialCommandWord())
-            {
-                this.InputText.ResetInternalState();
-                this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-            }
+            this.HandleCommonTasksIfLastCommandWasSpecial();
 
             var tmpYearsNumber = this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber), 2);
@@ -294,14 +283,19 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void SetEnd()
         {
+            this.HandleCommonTasksIfLastCommandWasSpecial();
+
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
+        }
+
+        private void HandleCommonTasksIfLastCommandWasSpecial()
+        {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.
             if (this.LastCommand.IsSpecialCommandWord())
             {
                 this.InputText.ResetInternalState();
                 this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
             }
-
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
         }
 
         private void CommonSpecialFunctionWriteToMemoryOperations(IMemoryFieldValue<double> memoryField, int specialNumberDecimalCount, bool setDisplayText = true)
