@@ -588,13 +588,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 
-			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsCommandWordSpecialFunction())
-			{
-				this.ResetSides();
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-			}
-
 			// Check if it is a second function call
 			if (this.SecondFunctionTrigger)
 			{
@@ -604,17 +597,28 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 			this.StartStatusBarText = Resources.FinCalcFunctionStart;
 
+			// GetStart
 			if (isLongTouch)
 			{
 				// Display the value in the memory
 				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, 2);
+
+				this.LastPressedOperation = CommandWord.Start;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
 			}
 			else
 			{
-				// Write the value to the memory
+				// CalculateStart
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Start) && this.IsCommandWordSpecialFunction())
 					|| this.LastPressedOperation == CommandWord.Start)
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					var tmpStartNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.K0), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
 
 					if (this.IsNumber(tmpStartNumber))
@@ -628,22 +632,43 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						// Don't display NaN or other non numeric values that might be the result of the calculation.
 						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
 					}
+
+					this.LastPressedOperation = CommandWord.Start;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
 				}
+
+				// SetStart
 				else
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value = tmpVar;
+
+					this.LastPressedOperation = CommandWord.Start;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
 				}
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
-			this.LastPressedOperation = CommandWord.Start;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Start);
 			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnStartSecondFunctionPressed()
 		{
+			// SetAdvance
+			// Special - if the last pressed operation was a special function this current special function should not work with old values.
+			if (this.IsCommandWordSpecialFunction())
+			{
+				this.ResetSides();
+				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+			}
+
 			if (this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value)
 			{
 				this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value = false;
