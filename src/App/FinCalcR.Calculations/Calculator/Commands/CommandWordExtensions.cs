@@ -9,7 +9,11 @@
                    || commandWord == CommandWord.CalculateYears
                    || commandWord == CommandWord.Interest
                    || commandWord == CommandWord.Start
-                   || commandWord == CommandWord.Rate
+                   || commandWord == CommandWord.GetRate
+                   || commandWord == CommandWord.SetRate
+                   || commandWord == CommandWord.GetRepaymentRate
+                   || commandWord == CommandWord.SetRepaymentRate
+                   || commandWord == CommandWord.CalculateRate
                    || commandWord == CommandWord.GetEnd
                    || commandWord == CommandWord.SetEnd
                    || commandWord == CommandWord.CalculateEnd

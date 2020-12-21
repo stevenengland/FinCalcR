@@ -11,7 +11,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
         public CalculateRepaymentRateCommand(ICalculationCommandReceiver calculator)
         {
             this.calculator = calculator;
-            this.CommandWord = CommandWord.CalculateRepaymentRate;
+            this.CommandWord = CommandWord.GetRepaymentRate;
         }
 
         public override CommandWord CommandWord { get; }

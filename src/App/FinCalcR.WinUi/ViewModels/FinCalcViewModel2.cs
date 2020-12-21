@@ -678,14 +678,18 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			{
 				// Display the value in the memory
 				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, 2);
-				this.LastPressedOperation = CommandWord.Rate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
+				this.LastPressedOperation = CommandWord.GetRate;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.GetRate);
 			}
 			else
 			{
 				// CalculateRate
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Rate) && this.IsCommandWordSpecialFunction())
-					|| this.LastPressedOperation == CommandWord.Rate)
+					|| (this.LastPressedOperation == CommandWord.GetRate
+					    || this.LastPressedOperation == CommandWord.SetRate
+					    || this.LastPressedOperation == CommandWord.CalculateRate
+					    || this.LastPressedOperation == CommandWord.GetRepaymentRate
+					    || this.lastPressedOperation == CommandWord.SetRepaymentRate))
 				{
 					// Special - if the last pressed operation was a special function this current special function should not work with old values.
 					if (!isLongTouch && this.IsCommandWordSpecialFunction())
@@ -708,8 +712,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
 					}
 
-					this.LastPressedOperation = CommandWord.Rate;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
+					this.LastPressedOperation = CommandWord.CalculateRate;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.CalculateRate);
 				}
 
 				// SetRate [+ repaymentRateNumber]
@@ -726,8 +730,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value = tmpVar;
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
 
-					this.LastPressedOperation = CommandWord.Rate;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
+					this.LastPressedOperation = CommandWord.SetRate;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.SetRate);
 				}
 			}
 
@@ -737,7 +741,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnRateSecondFunctionPressed(bool isLongTouch)
 		{
-			// CalculateRepaymentRate
+			// GetRepaymentRate
 			if (isLongTouch)
 			{
 				// Output saved repayment rate
@@ -752,8 +756,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
 				}
 
-				this.LastPressedOperation = CommandWord.Rate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
+				this.LastPressedOperation = CommandWord.GetRepaymentRate;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.GetRepaymentRate);
 			}
 			// SetRepaymentRate
 			else
@@ -774,8 +778,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
 				this.SetDisplayText(true, 2);
 
-				this.LastPressedOperation = CommandWord.Rate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.Rate);
+				this.LastPressedOperation = CommandWord.SetRepaymentRate;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.SetRepaymentRate);
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);

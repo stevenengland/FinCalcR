@@ -30,7 +30,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                 case CommandWord.Start:
                     vm.StartPressedCommand.Execute(false);
                     break;
-                case CommandWord.Rate:
+                case CommandWord.SetRate:
                     vm.RatePressedCommand.Execute(false);
                     break;
                 case CommandWord.SetEnd:
