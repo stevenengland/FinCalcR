@@ -4,11 +4,11 @@ using System.Text;
 
 namespace StEn.FinCalcR.Calculations.Calculator.Commands
 {
-    public class CalculateRepaymentRateCommand : BaseCommand
+    public class GetRepaymentRateCommand : BaseCommand
     {
-        private ICalculationCommandReceiver calculator;
+        private readonly ICalculationCommandReceiver calculator;
 
-        public CalculateRepaymentRateCommand(ICalculationCommandReceiver calculator)
+        public GetRepaymentRateCommand(ICalculationCommandReceiver calculator)
         {
             this.calculator = calculator;
             this.CommandWord = CommandWord.GetRepaymentRate;
@@ -18,7 +18,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
 
         public override void Execute(params object[] parameter)
         {
-            this.calculator.CalculateRepaymentRate();
+            this.calculator.GetRepaymentRate();
         }
     }
 }

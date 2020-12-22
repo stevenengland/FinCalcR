@@ -738,21 +738,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// GetRepaymentRate
 			if (isLongTouch)
 			{
-				// Output saved repayment rate
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double>((m, k0, p, annuity) => FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
-				if (this.IsNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value))
-				{
-					this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value, 2);
-				}
-				else
-				{
-					// Don't display NaN or other non numeric values that might be the result of the calculation.
-					this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
-				}
-
-				this.LastPressedOperation = CommandWord.GetRepaymentRate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.GetRepaymentRate);
+				this.calculatorRemote.InvokeCommand(CommandWord.GetRepaymentRate);
 			}
+
 			// SetRepaymentRate
 			else
 			{

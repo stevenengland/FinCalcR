@@ -61,7 +61,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                  { new[] { Ca.Nr1, Ca.SetNom, Ca.ClearP, Ca.GetNom }, Ca.Dec, null, "1,000" },
                  { new[] { Ca.Nr1, Ca.ToggleAdv }, Ca.Dec, null, "1," }, // ToDo: special to the physical calculator: Should be "0,"
                  { new[] { Ca.Nr1, Ca.SetRep }, Ca.Dec, null, "0,00" },
-                 { new[] { Ca.Nr1, Ca.SetRep, Ca.ClearP, Ca.GetRep }, Ca.Dec, null, "0,00" },
+                 { new[] { Ca.Nr1, Ca.SetStart, Ca.ClearP, Ca.GetRep }, Ca.Dec, null, "0,00" },
                  { new[] { Ca.PerA }, Ca.Dec, null, "210,00" },
             };
 

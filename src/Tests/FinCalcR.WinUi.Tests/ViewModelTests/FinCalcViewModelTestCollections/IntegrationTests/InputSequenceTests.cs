@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
+using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Types;
 using StEn.FinCalcR.WinUi.ViewModels;
@@ -718,8 +719,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 			eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
 
 			// Assert display is set back to zero and not NaN or something
-			Assert.True(double.IsNaN(vm.RepaymentRateNumber));
-			Assert.True(vm.DisplayText == "0,00");
+			Assert.True(vm.LastPressedOperation == CommandWord.Clear);
+			Assert.True(vm.DisplayText == "0,");
 			Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
 
 			// Show rate number that was calculated with NaN of repayment rate number

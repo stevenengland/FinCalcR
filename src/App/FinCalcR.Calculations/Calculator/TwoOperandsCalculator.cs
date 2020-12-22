@@ -125,7 +125,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             else
             {
                 this.ActiveMathOperator = mathOperator;
-                this.SetMemoryFieldValue(this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber));
+                this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber));
             }
         }
 
@@ -136,7 +136,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 return;
             }
 
-            this.SetMemoryFieldValue(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
+            this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
 
             double result = 0;
 
@@ -319,7 +319,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         {
             this.HandleCommonTasksIfLastCommandWasSpecial();
 
-            this.SetMemoryFieldValue(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
+            this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
             var calculation = double.NaN;
             switch (this.ActiveMathOperator)
             {
@@ -367,11 +367,6 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
         }
 
-        public void CalculateRepaymentRate()
-        {
-            throw new NotImplementedException();
-        }
-
         public void CalculateRate()
         {
             this.HandleCommonTasksIfLastCommandWasSpecial();
@@ -409,6 +404,24 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 .calculatedResult;
         }
 
+        public void GetRepaymentRate()
+        {
+            // Repayment rate is calculated on demand. Unlike all the other GetXYZ functions it is not a plain load from memory case.
+            // The calculation throws if it is no finite number.
+            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = CalculationProxy
+                .CalculateAndCheckResult(
+                    true,
+                    new Func<double, double, double, double, double>((m, k0, p, annuity) =>
+                        FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)),
+                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value)
+                .calculatedResult;
+
+            this.PressLoadMemoryValue(MemoryFieldNames.RepaymentRateNumber);
+        }
+
         private void HandleCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.
@@ -427,7 +440,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 this.InputText.SetInternalState(this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value);
             }
 
-            this.SetMemoryFieldValue(memoryField);
+            this.SetMemoryFieldValueByEvalInputText(memoryField);
             this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
             this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = memoryField.Value;
             this.InputText.SetInternalState(memoryField.Value); // So that the display text can be set.
@@ -438,7 +451,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
         }
 
-        private void SetMemoryFieldValue<T>(IMemoryFieldValue<T> memoryField)
+        private void SetMemoryFieldValueByEvalInputText<T>(IMemoryFieldValue<T> memoryField)
         {
             var value = double.Parse(this.InputText.GetEvaluatedResult());
             switch (memoryField)
