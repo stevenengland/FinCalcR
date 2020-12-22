@@ -171,7 +171,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void PressDigit(string digit)
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             if (this.LastCommand.IsSpecialCommandWord())
             {
@@ -231,7 +231,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void CalculateYears()
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                 true,
@@ -249,7 +249,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void SetYears()
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             var tmpYearsNumber = this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber), 2);
@@ -289,14 +289,14 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void SetEnd()
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
         }
 
         public void CalculateEnd()
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                                        true,
@@ -317,7 +317,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void CalculatePercent()
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
             var calculation = double.NaN;
@@ -369,7 +369,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void CalculateRate()
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                 true,
@@ -389,7 +389,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void SetRate()
         {
-            this.HandleCommonTasksIfLastCommandWasSpecial();
+            this.DoCommonTasksIfLastCommandWasSpecial();
 
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
             this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = CalculationProxy
@@ -422,7 +422,29 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.PressLoadMemoryValue(MemoryFieldNames.RepaymentRateNumber);
         }
 
-        private void HandleCommonTasksIfLastCommandWasSpecial()
+        public void SetRepaymentRate()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            // Calculate/save repayment, save repayment (as rate) and display the repayment.
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber), 2, false);
+
+            this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value =
+                (-1) * CalculationProxy.CalculateAndCheckResult(
+                    false,
+                    new Func<double, double, double, double, double>((m, k0, p, e) =>
+                        FinancialCalculator.GetAnnuity(k0, e, p, m)),
+                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value).calculatedResult;
+
+            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
+            this.InputText.SetInternalState(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
+            this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
+        }
+
+        private void DoCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.
             if (this.LastCommand.IsSpecialCommandWord())

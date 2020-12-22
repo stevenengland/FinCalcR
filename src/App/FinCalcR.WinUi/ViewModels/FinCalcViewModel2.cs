@@ -741,24 +741,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// SetRepaymentRate
 			else
 			{
-				// Special - if the last pressed operation was a special function this current special function should not work with old values.
-				if (!isLongTouch && this.IsCommandWordSpecialFunction())
-				{
-					this.ResetSides();
-					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				}
-
-				// Calculate/save repayment, save repayment (as rate) and display the repayment.
-				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2, false);
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = tmpVar;
-
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value = (-1) * this.CalculateAndCheckResult(false, new Func<double, double, double, double, double>((m, k0, p, e) => FinancialCalculator.GetAnnuity(k0, e, p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value);
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
-				this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
-				this.SetDisplayText(true, 2);
-
-				this.LastPressedOperation = CommandWord.SetRepaymentRate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.SetRepaymentRate);
+				this.calculatorRemote.InvokeCommand(CommandWord.SetRepaymentRate);
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Rate, true);

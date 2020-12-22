@@ -56,5 +56,6 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void SetRate();
 
         void GetRepaymentRate();
+        void SetRepaymentRate();
     }
 }
