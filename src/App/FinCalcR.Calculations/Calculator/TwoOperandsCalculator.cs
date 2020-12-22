@@ -482,6 +482,32 @@ namespace StEn.FinCalcR.Calculations.Calculator
            this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value = useAdvance;
         }
 
+        public void CalculateEffectiveInterest()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            var (_, calculatedNominalP) = CalculationProxy.CalculateAndCheckResult(
+                true,
+                new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P),
+                (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
+                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value,
+                50);
+
+            this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = calculatedNominalP;
+            var (_, calculatedEffectiveP) = CalculationProxy.CalculateAndCheckResult(
+                false,
+                new Func<double, double, double>(FinancialCalculator.GetEffectiveInterestRate),
+                calculatedNominalP,
+                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
+
+            this.InputText.SetInternalState(calculatedEffectiveP);
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber), 3);
+        }
+
         private void DoCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.

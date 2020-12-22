@@ -29,5 +29,7 @@
         void SetStart();
 
         void SetAdvance(bool useAdvance);
+
+        void CalculateEffectiveInterest();
     }
 }

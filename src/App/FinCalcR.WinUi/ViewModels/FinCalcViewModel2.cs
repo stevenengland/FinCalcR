@@ -496,31 +496,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					    || this.LastPressedOperation == CommandWord.GetNominalInterestRate
 						|| this.LastPressedOperation == CommandWord.SetNominalInterestRate))
 				{
-					// Special - if the last pressed operation was a special function this current special function should not work with old values.
-					if (!isLongTouch && this.IsCommandWordSpecialFunction())
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					}
-
-					var tmpNominalInterestNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P), (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value, 50);
-
-					if (this.IsNumber(tmpNominalInterestNumber))
-					{
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = tmpNominalInterestNumber;
-						var tmpInterestNumber = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetEffectiveInterestRate), tmpNominalInterestNumber, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
-						this.BuildSidesFromNumber(tmpInterestNumber);
-						this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3);
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value = tmpVar;
-					}
-					else
-					{
-						// Don't display NaN or other non numeric values that might be the result of the calculation.
-						this.CommonSpecialFunctionReadFromMemoryOperations(0, 3);
-					}
-
-					this.LastPressedOperation = CommandWord.CalculateEffectiveInterest;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.CalculateEffectiveInterest);
+					this.calculatorRemote.InvokeCommand(CommandWord.CalculateEffectiveInterest);
 				}
 
 				// SetEffectiveInterest
