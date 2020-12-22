@@ -8,7 +8,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
     {
         public static string YearsNumber => nameof(YearsNumber);
 
-        public static string InterestNumber => nameof(InterestNumber);
+        public static string EffectiveInterestNumber => nameof(EffectiveInterestNumber);
 
         public static string StartNumber => nameof(StartNumber);
 

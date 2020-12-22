@@ -24,7 +24,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.PreOperatorNumber, 0, MemoryFieldNames.Categories.Standard));
             this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.PostOperatorNumber, 0, MemoryFieldNames.Categories.Standard));
             this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.YearsNumber, 0, MemoryFieldNames.Categories.Special));
-            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.InterestNumber, 0, MemoryFieldNames.Categories.Special));
+            this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.EffectiveInterestNumber, 0, MemoryFieldNames.Categories.Special));
             this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.StartNumber, 0, MemoryFieldNames.Categories.Special));
             this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.RateNumber, 0, MemoryFieldNames.Categories.Special));
             this.MemoryFields.Add(new SimpleMemoryField<double>(MemoryFieldNames.EndNumber, 0, MemoryFieldNames.Categories.Special));
@@ -206,7 +206,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 this.ActiveMathOperator = MathOperator.None;
                 this.OutputText.SetOverlay(this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value + " p.a.");
             }
-            else if (memoryFieldDescriptor.Id == MemoryFieldNames.InterestNumber
+            else if (memoryFieldDescriptor.Id == MemoryFieldNames.EffectiveInterestNumber
                      || memoryFieldDescriptor.Id == MemoryFieldNames.NominalInterestRateNumber)
             {
                 var memoryField = this.MemoryFields.Get<double>(memoryFieldId);
