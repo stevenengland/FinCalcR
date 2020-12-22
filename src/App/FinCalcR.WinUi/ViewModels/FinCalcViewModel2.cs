@@ -617,18 +617,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				// SetStart
 				else
 				{
-					// Special - if the last pressed operation was a special function this current special function should not work with old values.
-					if (!isLongTouch && this.IsCommandWordSpecialFunction())
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					}
-
-					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value = tmpVar;
-
-					this.LastPressedOperation = CommandWord.SetStart;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.SetStart);
+					this.calculatorRemote.InvokeCommand(CommandWord.SetStart);
 				}
 			}
 

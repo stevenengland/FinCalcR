@@ -462,6 +462,13 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber), 2);
         }
 
+        public void SetStart()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber), 2);
+        }
+
         private void DoCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.
