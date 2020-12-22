@@ -343,8 +343,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.RatePressedCommand.Execute(false);
             Assert.True(vm.LastPressedOperation == CommandWord.SetRepaymentRate);
             vm.LastPressedOperation = CommandWord.None;
-            
-            // start must be != 0 for the repayment rate. 
+
+            // start must be != 0 for the repayment rate.
             vm.DigitPressedCommand.Execute(1);
             vm.StartPressedCommand.Execute(false);
             vm.OperatorPressedCommand.Execute("*");

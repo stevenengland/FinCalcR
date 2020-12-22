@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_AppDocs", "_AppDocs", "{34
 		docs\Keyboard_en.MD = docs\Keyboard_en.MD
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinCalcR.Tests.Shared", "src\Tests\FinCalcR.Tests.Shared\FinCalcR.Tests.Shared.csproj", "{39061318-0FD4-4A5F-A380-B0EA93C2085B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinCalcR.Tests.Shared", "src\Tests\FinCalcR.Tests.Shared\FinCalcR.Tests.Shared.csproj", "{39061318-0FD4-4A5F-A380-B0EA93C2085B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

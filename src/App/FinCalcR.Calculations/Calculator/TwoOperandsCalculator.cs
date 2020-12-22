@@ -359,7 +359,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                     throw new NotSupportedException();
             }
 
-            this.MemoryFields.Reset(new List<string>() {MemoryFieldNames.Categories.Standard});
+            this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
             this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = calculation;
             this.ActiveMathOperator = MathOperator.None;
             this.IsCalcCommandLock = true;

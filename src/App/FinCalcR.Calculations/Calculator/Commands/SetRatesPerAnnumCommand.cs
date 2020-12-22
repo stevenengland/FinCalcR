@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StEn.FinCalcR.Calculations.Calculator.Commands
 {
-    public class SetRatesPerAnnumCommand: BaseCommand
+    public class SetRatesPerAnnumCommand : BaseCommand
     {
         private readonly ICalculationCommandReceiver calculator;
 

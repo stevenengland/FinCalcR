@@ -31,7 +31,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                 { new[] { Ca.Nr1, Ca.SetRate }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
                 { new[] { Ca.Nr1, Ca.GetRate }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
                 { new[] { Ca.Nr1, Ca.SetEnd }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
-                { new[] { Ca.Nr1, Ca.GetEnd}, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
+                { new[] { Ca.Nr1, Ca.GetEnd }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
                 { new[] { Ca.Nr1, Ca.SetRpa }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
                 { new[] { Ca.Nr1, Ca.GetRpa }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },
                 { new[] { Ca.Nr1, Ca.SetNom }, Ca.Dec, new[] { Ca.Nr2 }, "0,2" },

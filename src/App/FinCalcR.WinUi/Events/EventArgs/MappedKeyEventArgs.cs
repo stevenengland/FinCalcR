@@ -10,7 +10,7 @@ namespace StEn.FinCalcR.WinUi.Events.EventArgs
 		public MappedKeyEventArgs(string key, object activeWindowContent)
 		{
 			this.Key = key;
-			ActiveWindowContent = activeWindowContent;
+			this.ActiveWindowContent = activeWindowContent;
 		}
 
 		public string Key { get; }
