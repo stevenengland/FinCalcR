@@ -392,6 +392,23 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
         }
 
+        public void SetRate()
+        {
+            this.HandleCommonTasksIfLastCommandWasSpecial();
+
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
+            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = CalculationProxy
+                .CalculateAndCheckResult(
+                    false,
+                    new Func<double, double, double, double, double>((m, k0, p, annuity) =>
+                        FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)),
+                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value)
+                .calculatedResult;
+        }
+
         private void HandleCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.
