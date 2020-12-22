@@ -14,7 +14,6 @@ using Xunit;
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
 	// TODO: Refactor the whole class. It is kind of a relict from the beginning to explore the way the vm and long sequences of input can be tested.
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1651:Do not use placeholder elements", Justification = "Tests do not care")]
 	public class InputSequenceTests
 	{
 		private const double Tolerance = 0.00000001;

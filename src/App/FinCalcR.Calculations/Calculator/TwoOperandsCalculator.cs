@@ -273,7 +273,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             // Write the value to the memory
             var backupRpaNumber = this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
-            var tmpRpaNumberField = new SimpleMemoryField<double>("tmpRpaNumberField", default(double), "temp");
+            var tmpRpaNumberField = new SimpleMemoryField<double>("tmpRpaNumberField", default, "temp");
             this.CommonSpecialFunctionWriteToMemoryOperations(tmpRpaNumberField, 0, false);
             if (tmpRpaNumberField.Value < 1
                 || tmpRpaNumberField.Value > 365

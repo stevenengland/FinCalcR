@@ -25,9 +25,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 	public class FinCalcViewModel2 : Screen, IHandle<KeyboardKeyDownEvent>
 	{
 		private const int LongTouchDelay = 2;
-#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly ILocalizationService localizationService;
-#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private readonly IEventAggregator eventAggregator;
 		private readonly ICommandInvoker calculatorRemote;
 		private readonly ICalculationCommandReceiver calculator;
@@ -476,13 +474,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			this.ResetSpecialFunctionLabels();
 			this.InterestStatusBarText = Resources.FinCalcFunctionInterest;
 
-			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (!isLongTouch && this.IsCommandWordSpecialFunction())
-			{
-				this.ResetSides();
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-			}
-
 			// Check if it is a second function call
 			if (this.SecondFunctionTrigger)
 			{
@@ -490,18 +481,28 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				return;
 			}
 
-			// Proceed as standard function
+			// GetEffectiveInterest
 			if (isLongTouch)
 			{
 				// Display the value in the memory
 				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value, 3);
+
+				this.LastPressedOperation = CommandWord.Interest;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 			}
 			else
 			{
-				// Write the value to the memory
+				// CalculateEffectiveInterest
 				if ((this.PressedSpecialFunctions.IsOnlyFlagNotSet(PressedSpecialFunctions.Interest) && this.IsCommandWordSpecialFunction())
 					|| this.LastPressedOperation == CommandWord.Interest)
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					var tmpNominalInterestNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P), (-1) * this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value, 50);
 
 					if (this.IsNumber(tmpNominalInterestNumber))
@@ -517,9 +518,21 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						// Don't display NaN or other non numeric values that might be the result of the calculation.
 						this.CommonSpecialFunctionReadFromMemoryOperations(0, 3);
 					}
+
+					this.LastPressedOperation = CommandWord.Interest;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 				}
+
+				// SetEffectiveInterest
 				else
 				{
+					// Special - if the last pressed operation was a special function this current special function should not work with old values.
+					if (!isLongTouch && this.IsCommandWordSpecialFunction())
+					{
+						this.ResetSides();
+						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+					}
+
 					var tmpInterestNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value;
 					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3);
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value = tmpVar;
@@ -535,25 +548,39 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					{
 						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
 					}
+
+					this.LastPressedOperation = CommandWord.Interest;
+					this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 				}
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
-			this.LastPressedOperation = CommandWord.Interest;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 			this.SecondFunctionTrigger = false;
 		}
 
 		private void OnInterestSecondFunctionPressed(bool isLongTouch = false)
 		{
+			// GetNominalInterestRate
 			if (isLongTouch)
 			{
 				// Output saved nominal interest
 				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
 				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, 3);
+
+				this.LastPressedOperation = CommandWord.Interest;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 			}
+
+			// SetNominalInterestRate
 			else
 			{
+				// Special - if the last pressed operation was a special function this current special function should not work with old values.
+				if (!isLongTouch && this.IsCommandWordSpecialFunction())
+				{
+					this.ResetSides();
+					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+				}
+
 				// Calculate/save effective interest, save nominal interest (as interest) and display the effective interest.
 				var tmpNominalInterestNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value;
 				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3, false);
@@ -573,11 +600,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 					this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.InterestNumber).Value);
 					this.SetDisplayText(true, 3);
 				}
+
+				this.LastPressedOperation = CommandWord.Interest;
+				this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
-			this.LastPressedOperation = CommandWord.Interest;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.Interest);
 			this.SecondFunctionTrigger = false;
 		}
 
@@ -824,9 +852,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 				for (var i = displayRightSide.Length; i < specialNumberDecimalCount; i++)
 				{
-#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
 					displayRightSide += "0";
-#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
 				}
 			}
 
@@ -863,9 +889,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			for (var i = inputWithoutSeparator.Length - 3; i > 0; i -= 3)
 			{
 				lastIndex = i;
-#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
 				result = $"{Resources.CALC_THOUSANDS_SEPARATOR}{inputWithoutSeparator.Substring(i, 3)}" + result;
-#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
 			}
 
 			result = inputWithoutSeparator.Substring(0, lastIndex) + result;
