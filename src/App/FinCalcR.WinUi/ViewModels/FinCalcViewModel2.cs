@@ -611,29 +611,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 						|| this.lastPressedOperation == CommandWord.CalculateStart
 						|| this.LastPressedOperation == CommandWord.SetAdvance))
 				{
-					// Special - if the last pressed operation was a special function this current special function should not work with old values.
-					if (!isLongTouch && this.IsCommandWordSpecialFunction())
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					}
-
-					var tmpStartNumber = this.CalculateAndCheckResult(true, new Func<double, double, double, double, double, bool, double>(FinancialCalculator.K0), this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value, this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
-
-					if (this.IsNumber(tmpStartNumber))
-					{
-						this.BuildSidesFromNumber(tmpStartNumber);
-						this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 2);
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value = tmpVar;
-					}
-					else
-					{
-						// Don't display NaN or other non numeric values that might be the result of the calculation.
-						this.CommonSpecialFunctionReadFromMemoryOperations(0, 2);
-					}
-
-					this.LastPressedOperation = CommandWord.CalculateStart;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.CalculateStart);
+					this.calculatorRemote.InvokeCommand(CommandWord.CalculateStart);
 				}
 
 				// SetStart
