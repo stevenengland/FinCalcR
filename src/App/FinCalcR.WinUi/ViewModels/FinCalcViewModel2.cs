@@ -42,7 +42,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string endStatusBarText; // Remains in VM
 		private CommandWord lastPressedOperation = CommandWord.None;
 		private bool secondFunctionTrigger;
-		private bool useAdvance;
 
 		public FinCalcViewModel2(
 			ILocalizationService localizationService,
@@ -190,6 +189,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			}
 		}
 
+		public bool UseAnticipativeInterestYield => this.calculator.UsesAnticipativeInterestYield;
+
 		public string ThousandsSeparator => Resources.CALC_THOUSANDS_SEPARATOR;
 
 		public string DecimalSeparator => Resources.CALC_DECIMAL_SEPARATOR;
@@ -266,11 +267,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			var gestureHandler = new FrameworkElementGestureHandler(element);
 			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.EndPressedCommand.Execute(isLongTouch);
-		}
-
-		public bool IsAdvance()
-		{
-			return this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value;
 		}
 
 		private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
@@ -628,19 +624,16 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnStartSecondFunctionPressed()
 		{
-			if (this.useAdvance)
+			if (this.UseAnticipativeInterestYield)
 			{
-				this.useAdvance = false;
 				this.AdvanceStatusBarText = string.Empty;
+				this.calculatorRemote.InvokeCommand(CommandWord.SetAdvance, false);
 			}
 			else
 			{
-				this.useAdvance = true;
 				this.AdvanceStatusBarText = Resources.FinCalcFunctionAdvance;
+				this.calculatorRemote.InvokeCommand(CommandWord.SetAdvance, true);
 			}
-
-			// SetAdvance
-			this.calculatorRemote.InvokeCommand(CommandWord.SetAdvance, this.useAdvance);
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
 			this.SecondFunctionTrigger = false;

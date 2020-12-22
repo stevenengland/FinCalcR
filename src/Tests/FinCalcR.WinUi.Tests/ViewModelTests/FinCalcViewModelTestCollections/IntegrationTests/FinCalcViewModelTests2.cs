@@ -1117,9 +1117,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             vm.OperatorPressedCommand.Execute("*");
             vm.StartPressedCommand.Execute(false);
-            vm.IsAdvance().Should().BeTrue();
+            vm.UseAnticipativeInterestYield.Should().BeTrue();
             vm.ClearPressedCommand.Execute(true);
-            vm.IsAdvance().Should().BeFalse();
+            vm.UseAnticipativeInterestYield.Should().BeFalse();
         }
 
         [Fact]
@@ -1934,16 +1934,16 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
 
-            Assert.False(vm.IsAdvance());
+            Assert.False(vm.UseAnticipativeInterestYield);
             Assert.True(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
             vm.OperatorPressedCommand.Execute("*");
             vm.StartPressedCommand.Execute(false);
-            Assert.True(vm.IsAdvance());
+            Assert.True(vm.UseAnticipativeInterestYield);
             Assert.False(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
 
             vm.OperatorPressedCommand.Execute("*");
             vm.StartPressedCommand.Execute(false);
-            Assert.False(vm.IsAdvance());
+            Assert.False(vm.UseAnticipativeInterestYield);
             Assert.True(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
         }
 

@@ -6,63 +6,17 @@ using StEn.FinCalcR.Calculations.Calculator.Display;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
-    public interface ICalculationCommandReceiver
+    public interface ICalculationCommandReceiver : IFinancialCalculation, IStandardCalculation
     {
-        IMemoryFieldContainer MemoryFields { get; }
 
         IOutputText OutputText { get; }
 
         IInputText InputText { get; }
 
+        // ToDo: Can I get rid of it? Suits no interface description, does it?
         MathOperator ActiveMathOperator { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether calculation is locked.
-        /// That is the case if calculation was just triggered and another calculation without further input should be avoided.
-        /// </summary>
-        bool IsCalcCommandLock { get; set; }
 
         // TODO: MAKE PRIVATE OR REMOVE
         CommandWord LastCommand { get; set; }
-
-        void PressDecimalSeparator();
-
-        void PressAlgebSign();
-
-        void PressOperator(string mathOperatorToken);
-
-        void PressCalculate();
-
-        void PressClear(IList<string> memoryFieldCategories);
-
-        void PressDigit(string digit);
-
-        void PressLoadMemoryValue(string memoryFieldId);
-
-        void CalculateYears();
-
-        void SetYears();
-
-        void SetRatesPerAnnum();
-
-        void SetEnd();
-
-        void CalculateEnd();
-
-        void CalculatePercent();
-
-        void CalculateRate();
-
-        void SetRate();
-
-        void GetRepaymentRate();
-
-        void SetRepaymentRate();
-
-        void CalculateStart();
-
-        void SetStart();
-
-        void SetAdvance(bool useAdvance);
     }
 }

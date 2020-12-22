@@ -42,6 +42,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public MathOperator ActiveMathOperator { get; set; }
 
+        public bool UsesAnticipativeInterestYield => this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value;
+
         /// <inheritdoc />
         public bool IsCalcCommandLock { get; set; }
 
