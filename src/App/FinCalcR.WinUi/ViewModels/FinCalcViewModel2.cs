@@ -704,10 +704,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// GetRate
 			if (isLongTouch)
 			{
-				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value, 2);
-				this.LastPressedOperation = CommandWord.GetRate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.GetRate);
+				this.calculatorRemote.InvokeCommand(CommandWord.GetRate);
 			}
 			else
 			{
