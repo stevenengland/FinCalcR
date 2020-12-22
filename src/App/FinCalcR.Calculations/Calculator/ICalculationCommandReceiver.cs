@@ -62,5 +62,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void CalculateStart();
 
         void SetStart();
+
+        void SetAdvance(bool useAdvance);
     }
 }

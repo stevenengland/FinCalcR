@@ -42,6 +42,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		private string endStatusBarText; // Remains in VM
 		private CommandWord lastPressedOperation = CommandWord.None;
 		private bool secondFunctionTrigger;
+		private bool useAdvance;
 
 		public FinCalcViewModel2(
 			ILocalizationService localizationService,
@@ -627,28 +628,21 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnStartSecondFunctionPressed()
 		{
-			// SetAdvance
-			// Special - if the last pressed operation was a special function this current special function should not work with old values.
-			if (this.IsCommandWordSpecialFunction())
+			if (this.useAdvance)
 			{
-				this.ResetSides();
-				this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-			}
-
-			if (this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value)
-			{
-				this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value = false;
+				this.useAdvance = false;
 				this.AdvanceStatusBarText = string.Empty;
 			}
 			else
 			{
-				this.calculator.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value = true;
+				this.useAdvance = true;
 				this.AdvanceStatusBarText = Resources.FinCalcFunctionAdvance;
 			}
 
+			// SetAdvance
+			this.calculatorRemote.InvokeCommand(CommandWord.SetAdvance, this.useAdvance);
+
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Start, true);
-			this.LastPressedOperation = CommandWord.SetAdvance;
-			this.calculatorRemote.AddCommandToJournal(CommandWord.SetAdvance);
 			this.SecondFunctionTrigger = false;
 		}
 
