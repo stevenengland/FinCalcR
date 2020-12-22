@@ -600,11 +600,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// GetStart
 			if (isLongTouch)
 			{
-				// Display the value in the memory
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value, 2);
-
-				this.LastPressedOperation = CommandWord.GetStart;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.GetStart);
+				this.calculatorRemote.InvokeCommand(CommandWord.GetStart);
 			}
 			else
 			{
