@@ -50,6 +50,9 @@ namespace StEn.FinCalcR.Calculations.Calculator
         void CalculateEnd();
 
         void CalculatePercent();
+
         void CalculateRepaymentRate();
+
+        void CalculateRate();
     }
 }
