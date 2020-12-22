@@ -77,7 +77,11 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             switch (this.LastCommand)
             {
-                case CommandWord.Interest:
+                case CommandWord.GetEffectiveInterest:
+                case CommandWord.SetEffectiveInterest:
+                case CommandWord.CalculateEffectiveInterest:
+                case CommandWord.GetNominalInterestRate:
+                case CommandWord.SetNominalInterestRate:
                     this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 3);
                     break;
                 case CommandWord.SetYears:

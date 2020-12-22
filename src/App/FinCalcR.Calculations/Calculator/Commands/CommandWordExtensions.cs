@@ -7,7 +7,11 @@
             return commandWord == CommandWord.SetYears
                    || commandWord == CommandWord.GetYears
                    || commandWord == CommandWord.CalculateYears
-                   || commandWord == CommandWord.Interest
+                   || commandWord == CommandWord.GetEffectiveInterest
+                   || commandWord == CommandWord.SetEffectiveInterest
+                   || commandWord == CommandWord.CalculateEffectiveInterest
+                   || commandWord == CommandWord.GetNominalInterestRate
+                   || commandWord == CommandWord.SetNominalInterestRate
                    || commandWord == CommandWord.GetStart
                    || commandWord == CommandWord.SetStart
                    || commandWord == CommandWord.CalculateStart

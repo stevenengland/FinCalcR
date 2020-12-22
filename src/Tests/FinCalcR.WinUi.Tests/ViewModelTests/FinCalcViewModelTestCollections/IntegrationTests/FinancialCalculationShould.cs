@@ -38,7 +38,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             // Act
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, n, CommandWord.SetYears);
-            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
+            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.SetNominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, k0, CommandWord.SetStart);
             FinCalcViewModelHelper.SetFinancialValue(vm, e, CommandWord.SetRate);
             vm.EndPressedCommand.Execute(false);
@@ -58,7 +58,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             // Act
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, n, CommandWord.SetYears);
-            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
+            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.SetNominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, e, CommandWord.SetRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, kn, CommandWord.SetEnd);
             vm.StartPressedCommand.Execute(false);
@@ -86,7 +86,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
             FinCalcViewModelHelper.SetFinancialValue(vm, n, CommandWord.SetYears);
-            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
+            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.SetNominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, k0, CommandWord.SetStart);
             FinCalcViewModelHelper.SetFinancialValue(vm, kn, CommandWord.SetEnd);
             vm.RatePressedCommand.Execute(false);
@@ -105,7 +105,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             // Act
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
-            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.NominalInterestRate);
+            FinCalcViewModelHelper.SetFinancialValue(vm, p, CommandWord.SetNominalInterestRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, k0, CommandWord.SetStart);
             FinCalcViewModelHelper.SetFinancialValue(vm, e, CommandWord.SetRate);
             FinCalcViewModelHelper.SetFinancialValue(vm, kn, CommandWord.SetEnd);

@@ -20,10 +20,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                 case CommandWord.SetYears:
                     vm.YearsPressedCommand.Execute(false);
                     break;
-                case CommandWord.Interest:
+                case CommandWord.SetEffectiveInterest:
                     vm.InterestPressedCommand.Execute(false);
                     break;
-                case CommandWord.NominalInterestRate:
+                case CommandWord.SetNominalInterestRate:
                     vm.OperatorPressedCommand.Execute("*");
                     vm.InterestPressedCommand.Execute(false);
                     break;
