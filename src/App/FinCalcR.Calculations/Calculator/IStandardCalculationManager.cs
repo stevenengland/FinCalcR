@@ -2,7 +2,7 @@
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
-    public interface IStandardCalculation
+    public interface IStandardCalculationManager
     {
         IMemoryFieldContainer MemoryFields { get; }
 

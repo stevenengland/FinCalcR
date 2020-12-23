@@ -1,6 +1,6 @@
 ﻿namespace StEn.FinCalcR.Calculations.Calculator
 {
-    public interface IFinancialCalculation
+    public interface IFinancialCalculationManager
     {
         bool UsesAnticipativeInterestYield { get; }
 
@@ -33,5 +33,7 @@
         void CalculateEffectiveInterest();
 
         void SetEffectiveInterestRate();
+
+        void GetNominalInterestRate();
     }
 }

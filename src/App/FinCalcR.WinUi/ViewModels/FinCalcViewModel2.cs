@@ -514,12 +514,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// GetNominalInterestRate
 			if (isLongTouch)
 			{
-				// Output saved nominal interest
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculation.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
-				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, 3);
-
-				this.LastPressedOperation = CommandWord.GetNominalInterestRate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.GetNominalInterestRate);
+				this.calculatorRemote.InvokeCommand(CommandWord.GetNominalInterestRate);
 			}
 
 			// SetNominalInterestRate

@@ -527,6 +527,21 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
         }
 
+        public void GetNominalInterestRate()
+        {
+            // NominalInterestRate is calculated on demand. Unlike all the other GetXYZ functions it is not a plain load from memory case.
+            // The calculation throws if it is no finite number.
+            // Output saved nominal interest
+            this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value =
+                CalculationProxy.CalculateAndCheckResult(
+                    true,
+                    new Func<double, double, double>(FinancialCalculation.GetYearlyNominalInterestRate),
+                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value).calculatedResult;
+
+            this.PressLoadMemoryValue(MemoryFieldNames.NominalInterestRateNumber);
+        }
+
         private void DoCommonTasksIfLastCommandWasSpecial()
         {
             // Special - if the last pressed operation was a special function this current special function should not work with old values.

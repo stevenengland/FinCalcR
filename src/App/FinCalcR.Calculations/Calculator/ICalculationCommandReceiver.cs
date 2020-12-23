@@ -3,7 +3,7 @@ using StEn.FinCalcR.Calculations.Calculator.Display;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
-    public interface ICalculationCommandReceiver : IFinancialCalculation, IStandardCalculation
+    public interface ICalculationCommandReceiver : IFinancialCalculationManager, IStandardCalculationManager
     {
         IOutputText OutputText { get; }
 
