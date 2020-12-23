@@ -41,13 +41,16 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         public void SetResult(string result, int precisionLimit = -1)
         {
             this.IsTemporaryOverlay = false;
+            var textToDisplay = NumberFormatting.InsertGroupSeparator(
+                NumberFormatting.RoundToMaxArithmeticPrecision(result, precisionLimit));
 
-            var numberParts = result.Split(Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator.ToCharArray());
-            var wholeNumberPart = this.InsertGroupSeparator(numberParts[0]);
-            var fractionalNumberPart = this.SetMaxArithmeticPrecision(numberParts.Length < 2 ? string.Empty : numberParts[1], precisionLimit);
-            this.TextValue = wholeNumberPart
-                             + Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator
-                             + fractionalNumberPart;
+            if (textToDisplay.Split(Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator
+                    .ToCharArray()).Length < 2)
+            {
+                textToDisplay += Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+            }
+
+            this.TextValue = textToDisplay;
         }
 
         private string SetMaxArithmeticPrecision(string fractionalPart, int precisionLimit = -1)

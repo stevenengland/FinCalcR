@@ -502,31 +502,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				// SetEffectiveInterest
 				else
 				{
-					// Special - if the last pressed operation was a special function this current special function should not work with old values.
-					if (!isLongTouch && this.IsCommandWordSpecialFunction())
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					}
-
-					var tmpInterestNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value;
-					this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3);
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value = tmpVar;
-					if (this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value < -100)
-					{
-						this.ResetSides();
-						this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-						this.SetDisplayText();
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value = tmpInterestNumber;
-						this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
-					}
-					else
-					{
-						this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
-					}
-
-					this.LastPressedOperation = CommandWord.SetEffectiveInterest;
-					this.calculatorRemote.AddCommandToJournal(CommandWord.SetEffectiveInterest);
+					this.calculatorRemote.InvokeCommand(CommandWord.SetEffectiveInterest);
 				}
 			}
 

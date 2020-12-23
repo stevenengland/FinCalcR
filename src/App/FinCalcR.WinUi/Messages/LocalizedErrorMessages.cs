@@ -18,5 +18,7 @@ namespace StEn.FinCalcR.WinUi.Messages
         public override string YearsMustNotBeNegative() => Resources.EXC_YEARS_EXCEEDED_LIMIT;
 
         public override string RatesPerAnnumExceedsRange() => Resources.EXC_RATES_PER_ANNUM_OUT_OF_RANGE;
+
+        public override string EffectiveInterestExceedsRange() => Resources.EXC_EFFINTEREST_EXCEEDS_LIMIT;
     }
 }

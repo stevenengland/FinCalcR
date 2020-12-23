@@ -156,4 +156,7 @@
   <data name="EXC_RATES_PER_ANNUM_OUT_OF_RANGE" xml:space="preserve">
     <value>The rates per annum must be between 1 and 365 and must be an integer.</value>
   </data>
+  <data name="EXC_EFFINTEREST_EXCEEDS_LIMIT" xml:space="preserve">
+    <value>The value for interest must be greater than -100.</value>
+  </data>
 </root>

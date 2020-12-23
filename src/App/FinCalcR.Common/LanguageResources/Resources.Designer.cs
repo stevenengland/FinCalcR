@@ -187,6 +187,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Der Wert für den effektiven Zins muss größer als -100 sein..
+        /// </summary>
+        public static string EXC_EFFINTEREST_EXCEEDS_LIMIT {
+            get {
+                return ResourceManager.GetString("EXC_EFFINTEREST_EXCEEDS_LIMIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die Applikation muss beendet werden!.
         /// </summary>
         public static string EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN {

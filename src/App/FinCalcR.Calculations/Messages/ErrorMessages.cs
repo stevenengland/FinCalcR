@@ -20,5 +20,7 @@ namespace StEn.FinCalcR.Calculations.Messages
         public virtual string YearsMustNotBeNegative() => $"Years must not be negative!";
 
         public virtual string RatesPerAnnumExceedsRange() => $"The rates per annum must be between 1 and 365 and must be an integer.";
+
+        public virtual string EffectiveInterestExceedsRange() => $"The value for interest must be >= -100.";
     }
 }

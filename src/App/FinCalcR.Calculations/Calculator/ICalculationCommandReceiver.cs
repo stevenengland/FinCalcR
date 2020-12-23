@@ -8,7 +8,6 @@ namespace StEn.FinCalcR.Calculations.Calculator
 {
     public interface ICalculationCommandReceiver : IFinancialCalculation, IStandardCalculation
     {
-
         IOutputText OutputText { get; }
 
         IInputText InputText { get; }

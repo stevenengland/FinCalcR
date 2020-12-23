@@ -198,6 +198,10 @@
           <source>Die Raten pro Jahr müssen zwischen 1 und 365 liegen sowie eine ganze Zahl darstellen.</source>
           <target state="translated">The rates per annum must be between 1 and 365 and must be an integer.</target>
         </trans-unit>
+        <trans-unit id="EXC_EFFINTEREST_EXCEEDS_LIMIT" translate="yes" xml:space="preserve">
+          <source>Der Wert für den effektiven Zins muss größer als -100 sein.</source>
+          <target state="translated">The value for interest must be greater than -100.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -28,7 +28,7 @@ namespace FinCalcR.Calculations.Tests.CalculatorTests
 
             // Act
             output.SetOverlay("test");
-            output.SetFormula("test");
+            output.SetFormula("123");
 
             // Assert
             output.IsTemporaryOverlay.Should().Be(false);
@@ -42,7 +42,7 @@ namespace FinCalcR.Calculations.Tests.CalculatorTests
 
             // Act
             output.SetOverlay("test");
-            output.SetResult("test");
+            output.SetResult("123");
 
             // Assert
             output.IsTemporaryOverlay.Should().Be(false);

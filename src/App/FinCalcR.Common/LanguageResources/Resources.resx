@@ -159,6 +159,9 @@
   <data name="EXC_DIVISION_BY_ZERO" xml:space="preserve">
     <value>Eine Division durch 0 ist nicht erlaubt.</value>
   </data>
+  <data name="EXC_EFFINTEREST_EXCEEDS_LIMIT" xml:space="preserve">
+    <value>Der Wert für den effektiven Zins muss größer als -100 sein.</value>
+  </data>
   <data name="EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN" xml:space="preserve">
     <value>Die Applikation muss beendet werden!</value>
   </data>

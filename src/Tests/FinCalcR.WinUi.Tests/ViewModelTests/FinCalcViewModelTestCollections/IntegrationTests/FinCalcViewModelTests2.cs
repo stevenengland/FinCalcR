@@ -1835,7 +1835,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             vm.InterestPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.EffectiveInterestExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.InterestPressedCommand.Execute(true);

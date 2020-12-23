@@ -31,5 +31,7 @@
         void SetAdvance(bool useAdvance);
 
         void CalculateEffectiveInterest();
+
+        void SetEffectiveInterestRate();
     }
 }

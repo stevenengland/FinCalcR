@@ -257,11 +257,11 @@ namespace StEn.FinCalcR.Calculations.Calculator
         {
             this.DoCommonTasksIfLastCommandWasSpecial();
 
-            var tmpYearsNumber = this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
+            var backupYearsNumber = this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber), 2);
             if (this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value < 0)
             {
-                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = tmpYearsNumber;
+                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value = backupYearsNumber;
                 throw new ValidationException(ErrorMessages.Instance.YearsMustNotBeNegative());
             }
         }
@@ -506,6 +506,30 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             this.InputText.SetInternalState(calculatedEffectiveP);
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber), 3);
+        }
+
+        public void SetEffectiveInterestRate()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            var backupEffInterestNumber = this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value;
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber), 3);
+            if (this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value < -100)
+            {
+                this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value = backupEffInterestNumber;
+                throw new ValidationException(ErrorMessages.Instance.EffectiveInterestExceedsRange());
+            }
+            else
+            {
+                var (isFiniteNumber, calculationResult) =
+                    CalculationProxy.CalculateAndCheckResult(
+                        false,
+                        new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate),
+                        this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                        this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
+                this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value =
+                    isFiniteNumber ? calculationResult : 0;
+            }
         }
 
         private void DoCommonTasksIfLastCommandWasSpecial()
