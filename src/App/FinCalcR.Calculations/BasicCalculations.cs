@@ -2,7 +2,7 @@
 
 namespace StEn.FinCalcR.Calculations
 {
-	public static class SimpleCalculator
+	public static class BasicCalculations
 	{
 		public static double Calculate(double value1, double value2, string mathOperator)
 		{

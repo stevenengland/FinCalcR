@@ -4,7 +4,7 @@ using StEn.FinCalcR.Calculations.Messages;
 
 namespace StEn.FinCalcR.Calculations
 {
-	public static class FinancialCalculator
+	public static class FinancialCalculation
 	{
 		public static double GetEffectiveInterestRate(double p, double m)
 		{

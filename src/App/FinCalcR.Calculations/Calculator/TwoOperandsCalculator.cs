@@ -145,7 +145,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             {
                 var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                     true,
-                    new Func<double, double, string, double>(SimpleCalculator.Calculate),
+                    new Func<double, double, string, double>(BasicCalculations.Calculate),
                     this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value,
                     this.TranslateMathOperator(this.ActiveMathOperator));
@@ -236,7 +236,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                 true,
-                new Func<double, double, double, double, double, bool, double>(FinancialCalculator.N),
+                new Func<double, double, double, double, double, bool, double>(FinancialCalculation.N),
                 this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
@@ -302,7 +302,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                                        true,
                                        new Func<double, double, double, double, double, bool, double>(
-                                           FinancialCalculator.Kn),
+                                           FinancialCalculation.Kn),
                                        this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                                        this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
                                        this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
@@ -327,7 +327,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 case MathOperator.Multiply:
                     calculation = CalculationProxy.CalculateAndCheckResult(
                             true,
-                            new Func<double, double, double>(SimpleCalculator.GetPartValue),
+                            new Func<double, double, double>(BasicCalculations.GetPartValue),
                             this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
                             this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
                         .calculatedResult;
@@ -335,7 +335,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 case MathOperator.Add:
                     calculation = CalculationProxy.CalculateAndCheckResult(
                             true,
-                            new Func<double, double, double>(SimpleCalculator.AddPartValueToBaseValue),
+                            new Func<double, double, double>(BasicCalculations.AddPartValueToBaseValue),
                             this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
                             this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
                         .calculatedResult;
@@ -343,7 +343,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 case MathOperator.Subtract:
                     calculation = CalculationProxy.CalculateAndCheckResult(
                             true,
-                            new Func<double, double, double>(SimpleCalculator.SubPartValueFromBaseValue),
+                            new Func<double, double, double>(BasicCalculations.SubPartValueFromBaseValue),
                             this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
                             this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
                         .calculatedResult;
@@ -374,7 +374,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                 true,
-                new Func<double, double, double, double, double, bool, double>(FinancialCalculator.E),
+                new Func<double, double, double, double, double, bool, double>(FinancialCalculation.E),
                 this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
@@ -397,7 +397,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 .CalculateAndCheckResult(
                     false,
                     new Func<double, double, double, double, double>((m, k0, p, annuity) =>
-                        FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)),
+                        FinancialCalculation.GetRepaymentRate(k0, p, m, annuity)),
                     this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
@@ -413,7 +413,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 .CalculateAndCheckResult(
                     true,
                     new Func<double, double, double, double, double>((m, k0, p, annuity) =>
-                        FinancialCalculator.GetRepaymentRate(k0, p, m, annuity)),
+                        FinancialCalculation.GetRepaymentRate(k0, p, m, annuity)),
                     this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
@@ -434,7 +434,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 (-1) * CalculationProxy.CalculateAndCheckResult(
                     false,
                     new Func<double, double, double, double, double>((m, k0, p, e) =>
-                        FinancialCalculator.GetAnnuity(k0, e, p, m)),
+                        FinancialCalculation.GetAnnuity(k0, e, p, m)),
                     this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
@@ -451,7 +451,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
                 true,
-                new Func<double, double, double, double, double, bool, double>(FinancialCalculator.K0),
+                new Func<double, double, double, double, double, bool, double>(FinancialCalculation.K0),
                 this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
@@ -483,7 +483,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             var (_, calculatedNominalP) = CalculationProxy.CalculateAndCheckResult(
                 true,
-                new Func<double, double, double, double, double, bool, int, double>(FinancialCalculator.P),
+                new Func<double, double, double, double, double, bool, int, double>(FinancialCalculation.P),
                 (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                 this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
@@ -495,7 +495,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = calculatedNominalP;
             var (_, calculatedEffectiveP) = CalculationProxy.CalculateAndCheckResult(
                 false,
-                new Func<double, double, double>(FinancialCalculator.GetEffectiveInterestRate),
+                new Func<double, double, double>(FinancialCalculation.GetEffectiveInterestRate),
                 calculatedNominalP,
                 this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
 
@@ -519,7 +519,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 var (isFiniteNumber, calculationResult) =
                     CalculationProxy.CalculateAndCheckResult(
                         false,
-                        new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate),
+                        new Func<double, double, double>(FinancialCalculation.GetYearlyNominalInterestRate),
                         this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                         this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
                 this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value =
@@ -587,7 +587,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
         // TODO: REMOVE
         private string TranslateMathOperator(MathOperator activeMathOperator)
         {
-            // TODO: Remove whole function as soon as VMv2 is finished so the old VM does not rely on SimpleCalculator anymore.
+            // TODO: Remove whole function as soon as VMv2 is finished so the old VM does not rely on BasicCalculations anymore.
             switch (activeMathOperator)
             {
                 case MathOperator.None:

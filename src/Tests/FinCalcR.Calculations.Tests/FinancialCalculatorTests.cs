@@ -2,6 +2,7 @@
 using FinCalcR.Tests.Shared.TestData;
 using StEn.FinCalcR.Calculations;
 using Xunit;
+using FinancialCalculation = StEn.FinCalcR.Calculations.FinancialCalculation;
 
 namespace FinCalcR.Calculations.Tests
 {
@@ -13,7 +14,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 4, 4.074)]
 		public void EffectiveInterestRateIsCalculatedCorrectly(double m, double p, double expectedEffectiveInterestRate)
 		{
-			var effectiveInterestRate = FinancialCalculator.GetEffectiveInterestRate(p, m);
+			var effectiveInterestRate = FinancialCalculation.GetEffectiveInterestRate(p, m);
 			Assert.Equal(Math.Round(effectiveInterestRate, 3), expectedEffectiveInterestRate);
 		}
 
@@ -21,7 +22,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 4, 3.928)]
 		public void YearlyNominalInterestRateIsCalculatedCorrectly(double m, double effectiveInterestRate, double expectedP)
 		{
-			var p = FinancialCalculator.GetYearlyNominalInterestRate(m, effectiveInterestRate);
+			var p = FinancialCalculation.GetYearlyNominalInterestRate(m, effectiveInterestRate);
 			Assert.Equal(Math.Round(p, 3), expectedP);
 		}
 
@@ -29,7 +30,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 150000, 4, 2, 750)]
 		public void AnnuityIsCalculatedCorrectly(double m, double k0, double p, double repaymentRate, double expectedE)
 		{
-			var annuity = FinancialCalculator.GetAnnuity(k0, repaymentRate, p, m);
+			var annuity = FinancialCalculation.GetAnnuity(k0, repaymentRate, p, m);
 			Assert.Equal(annuity, expectedE);
 		}
 
@@ -37,54 +38,54 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 150000, 4, 750, 2)]
 		public void RepaymentRateIsCalculatedCorrectly(double m, double k0, double p, double e, double expectedRepaymentRate)
 		{
-			var repaymentRate = FinancialCalculator.GetRepaymentRate(k0, p, m, e);
+			var repaymentRate = FinancialCalculation.GetRepaymentRate(k0, p, m, e);
 			Assert.Equal(repaymentRate, expectedRepaymentRate);
 		}
 
 		[Theory]
-		[MemberData(nameof(FinancialCalculation.KnWanted), MemberType = typeof(FinancialCalculation))]
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.KnWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void Kn_IsCalculatedCorrectly(double m, double n, double p, double k0, double e, double expectedKn)
 		{
 			var localTolerance = 0.01;
-			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m);
+			var finalCapital = FinancialCalculation.Kn(k0, e, p, n, m);
 			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
 		}
 
 		[Theory]
-		[MemberData(nameof(FinancialCalculation.K0Wanted), MemberType = typeof(FinancialCalculation))]
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.K0Wanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void K0_IsCalculatedCorrectly(double m, double n, double p, double e, double kn, double expectedK0)
 		{
 			var localTolerance = 0.01;
-			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
+			var k0 = FinancialCalculation.K0(kn, e, p, n, m);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
 		[Theory]
-		[MemberData(nameof(FinancialCalculation.EWanted), MemberType = typeof(FinancialCalculation))]
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.EWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void E_IsCalculatedCorrectly(bool advance, double m, double n, double p, double k0, double kn, double expectedE)
 		{
 			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m, advance);
+			var e = FinancialCalculation.E(kn, k0, p, n, m, advance);
 			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
 		[Theory]
-		[MemberData(nameof(FinancialCalculation.NWanted), MemberType = typeof(FinancialCalculation))]
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.NWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void N_IsCalculatedCorrectly(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var localTolerance = 0.01;
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		}
 
 		[Theory]
-		[MemberData(nameof(FinancialCalculation.PWanted), MemberType = typeof(FinancialCalculation))]
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.PWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void P_IsCalculatedCorrectly(double m, double n, double k0, double e, double kn, double expectedP)
 		{
 			kn *= -1;
 			var localTolerance = 0.001;
-			var pNom = FinancialCalculator.P(kn, k0, e, n, m);
-			var pEff = FinancialCalculator.GetEffectiveInterestRate(pNom, m);
+			var pNom = FinancialCalculation.P(kn, k0, e, n, m);
+			var pEff = FinancialCalculation.GetEffectiveInterestRate(pNom, m);
 			Assert.True(Math.Abs(pEff - expectedP) < localTolerance);
 		}
 
@@ -105,7 +106,7 @@ namespace FinCalcR.Calculations.Tests
 		public void Kn_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double e, double expectedKn)
 		{
 			var localTolerance = 0.01;
-			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m);
+			var finalCapital = FinancialCalculation.Kn(k0, e, p, n, m);
 			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
 		}
 
@@ -121,7 +122,7 @@ namespace FinCalcR.Calculations.Tests
 		public void KnAdvance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double e, double expectedKn)
 		{
 			var localTolerance = 0.01;
-			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m, true);
+			var finalCapital = FinancialCalculation.Kn(k0, e, p, n, m, true);
 			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
 		}
 
@@ -137,7 +138,7 @@ namespace FinCalcR.Calculations.Tests
 		public void K0_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
 		{
 			var localTolerance = 0.01;
-			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
+			var k0 = FinancialCalculation.K0(kn, e, p, n, m);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
@@ -153,7 +154,7 @@ namespace FinCalcR.Calculations.Tests
 		public void K0Advance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
 		{
 			var localTolerance = 0.01;
-			var k0 = FinancialCalculator.K0(kn, e, p, n, m, true);
+			var k0 = FinancialCalculation.K0(kn, e, p, n, m, true);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
@@ -169,7 +170,7 @@ namespace FinCalcR.Calculations.Tests
 		public void E_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double kn, double expectedE)
 		{
 			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m);
+			var e = FinancialCalculation.E(kn, k0, p, n, m);
 			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
@@ -185,7 +186,7 @@ namespace FinCalcR.Calculations.Tests
 		public void EAdvance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double kn, double expectedE)
 		{
 			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m, true);
+			var e = FinancialCalculation.E(kn, k0, p, n, m, true);
 			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
@@ -197,7 +198,7 @@ namespace FinCalcR.Calculations.Tests
 		public void N_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var localTolerance = 0.01;
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		}
 
@@ -208,7 +209,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 5.3660387, -10000, -550, -1000000)]	//		---
 		public void N_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn)
 		{
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(double.IsNaN(n));
 		}
 
@@ -220,7 +221,7 @@ namespace FinCalcR.Calculations.Tests
 		public void NAdvance_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var localTolerance = 0.01;
-			var n = FinancialCalculator.N(kn, k0, e, p, m, true);
+			var n = FinancialCalculation.N(kn, k0, e, p, m, true);
 			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		}
 
@@ -231,7 +232,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 5.3660387, -10000, -550, -1000000)] //		---
 		public void NAdvance_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn)
 		{
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(double.IsNaN(n));
 		}
 
@@ -247,7 +248,7 @@ namespace FinCalcR.Calculations.Tests
 		//		public void N_IsCalculatedCorrectly2(double m, double p, double k0, double e, double kn, double expectedN)
 		//		{
 		//			var localTolerance = 0.01;
-		//			var n = FinancialCalculator.N(kn, k0, e, p, m);
+		//			var n = FinancialCalculation.N(kn, k0, e, p, m);
 		//			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		//		}
 	}

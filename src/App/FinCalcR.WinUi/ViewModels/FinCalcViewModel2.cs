@@ -515,7 +515,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			if (isLongTouch)
 			{
 				// Output saved nominal interest
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculator.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
+				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = this.CalculateAndCheckResult(true, new Func<double, double, double>(FinancialCalculation.GetYearlyNominalInterestRate), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
 				this.CommonSpecialFunctionReadFromMemoryOperations(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value, 3);
 
 				this.LastPressedOperation = CommandWord.GetNominalInterestRate;
@@ -546,7 +546,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 				}
 				else
 				{
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>((m, p) => FinancialCalculator.GetEffectiveInterestRate(p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value);
+					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>((m, p) => FinancialCalculation.GetEffectiveInterestRate(p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value);
 					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value;
 					this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
 					this.SetDisplayText(true, 3);
