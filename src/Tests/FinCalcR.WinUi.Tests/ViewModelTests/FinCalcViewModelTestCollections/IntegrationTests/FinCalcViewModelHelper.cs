@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using FluentAssertions.Numeric;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.WinUi.ViewModels;
 

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace StEn.FinCalcR.Calculations.Calculator.Display
@@ -45,9 +43,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             for (var i = wholeNumberPart.Length - 3; i > 0; i -= 3)
             {
                 lastIndex = i;
-#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
                 result = $"{Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberGroupSeparator}{wholeNumberPart.Substring(i, 3)}" + result;
-#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
             }
 
             result = wholeNumberPart.Substring(0, lastIndex) + result

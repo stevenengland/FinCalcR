@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StEn.FinCalcR.Calculations.Calculator.Commands
-{    
+﻿namespace StEn.FinCalcR.Calculations.Calculator.Commands
+{
     public class SetStartCommand : BaseCommand
     {
         private readonly ICalculationCommandReceiver calculator;

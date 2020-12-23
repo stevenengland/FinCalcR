@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+﻿using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using FinCalcR.Tests.Shared.TestData;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
-using StEn.FinCalcR.Calculations;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using Xunit;
 

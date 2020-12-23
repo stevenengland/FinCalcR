@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;

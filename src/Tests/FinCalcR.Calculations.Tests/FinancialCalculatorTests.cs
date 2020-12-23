@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using FinCalcR.Tests.Shared.TestData;
 using StEn.FinCalcR.Calculations;
 using Xunit;

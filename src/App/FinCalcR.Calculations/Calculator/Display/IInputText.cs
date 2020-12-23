@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StEn.FinCalcR.Calculations.Calculator.Display
+﻿namespace StEn.FinCalcR.Calculations.Calculator.Display
 {
     public interface IInputText
     {

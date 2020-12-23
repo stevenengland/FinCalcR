@@ -1,7 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design.Serialization;
-using System.Net.Http.Headers;
-using System.Runtime.Versioning;
 using StEn.FinCalcR.Calculations.Exceptions;
 using StEn.FinCalcR.Calculations.Messages;
 

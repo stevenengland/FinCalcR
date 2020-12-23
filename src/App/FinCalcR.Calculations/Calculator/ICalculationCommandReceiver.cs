@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using StEn.FinCalcR.Calculations.Calculator.Commands;
+﻿using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
 
 namespace StEn.FinCalcR.Calculations.Calculator

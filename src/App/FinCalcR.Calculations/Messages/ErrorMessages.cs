@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StEn.FinCalcR.Calculations.Messages
+﻿namespace StEn.FinCalcR.Calculations.Messages
 {
     public class ErrorMessages
     {

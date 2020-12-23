@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using StEn.FinCalcR.Calculations.Calculator.Attributes;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
 using StEn.FinCalcR.Calculations.Exceptions;
 using StEn.FinCalcR.Calculations.Messages;
-using StEn.FinCalcR.Calculations.Validation;
 using StEn.FinCalcR.Common.Converter;
-using StEn.FinCalcR.Common.Extensions;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
@@ -326,7 +321,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.DoCommonTasksIfLastCommandWasSpecial();
 
             this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
-            var calculation = double.NaN;
+            double calculation;
             switch (this.ActiveMathOperator)
             {
                 case MathOperator.Multiply:

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StEn.FinCalcR.Calculations.Calculator.Commands
+﻿namespace StEn.FinCalcR.Calculations.Calculator.Commands
 {
     public class CalculatePercentCommand : BaseCommand
     {

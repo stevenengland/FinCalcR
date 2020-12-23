@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using StEn.FinCalcR.Common.Attributes;
 
 namespace StEn.FinCalcR.Calculations.Calculator.Attributes

@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using StEn.FinCalcR.Calculations.Calculator.Display;
 using Xunit;
 

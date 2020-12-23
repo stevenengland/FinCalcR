@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using Moq;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.WinUi.Events;
-using StEn.FinCalcR.WinUi.Types;
 using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 

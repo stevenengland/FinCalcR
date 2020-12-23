@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StEn.FinCalcR.Calculations.Calculator
+﻿namespace StEn.FinCalcR.Calculations.Calculator
 {
     public static class MemoryFieldNames
     {
