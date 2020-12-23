@@ -155,8 +155,8 @@
           <target state="translated">The values of the finance keys were set to 0 and the rates p. a. to 12.</target>
         </trans-unit>
         <trans-unit id="EXC_INTEREST_EXCEEDED_LIMIT" translate="yes" xml:space="preserve">
-          <source>Der Zins darf nicht kleiner als -100 sein.</source>
-          <target state="translated">The interest must not be less than -100.</target>
+          <source>Der effektive Zins darf nicht kleiner als -100 sein.</source>
+          <target state="translated">The effective interest must not be less than -100.</target>
         </trans-unit>
         <trans-unit id="FinCalcRatesPerAnnumPostfix" translate="yes" xml:space="preserve">
           <source>p.a.</source>
@@ -201,6 +201,10 @@
         <trans-unit id="EXC_EFFINTEREST_EXCEEDS_LIMIT" translate="yes" xml:space="preserve">
           <source>Der Wert für den effektiven Zins muss größer als -100 sein.</source>
           <target state="translated">The value for interest must be greater than -100.</target>
+        </trans-unit>
+        <trans-unit id="EXC_NOMINTEREST_EXCEEDS_LIMIT" translate="yes" xml:space="preserve">
+          <source>Der nominelle Zins darf nicht kleiner als -100 sein.</source>
+          <target state="translated">The nominal interest must not be less than -100.</target>
         </trans-unit>
       </group>
     </body>

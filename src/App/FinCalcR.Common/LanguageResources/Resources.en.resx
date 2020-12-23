@@ -124,7 +124,7 @@
     <value>The values of the finance keys were set to 0 and the rates p. a. to 12.</value>
   </data>
   <data name="EXC_INTEREST_EXCEEDED_LIMIT" xml:space="preserve">
-    <value>The interest must not be less than -100.</value>
+    <value>The effective interest must not be less than -100.</value>
   </data>
   <data name="FinCalcRatesPerAnnumPostfix" xml:space="preserve">
     <value>p.a.</value>
@@ -158,5 +158,8 @@
   </data>
   <data name="EXC_EFFINTEREST_EXCEEDS_LIMIT" xml:space="preserve">
     <value>The value for interest must be greater than -100.</value>
+  </data>
+  <data name="EXC_NOMINTEREST_EXCEEDS_LIMIT" xml:space="preserve">
+    <value>The nominal interest must not be less than -100.</value>
   </data>
 </root>

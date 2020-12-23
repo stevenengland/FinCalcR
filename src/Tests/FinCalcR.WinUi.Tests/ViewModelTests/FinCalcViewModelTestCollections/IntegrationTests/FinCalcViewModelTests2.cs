@@ -1812,7 +1812,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         }
 
         [Fact]
-        public void InterestDoesNotExceedLimitsAndResets()
+        public void EffectiveAndNominalInterestDoNotExceedLimitsAndResets()
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
@@ -1861,7 +1861,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.InterestPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Exactly(2)); // 1 + 1 from above
+            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.NominalInterestExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Exactly(1)); // Not 2 because it is another error message
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.OperatorPressedCommand.Execute("*");

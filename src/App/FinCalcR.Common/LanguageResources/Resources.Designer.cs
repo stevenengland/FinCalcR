@@ -223,11 +223,20 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Der Zins darf nicht kleiner als -100 sein..
+        ///   Looks up a localized string similar to Der effektive Zins darf nicht kleiner als -100 sein..
         /// </summary>
         public static string EXC_INTEREST_EXCEEDED_LIMIT {
             get {
                 return ResourceManager.GetString("EXC_INTEREST_EXCEEDED_LIMIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der nominelle Zins darf nicht kleiner als -100 sein..
+        /// </summary>
+        public static string EXC_NOMINTEREST_EXCEEDS_LIMIT {
+            get {
+                return ResourceManager.GetString("EXC_NOMINTEREST_EXCEEDS_LIMIT", resourceCulture);
             }
         }
         

@@ -522,6 +522,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                         new Func<double, double, double>(FinancialCalculation.GetYearlyNominalInterestRate),
                         this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                         this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
+
                 this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value =
                     isFiniteNumber ? calculationResult : 0;
             }
@@ -540,6 +541,42 @@ namespace StEn.FinCalcR.Calculations.Calculator
                     this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value).calculatedResult;
 
             this.PressLoadMemoryValue(MemoryFieldNames.NominalInterestRateNumber);
+        }
+
+        public void SetNominalInterestRate()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            // Calculate/save effective interest, save nominal interest (as interest) and display the effective interest.
+            var backupNomInterestNumber = this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value;
+
+            // Write the memory but do not refresh display text
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber), 3, false);
+            if (this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value < -100)
+            {
+                this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = backupNomInterestNumber;
+                throw new ValidationException(ErrorMessages.Instance.NominalInterestExceedsRange());
+            }
+            else
+            {
+                // Two points here:
+                // 1: Although the command sets the nominal interest it also calculates AND DISPLAYS the effective interest. So it should also throw when the eff. interest is calculated with errors.
+                // 2: Practically it is not possible to let this calculation throw
+                // Summary: The proxy gets called without notification flag.
+                var (isFiniteNumber, calculationResult) =
+                    CalculationProxy.CalculateAndCheckResult(
+                        false,
+                        new Func<double, double, double>((m, p) => FinancialCalculation.GetEffectiveInterestRate(p, m)),
+                        this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                        this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value);
+
+                this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value =
+                    isFiniteNumber ? calculationResult : 0;
+
+                this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value;
+                this.InputText.SetInternalState(this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
+                this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 3);
+            }
         }
 
         private void DoCommonTasksIfLastCommandWasSpecial()

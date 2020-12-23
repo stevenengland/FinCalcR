@@ -35,5 +35,7 @@
         void SetEffectiveInterestRate();
 
         void GetNominalInterestRate();
+
+        void SetNominalInterestRate();
     }
 }

@@ -520,35 +520,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 			// SetNominalInterestRate
 			else
 			{
-				// Special - if the last pressed operation was a special function this current special function should not work with old values.
-				if (!isLongTouch && this.IsCommandWordSpecialFunction())
-				{
-					this.ResetSides();
-					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-				}
-
-				// Calculate/save effective interest, save nominal interest (as interest) and display the effective interest.
-				var tmpNominalInterestNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value;
-				this.CommonSpecialFunctionWriteToMemoryOperations(out var tmpVar, 3, false);
-				this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = tmpVar;
-				if (this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value < -100)
-				{
-					this.ResetSides();
-					this.calculator.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-					this.SetDisplayText();
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = tmpNominalInterestNumber;
-					this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_INTEREST_EXCEEDED_LIMIT));
-				}
-				else
-				{
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value = this.CalculateAndCheckResult(false, new Func<double, double, double>((m, p) => FinancialCalculation.GetEffectiveInterestRate(p, m)), this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value, this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value);
-					this.calculator.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value;
-					this.BuildSidesFromNumber(this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
-					this.SetDisplayText(true, 3);
-				}
-
-				this.LastPressedOperation = CommandWord.SetNominalInterestRate;
-				this.calculatorRemote.AddCommandToJournal(CommandWord.SetNominalInterestRate);
+				this.calculatorRemote.InvokeCommand(CommandWord.SetNominalInterestRate);
 			}
 
 			this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetFlag(PressedSpecialFunctions.Interest, true);
