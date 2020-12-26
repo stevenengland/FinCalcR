@@ -8,7 +8,6 @@ using Moq;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
-using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.ViewModels;
@@ -114,7 +113,7 @@ namespace FinCalcR.WinUi.Tests.Mocks
         {
             var commands = new List<ICalculatorCommand>();
 
-            var tmpReceiver = new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9));
+            var tmpReceiver = new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(9));
 
             var assemblies = new[]
             {

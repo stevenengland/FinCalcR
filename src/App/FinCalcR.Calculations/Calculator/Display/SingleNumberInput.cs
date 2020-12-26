@@ -8,32 +8,16 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
     {
         private readonly int maxArithmeticPrecision;
 
+        private string currentInputFormula;
         private string wholeNumberPart = "0";
         private string fractionalNumberPart = string.Empty;
-        private string currentInputFormula;
+        private bool isDecimalSeparatorActive;
 
-        public SingleNumberInput(string thousandSeparator, string decimalSeparator, int maxArithmeticPrecision)
+        public SingleNumberInput(int maxArithmeticPrecision)
         {
             this.maxArithmeticPrecision = maxArithmeticPrecision;
 
             this.BuildInputTextFromInternalState();
-        }
-
-        // TODO: Remove this Property
-        public bool IsDecimalSeparatorActive { get; set; } = false;
-
-        // TODO: Remove this Property
-        public string WholeNumberPart
-        {
-            get { return this.wholeNumberPart; }
-            set { this.wholeNumberPart = value; }
-        }
-
-        // TODO: Remove this Property
-        public string FractionalNumberPart
-        {
-            get { return this.fractionalNumberPart; }
-            set { this.fractionalNumberPart = value; }
         }
 
         /// <inheritdoc />
@@ -45,7 +29,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         }
 
         /// <inheritdoc />
-        /// The evaluated result will be the same as the <see cref="CurrentInputFormula"/> in this implementation.
+        /// The evaluated result will be the same as the <see cref="GetCurrentInputFormula"/> in this implementation.
         public string GetEvaluatedResult()
         {
             return this.GetCurrentInputFormula();
@@ -55,7 +39,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         {
             this.fractionalNumberPart = string.Empty;
             this.wholeNumberPart = "0";
-            this.IsDecimalSeparatorActive = false;
+            this.isDecimalSeparatorActive = false;
 
             if (updateCurrentInputText)
             {
@@ -71,7 +55,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         public void DecimalSeparator()
         {
-            this.IsDecimalSeparatorActive = true;
+            this.isDecimalSeparatorActive = true;
         }
 
         public void AlgebSign()
@@ -89,41 +73,39 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         public void Operator()
         {
             // Nothing to do in the case of an number-only-input.
-            return;
         }
 
         public void Calculate()
         {
             // Nothing to do in the case of an number-only-input.
-            return;
         }
 
         public void Digit(string digit)
         {
-            if (this.IsDecimalSeparatorActive)
+            if (this.isDecimalSeparatorActive)
             {
-                if (this.FractionalNumberPart.Length < this.maxArithmeticPrecision)
+                if (this.fractionalNumberPart.Length < this.maxArithmeticPrecision)
                 {
-                    this.FractionalNumberPart += digit;
+                    this.fractionalNumberPart += digit;
                 }
             }
             else
             {
-                if (this.WholeNumberPart.Length < 10)
+                if (this.wholeNumberPart.Length < 10)
                 {
-                    if (!this.WholeNumberPart.StartsWith("0") && !this.WholeNumberPart.StartsWith("-0"))
+                    if (!this.wholeNumberPart.StartsWith("0") && !this.wholeNumberPart.StartsWith("-0"))
                     {
-                        this.WholeNumberPart += digit;
+                        this.wholeNumberPart += digit;
                     }
                     else
                     {
-                        if (this.WholeNumberPart == "-0")
+                        if (this.wholeNumberPart == "-0")
                         {
-                            this.WholeNumberPart = "-" + digit;
+                            this.wholeNumberPart = "-" + digit;
                         }
                         else
                         {
-                            this.WholeNumberPart = digit;
+                            this.wholeNumberPart = digit;
                         }
                     }
                 }

@@ -128,6 +128,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 this.ActiveMathOperator = mathOperator;
                 this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber));
             }
+
+            this.InputText.Operator();
         }
 
         public void PressCalculate()
@@ -159,6 +161,8 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.ActiveMathOperator = MathOperator.None;
             this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
             this.IsCalcCommandLock = true;
+
+            this.InputText.Calculate();
         }
 
         public void PressClear(IList<string> memoryFieldCategories)

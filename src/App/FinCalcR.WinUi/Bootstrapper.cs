@@ -52,7 +52,7 @@ namespace StEn.FinCalcR.WinUi
 					this.LocalizationService.ChangeCurrentCulture(new CultureInfo("en"));
 				}
 
-				this.simpleContainer.Instance<ILocalizationService>(this.LocalizationService);
+				this.simpleContainer.Instance(this.LocalizationService);
 			}
 			catch (Exception e)
 			{
@@ -62,7 +62,7 @@ namespace StEn.FinCalcR.WinUi
 			try
 			{
 				this.SbMessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
-				this.simpleContainer.Instance<ISnackbarMessageQueue>(this.SbMessageQueue);
+				this.simpleContainer.Instance(this.SbMessageQueue);
 			}
 			catch (Exception e)
 			{
@@ -101,7 +101,7 @@ namespace StEn.FinCalcR.WinUi
 			}
 
 			this.simpleContainer.Singleton<IEnumerable<ICalculatorCommand>, CommandList>();
-			this.simpleContainer.Instance(new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(Resources.CALC_THOUSANDS_SEPARATOR, Resources.CALC_DECIMAL_SEPARATOR, 9)));
+			this.simpleContainer.Instance(new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(9)));
 			this.simpleContainer.Singleton<ICommandInvoker, CalculatorRemote>();
 
 			// Configure Message override
