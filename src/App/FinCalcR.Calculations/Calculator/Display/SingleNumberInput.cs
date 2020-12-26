@@ -8,7 +8,6 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
     {
         private readonly int maxArithmeticPrecision;
 
-        private bool isDecimalSeparatorActive = false;
         private string wholeNumberPart = "0";
         private string fractionalNumberPart = string.Empty;
         private string currentInputFormula;
@@ -21,11 +20,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         }
 
         // TODO: Remove this Property
-        public bool IsDecimalSeparatorActive
-        {
-            get { return this.isDecimalSeparatorActive; }
-            set { this.isDecimalSeparatorActive = value; }
-        }
+        public bool IsDecimalSeparatorActive { get; set; } = false;
 
         // TODO: Remove this Property
         public string WholeNumberPart
@@ -60,7 +55,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         {
             this.fractionalNumberPart = string.Empty;
             this.wholeNumberPart = "0";
-            this.isDecimalSeparatorActive = false;
+            this.IsDecimalSeparatorActive = false;
 
             if (updateCurrentInputText)
             {
@@ -76,7 +71,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         public void DecimalSeparator()
         {
-            this.isDecimalSeparatorActive = true;
+            this.IsDecimalSeparatorActive = true;
         }
 
         public void AlgebSign()
