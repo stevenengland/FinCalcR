@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading;
 using StEn.FinCalcR.Calculations.Calculator.Events;
 

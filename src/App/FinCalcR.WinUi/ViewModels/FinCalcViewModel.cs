@@ -257,7 +257,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
 		{
-			if (e.ActiveWindowContent is FinCalcViewModel == false)
+			if (!(e.ActiveWindowContent is FinCalcViewModel))
 			{
 				return;
 			}

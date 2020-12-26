@@ -11,7 +11,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
         {
             if (!double.TryParse(inputNumber, NumberStyles.Number, Thread.CurrentThread.CurrentUICulture, out _))
             {
-                throw new ArgumentException();
+                throw new ArgumentException($"{nameof(inputNumber)} is cannot be parsed to a number.");
             }
 
             var hasAlgebSign = false;

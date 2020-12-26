@@ -2,7 +2,7 @@
 {
     public class CalculateCommand : BaseCommand
     {
-        private ICalculationCommandReceiver calculator;
+        private readonly ICalculationCommandReceiver calculator;
 
         public CalculateCommand(ICalculationCommandReceiver calculator)
         {

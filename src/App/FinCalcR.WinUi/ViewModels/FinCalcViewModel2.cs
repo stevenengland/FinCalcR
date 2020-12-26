@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using StEn.FinCalcR.Calculations;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Events;
@@ -268,7 +267,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
 		{
-			if (e.ActiveWindowContent is FinCalcViewModel2 == false)
+			if (!(e.ActiveWindowContent is FinCalcViewModel2))
 			{
 				return;
 			}
@@ -770,8 +769,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 				for (var i = displayRightSide.Length; i < specialNumberDecimalCount; i++)
 				{
-					displayRightSide += "0";
-				}
+#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
+                    displayRightSide += "0";
+#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
+                }
 			}
 
 			this.DisplayText = displayLeftSide + Resources.CALC_DECIMAL_SEPARATOR + displayRightSide;

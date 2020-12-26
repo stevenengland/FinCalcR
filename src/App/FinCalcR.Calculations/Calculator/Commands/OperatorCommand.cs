@@ -18,7 +18,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
         {
             if (parameter == null || parameter.Length == 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException($"{nameof(parameter)} in {nameof(this.GetType)}");
             }
 
             var mathOperatorToken = (string)parameter[0];

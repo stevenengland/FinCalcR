@@ -18,7 +18,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
         {
             if (parameter == null || parameter.Length == 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException($"{nameof(parameter)} in {nameof(this.GetType)}");
             }
 
             this.calculator.SetAdvance((bool)parameter[0]);

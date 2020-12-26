@@ -393,7 +393,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             this.DoCommonTasksIfLastCommandWasSpecial();
 
             this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
-            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = CalculationProxy
+            var (isFiniteNumber, calculationResult) = CalculationProxy
                 .CalculateAndCheckResult(
                     false,
                     new Func<double, double, double, double, double>((m, k0, p, annuity) =>
@@ -401,8 +401,11 @@ namespace StEn.FinCalcR.Calculations.Calculator
                     this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value)
-                .calculatedResult;
+                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
+
+            // Todo: In an overview where all saved and calculated results are shown it might be misleading to show a 0 in case of a erroneous calculation.
+            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value =
+                isFiniteNumber ? calculationResult : 0;
         }
 
         public void GetRepaymentRate()
@@ -432,7 +435,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value =
                 (-1) * CalculationProxy.CalculateAndCheckResult(
-                    false,
+                    true,
                     new Func<double, double, double, double, double>((m, k0, p, e) =>
                         FinancialCalculation.GetAnnuity(k0, e, p, m)),
                     this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
@@ -494,7 +497,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
             this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value = calculatedNominalP;
             var (_, calculatedEffectiveP) = CalculationProxy.CalculateAndCheckResult(
-                false,
+                true,
                 new Func<double, double, double>(FinancialCalculation.GetEffectiveInterestRate),
                 calculatedNominalP,
                 this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value);
@@ -561,7 +564,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
             {
                 // Two points here:
                 // 1: Although the command sets the nominal interest it also calculates AND DISPLAYS the effective interest. So it should also throw when the eff. interest is calculated with errors.
-                // 2: Practically it is not possible to let this calculation throw
+                // 2: Practically it is not possible to let this calculation throw because the nominal interest rate is in a specific range.
                 // Summary: The proxy gets called without notification flag.
                 var (isFiniteNumber, calculationResult) =
                     CalculationProxy.CalculateAndCheckResult(

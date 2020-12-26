@@ -1,6 +1,4 @@
 ﻿using System;
-using FinCalcR.Tests.Shared.TestData;
-using StEn.FinCalcR.Calculations;
 using Xunit;
 using FinancialCalculation = StEn.FinCalcR.Calculations.FinancialCalculation;
 

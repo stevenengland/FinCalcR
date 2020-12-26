@@ -2,7 +2,7 @@
 {
     public class AlgebSignCommand : BaseCommand
     {
-        private ICalculationCommandReceiver calculator;
+        private readonly ICalculationCommandReceiver calculator;
 
         public AlgebSignCommand(ICalculationCommandReceiver calculator)
         {
