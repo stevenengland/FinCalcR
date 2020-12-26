@@ -71,7 +71,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
             if (preOperations == null)
             {
                 preOperations = new Ca[] { };

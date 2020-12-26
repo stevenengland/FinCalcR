@@ -79,7 +79,6 @@
     <Compile Include="Types\PressedSpecialFunctions.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
-    <Compile Include="ViewModels\FinCalcViewModel2.cs" />
     <Compile Include="ViewModels\FinCalcViewModel.cs" />
     <Compile Include="ViewModels\HintViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />

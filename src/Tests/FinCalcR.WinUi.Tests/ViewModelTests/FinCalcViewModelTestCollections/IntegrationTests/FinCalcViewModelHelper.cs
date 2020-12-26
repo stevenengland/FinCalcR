@@ -7,7 +7,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public static class FinCalcViewModelHelper
     {
-        public static void SetFinancialValue(FinCalcViewModel2 vm, double valueToAssign, CommandWord variableToAssignValueTo)
+        public static void SetFinancialValue(FinCalcViewModel vm, double valueToAssign, CommandWord variableToAssignValueTo)
         {
             InputNumberWithCommands(vm, valueToAssign);
             switch (variableToAssignValueTo)
@@ -58,7 +58,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
         }
 
-        public static void ExecuteDummyOperations(FinCalcViewModel2 vm, Ca[] operations)
+        public static void ExecuteDummyOperations(FinCalcViewModel vm, Ca[] operations)
         {
             foreach (Ca operation in operations)
             {
@@ -66,7 +66,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
         }
 
-        public static void ExecuteDummyOperation(FinCalcViewModel2 vm, Ca operation)
+        public static void ExecuteDummyOperation(FinCalcViewModel vm, Ca operation)
         {
             switch (operation)
             {
@@ -194,7 +194,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
         }
 
-        private static void InputNumberWithCommands(FinCalcViewModel2 vm, double number)
+        private static void InputNumberWithCommands(FinCalcViewModel vm, double number)
         {
             var numberAsText = number.ToString(CultureInfo.CurrentUICulture);
             var inputs = numberAsText.ToCharArray();

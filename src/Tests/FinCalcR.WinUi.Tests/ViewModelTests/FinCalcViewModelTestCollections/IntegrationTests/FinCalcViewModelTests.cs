@@ -19,11 +19,11 @@ using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
-    public class FinCalcViewModelTests2
+    public class FinCalcViewModelTests
     {
         private const double Tolerance = 0.00000001;
 
-        public FinCalcViewModelTests2()
+        public FinCalcViewModelTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
@@ -36,7 +36,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
             eventAggregatorMock.Verify(x => x.Subscribe(It.IsAny<object>()), Times.Once);
 
             // Act
@@ -52,7 +52,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             eventAggregatorMock.Verify(x => x.Subscribe(It.IsAny<object>()), Times.Once);
 
@@ -262,7 +262,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void LastPressedOperationIsSet()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             vm.DigitPressedCommand.Execute("1");
@@ -375,7 +375,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void StatusBarTextsAreSet()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Assert.True(vm.YearsStatusBarText == string.Empty);
             vm.YearsPressedCommand.Execute(true);
@@ -425,7 +425,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void RoundingDisplayValueWorks()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(4);
             vm.DecimalSeparatorPressedCommand.Execute(null);
@@ -455,7 +455,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ThousandSeparatorIsSetCorrectly()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(1);
             vm.DigitPressedCommand.Execute(2);
@@ -507,7 +507,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void CorrectSeparatorsAreUsedForEachLanguage()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
@@ -526,7 +526,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void CorrectStartupResultTextIsSet()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Assert.True(vm.DisplayText == "0,");
         }
@@ -535,7 +535,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void NoSpecialFunctionPressedFlagsAreSetInFreshVm()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Years));
             Assert.False(vm.PressedSpecialFunctions.HasFlag(PressedSpecialFunctions.Interest));
@@ -553,7 +553,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Act
             vm.OperatorPressedCommand.Execute("*");
@@ -567,7 +567,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void FlagsAreSetByEachSpecialFunction()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Initial function
             vm.YearsPressedCommand.Execute(false);
@@ -594,7 +594,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void FlagsAreSetBySpecificSpecialSecondFunction()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Initial function
             vm.OperatorPressedCommand.Execute("*");
@@ -618,7 +618,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void FlagsAreSetBySpecificLongPressedSpecialSecondFunction()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Initial function
             vm.OperatorPressedCommand.Execute("*");
@@ -643,7 +643,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingDecimalSeparatorResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.DecimalSeparatorPressedCommand.Execute(null);
@@ -654,7 +654,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void InputAfterDecimalWasPressedIsHandledCorrectly()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Decimal separator as first input
             vm.DecimalSeparatorPressedCommand.Execute(null);
@@ -699,7 +699,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingMathOperatorResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.OperatorPressedCommand.Execute("+");
@@ -710,7 +710,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void OperatorIsSet()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Assert.True(vm.ActiveMathOperator == MathOperator.None);
             vm.OperatorPressedCommand.Execute("-");
@@ -721,7 +721,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void FirstNumberIsAssumedToBeZeroIfOperatorIsFirstInput()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.OperatorPressedCommand.Execute("-");
             vm.DigitPressedCommand.Execute(2);
@@ -735,7 +735,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void OperatorPressedAfterSpecialFunctionDoesNotReset()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Short presses
             vm.DigitPressedCommand.Execute(2);
@@ -846,7 +846,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingDigitsResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.DigitPressedCommand.Execute("1");
@@ -857,7 +857,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingZeroWhenLeftSideIsZeroDoesNotAddAnotherZero()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             for (var i = 1; i < 20; i++)
             {
@@ -872,7 +872,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingGtZeroWhenFirstInputWasZeroTrimsLeadingZero()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
             vm.DigitPressedCommand.Execute(0);
             vm.DigitPressedCommand.Execute(9);
 
@@ -884,7 +884,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void LeftSideDoesNotExceedInputLimit()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             for (var i = 1; i < 20; i++)
             {
@@ -899,7 +899,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void RightSideDoesNotExceedInputLimit()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DecimalSeparatorPressedCommand.Execute(null);
             for (var i = 1; i < 20; i++)
@@ -919,7 +919,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingCalculationAsFirstButtonDisplaysZero()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
             vm.CalculatePressedCommand.Execute(null);
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
@@ -929,7 +929,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingCalculateResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.CalculatePressedCommand.Execute(null);
@@ -940,7 +940,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingCalculateAfterNumberWithOrWithoutActiveOperatorResetsStandardNumbers()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(2);
             vm.CalculatePressedCommand.Execute(null);
@@ -952,7 +952,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingCalculateAfterNumberWithActiveOperatorAssumesSecondNumberToBeZero()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(2);
             vm.OperatorPressedCommand.Execute("-");
@@ -965,7 +965,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingCalculateAfterSpecialFunctionResetsStandardNumbers()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Short presses
             vm.DigitPressedCommand.Execute(2);
@@ -1047,7 +1047,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingCalculateMultipleTimesHasNoEffect()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(1);
             vm.DigitPressedCommand.Execute(0);
@@ -1070,7 +1070,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(1);
             vm.OperatorPressedCommand.Execute("/");
@@ -1092,7 +1092,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.ClearPressedCommand.Execute(false);
@@ -1103,7 +1103,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingLongTouchResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.ClearPressedCommand.Execute(true);
@@ -1114,7 +1114,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingLongTouchResetsAdvance()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.OperatorPressedCommand.Execute("*");
             vm.StartPressedCommand.Execute(false);
@@ -1127,7 +1127,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingResetsStandardValues()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute("3");
             vm.OperatorPressedCommand.Execute("-");
@@ -1147,7 +1147,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingDoesNotResetSpecialFunctionMemory()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute("3");
             vm.YearsPressedCommand.Execute(false);
@@ -1233,7 +1233,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingLongTouchResetsSpecialFunctionMemory()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute("3");
             vm.YearsPressedCommand.Execute(false);
@@ -1323,7 +1323,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.ClearPressedCommand.Execute(true);
 
@@ -1334,7 +1334,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingShortTouchDoesNotResetsFlags()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.YearsPressedCommand.Execute(false);
             vm.InterestPressedCommand.Execute(false);
@@ -1351,7 +1351,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingLongTouchResetsFlags()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.YearsPressedCommand.Execute(false);
             vm.InterestPressedCommand.Execute(false);
@@ -1372,7 +1372,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void AlgebSignResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.AlgebSignCommand.Execute(null);
@@ -1383,7 +1383,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void AlgebSignIsShownAndUnShown()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.AlgebSignCommand.Execute(null);
 
@@ -1406,7 +1406,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void AlgebSignAsFirstInputFollowedByDigitOutputsDigit()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.AlgebSignCommand.Execute(null);
             vm.DigitPressedCommand.Execute(9);
@@ -1419,7 +1419,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void AlgebSignAfterSpecialFunctionIsCorrectlyFormatted()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(2);
             vm.YearsPressedCommand.Execute(false);
@@ -1432,7 +1432,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void InputsAfterAlgebSignAreHandledCorrectly()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Digit, AlgebSign, Decimal Separator, Digit
             vm.DigitPressedCommand.Execute(1);
@@ -1495,7 +1495,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void AlgebSignPressedAfterSpecialFunctionDoesNotReset()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Short presses
             vm.DigitPressedCommand.Execute(2);
@@ -1581,7 +1581,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingYearsResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.YearsPressedCommand.Execute(true);
@@ -1595,7 +1595,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingYearsSetsYearsValue()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(2);
             vm.YearsPressedCommand.Execute(false);
@@ -1611,7 +1611,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingYearsSecondFunctionSetsRatesPerAnnum()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(2);
             vm.OperatorPressedCommand.Execute("*");
@@ -1632,7 +1632,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(3);
             vm.YearsPressedCommand.Execute(false); // put a valid value to the memory that will be used to reset to
@@ -1661,7 +1661,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(3);
             vm.YearsPressedCommand.Execute(false); // put a valid value to the memory
@@ -1724,7 +1724,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingYearsShouldDisplaySpecialOutputText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.YearsPressedCommand.Execute(false);
@@ -1737,7 +1737,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingYearsShouldSetRateLabelText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.YearsPressedCommand.Execute(false);
@@ -1750,7 +1750,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Act
             vm.DigitPressedCommand.Execute(1);
@@ -1769,7 +1769,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingInterestResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.InterestPressedCommand.Execute(false);
@@ -1783,7 +1783,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingInterestAlsoCalculatesNominalInterestRate()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(4);
             vm.InterestPressedCommand.Execute(false);
@@ -1797,7 +1797,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingNominalInterestAlsoCalculatesEffectiveInterestRateButShowsEffectiveInterestRate()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(4);
             vm.OperatorPressedCommand.Execute("*");
@@ -1816,7 +1816,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(3);
             vm.InterestPressedCommand.Execute(false); // put a valid value to the memory
@@ -1874,7 +1874,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingInterestShouldDisplaySpecialOutputText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.InterestPressedCommand.Execute(false);
@@ -1887,7 +1887,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingInterestShouldSetRateLabelText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.InterestPressedCommand.Execute(false);
@@ -1903,7 +1903,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingStartResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.StartPressedCommand.Execute(true);
@@ -1917,7 +1917,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingStartSetsStartValue()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(2);
             vm.StartPressedCommand.Execute(false);
@@ -1933,7 +1933,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingStartDeAndActivatesAdvanceFlagAndStatusLabel()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Assert.False(vm.UseAnticipativeInterestYield);
             Assert.True(string.IsNullOrWhiteSpace(vm.AdvanceStatusBarText));
@@ -1952,7 +1952,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingStartShouldDisplaySpecialOutputText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.StartPressedCommand.Execute(false);
@@ -1965,7 +1965,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingStartShouldSetRateLabelText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.StartPressedCommand.Execute(false);
@@ -1981,7 +1981,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingRateResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.RatePressedCommand.Execute(true);
@@ -1995,7 +1995,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingRateSetsRateValue()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // To avoid throw because of NaN when automatically calculating repayment rate:
             vm.DigitPressedCommand.Execute(1);
@@ -2017,7 +2017,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingRateAlsoCalculatesRepaymentRate()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(1);
             vm.DigitPressedCommand.Execute(0);
@@ -2048,7 +2048,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingRepaymentRateAlsoCalculatesRepaymentButShowsRepaymentRate()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(1);
             vm.DigitPressedCommand.Execute(0);
@@ -2084,7 +2084,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(0);
             vm.RatePressedCommand.Execute(false); // Would throw div by zero, because repayment rate is calculated in the background with invalid result.
@@ -2096,7 +2096,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             var mockObjects = MockFactories.GetMockObjects();
             var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(true);
@@ -2112,7 +2112,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingRateShouldDisplaySpecialOutputText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.RatePressedCommand.Execute(false);
@@ -2125,7 +2125,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingRateShouldSetRateLabelText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.RatePressedCommand.Execute(false);
@@ -2141,7 +2141,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingEndResetsStatusLabelTexts()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             this.SetVmStatusLabelTexts(vm);
             vm.EndPressedCommand.Execute(true);
@@ -2155,7 +2155,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingEndSetsEndValue()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(2);
             vm.EndPressedCommand.Execute(false);
@@ -2171,7 +2171,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PercentCalculationIsTriggeredOnlyIfConditionsAreMet()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // No operator set but last input is a digit
             vm.DigitPressedCommand.Execute(2);
@@ -2192,7 +2192,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PercentCalculationDoesNotSetEndFlag()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // 200 * 5
             vm.DigitPressedCommand.Execute(2);
@@ -2209,7 +2209,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingEndShouldDisplaySpecialOutputText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.EndPressedCommand.Execute(false);
@@ -2222,7 +2222,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingEndShouldSetRateLabelText()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(5);
             vm.EndPressedCommand.Execute(false);
@@ -2232,7 +2232,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
         #endregion
 
-        private void SetVmStatusLabelTexts(FinCalcViewModel2 vm)
+        private void SetVmStatusLabelTexts(FinCalcViewModel vm)
         {
             vm.AdvanceStatusBarText = "test";
             vm.YearsStatusBarText = "test";
@@ -2242,7 +2242,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.EndStatusBarText = "test";
         }
 
-        private void AssertVmStatusLabelsAreEmpty(FinCalcViewModel2 vm, bool checkAdvanceStatusBarTextToo = false)
+        private void AssertVmStatusLabelsAreEmpty(FinCalcViewModel vm, bool checkAdvanceStatusBarTextToo = false)
         {
             if (checkAdvanceStatusBarTextToo)
             {

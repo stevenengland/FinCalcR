@@ -24,7 +24,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Since I am sharing the test data with the plain calculation tests I have to manually adjust this value:
             expectedKn *= -1;
@@ -47,7 +47,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Act
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
@@ -67,7 +67,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Since I am sharing the test data with the plain calculation tests I have to manually adjust this value:
             expectedE *= -1;
@@ -95,7 +95,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Act
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);
@@ -115,7 +115,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             var localTolerance = 0.001;
 

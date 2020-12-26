@@ -25,8 +25,8 @@ namespace FinCalcR.WinUi.Tests.Mocks
 					(IDialogHostMapper)mockObjects[nameof(IDialogHostMapper)],
 					(ILocalizationService)mockObjects[nameof(ILocalizationService)],
 					(IWindowManager)mockObjects[nameof(IWindowManager)],
-					MockFactories.AboutViewModelFactory(GetMockObjects()),
-					MockFactories.FinCalcViewModelFactory(GetMockObjects()));
+					AboutViewModelFactory(GetMockObjects()),
+					FinCalcViewModelFactory(GetMockObjects()));
 		}
 
 		public static AboutViewModel AboutViewModelFactory(Dictionary<string, object> mockObjects)
@@ -35,25 +35,18 @@ namespace FinCalcR.WinUi.Tests.Mocks
 		}
 
 		public static FinCalcViewModel FinCalcViewModelFactory(Dictionary<string, object> mockObjects)
-		{
-			return new FinCalcViewModel(
-				(ILocalizationService)mockObjects[nameof(ILocalizationService)],
-				(IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-		}
-
-		public static FinCalcViewModel2 FinCalcViewModel2Factory(Dictionary<string, object> mockObjects)
         {
-            return new FinCalcViewModel2(
+            return new FinCalcViewModel(
                 (ILocalizationService)mockObjects[nameof(ILocalizationService)],
                 (IEventAggregator)mockObjects[nameof(IEventAggregator)],
                 (ICommandInvoker)mockObjects[nameof(ICommandInvoker)],
                 (ICalculationCommandReceiver)mockObjects[nameof(ICalculationCommandReceiver)]);
         }
 
-		public static FinCalcViewModel2 FinCalcViewModel2WithCalculatorImplementationFactory(Dictionary<string, object> mockObjects)
+		public static FinCalcViewModel FinCalcViewModelWithCalculatorImplementationFactory(Dictionary<string, object> mockObjects)
         {
 			SetImplementationOfCalculatorCommandObjects(out var receiver, out var invoker);
-			return new FinCalcViewModel2(
+			return new FinCalcViewModel(
                 (ILocalizationService)mockObjects[nameof(ILocalizationService)],
                 (IEventAggregator)mockObjects[nameof(IEventAggregator)],
                 invoker,
@@ -64,37 +57,37 @@ namespace FinCalcR.WinUi.Tests.Mocks
 		{
 			return new Dictionary<string, object>()
 			{
-				{ nameof(IEventAggregator), MockFactories.GetEventAggregator() },
-				{ nameof(ISnackbarMessageQueue), MockFactories.GetISnackbarMessageQueue() },
-				{ nameof(IDialogHostMapper), MockFactories.GetIDialogHostMapper() },
-				{ nameof(ILocalizationService), MockFactories.GetLocalizationService() },
-				{ nameof(IWindowManager), MockFactories.GetWindowManager() },
-				{ nameof(ICalculationCommandReceiver), MockFactories.GetCalculationCommandReceiver() },
-				{ nameof(ICommandInvoker), MockFactories.GetCommandInvoker() },
+				{ nameof(IEventAggregator), GetEventAggregator() },
+				{ nameof(ISnackbarMessageQueue), GetISnackbarMessageQueue() },
+				{ nameof(IDialogHostMapper), GetIDialogHostMapper() },
+				{ nameof(ILocalizationService), GetLocalizationService() },
+				{ nameof(IWindowManager), GetWindowManager() },
+				{ nameof(ICalculationCommandReceiver), GetCalculationCommandReceiver() },
+				{ nameof(ICommandInvoker), GetCommandInvoker() },
 			};
 		}
 
-		public static ILocalizationService GetLocalizationService()
+		private static ILocalizationService GetLocalizationService()
 		{
 			return new Mock<ILocalizationService>().Object;
 		}
 
-		public static IEventAggregator GetEventAggregator()
+		private static IEventAggregator GetEventAggregator()
 		{
 			return new Mock<IEventAggregator>().Object;
 		}
 
-		public static ISnackbarMessageQueue GetISnackbarMessageQueue()
+		private static ISnackbarMessageQueue GetISnackbarMessageQueue()
 		{
 			return new Mock<ISnackbarMessageQueue>().Object;
 		}
 
-		public static IDialogHostMapper GetIDialogHostMapper()
+		private static IDialogHostMapper GetIDialogHostMapper()
 		{
 			return new Mock<IDialogHostMapper>().Object;
 		}
 
-		public static IWindowManager GetWindowManager()
+		private static IWindowManager GetWindowManager()
 		{
 			return new Mock<IWindowManager>().Object;
 		}
@@ -106,7 +99,10 @@ namespace FinCalcR.WinUi.Tests.Mocks
 
 		private static ICalculationCommandReceiver GetCalculationCommandReceiver()
         {
-            return new Mock<ICalculationCommandReceiver>().Object;
+			var calculatorMock = new Mock<ICalculationCommandReceiver>();
+			calculatorMock.SetupGet(p => p.OutputText).Returns(new Mock<IOutputText>().Object);
+			calculatorMock.SetupGet(p => p.InputText).Returns(new Mock<IInputText>().Object);
+			return calculatorMock.Object;
         }
 
 		private static void SetImplementationOfCalculatorCommandObjects(out ICalculationCommandReceiver receiver, out ICommandInvoker invoker)

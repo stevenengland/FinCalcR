@@ -22,7 +22,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void PercentageCalculationExamples()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			// 200 * 5
 			vm.DigitPressedCommand.Execute(2);
@@ -73,7 +73,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void InterestSecondFunctionExample()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute("4");
 			vm.OperatorPressedCommand.Execute("*");
@@ -97,7 +97,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void N_BookP32()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(5);
 			vm.DecimalSeparatorPressedCommand.Execute(null);
@@ -138,7 +138,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void Kn_Manual_LoanQuestion1()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.DigitPressedCommand.Execute(2);
@@ -175,7 +175,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void K0_BookP31()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(3);
 			vm.DigitPressedCommand.Execute(5);
@@ -212,7 +212,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void E_Manual_IncomeDrawDownQuestion2()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			vm.OperatorPressedCommand.Execute("*");
 			vm.StartPressedCommand.Execute(false);
@@ -254,7 +254,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void E_BookP17()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(2);
 			vm.DigitPressedCommand.Execute(5);
@@ -285,7 +285,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 		public void P_BookP21()
 		{
 			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.FinCalcViewModel2WithCalculatorImplementationFactory(mockObjects);
+			var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
 			vm.DigitPressedCommand.Execute(1);
 			vm.OperatorPressedCommand.Execute("*");

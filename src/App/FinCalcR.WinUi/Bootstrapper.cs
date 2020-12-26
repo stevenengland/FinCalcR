@@ -30,64 +30,50 @@ namespace StEn.FinCalcR.WinUi
 			this.Initialize();
 		}
 
-		private ISnackbarMessageQueue SbMessageQueue { get; set; }
-
-		private ILocalizationService LocalizationService { get; set; }
-
 		protected override void Configure()
 		{
+			// --- Register Localization ---
 			try
 			{
-				this.LocalizationService = new WpfLocalizeExtensionMapper("Resources");
+				// Configure Message override
+				ErrorMessages.Instance = new LocalizedErrorMessages();
+
+				ILocalizationService localizationService = new WpfLocalizeExtensionMapper("Resources");
 				if (CultureInfo.CurrentCulture.ToString().StartsWith("en") || CultureInfo.CurrentCulture.ToString().StartsWith("en-"))
 				{
-					this.LocalizationService.ChangeCurrentCulture(new CultureInfo("en"));
+					localizationService.ChangeCurrentCulture(new CultureInfo("en"));
 				}
 				else if (CultureInfo.CurrentCulture.ToString().StartsWith("de") || CultureInfo.CurrentCulture.ToString().StartsWith("de-"))
 				{
-					this.LocalizationService.ChangeCurrentCulture(new CultureInfo("de"));
+					localizationService.ChangeCurrentCulture(new CultureInfo("de"));
 				}
 				else
 				{
-					this.LocalizationService.ChangeCurrentCulture(new CultureInfo("en"));
+					localizationService.ChangeCurrentCulture(new CultureInfo("en"));
 				}
 
-				this.simpleContainer.Instance(this.LocalizationService);
+				this.simpleContainer.Instance(localizationService);
 			}
 			catch (Exception e)
 			{
-				this.SetErrorEvent(new ErrorEvent(e, $"Could not set Language {nameof(this.LocalizationService)}:" + e.Message, true));
+				this.SetErrorEvent(new ErrorEvent(e, $"Could not set Language with the help of {nameof(ILocalizationService)}:" + e.Message, true));
 			}
 
+			// --- Register Snackbar ---
 			try
 			{
-				this.SbMessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
-				this.simpleContainer.Instance(this.SbMessageQueue);
+				ISnackbarMessageQueue sbMessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
+				this.simpleContainer.Instance(sbMessageQueue);
 			}
 			catch (Exception e)
 			{
 				this.SetErrorEvent(
-					new ErrorEvent(e, $"Could not load {nameof(this.SbMessageQueue)}:" + e.Message, true));
+					new ErrorEvent(e, $"Could not load {nameof(ISnackbarMessageQueue)}:" + e.Message, true));
 			}
 
-			// Register itself
-			this.simpleContainer.Instance(this.simpleContainer);
-
-			// .PerRequest
-			this.simpleContainer
-				.Singleton<IWindowManager, WindowManager>()
-				.Singleton<IEventAggregator, EventAggregator>()
-				.PerRequest<IDialogHostMapper, DialogHostMapper>();
-
-			// Registers every ViewModel to the container
-			this.GetType().Assembly.GetTypes()
-				.Where(type => type.IsClass)
-				.Where(type => type.Name.EndsWith("ViewModel"))
-				.ToList()
-				.ForEach(viewModelType => this.simpleContainer.RegisterPerRequest(
-					viewModelType, viewModelType.ToString(), viewModelType));
-
-			// Register all Calculator Commands and stuff
+			// --- Register Calculator ---
+			var commands = new List<ICalculatorCommand>();
+			ICalculationCommandReceiver calculator = new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(9));
 			var assemblies = new[]
 			{
 				Assembly.GetAssembly(typeof(ICalculatorCommand)),
@@ -97,16 +83,32 @@ namespace StEn.FinCalcR.WinUi
 			{
 				assembly.GetTypes()
 					.Where(type => type.BaseType == typeof(BaseCommand))
-					.ToList().ForEach(commandType => this.simpleContainer.RegisterSingleton(typeof(ICalculatorCommand), commandType.ToString(), commandType));
+					.ToList().ForEach(commandType => commands.Add((ICalculatorCommand)Activator.CreateInstance(commandType, new object[] { calculator })));
 			}
 
-			this.simpleContainer.Singleton<IEnumerable<ICalculatorCommand>, CommandList>();
-			this.simpleContainer.Instance(new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(9)));
-			this.simpleContainer.Singleton<ICommandInvoker, CalculatorRemote>();
+			// Register an instance of the calculator helps to preserve internal states when VM is recreated like when the language changes.
+			this.simpleContainer.Instance(calculator);
 
-			// Configure Message override
-			ErrorMessages.Instance = new LocalizedErrorMessages();
-        }
+			ICommandInvoker calculatorRemote = new CalculatorRemote(new CommandList(commands));
+			this.simpleContainer.Instance(calculatorRemote);
+
+			// --- Register container itself ---
+			this.simpleContainer.Instance(this.simpleContainer);
+
+			// --- Register diverse ---
+			this.simpleContainer
+				.Singleton<IWindowManager, WindowManager>()
+				.Singleton<IEventAggregator, EventAggregator>()
+				.PerRequest<IDialogHostMapper, DialogHostMapper>();
+
+			// --- View Model Registration ---
+			this.GetType().Assembly.GetTypes()
+				.Where(type => type.IsClass)
+				.Where(type => type.Name.EndsWith("ViewModel"))
+				.ToList()
+				.ForEach(viewModelType => this.simpleContainer.RegisterPerRequest(
+					viewModelType, viewModelType.ToString(), viewModelType));
+		}
 
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
