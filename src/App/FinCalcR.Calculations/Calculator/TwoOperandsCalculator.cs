@@ -292,198 +292,6 @@ namespace StEn.FinCalcR.Calculations.Calculator
             }
         }
 
-        public void SetEnd()
-        {
-            this.DoCommonTasksIfLastCommandWasSpecial();
-
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
-        }
-
-        public void CalculateEnd()
-        {
-            this.DoCommonTasksIfLastCommandWasSpecial();
-
-            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
-                                       true,
-                                       new Func<double, double, double, double, double, bool, double>(
-                                           FinancialCalculation.Kn),
-                                       this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
-                                       this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
-                                       this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-                                       this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
-                                       this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
-                                       this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
-
-            calculatedResult *= -1;
-
-            this.InputText.SetInternalState(calculatedResult);
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
-        }
-
-        public void CalculatePercent()
-        {
-            this.DoCommonTasksIfLastCommandWasSpecial();
-
-            this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
-            double calculation;
-            switch (this.ActiveMathOperator)
-            {
-                case MathOperator.Multiply:
-                    calculation = CalculationProxy.CalculateAndCheckResult(
-                            true,
-                            new Func<double, double, double>(BasicCalculations.GetPartValue),
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
-                        .calculatedResult;
-                    break;
-                case MathOperator.Add:
-                    calculation = CalculationProxy.CalculateAndCheckResult(
-                            true,
-                            new Func<double, double, double>(BasicCalculations.AddPartValueToBaseValue),
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
-                        .calculatedResult;
-                    break;
-                case MathOperator.Subtract:
-                    calculation = CalculationProxy.CalculateAndCheckResult(
-                            true,
-                            new Func<double, double, double>(BasicCalculations.SubPartValueFromBaseValue),
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
-                        .calculatedResult;
-                    break;
-                case MathOperator.Divide: // ToDo: function is not documented and calculates like below - but makes not much sense...
-                    calculation = CalculationProxy.CalculateAndCheckResult(
-                            true,
-                            new Func<double, double, double>((baseValue, rate) => baseValue / rate * 100),
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
-                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
-                        .calculatedResult;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
-
-            this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
-            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = calculation;
-            this.ActiveMathOperator = MathOperator.None;
-            this.IsCalcCommandLock = true;
-            this.InputText.SetInternalState(calculation);
-            this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
-        }
-
-        public void CalculateRate()
-        {
-            this.DoCommonTasksIfLastCommandWasSpecial();
-
-            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
-                true,
-                new Func<double, double, double, double, double, bool, double>(FinancialCalculation.E),
-                this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
-                this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
-                this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
-                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
-                this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
-
-            calculatedResult *= -1;
-
-            this.InputText.SetInternalState(calculatedResult);
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
-        }
-
-        public void SetRate()
-        {
-            this.DoCommonTasksIfLastCommandWasSpecial();
-
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
-            var (isFiniteNumber, calculationResult) = CalculationProxy
-                .CalculateAndCheckResult(
-                    false,
-                    new Func<double, double, double, double, double>((m, k0, p, annuity) =>
-                        FinancialCalculation.GetRepaymentRate(k0, p, m, annuity)),
-                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
-                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
-                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
-
-            // Todo: In an overview where all saved and calculated results are shown it might be misleading to show a 0 in case of a erroneous calculation.
-            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value =
-                isFiniteNumber ? calculationResult : 0;
-        }
-
-        public void GetRepaymentRate()
-        {
-            // Repayment rate is calculated on demand. Unlike all the other GetXYZ functions it is not a plain load from memory case.
-            // The calculation throws if it is no finite number.
-            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = CalculationProxy
-                .CalculateAndCheckResult(
-                    true,
-                    new Func<double, double, double, double, double>((m, k0, p, annuity) =>
-                        FinancialCalculation.GetRepaymentRate(k0, p, m, annuity)),
-                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
-                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
-                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value)
-                .calculatedResult;
-
-            this.PressLoadMemoryValue(MemoryFieldNames.RepaymentRateNumber);
-        }
-
-        public void SetRepaymentRate()
-        {
-            this.DoCommonTasksIfLastCommandWasSpecial();
-
-            // Calculate/save repayment, save repayment (as rate) and display the repayment.
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber), 2, false);
-
-            this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value =
-                (-1) * CalculationProxy.CalculateAndCheckResult(
-                    true,
-                    new Func<double, double, double, double, double>((m, k0, p, e) =>
-                        FinancialCalculation.GetAnnuity(k0, e, p, m)),
-                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
-                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
-                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-                    this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value).calculatedResult;
-
-            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
-            this.InputText.SetInternalState(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
-            this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
-        }
-
-        public void CalculateStart()
-        {
-            this.HandleTemporaryOverlay();
-
-            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
-                true,
-                new Func<double, double, double, double, double, bool, double>(FinancialCalculation.K0),
-                this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
-                this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
-                this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
-                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
-                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
-                this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
-
-            this.InputText.SetInternalState(calculatedResult);
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber), 2);
-        }
-
-        public void SetStart()
-        {
-            this.DoCommonTasksIfLastCommandWasSpecial();
-
-            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber), 2);
-        }
-
-        public void SetAdvance(bool useAdvance)
-        {
-           this.DoCommonTasksIfLastCommandWasSpecial();
-
-           this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value = useAdvance;
-        }
-
         public void CalculateEffectiveInterest()
         {
             this.DoCommonTasksIfLastCommandWasSpecial();
@@ -584,6 +392,198 @@ namespace StEn.FinCalcR.Calculations.Calculator
                 this.InputText.SetInternalState(this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
                 this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 3);
             }
+        }
+
+        public void CalculateStart()
+        {
+            this.HandleTemporaryOverlay();
+
+            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
+                true,
+                new Func<double, double, double, double, double, bool, double>(FinancialCalculation.K0),
+                this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
+                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
+
+            this.InputText.SetInternalState(calculatedResult);
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber), 2);
+        }
+
+        public void SetStart()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber), 2);
+        }
+
+        public void SetAdvance(bool useAdvance)
+        {
+           this.DoCommonTasksIfLastCommandWasSpecial();
+
+           this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value = useAdvance;
+        }
+
+        public void CalculateRate()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
+                true,
+                new Func<double, double, double, double, double, bool, double>(FinancialCalculation.E),
+                this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
+                this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
+
+            calculatedResult *= -1;
+
+            this.InputText.SetInternalState(calculatedResult);
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
+        }
+
+        public void SetRate()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber), 2);
+            var (isFiniteNumber, calculationResult) = CalculationProxy
+                .CalculateAndCheckResult(
+                    false,
+                    new Func<double, double, double, double, double>((m, k0, p, annuity) =>
+                        FinancialCalculation.GetRepaymentRate(k0, p, m, annuity)),
+                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
+
+            // Todo: In an overview where all saved and calculated results are shown it might be misleading to show a 0 in case of a erroneous calculation.
+            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value =
+                isFiniteNumber ? calculationResult : 0;
+        }
+
+        public void GetRepaymentRate()
+        {
+            // Repayment rate is calculated on demand. Unlike all the other GetXYZ functions it is not a plain load from memory case.
+            // The calculation throws if it is no finite number.
+            this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value = CalculationProxy
+                .CalculateAndCheckResult(
+                    true,
+                    new Func<double, double, double, double, double>((m, k0, p, annuity) =>
+                        FinancialCalculation.GetRepaymentRate(k0, p, m, annuity)),
+                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                    (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value)
+                .calculatedResult;
+
+            this.PressLoadMemoryValue(MemoryFieldNames.RepaymentRateNumber);
+        }
+
+        public void SetRepaymentRate()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            // Calculate/save repayment, save repayment (as rate) and display the repayment.
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber), 2, false);
+
+            this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value =
+                (-1) * CalculationProxy.CalculateAndCheckResult(
+                    true,
+                    new Func<double, double, double, double, double>((m, k0, p, e) =>
+                        FinancialCalculation.GetAnnuity(k0, e, p, m)),
+                    this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                    this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value).calculatedResult;
+
+            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
+            this.InputText.SetInternalState(this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
+            this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
+        }
+
+        public void CalculateEnd()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            var (isValidResult, calculatedResult) = CalculationProxy.CalculateAndCheckResult(
+                                       true,
+                                       new Func<double, double, double, double, double, bool, double>(
+                                           FinancialCalculation.Kn),
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value,
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value,
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
+                                       this.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value,
+                                       this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
+                                       this.MemoryFields.Get<bool>(MemoryFieldNames.IsAdvance).Value);
+
+            calculatedResult *= -1;
+
+            this.InputText.SetInternalState(calculatedResult);
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
+        }
+
+        public void SetEnd()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            this.CommonSpecialFunctionWriteToMemoryOperations(this.MemoryFields.Get<double>(MemoryFieldNames.EndNumber), 2);
+        }
+
+        public void CalculatePercent()
+        {
+            this.DoCommonTasksIfLastCommandWasSpecial();
+
+            this.SetMemoryFieldValueByEvalInputText(this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber));
+            double calculation;
+            switch (this.ActiveMathOperator)
+            {
+                case MathOperator.Multiply:
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>(BasicCalculations.GetPartValue),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                case MathOperator.Add:
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>(BasicCalculations.AddPartValueToBaseValue),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                case MathOperator.Subtract:
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>(BasicCalculations.SubPartValueFromBaseValue),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                case MathOperator.Divide: // ToDo: function is not documented and calculates like below - but makes not much sense...
+                    calculation = CalculationProxy.CalculateAndCheckResult(
+                            true,
+                            new Func<double, double, double>((baseValue, rate) => baseValue / rate * 100),
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
+                            this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value)
+                        .calculatedResult;
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            this.MemoryFields.Reset(new List<string>() { MemoryFieldNames.Categories.Standard });
+            this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value = calculation;
+            this.ActiveMathOperator = MathOperator.None;
+            this.IsCalcCommandLock = true;
+            this.InputText.SetInternalState(calculation);
+            this.OutputText.SetResult(this.InputText.GetEvaluatedResult(), 2);
         }
 
         private void DoCommonTasksIfLastCommandWasSpecial()

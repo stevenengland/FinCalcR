@@ -10,11 +10,19 @@
 
         void SetRatesPerAnnum();
 
-        void SetEnd();
+        void CalculateEffectiveInterest();
 
-        void CalculateEnd();
+        void SetEffectiveInterestRate();
 
-        void CalculatePercent();
+        void GetNominalInterestRate();
+
+        void SetNominalInterestRate();
+
+        void CalculateStart();
+
+        void SetStart();
+
+        void SetAdvance(bool useAdvance);
 
         void CalculateRate();
 
@@ -24,18 +32,10 @@
 
         void SetRepaymentRate();
 
-        void CalculateStart();
+        void SetEnd();
 
-        void SetStart();
+        void CalculateEnd();
 
-        void SetAdvance(bool useAdvance);
-
-        void CalculateEffectiveInterest();
-
-        void SetEffectiveInterestRate();
-
-        void GetNominalInterestRate();
-
-        void SetNominalInterestRate();
+        void CalculatePercent();
     }
 }
