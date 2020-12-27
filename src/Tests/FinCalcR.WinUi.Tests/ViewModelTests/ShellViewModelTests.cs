@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
+using FluentAssertions;
 using MaterialDesignThemes.Wpf;
 using Moq;
 using StEn.FinCalcR.Common.LanguageResources;
@@ -17,90 +19,117 @@ using Xunit;
 // ReSharper disable RedundantArgumentDefaultValue
 namespace FinCalcR.WinUi.Tests.ViewModelTests
 {
-	public class ShellViewModelTests
-	{
-		[Fact]
-		public void TitleTextIsSet()
-		{
-			var mockObjects = MockFactories.GetMockObjects();
-			var vm = MockFactories.ShellViewModelFactory(mockObjects);
-			Assert.True(vm.TitleBarText == Resources.AppTitleTxt_Text + " - " + Resources.FinCalcItem_Name);
-		}
+    public class ShellViewModelTests
+    {
+        [Fact]
+        public void ActiveContentIsSetAtStartup()
+        {
+            // Arrange
+            var mockObjects = MockFactories.GetMockObjects();
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
 
-		[Fact]
-		public void VmIsSubscribedToEventAggregator()
-		{
-			var mockObjects = MockFactories.GetMockObjects();
-			var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            // Act
 
-			var vm = MockFactories.ShellViewModelFactory(mockObjects);
+            // Assert
+            vm.ActiveWindowContent.Should().Be(vm.MenuItems.First().Content);
+        }
 
-			// Test to make sure subscribe was called on the event aggregator at least once
-			eventAggregatorMock.Verify(x => x.Subscribe(vm), Times.Once);
-		}
+        [Fact]
+        public void TitleTextIsSetAtStartup()
+        {
+            var mockObjects = MockFactories.GetMockObjects();
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
+            Assert.True(vm.TitleBarText == Resources.AppTitleTxt_Text + " - " + Resources.FinCalcItem_Name);
+        }
 
-		[Fact]
-		public async Task ErrorEventsAreHandledWithSnackbarAsync()
-		{
-			var mockObjects = MockFactories.GetMockObjects();
+        [Fact]
+        public void VmIsSubscribedToEventAggregator()
+        {
+            var mockObjects = MockFactories.GetMockObjects();
+            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
 
-			var snackbarMock = Mock.Get((ISnackbarMessageQueue)mockObjects[nameof(ISnackbarMessageQueue)]);
-			var vm = MockFactories.ShellViewModelFactory(mockObjects);
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
 
-			await vm.Handle(new ErrorEvent(new Exception(), "test", false, true)).ConfigureAwait(true);
+            // Test to make sure subscribe was called on the event aggregator at least once
+            eventAggregatorMock.Verify(x => x.Subscribe(vm), Times.Once);
+        }
 
-			snackbarMock.Verify(x => x.Enqueue(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<Action<ErrorEvent>>(), It.IsAny<ErrorEvent>()), Times.Once);
-		}
+        [Fact]
+        public void ActiveContentChangesWhenSelectedMenuItemChanges()
+        {
+            // Arrange
+            var mockObjects = MockFactories.GetMockObjects();
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
 
-		[Fact]
-		public void SwitchingTheLanguageSucceeds()
-		{
-			var mockObjects = MockFactories.GetMockObjects();
-			var localizationServiceMock = Mock.Get((ILocalizationService)mockObjects[nameof(ILocalizationService)]);
-			var windowManagerMock = Mock.Get((IWindowManager)mockObjects[nameof(IWindowManager)]);
-			var vm = MockFactories.ShellViewModelFactory(mockObjects);
+            // Act
+            vm.MenuItemsSelectionChangedCommand.Execute(vm.MenuItems.LastOrDefault());
 
-			vm.LanguageSelectionChangedCommand.Execute(new KeyValuePair<string, string>("de", "de"));
+            // Assert
+            vm.ActiveWindowContent.Should().NotBe(vm.MenuItems.First().Content);
+        }
 
-			localizationServiceMock.Verify(x => x.ChangeCurrentCulture(It.IsAny<CultureInfo>()), Times.Once);
-			windowManagerMock.Verify(x => x.ShowWindow(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<Dictionary<string, object>>()), Times.Once);
-		}
+        [Fact]
+        public async Task ErrorEventsAreHandledWithSnackbarAsync()
+        {
+            var mockObjects = MockFactories.GetMockObjects();
 
-		[Fact]
-		public async Task ErrorEventsAreHandledAsync()
-		{
-			var mockObjects = MockFactories.GetMockObjects();
+            var snackbarMock = Mock.Get((ISnackbarMessageQueue)mockObjects[nameof(ISnackbarMessageQueue)]);
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
 
-			var dialogHostMapperMock = Mock.Get((IDialogHostMapper)mockObjects[nameof(IDialogHostMapper)]);
-			var vm = MockFactories.ShellViewModelFactory(mockObjects);
+            await vm.Handle(new ErrorEvent(new Exception(), "test", false, true)).ConfigureAwait(true);
 
-			await vm.Handle(new ErrorEvent(new Exception(), "test", false, false)).ConfigureAwait(true);
+            snackbarMock.Verify(x => x.Enqueue(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<Action<ErrorEvent>>(), It.IsAny<ErrorEvent>()), Times.Once);
+        }
 
-			dialogHostMapperMock.Verify(x => x.ShowAsync(It.IsAny<object>(), It.IsAny<object>()));
-		}
+        [Fact]
+        public void SwitchingTheLanguageSucceeds()
+        {
+            var mockObjects = MockFactories.GetMockObjects();
+            var localizationServiceMock = Mock.Get((ILocalizationService)mockObjects[nameof(ILocalizationService)]);
+            var windowManagerMock = Mock.Get((IWindowManager)mockObjects[nameof(IWindowManager)]);
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
 
-		[Fact]
-		public void MenuItemChangesAreHandled()
-		{
-			var mockObjects = MockFactories.GetMockObjects();
+            vm.LanguageSelectionChangedCommand.Execute(new KeyValuePair<string, string>("de", "de"));
 
-			var vm = MockFactories.ShellViewModelFactory(mockObjects);
+            localizationServiceMock.Verify(x => x.ChangeCurrentCulture(It.IsAny<CultureInfo>()), Times.Once);
+            windowManagerMock.Verify(x => x.ShowWindow(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<Dictionary<string, object>>()), Times.Once);
+        }
 
-			vm.MenuItemsSelectionChangedCommand.Execute(new NavigationMenuItem() { Name = string.Empty });
+        [Fact]
+        public async Task ErrorEventsAreHandledAsync()
+        {
+            var mockObjects = MockFactories.GetMockObjects();
 
-			Assert.False(vm.IsMenuBarVisible);
-		}
+            var dialogHostMapperMock = Mock.Get((IDialogHostMapper)mockObjects[nameof(IDialogHostMapper)]);
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
 
-		[Fact]
-		public void WindowGetsMinimized()
-		{
-			var mockObjects = MockFactories.GetMockObjects();
+            await vm.Handle(new ErrorEvent(new Exception(), "test", false, false)).ConfigureAwait(true);
 
-			var vm = MockFactories.ShellViewModelFactory(mockObjects);
+            dialogHostMapperMock.Verify(x => x.ShowAsync(It.IsAny<object>(), It.IsAny<object>()));
+        }
 
-			vm.MinimizeAppCommand.Execute(null);
+        [Fact]
+        public void MenuItemChangesAreHandled()
+        {
+            var mockObjects = MockFactories.GetMockObjects();
 
-			Assert.Equal(WindowState.Minimized, vm.CurWindowState);
-		}
-	}
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
+
+            vm.MenuItemsSelectionChangedCommand.Execute(new NavigationMenuItem() { Name = string.Empty });
+
+            Assert.False(vm.IsMenuBarVisible);
+        }
+
+        [Fact]
+        public void WindowGetsMinimized()
+        {
+            var mockObjects = MockFactories.GetMockObjects();
+
+            var vm = MockFactories.ShellViewModelFactory(mockObjects);
+
+            vm.MinimizeAppCommand.Execute(null);
+
+            Assert.Equal(WindowState.Minimized, vm.CurWindowState);
+        }
+    }
 }

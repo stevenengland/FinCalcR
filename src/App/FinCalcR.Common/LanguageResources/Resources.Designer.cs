@@ -169,11 +169,29 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung..
+        /// </summary>
+        public static string EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE {
+            get {
+                return ResourceManager.GetString("EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eine Division durch 0 ist nicht erlaubt..
         /// </summary>
         public static string EXC_DIVISION_BY_ZERO {
             get {
                 return ResourceManager.GetString("EXC_DIVISION_BY_ZERO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Wert für den effektiven Zins muss größer als -100 sein..
+        /// </summary>
+        public static string EXC_EFFINTEREST_EXCEEDS_LIMIT {
+            get {
+                return ResourceManager.GetString("EXC_EFFINTEREST_EXCEEDS_LIMIT", resourceCulture);
             }
         }
         
@@ -205,11 +223,20 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Der Zins darf nicht kleiner als -100 sein..
+        ///   Looks up a localized string similar to Der effektive Zins darf nicht kleiner als -100 sein..
         /// </summary>
         public static string EXC_INTEREST_EXCEEDED_LIMIT {
             get {
                 return ResourceManager.GetString("EXC_INTEREST_EXCEEDED_LIMIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der nominelle Zins darf nicht kleiner als -100 sein..
+        /// </summary>
+        public static string EXC_NOMINTEREST_EXCEEDS_LIMIT {
+            get {
+                return ResourceManager.GetString("EXC_NOMINTEREST_EXCEEDS_LIMIT", resourceCulture);
             }
         }
         
@@ -246,6 +273,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         public static string EXC_PARSE_DOUBLE_IMPOSSIBLE {
             get {
                 return ResourceManager.GetString("EXC_PARSE_DOUBLE_IMPOSSIBLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Raten pro Jahr müssen zwischen 1 und 365 liegen sowie eine ganze Zahl darstellen..
+        /// </summary>
+        public static string EXC_RATES_PER_ANNUM_OUT_OF_RANGE {
+            get {
+                return ResourceManager.GetString("EXC_RATES_PER_ANNUM_OUT_OF_RANGE", resourceCulture);
             }
         }
         

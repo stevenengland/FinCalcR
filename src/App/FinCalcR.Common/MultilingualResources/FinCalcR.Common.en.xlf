@@ -155,8 +155,8 @@
           <target state="translated">The values of the finance keys were set to 0 and the rates p. a. to 12.</target>
         </trans-unit>
         <trans-unit id="EXC_INTEREST_EXCEEDED_LIMIT" translate="yes" xml:space="preserve">
-          <source>Der Zins darf nicht kleiner als -100 sein.</source>
-          <target state="translated">The interest must not be less than -100.</target>
+          <source>Der effektive Zins darf nicht kleiner als -100 sein.</source>
+          <target state="translated">The effective interest must not be less than -100.</target>
         </trans-unit>
         <trans-unit id="FinCalcRatesPerAnnumPostfix" translate="yes" xml:space="preserve">
           <source>p.a.</source>
@@ -189,6 +189,22 @@
         <trans-unit id="LANG_LANGUAGE" translate="yes" xml:space="preserve">
           <source>Sprache</source>
           <target state="translated">Language</target>
+        </trans-unit>
+        <trans-unit id="EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE" translate="yes" xml:space="preserve">
+          <source>Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung.</source>
+          <target state="translated">Calculation of p was not possible. Try to increase {0}.</target>
+        </trans-unit>
+        <trans-unit id="EXC_RATES_PER_ANNUM_OUT_OF_RANGE" translate="yes" xml:space="preserve">
+          <source>Die Raten pro Jahr müssen zwischen 1 und 365 liegen sowie eine ganze Zahl darstellen.</source>
+          <target state="translated">The rates per annum must be between 1 and 365 and must be an integer.</target>
+        </trans-unit>
+        <trans-unit id="EXC_EFFINTEREST_EXCEEDS_LIMIT" translate="yes" xml:space="preserve">
+          <source>Der Wert für den effektiven Zins muss größer als -100 sein.</source>
+          <target state="translated">The value for interest must be greater than -100.</target>
+        </trans-unit>
+        <trans-unit id="EXC_NOMINTEREST_EXCEEDS_LIMIT" translate="yes" xml:space="preserve">
+          <source>Der nominelle Zins darf nicht kleiner als -100 sein.</source>
+          <target state="translated">The nominal interest must not be less than -100.</target>
         </trans-unit>
       </group>
     </body>

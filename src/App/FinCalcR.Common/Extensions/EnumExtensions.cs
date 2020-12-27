@@ -1,12 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
+using System.Reflection;
 
 namespace StEn.FinCalcR.Common.Extensions
 {
 	public static class EnumExtensions
 	{
+		public static TAttribute GetAttribute<TAttribute>(this Enum value)
+			where TAttribute : Attribute
+		{
+			var type = value.GetType();
+			var name = Enum.GetName(type, value);
+			return type.GetField(name) // I prefer to get attributes this way
+				.GetCustomAttribute<TAttribute>();
+		}
+
 		/// <summary>
 		/// Determines whether a given flag is the only flag of all possible flags that is not set.
 		/// </summary>

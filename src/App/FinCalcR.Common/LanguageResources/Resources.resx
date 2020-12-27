@@ -150,11 +150,17 @@
   <data name="EXC_ARGUMENT_NULL" xml:space="preserve">
     <value>Das folgende Argument ist leer oder null:</value>
   </data>
+  <data name="EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE" xml:space="preserve">
+    <value>Die Berechnung von p war nicht erfolgreich. Die Erhöhung von {0} würde helfen, verlangsamt jedoch die Berechnung.</value>
+  </data>
   <data name="EXC_CALC_NOT_POSSIBLE" xml:space="preserve">
     <value>Die Berechnung war nicht möglich.</value>
   </data>
   <data name="EXC_DIVISION_BY_ZERO" xml:space="preserve">
     <value>Eine Division durch 0 ist nicht erlaubt.</value>
+  </data>
+  <data name="EXC_EFFINTEREST_EXCEEDS_LIMIT" xml:space="preserve">
+    <value>Der Wert für den effektiven Zins muss größer als -100 sein.</value>
   </data>
   <data name="EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN" xml:space="preserve">
     <value>Die Applikation muss beendet werden!</value>
@@ -166,7 +172,10 @@
     <value>Eine unbehandelte Ausnahme ist aufgetreten:</value>
   </data>
   <data name="EXC_INTEREST_EXCEEDED_LIMIT" xml:space="preserve">
-    <value>Der Zins darf nicht kleiner als -100 sein.</value>
+    <value>Der effektive Zins darf nicht kleiner als -100 sein.</value>
+  </data>
+  <data name="EXC_NOMINTEREST_EXCEEDS_LIMIT" xml:space="preserve">
+    <value>Der nominelle Zins darf nicht kleiner als -100 sein.</value>
   </data>
   <data name="EXC_NOT_FINITE_NUMBER" xml:space="preserve">
     <value>Das Ergebnis der Berechnung ist keine finite Zahl.</value>
@@ -179,6 +188,9 @@
   </data>
   <data name="EXC_PARSE_DOUBLE_IMPOSSIBLE" xml:space="preserve">
     <value>Die Eingabe ist keine gültige Zahl.</value>
+  </data>
+  <data name="EXC_RATES_PER_ANNUM_OUT_OF_RANGE" xml:space="preserve">
+    <value>Die Raten pro Jahr müssen zwischen 1 und 365 liegen sowie eine ganze Zahl darstellen.</value>
   </data>
   <data name="EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON" xml:space="preserve">
     <value>Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler.</value>

@@ -4,7 +4,7 @@ using System.Windows.Navigation;
 namespace StEn.FinCalcR.WinUi.Views
 {
 	/// <summary>
-	/// Interaction logic for AboutView.xaml
+	/// Interaction logic for AboutView.xaml.
 	/// </summary>
 	public partial class AboutView : UserControl
 	{

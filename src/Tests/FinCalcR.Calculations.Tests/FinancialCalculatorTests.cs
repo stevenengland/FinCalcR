@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using StEn.FinCalcR.Calculations;
 using Xunit;
+using FinancialCalculation = StEn.FinCalcR.Calculations.FinancialCalculation;
 
 namespace FinCalcR.Calculations.Tests
 {
@@ -13,7 +12,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 4, 4.074)]
 		public void EffectiveInterestRateIsCalculatedCorrectly(double m, double p, double expectedEffectiveInterestRate)
 		{
-			var effectiveInterestRate = FinancialCalculator.GetEffectiveInterestRate(p, m);
+			var effectiveInterestRate = FinancialCalculation.GetEffectiveInterestRate(p, m);
 			Assert.Equal(Math.Round(effectiveInterestRate, 3), expectedEffectiveInterestRate);
 		}
 
@@ -21,7 +20,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 4, 3.928)]
 		public void YearlyNominalInterestRateIsCalculatedCorrectly(double m, double effectiveInterestRate, double expectedP)
 		{
-			var p = FinancialCalculator.GetYearlyNominalInterestRate(m, effectiveInterestRate);
+			var p = FinancialCalculation.GetYearlyNominalInterestRate(m, effectiveInterestRate);
 			Assert.Equal(Math.Round(p, 3), expectedP);
 		}
 
@@ -29,7 +28,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 150000, 4, 2, 750)]
 		public void AnnuityIsCalculatedCorrectly(double m, double k0, double p, double repaymentRate, double expectedE)
 		{
-			var annuity = FinancialCalculator.GetAnnuity(k0, repaymentRate, p, m);
+			var annuity = FinancialCalculation.GetAnnuity(k0, repaymentRate, p, m);
 			Assert.Equal(annuity, expectedE);
 		}
 
@@ -37,130 +36,54 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 150000, 4, 750, 2)]
 		public void RepaymentRateIsCalculatedCorrectly(double m, double k0, double p, double e, double expectedRepaymentRate)
 		{
-			var repaymentRate = FinancialCalculator.GetRepaymentRate(k0, p, m, e);
+			var repaymentRate = FinancialCalculation.GetRepaymentRate(k0, p, m, e);
 			Assert.Equal(repaymentRate, expectedRepaymentRate);
 		}
 
 		[Theory]
-		[InlineData(12, 10, 9.5689685146845171, 0, 10, 1998.63856714)] // With zero start
-		[InlineData(12, 10.123, 4, 150000, -750, 112636.9953862361)] // With decimal as years
-		[InlineData(12, 10, 4, 150000, -750, 113187.5488186329)] // From manual
-		[InlineData(12, 25, 2.471803524, -1000, 0, -1853.9440984093485)] // From manual / Book p.19
-		[InlineData(12, 25, 5.841060678, 0, -100, -67628.896204469813)] // Book p. 16
-		[InlineData(12, 10, 4.121255148, 100000, -510.10, 75301.50)] // Book p. 22
-		[InlineData(12, 35, 5.3660387, 0, -550, -678177.09)] // Book p. 30
-		[InlineData(12, 18, 3.928487739, 0, -184, -57655.85)] // Book p. 57
-		[InlineData(12, 1, -22.10816415, -10000, -184, -9997.45)] // Book p. 58
-		[InlineData(12, 17, 7.720836132, -9997.45, -184, -114205.70)] // Book p. 59
-		[InlineData(12, 2, 1.981897562, 0, -2000, -48922.81)] // Book p. 62
-		[InlineData(12, 45, 6.784974465, -48922.81, -282.67, -2027489.70)] // Book p. 64
-		[InlineData(12, 45, 6.266827589, 0, -600, -1798658.87)] // Book p. 65 1
-		[InlineData(12, 10, 6.266827589, 0, -600, -99764.53)] // Book p. 65 2
-		[InlineData(12, 35, 6.266827589, -87764.53, -600, -1691684.55)] // Book p. 66
-		[InlineData(12, 35, 6.266827589, 12000, 0, 106974.32)] // Book p. 67
-		[InlineData(12, 10, 5.841060678, 170000, -1100, 125723.32)] // Book p. 82
-		[InlineData(12, 25, 3.928487739, -300, 0, -799.75)] // Book p. 84 1
-		[InlineData(12, 50, 3.928487739, -300, 0, -2132.01)] // Book p. 84 2
-		[InlineData(12, 26, 4.409771281, -0.7, 0, -2.20)] // Book p. 97
-		[InlineData(12, 15, 0.995445737, -2041, 0, -2369.54)] // Book p. 115
-		[InlineData(12, 15, 1.981897562, -2041, 0, -2746.92)] // Book p. 116
-		[InlineData(12, 25, 0, 0, -100, -30000)] // Book p. 122
-		[InlineData(12, 25, 0, 100, -100, -29900)] // Same as Book p. 122 but with k0 > 0 -> The same result like from the calculator but it's a bug.
-		[InlineData(12, 20, 3.928487739, 0, -150, -54576.26)] // Book p. 125
-		[InlineData(12, 45, 2.276104576, -2905, 0, -8082.57)] // Book p. 128
-		[InlineData(12, 45, 0.995445737, -1287, 0, -2013.91)] // Book p. 129
-		[InlineData(12, 18, 3.928487739, -10000, -184, -77914.01)] // Book p. 142 1 // Error in the book -> expects 79914.01
-		[InlineData(12, 18, 7.720836132, -10000, -184, -125640.18)] // Book p. 142 2
-		[InlineData(12, 17, 7.720836132, -10000, -184, -114215.13)] // Book p. 143 1
-		[InlineData(12, 1, -22.10816415, -114215.13, -184, -93369.56)] // Book p. 143 2
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.KnWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void Kn_IsCalculatedCorrectly(double m, double n, double p, double k0, double e, double expectedKn)
 		{
 			var localTolerance = 0.01;
-			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m);
+			var finalCapital = FinancialCalculation.Kn(k0, e, p, n, m);
 			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
 		}
 
 		[Theory]
-		[InlineData(12, 25, 2.471803524, 0, 1000,  -539.39)] // From manual // Book p. 19
-		[InlineData(12, 25, 2.471803524, 100, 1000, -22900.85)] // Non zero regular payment
-		[InlineData(12, 25, 6.784974465, 0, 200000, -36849.84)] // Book p. 18
-		[InlineData(12, 35, 5.3660387, -550, 1000000, -49406.13)] // Book p. 31
-		[InlineData(12, 5, 3.445078463, 1000, 0, -55044.38)] // Book p. 60
-		[InlineData(12, 25, 5.841060678, -800, 0, 126059.52)] // Book p. 80
-		[InlineData(12, 25, 5.841060678, 1000, 0, -157574.40)] // Book p. 81 -> Error in the book. Should be -1000 for the rate.
-		[InlineData(12, 25, 5.841060678, -1000, 0, 157574.40)] // Book p. 81 -> Error in the book. Should be -157574.40 for the start.
-		[InlineData(12, 10, 1.981897562, 0, 100000, -82034.83)] // Book p. 92
-		[InlineData(12, 15, 2.256515397, 0, 2740, -1953.84)] // Book p. 118
-		[InlineData(12, 15, 2.256515397, 0, 2360, -1682.87)] // Book p. 119
-		[InlineData(12, 15, 2.256515397, 0, 2041, -1455.40)] // Book p. 120
-		[InlineData(12, 18, 2.667152753, 8083, 0, -1385363.36)] // Book p. 130
-		[InlineData(12, 18, 1.292317896, 2014, 0, -387946.76)] // Book p. 131
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.K0Wanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void K0_IsCalculatedCorrectly(double m, double n, double p, double e, double kn, double expectedK0)
 		{
 			var localTolerance = 0.01;
-			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
+			var k0 = FinancialCalculation.K0(kn, e, p, n, m);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
 		[Theory]
-		[InlineData(false, 12, 10, 9.568968515, 100, 1000, 6.30)]
-		[InlineData(false, 12, 25, 6.784974465, 0, 200000, 255.41)] // From manual, book p. 17
-		[InlineData(true, 1, 25, 1.45461709, -250000, 0, -11827.95)] // From manual, advance = true
-		[InlineData(false, 12, 1.5, 6.784974465, 1000, 0, 58.59)] // From manual, book p. 24
-		[InlineData(false, 12, 50, 3.928487739, 0, 1000000, 536.09)] // Book p. 26
-		[InlineData(false, 12, 40, 3.928487739, 0, 1000000, 861.28)] // Book p. 27 1
-		[InlineData(false, 12, 30, 3.928487739, 0, 1000000, 1459.28)] // Book p. 27 2
-		[InlineData(false, 12, 20, 3.928487739, 0, 1000000, 2748.45)] // Book p. 28 1
-		[InlineData(false, 12, 10, 3.928487739, 0, 1000000, 6816.82)] // Book p. 28 2
-		[InlineData(false, 12, 35, 5.3660387, 0, 1000000, 811.00)] // Book p. 31
-		[InlineData(false, 12, 13, 3.445078463, 0, 55044.38, 280.21)] // Book p. 61
-		[InlineData(false, 12, 45, 6.784974465, 0, 1000000, 282.67)] // Book p. 63 1
-		[InlineData(false, 12, 45, 6.784974465, -48922.81, 1000000, -7.77)] // Book p. 63 2
-		[InlineData(false, 12, 25, 5.841060678, 170000, 0, 1078.86)] // Book p. 81
-		[InlineData(false, 12, 15, 7.720836132, 125723.32, 0, 1181.30)] // Book p. 82
-		[InlineData(false, 12, 45, 2.959523727, 0, 997416, 884.35)] // Book p. 133 1
-		[InlineData(false, 12, 45, 5.841060678, 0, 997416, 380.35)] // Book p. 133 2
-		[InlineData(false, 12, 45, 8.64878798, 0, 997416, 151.89)] // Book p. 133 1
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.EWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void E_IsCalculatedCorrectly(bool advance, double m, double n, double p, double k0, double kn, double expectedE)
 		{
 			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m, advance);
+			var e = FinancialCalculation.E(kn, k0, p, n, m, advance);
 			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
 		[Theory]
-		[InlineData(12, 4, 150000, -750, 0, 27.51)] // From manual
-		[InlineData(12, 4.121255148, 100000, -510.10, 0, 27.19)] // Book p. 23
-		[InlineData(12, 5.3660387, -10000, -550, 1000000, 39.85)] // Book p. 32
-		[InlineData(12, 5.003639805, 250000, -1250, 0, 35.96)] // Book p. 77
-		[InlineData(12, 5.003639805, 200000, -1250, 0, 22.03)] // Book p. 78
-		[InlineData(12, 5.003639805, 150000, -1250, 0, 13.90)] // Book p. 79
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.NWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void N_IsCalculatedCorrectly(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var localTolerance = 0.01;
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		}
 
 		[Theory]
-		[InlineData(12, 14, -13.94, 0, 29.73, 5.559)] // Book p. 20
-		[InlineData(1, 25, -250000, 12000, 0, 1.455)] // Book p. 21
-		[InlineData(12, 3, 20000, -400, -7500, 4.597)] // Book p. 25
-		[InlineData(12, 35, 0, -550, 1000000, 7.271)] // Book p. 30
-		[InlineData(12, 0.83, 999, -107.9, 0, 17.532)] // Book p. 72 -> Error in the book. Should be 18.516 but is 17.532
-		[InlineData(12, 3, 30000, -850, 0, 1.297)] // Book p. 73
-		[InlineData(12, 4, 30000, -466, -15000, 8.289)] // Book p. 74 1
-		[InlineData(12, 5, 27500, -550, 0, 7.678)] // Book p. 74 2
-		[InlineData(12, 39, -0.1, 0, 0.7, 5.116)] // Book p. 91
-		[InlineData(12, 60, -3.58, 0, 17.98, 2.726)] // Book p. 95
-		[InlineData(12, 25, 0, -50, 30000, 5.169)] // Book p. 123
-		[InlineData(12, 20, 0, -150, 53600, 3.833)] // Book p. 124
+		[MemberData(nameof(FinCalcR.Tests.Shared.TestData.FinancialCalculation.PWanted), MemberType = typeof(FinCalcR.Tests.Shared.TestData.FinancialCalculation))]
 		public void P_IsCalculatedCorrectly(double m, double n, double k0, double e, double kn, double expectedP)
 		{
 			kn *= -1;
 			var localTolerance = 0.001;
-			var pNom = FinancialCalculator.P(kn, k0, e, n, m);
-			var pEff = FinancialCalculator.GetEffectiveInterestRate(pNom, m);
+			var pNom = FinancialCalculation.P(kn, k0, e, n, m);
+			var pEff = FinancialCalculation.GetEffectiveInterestRate(pNom, m);
 			Assert.True(Math.Abs(pEff - expectedP) < localTolerance);
 		}
 
@@ -181,7 +104,7 @@ namespace FinCalcR.Calculations.Tests
 		public void Kn_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double e, double expectedKn)
 		{
 			var localTolerance = 0.01;
-			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m);
+			var finalCapital = FinancialCalculation.Kn(k0, e, p, n, m);
 			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
 		}
 
@@ -197,7 +120,7 @@ namespace FinCalcR.Calculations.Tests
 		public void KnAdvance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double e, double expectedKn)
 		{
 			var localTolerance = 0.01;
-			var finalCapital = FinancialCalculator.Kn(k0, e, p, n, m, true);
+			var finalCapital = FinancialCalculation.Kn(k0, e, p, n, m, true);
 			Assert.True(Math.Abs(finalCapital - expectedKn) < localTolerance);
 		}
 
@@ -213,7 +136,7 @@ namespace FinCalcR.Calculations.Tests
 		public void K0_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
 		{
 			var localTolerance = 0.01;
-			var k0 = FinancialCalculator.K0(kn, e, p, n, m);
+			var k0 = FinancialCalculation.K0(kn, e, p, n, m);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
@@ -229,7 +152,7 @@ namespace FinCalcR.Calculations.Tests
 		public void K0Advance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double e, double kn, double expectedK0)
 		{
 			var localTolerance = 0.01;
-			var k0 = FinancialCalculator.K0(kn, e, p, n, m, true);
+			var k0 = FinancialCalculation.K0(kn, e, p, n, m, true);
 			Assert.True(Math.Abs(k0 - expectedK0) < localTolerance);
 		}
 
@@ -245,7 +168,7 @@ namespace FinCalcR.Calculations.Tests
 		public void E_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double kn, double expectedE)
 		{
 			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m);
+			var e = FinancialCalculation.E(kn, k0, p, n, m);
 			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
@@ -261,7 +184,7 @@ namespace FinCalcR.Calculations.Tests
 		public void EAdvance_IsCalculatedCorrectly_Permutation(double m, double n, double p, double k0, double kn, double expectedE)
 		{
 			var localTolerance = 0.01;
-			var e = FinancialCalculator.E(kn, k0, p, n, m, true);
+			var e = FinancialCalculation.E(kn, k0, p, n, m, true);
 			Assert.True(Math.Abs(e - expectedE) < localTolerance);
 		}
 
@@ -273,7 +196,7 @@ namespace FinCalcR.Calculations.Tests
 		public void N_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var localTolerance = 0.01;
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		}
 
@@ -284,7 +207,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 5.3660387, -10000, -550, -1000000)]	//		---
 		public void N_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn)
 		{
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(double.IsNaN(n));
 		}
 
@@ -296,7 +219,7 @@ namespace FinCalcR.Calculations.Tests
 		public void NAdvance_IsCalculatedCorrectly_PermutationOfRealNumbers(double m, double p, double k0, double e, double kn, double expectedN)
 		{
 			var localTolerance = 0.01;
-			var n = FinancialCalculator.N(kn, k0, e, p, m, true);
+			var n = FinancialCalculation.N(kn, k0, e, p, m, true);
 			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		}
 
@@ -307,7 +230,7 @@ namespace FinCalcR.Calculations.Tests
 		[InlineData(12, 5.3660387, -10000, -550, -1000000)] //		---
 		public void NAdvance_IsCalculatedCorrectly_PermutationOfNan(double m, double p, double k0, double e, double kn)
 		{
-			var n = FinancialCalculator.N(kn, k0, e, p, m);
+			var n = FinancialCalculation.N(kn, k0, e, p, m);
 			Assert.True(double.IsNaN(n));
 		}
 
@@ -323,7 +246,7 @@ namespace FinCalcR.Calculations.Tests
 		//		public void N_IsCalculatedCorrectly2(double m, double p, double k0, double e, double kn, double expectedN)
 		//		{
 		//			var localTolerance = 0.01;
-		//			var n = FinancialCalculator.N(kn, k0, e, p, m);
+		//			var n = FinancialCalculation.N(kn, k0, e, p, m);
 		//			Assert.True(Math.Abs(n - expectedN) < localTolerance);
 		//		}
 	}
