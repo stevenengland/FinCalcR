@@ -69,7 +69,8 @@
 					   VerticalAlignment="Top"
 				       HorizontalContentAlignment="Right"
 				       VerticalContentAlignment="Center"
-				       Padding="40 0 40 0" />
+				       Padding="40 0 40 0" 
+					   AutomationProperties.AutomationId = "EvaluatedResult"/>
 		</StackPanel>
 	       
 		   <Grid Grid.Row="1"
@@ -146,7 +147,8 @@
 	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="1"
 	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="1"/>
+	               CommandParameter="1"
+	               AutomationProperties.AutomationId = "Digit_1"/>
 	       <Button Grid.Row="2"
 	               Grid.Column="1"
 	               Style="{StaticResource CalculatorBasicButton}"
@@ -260,7 +262,8 @@
 	               Grid.Column="0"
 	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding AlgebSignCommand}"
-	               Foreground="White">
+	               Foreground="White"
+	               AutomationProperties.AutomationId ="AlgebSign">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="PlusMinus"
 			                                Style="{DynamicResource IconLarge}"/>
