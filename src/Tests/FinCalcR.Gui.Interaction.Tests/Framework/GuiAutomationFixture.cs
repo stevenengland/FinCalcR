@@ -3,7 +3,7 @@ using FlaUI.Core;
 using FlaUI.Core.Tools;
 using Application = FlaUI.Core.Application;
 
-namespace FinCalcR.Gui.Interaction.Tests
+namespace FinCalcR.Gui.Interaction.Tests.Framework
 {
     public class GuiAutomationFixture : IDisposable
     {

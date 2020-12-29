@@ -4,7 +4,7 @@ using FlaUI.Core.AutomationElements;
 using FlaUI.Core.Tools;
 using Xunit;
 
-namespace FinCalcR.Gui.Interaction.Tests
+namespace FinCalcR.Gui.Interaction.Tests.Framework
 {
     public abstract class TestBase : IClassFixture<GuiAutomationFixture>, IDisposable
     {

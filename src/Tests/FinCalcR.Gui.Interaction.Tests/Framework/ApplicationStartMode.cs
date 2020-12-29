@@ -1,4 +1,4 @@
-﻿namespace FinCalcR.Gui.Interaction.Tests
+﻿namespace FinCalcR.Gui.Interaction.Tests.Framework
 {
     /// <summary>
     /// Defines how the application under test should be started by the test fixture.

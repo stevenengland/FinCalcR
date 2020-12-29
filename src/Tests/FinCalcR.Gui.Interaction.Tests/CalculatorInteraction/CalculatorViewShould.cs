@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using FinCalcR.Gui.Interaction.Tests.Framework;
 using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core.Input;
@@ -33,6 +36,7 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
             var resultLbl = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EvaluationResultLbl)).AsLabel());
             var digitBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.Digit1Btn)).AsButton());
             digitBtn?.Invoke();
+            Wait.UntilInputIsProcessed();
 
             // Assert
             resultLbl.Text.Should().Be("1.");
@@ -52,6 +56,23 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
 
             // Assert
             resultLbl.Text.Should().Be("-0.");
+        }
+
+        [Fact]
+        public async Task ShowSavedRatesPerAnnum_WhenYearsButtonIsPressedLongAsync()
+        {
+            // Arrange
+            var mainScreen = this.Application.GetMainWindow(this.Automation);
+
+            // Act
+            var resultLbl = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EvaluationResultLbl)).AsLabel());
+            var yearsBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsBtn)).AsButton());
+            Mouse.MoveTo(yearsBtn.GetClickablePoint());
+            await ExtendedMouseInput.LongLeftMouseClick(2200);
+            Wait.UntilInputIsProcessed();
+
+            // Assert
+            resultLbl.Text.Should().Be("0.00");
         }
 
         #region protected Overrides
