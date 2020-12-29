@@ -19,7 +19,7 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
             RightUp = 0x00000010,
         }
 
-        public static async Task LongLeftMouseClick(int waitTime = 1000)
+        public static async Task LongLeftMouseClickAsync(TimeSpan waitTime)
         {
             SendMouseEvent(MouseEvent.LeftDown);
             await Task.Delay(waitTime);
@@ -41,7 +41,11 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
         public static MousePoint GetCursorPosition()
         {
             var gotPoint = GetCursorPos(out var currentMousePoint);
-            if (!gotPoint) { currentMousePoint = new MousePoint(0, 0); }
+            if (!gotPoint)
+            {
+                currentMousePoint = new MousePoint(0, 0);
+            }
+
             return currentMousePoint;
         }
 

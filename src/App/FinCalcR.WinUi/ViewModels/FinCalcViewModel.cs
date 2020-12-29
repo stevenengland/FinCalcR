@@ -217,27 +217,33 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
 		public void Handle(KeyboardKeyDownEvent message) => this.KeyboardKeyPressedCommand.Execute(message.KeyEventArgs);
 
-		public async Task OnClearPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		public async Task OnClearPressedAsync(object sender, object eventArgs) // Public wrapper so that Caliburn can access it.
 		{
-			var element = (FrameworkElement)sender;
-			var gestureHandler = new FrameworkElementGestureHandler(element);
-			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
-			this.ClearPressedCommand.Execute(isLongTouch);
+			if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
+			{
+				return;
+			}
+
+			var isLongPress = await this.IsLongPressAsync(sender, eventArgs);
+			this.ClearPressedCommand.Execute(isLongPress);
 		}
 
-		public async Task OnYearsPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+		public async Task OnYearsPressedAsync(object sender, object eventArgs) // Public wrapper so that Caliburn can access it.
 		{
-			var element = (FrameworkElement)sender;
-			var gestureHandler = new FrameworkElementGestureHandler(element);
-			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
-			this.YearsPressedCommand.Execute(isLongTouch);
+			if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
+			{
+				return;
+			}
+
+			var isLongPress = await this.IsLongPressAsync(sender, eventArgs);
+			this.YearsPressedCommand.Execute(isLongPress);
 		}
 
 		public async Task OnInterestPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
 		{
 			var element = (FrameworkElement)sender;
 			var gestureHandler = new FrameworkElementGestureHandler(element);
-			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.InterestPressedCommand.Execute(isLongTouch);
 		}
 
@@ -245,7 +251,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			var element = (FrameworkElement)sender;
 			var gestureHandler = new FrameworkElementGestureHandler(element);
-			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.StartPressedCommand.Execute(isLongTouch);
 		}
 
@@ -253,7 +259,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			var element = (FrameworkElement)sender;
 			var gestureHandler = new FrameworkElementGestureHandler(element);
-			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.RatePressedCommand.Execute(isLongTouch);
 		}
 
@@ -261,7 +267,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			var element = (FrameworkElement)sender;
 			var gestureHandler = new FrameworkElementGestureHandler(element);
-			var isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+			var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
 			this.EndPressedCommand.Execute(isLongTouch);
 		}
 
@@ -715,6 +721,38 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 		{
 			this.ResetSpecialFunctionLabels();
 			this.calculatorRemote.InvokeCommand(CommandWord.Calculate);
+		}
+
+		private async Task<bool> IsLongPressAsync(object sender, object eventArgs)
+		{
+			var element = (FrameworkElement)sender;
+			var gestureHandler = new FrameworkElementGestureHandler(element);
+			var isLongTouch = false;
+			switch (eventArgs)
+			{
+				case StylusDownEventArgs se:
+					se.Handled = true; // Prevents firing a separate TouchEvent with TouchEventArgs
+					isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+					break;
+				case TouchEventArgs te:
+					te.Handled = true; // Prevents firing a separate TouchEvent with TouchEventArgs
+					isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+					break;
+				case MouseButtonEventArgs me:
+					if (me.StylusDevice != null)
+					{
+						throw new NotSupportedException("Stylus based mouse events shouldn't appear here.");
+					}
+
+					me.Handled = true;
+					isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
+					break;
+				default:
+					this.eventAggregator.PublishOnUIThread(new ErrorEvent($"{eventArgs.GetType()} is not supported."));
+					break;
+			}
+
+			return isLongTouch;
 		}
 
 		private bool IsCommandWordSpecialFunction()
