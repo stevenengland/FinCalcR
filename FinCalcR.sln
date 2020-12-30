@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_AppDocs", "_AppDocs", "{34
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinCalcR.Tests.Shared", "src\Tests\FinCalcR.Tests.Shared\FinCalcR.Tests.Shared.csproj", "{39061318-0FD4-4A5F-A380-B0EA93C2085B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinCalcR.Gui.Interaction.Tests", "src\Tests\FinCalcR.Gui.Interaction.Tests\FinCalcR.Gui.Interaction.Tests.csproj", "{0C6AC658-3FA9-4809-A12D-4611365EEF6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{39061318-0FD4-4A5F-A380-B0EA93C2085B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39061318-0FD4-4A5F-A380-B0EA93C2085B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39061318-0FD4-4A5F-A380-B0EA93C2085B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C6AC658-3FA9-4809-A12D-4611365EEF6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C6AC658-3FA9-4809-A12D-4611365EEF6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C6AC658-3FA9-4809-A12D-4611365EEF6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6AC658-3FA9-4809-A12D-4611365EEF6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{5A0ABAE5-5D51-42A9-B82E-A369BB371FEB} = {322AFEE6-F003-47C1-9CAF-F81F2D8FC97F}
 		{79225A91-FB51-4873-B2B0-E605B4E8A25A} = {69747D5F-DA07-4794-8501-E3B7DA6E3159}
 		{39061318-0FD4-4A5F-A380-B0EA93C2085B} = {69747D5F-DA07-4794-8501-E3B7DA6E3159}
+		{0C6AC658-3FA9-4809-A12D-4611365EEF6B} = {69747D5F-DA07-4794-8501-E3B7DA6E3159}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3BFAAD71-1DEB-4213-9B58-8D21E7A1CE60}
