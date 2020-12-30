@@ -1,0 +1,134 @@
+# Variable 'SolutionDir' was defined in the Variables tab
+# Variable 'Variable.VersionRevision' was defined in the Variables tab
+variables:
+- name: BuildParameters.RestoreBuildProjects
+  value: '**/*.csproj'
+name: $(date:yyyyMMdd)$(rev:.r)
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: master
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: windows-2019
+    demands:
+    - vstest
+  steps:
+  - checkout: self
+  - task: AssembyInfoReader@2
+    displayName: 'Generate variables src/App/FinCalcR.WinUi/Properties/AssemblyInfo.cs '
+    inputs:
+      searchPattern: src/App/FinCalcR.WinUi/Properties/AssemblyInfo.cs
+  - task: PowerShell@2
+    displayName: PowerShell Script
+    inputs:
+      targetType: inline
+      script: >
+        # Write your PowerShell commands here.
+
+
+        Write-Host "Read version for $(AssemblyInfo.AssemblyTitle) : $(AssemblyInfo.AssemblyVersion.Major).$(AssemblyInfo.AssemblyVersion.Minor).$(AssemblyInfo.AssemblyVersion.Build).$(AssemblyInfo.AssemblyVersion.Patch)"
+  - task: Assembly-Info-NetFramework@2
+    displayName: Set Assembly Manifest Data
+    inputs:
+      Title: $(AssemblyInfo.AssemblyTitle)
+      Product: $(AssemblyInfo.AssemblyProduct)
+      Description: $(AssemblyInfo.AssemblyDescription)
+      Company: $(AssemblyInfo.AssemblyCompany)
+      Copyright: $(AssemblyInfo.AssemblyCopyright)
+      Trademark: $(AssemblyInfo.AssemblyTrademark)
+      Culture: $(AssemblyInfo.AssemblyCulture)
+      VersionNumber: $(AssemblyInfo.AssemblyVersion.Major).$(AssemblyInfo.AssemblyVersion.Minor).*.*
+      FileVersionNumber: $(AssemblyInfo.AssemblyVersion.Major).$(AssemblyInfo.AssemblyVersion.Minor).*.*
+  - task: PowerShell@2
+    displayName: PowerShell Script
+    inputs:
+      targetType: inline
+      script: >-
+        # Write your PowerShell commands here.
+
+
+        Write-Host  "AssemblyInfo.Version is: $(AssemblyInfo.Version)"
+
+        Write-Host  "AssemblyInfo.FileVersion is: $(AssemblyInfo.FileVersion)"
+
+        #Write-Host  "AssemblyInfo.InformationalVersion is: $(AssemblyInfo.InformationalVersion)"
+
+        #Write-Host  "AssemblyInfo.PackageVersion is: $(AssemblyInfo.PackageVersion)"
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: $(BuildParameters.RestoreBuildProjects)
+  - task: MSBuild@1
+    displayName: Build solution **/*WinUi.Tests.csproj
+    inputs:
+      solution: '**/*WinUi.Tests.csproj'
+      msbuildVersion: 16.0
+      platform: $(BuildPlatform)
+      configuration: $(BuildConfiguration)
+  - task: MSBuild@1
+    displayName: Build solution **/*Common.Tests.csproj
+    inputs:
+      solution: '**/*Common.Tests.csproj'
+      msbuildVersion: 16.0
+      platform: $(BuildPlatform)
+      configuration: $(BuildConfiguration)
+  - task: MSBuild@1
+    displayName: Build solution **/*Calculations.Tests.csproj
+    inputs:
+      solution: '**/*Calculations.Tests.csproj'
+      msbuildVersion: 16.0
+      platform: $(BuildPlatform)
+      configuration: $(BuildConfiguration)
+  - task: MSBuild@1
+    displayName: Build solution **/*Interaction.Tests.csproj
+    inputs:
+      solution: '**/*Interaction.Tests.csproj'
+      msbuildVersion: 16.0
+      platform: $(BuildPlatform)
+      configuration: $(BuildConfiguration)
+  - task: VSTest@2
+    displayName: VsTest - testAssemblies .Net Framework
+    inputs:
+      testAssemblyVer2: >-
+        **\*Test*.dll
+
+        !**\*TestAdapter.dll
+
+        !**\obj\**
+  - task: VSTest@2
+    displayName: VsTest - testAssemblies .Net Core
+    inputs:
+      testAssemblyVer2: >-
+        **\*Common.Test*.dll
+
+        **\*Calculations.Test*.dll
+
+        **\*Interaction.Test*.dll
+
+        !**\*TestAdapter.dll
+
+        !**\obj\**
+
+        !**\bin\**\ref\**
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+    inputs:
+      Contents: '**/FinCalcR.WinUi/bin/**/*.exe'
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+  - task: ArchiveFiles@2
+    displayName: Archive $(Build.ArtifactStagingDirectory)
+    inputs:
+      rootFolderOrFile: $(Build.ArtifactStagingDirectory)
+      archiveFile: $(Build.ArtifactStagingDirectory)/$(AssemblyInfo.AssemblyTitle)_$(AssemblyInfo.AssemblyVersion.Major).$(AssemblyInfo.AssemblyVersion.Minor).zip
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Artifact
+    condition: succeededOrFailed()
+    inputs:
+      ArtifactName: $(AssemblyInfo.AssemblyTitle)_$(AssemblyInfo.Version)
+      TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
+...
