@@ -1,299 +1,293 @@
 ﻿<UserControl x:Class="StEn.FinCalcR.WinUi.Views.FinCalcView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:StEn.FinCalcR.WinUi.Views"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:cal="http://www.caliburnproject.org" 
-             xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:viewModels="clr-namespace:StEn.FinCalcR.WinUi.ViewModels"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:converter="clr-namespace:StEn.FinCalcR.WinUi.Converter"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{Binding Source={d:DesignInstance viewModels:FinCalcViewModel},
-                Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}">
-	<!--cal:Message.Attach="[Event PreviewKeyDown] = [Action OnKeyboardKeyPressed($source, $eventArgs)];"-->
-	<Grid Name="MainGrd">
-	    <Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:StEn.FinCalcR.WinUi.ViewModels"
+             d:DataContext="{Binding Source={d:DesignInstance viewModels:FinCalcViewModel}, Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <!--  cal:Message.Attach="[Event PreviewKeyDown] = [Action OnKeyboardKeyPressed($source, $eventArgs)];"  -->
+    <Grid Name="MainGrd">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-	        <RowDefinition Height="*" />
-	        <RowDefinition Height="*" />
-	        <RowDefinition Height="*" />
-	        <RowDefinition Height="*" />
-	        <RowDefinition Height="*" />
-	        <RowDefinition Height="*" />
-	        <RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-			<StackPanel Orientation="Vertical"
-			            Grid.ColumnSpan="4"
-			            Margin="5 10 0 0">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
-					<Label Grid.Column="0" 
-					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{Binding AdvanceStatusBarText}"/>
-					<Label Grid.Column="1" 
-					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{Binding YearsStatusBarText}"/>
-					<Label Grid.Column="2" 
-					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{Binding InterestStatusBarText}"/>
-					<Label Grid.Column="3" 
-					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{Binding StartStatusBarText}"/>
-					<Label Grid.Column="4" 
-					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{Binding RateStatusBarText}"/>
-					<Label Grid.Column="5" 
-					       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-					       Content="{Binding EndStatusBarText}"/>
-			</Grid>
-				<Label x:Name="ResultText"
-					   Style="{StaticResource CalculatorOutputLabel}"
-				       FontSize="42"
-				       Height="60"
-					   Content="{Binding DisplayText}"
-					   VerticalAlignment="Top"
-				       HorizontalContentAlignment="Right"
-				       VerticalContentAlignment="Center"
-				       Padding="40 0 40 0" 
-					   AutomationProperties.AutomationId = "EvaluatedResult"/>
-		</StackPanel>
-	       
-		   <Grid Grid.Row="1"
-				 Grid.Column="0"
-		         ColumnSpan="4"
-				 Margin="0 20 0 30">
-			   <Grid.ColumnDefinitions>
-				   <ColumnDefinition Width="*" />
-				   <ColumnDefinition Width="*" />
-				   <ColumnDefinition Width="*" />
-				   <ColumnDefinition Width="*" />
-				   <ColumnDefinition Width="*" />
-				   <ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
-			   <Grid.RowDefinitions>
-				   <RowDefinition Height="*" />
-				   <RowDefinition Height="*" />
-				   <RowDefinition Height="*" />
-			</Grid.RowDefinitions>
-			   <TextBlock Grid.Row="0"
-			              Grid.Column="1"
-			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
-			              Text="{lex:Loc Key=FinCalcFunctionRatesPerYear}"/>
-			   <TextBlock Grid.Row="0"
-			              Grid.Column="2"
-			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
-			              Text="{lex:Loc Key=FinCalcFunctionNominalInterest}"/>
-			   <TextBlock Grid.Row="0"
-			              Grid.Column="3"
-			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
-			              Text="{lex:Loc Key=FinCalcFunctionAdvance}"/>
-			   <TextBlock Grid.Row="0"
-			              Grid.Column="4"
-			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
-			              Text="{lex:Loc Key=FinCalcFunctionRepayment}"/>
-			   <TextBlock Grid.Row="0"
-			              Grid.Column="5"
-			              Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
-			              Text="{lex:Loc Key=FinCalcFunctionPercent}" />
-			   <Button Grid.Row="1"
-			           Grid.Column="0"
-			           Style="{StaticResource CalculatorClearButton}"
-			           FontWeight="Bold"
-			           Content="C"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnClearPressedAsync($source, $eventArgs)];
-					   [Event PreviewTouchDown] = [Action OnClearPressedAsync($source, $eventArgs)];
-					   [Event PreviewStylusDown] = [Action OnClearPressedAsync($source, $eventArgs)];" 
-			           AutomationProperties.AutomationId="Clear" />
-			   <Button Grid.Row="1"
-			           Grid.Column="1"
-			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionYears}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnYearsPressedAsync($source, $eventArgs)];
-					   [Event PreviewTouchDown] = [Action OnYearsPressedAsync($source, $eventArgs)];
-					   [Event PreviewStylusDown] = [Action OnYearsPressedAsync($source, $eventArgs)];"
-			           AutomationProperties.AutomationId="Years"/>
-			   <Button Grid.Row="1"
-			           Grid.Column="2"
-			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionInterest}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnInterestPressedAsync($source, $eventArgs)];" 
-			           AutomationProperties.AutomationId = "EffectiveInterest"/>
-			   <Button Grid.Row="1"
-			           Grid.Column="3"
-			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionStart}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnStartPressedAsync($source, $eventArgs)];"
-			           AutomationProperties.AutomationId = "Start"/>
-			   <Button Grid.Row="1"
-			           Grid.Column="4"
-			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionRate}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnRatePressedAsync($source, $eventArgs)];"
-			           AutomationProperties.AutomationId = "Rate"/>
-			   <Button Grid.Row="1"
-			           Grid.Column="5"
-			           Style="{StaticResource CalculatorSpecialFunctionButton}"
-			           Content="{lex:Loc Key=FinCalcFunctionEnd}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnEndPressedAsync($source, $eventArgs)];"
-			           AutomationProperties.AutomationId = "End"/>
-		   </Grid>
-	       <Button Grid.Row="2"
-	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="1"
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="1"
-	               AutomationProperties.AutomationId = "Digit_1"/>
-	       <Button Grid.Row="2"
-	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="2"
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="2" 
-	               AutomationProperties.AutomationId = "Digit_2"/>
-	       <Button Grid.Row="2"
-	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="3" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="3"
-	               AutomationProperties.AutomationId = "Digit_3"/>
-	       <Button Grid.Row="3"
-	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="4" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="4"
-	               AutomationProperties.AutomationId = "Digit_4"/>
-	       <Button Grid.Row="3"
-	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="5" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="5"
-	               AutomationProperties.AutomationId = "Digit_5"/>
-	       <Button Grid.Row="3"
-	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="6" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="6"
-	               AutomationProperties.AutomationId = "Digit_6"/>
-	       <Button Grid.Row="4"
-	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="7" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="7"
-	               AutomationProperties.AutomationId = "Digit_7"/>
-	       <Button Grid.Row="4"
-	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="8" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="8"
-	               AutomationProperties.AutomationId = "Digit_8"/>
-	       <Button Grid.Row="4"
-	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="9" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="9"
-	               AutomationProperties.AutomationId = "Digit_9"/>
-	       <Button Grid.Row="5"
-	               Grid.Column="1"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="0" 
-	               Command="{Binding DigitPressedCommand}"
-	               CommandParameter="0"
-	               AutomationProperties.AutomationId = "Digit_0"/>
-	       <Button Grid.Row="5"
-	               Grid.Column="2"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Content="{lex:Loc Key=CALC_DECIMAL_SEPARATOR}" 
-	               Command="{Binding DecimalSeparatorPressedCommand}"
-	               AutomationProperties.AutomationId = "DecimalSeparator"/>
-		<Button Grid.Row="2"
-	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="/"
-	               AutomationProperties.AutomationId = "OperatorDivide">
-		       <StackPanel Orientation="Horizontal">
-			       <materialDesign:PackIcon Kind="Division"
-			                                Style="{DynamicResource IconLarge}"/>
-		       </StackPanel>
-			</Button>
-	       <Button Grid.Row="3"
-	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="*"
-	               AutomationProperties.AutomationId = "OperatorMultiply">
-		       <StackPanel Orientation="Horizontal">
-			       <materialDesign:PackIcon Kind="Multiply"
-			                                Style="{DynamicResource IconLarge}"
-			                                Foreground="White"/>
-		       </StackPanel>
-	       </Button>
-	       <Button Grid.Row="4"
-	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="-"
-	               AutomationProperties.AutomationId = "OperatorSubtract">
-		       <StackPanel Orientation="Horizontal">
-			       <materialDesign:PackIcon Kind="Minus"
-			                                Style="{DynamicResource IconLarge}"/>
-		       </StackPanel>
-	       </Button>
-	       <Button Grid.Row="5"
-	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="+"
-	               AutomationProperties.AutomationId = "OperatorAdd">
-		       <StackPanel Orientation="Horizontal">
-			       <materialDesign:PackIcon Kind="Plus"
-			                                Style="{DynamicResource IconLarge}"/>
-		       </StackPanel>
-	       </Button>
-	       <Button Grid.Row="6"
-	               Grid.Column="3"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding CalculatePressedCommand}"
-	               AutomationProperties.AutomationId = "Calculate">
-		       <StackPanel Orientation="Horizontal">
-			       <materialDesign:PackIcon Kind="Equal"
-			                                Style="{DynamicResource IconLarge}"/>
-		       </StackPanel>
-	       </Button>
-	       <Button Grid.Row="5"
-	               Grid.Column="0"
-	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding AlgebSignCommand}"
-	               Foreground="White"
-	               AutomationProperties.AutomationId ="AlgebSign">
-		       <StackPanel Orientation="Horizontal">
-			       <materialDesign:PackIcon Kind="PlusMinus"
-			                                Style="{DynamicResource IconLarge}"/>
-		       </StackPanel>
-		</Button>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="4"
+                    Margin="5,10,0,0"
+                    Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"
+                       Content="{Binding AdvanceStatusBarText}"
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
+                <Label Grid.Column="1"
+                       Content="{Binding YearsStatusBarText}"
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
+                <Label Grid.Column="2"
+                       Content="{Binding InterestStatusBarText}"
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
+                <Label Grid.Column="3"
+                       Content="{Binding StartStatusBarText}"
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
+                <Label Grid.Column="4"
+                       Content="{Binding RateStatusBarText}"
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
+                <Label Grid.Column="5"
+                       Content="{Binding EndStatusBarText}"
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
+            </Grid>
+            <Label x:Name="ResultText"
+                   Height="60"
+                   Padding="40,0,40,0"
+                   VerticalAlignment="Top"
+                   HorizontalContentAlignment="Right"
+                   VerticalContentAlignment="Center"
+                   AutomationProperties.AutomationId="EvaluatedResult"
+                   Content="{Binding DisplayText}"
+                   FontSize="42"
+                   Style="{StaticResource CalculatorOutputLabel}" />
+        </StackPanel>
 
-	</Grid>
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Margin="0,20,0,30"
+              ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+                       Text="{lex:Loc Key=FinCalcFunctionRatesPerYear}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="2"
+                       Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+                       Text="{lex:Loc Key=FinCalcFunctionNominalInterest}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="3"
+                       Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+                       Text="{lex:Loc Key=FinCalcFunctionAdvance}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="4"
+                       Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+                       Text="{lex:Loc Key=FinCalcFunctionRepayment}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="5"
+                       Style="{StaticResource CalculatorSpecialFunctionTextBlock}"
+                       Text="{lex:Loc Key=FinCalcFunctionPercent}" />
+            <Button Grid.Row="1"
+                    Grid.Column="0"
+                    cal:Message.Attach="[Event PreviewMouseDown] = [Action OnClearPressedAsync($source, $eventArgs)];         [Event PreviewTouchDown] = [Action OnClearPressedAsync($source, $eventArgs)];         [Event PreviewStylusDown] = [Action OnClearPressedAsync($source, $eventArgs)];"
+                    AutomationProperties.AutomationId="Clear"
+                    Content="C"
+                    Style="{StaticResource CalculatorClearButton}" />
+            <Button Grid.Row="1"
+                    Grid.Column="1"
+                    cal:Message.Attach="[Event PreviewMouseDown] = [Action OnYearsPressedAsync($source, $eventArgs)];         [Event PreviewTouchDown] = [Action OnYearsPressedAsync($source, $eventArgs)];         [Event PreviewStylusDown] = [Action OnYearsPressedAsync($source, $eventArgs)];"
+                    AutomationProperties.AutomationId="Years"
+                    Content="{lex:Loc Key=FinCalcFunctionYears}"
+                    Style="{StaticResource CalculatorSpecialFunctionButton}" />
+            <Button Grid.Row="1"
+                    Grid.Column="2"
+                    cal:Message.Attach="[Event PreviewMouseDown] = [Action OnInterestPressedAsync($source, $eventArgs)];"
+                    AutomationProperties.AutomationId="EffectiveInterest"
+                    Content="{lex:Loc Key=FinCalcFunctionInterest}"
+                    Style="{StaticResource CalculatorSpecialFunctionButton}" />
+            <Button Grid.Row="1"
+                    Grid.Column="3"
+                    cal:Message.Attach="[Event PreviewMouseDown] = [Action OnStartPressedAsync($source, $eventArgs)];"
+                    AutomationProperties.AutomationId="Start"
+                    Content="{lex:Loc Key=FinCalcFunctionStart}"
+                    Style="{StaticResource CalculatorSpecialFunctionButton}" />
+            <Button Grid.Row="1"
+                    Grid.Column="4"
+                    cal:Message.Attach="[Event PreviewMouseDown] = [Action OnRatePressedAsync($source, $eventArgs)];"
+                    AutomationProperties.AutomationId="Rate"
+                    Content="{lex:Loc Key=FinCalcFunctionRate}"
+                    Style="{StaticResource CalculatorSpecialFunctionButton}" />
+            <Button Grid.Row="1"
+                    Grid.Column="5"
+                    cal:Message.Attach="[Event PreviewMouseDown] = [Action OnEndPressedAsync($source, $eventArgs)];"
+                    AutomationProperties.AutomationId="End"
+                    Content="{lex:Loc Key=FinCalcFunctionEnd}"
+                    Style="{StaticResource CalculatorSpecialFunctionButton}" />
+        </Grid>
+        <Button Grid.Row="2"
+                Grid.Column="0"
+                AutomationProperties.AutomationId="Digit_1"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="1"
+                Content="1"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="2"
+                Grid.Column="1"
+                AutomationProperties.AutomationId="Digit_2"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="2"
+                Content="2"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="2"
+                Grid.Column="2"
+                AutomationProperties.AutomationId="Digit_3"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="3"
+                Content="3"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="3"
+                Grid.Column="0"
+                AutomationProperties.AutomationId="Digit_4"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="4"
+                Content="4"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="3"
+                Grid.Column="1"
+                AutomationProperties.AutomationId="Digit_5"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="5"
+                Content="5"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="3"
+                Grid.Column="2"
+                AutomationProperties.AutomationId="Digit_6"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="6"
+                Content="6"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="4"
+                Grid.Column="0"
+                AutomationProperties.AutomationId="Digit_7"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="7"
+                Content="7"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="4"
+                Grid.Column="1"
+                AutomationProperties.AutomationId="Digit_8"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="8"
+                Content="8"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="4"
+                Grid.Column="2"
+                AutomationProperties.AutomationId="Digit_9"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="9"
+                Content="9"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="5"
+                Grid.Column="1"
+                AutomationProperties.AutomationId="Digit_0"
+                Command="{Binding DigitPressedCommand}"
+                CommandParameter="0"
+                Content="0"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="5"
+                Grid.Column="2"
+                AutomationProperties.AutomationId="DecimalSeparator"
+                Command="{Binding DecimalSeparatorPressedCommand}"
+                Content="{lex:Loc Key=CALC_DECIMAL_SEPARATOR}"
+                Style="{StaticResource CalculatorBasicButton}" />
+        <Button Grid.Row="2"
+                Grid.Column="3"
+                AutomationProperties.AutomationId="OperatorDivide"
+                Command="{Binding OperatorPressedCommand}"
+                CommandParameter="/"
+                Style="{StaticResource CalculatorBasicButton}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Division"
+                                         Style="{DynamicResource IconLarge}" />
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="3"
+                Grid.Column="3"
+                AutomationProperties.AutomationId="OperatorMultiply"
+                Command="{Binding OperatorPressedCommand}"
+                CommandParameter="*"
+                Style="{StaticResource CalculatorBasicButton}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Foreground="White"
+                                         Kind="Multiply"
+                                         Style="{DynamicResource IconLarge}" />
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="4"
+                Grid.Column="3"
+                AutomationProperties.AutomationId="OperatorSubtract"
+                Command="{Binding OperatorPressedCommand}"
+                CommandParameter="-"
+                Style="{StaticResource CalculatorBasicButton}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Minus"
+                                         Style="{DynamicResource IconLarge}" />
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="5"
+                Grid.Column="3"
+                AutomationProperties.AutomationId="OperatorAdd"
+                Command="{Binding OperatorPressedCommand}"
+                CommandParameter="+"
+                Style="{StaticResource CalculatorBasicButton}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Plus"
+                                         Style="{DynamicResource IconLarge}" />
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="6"
+                Grid.Column="3"
+                AutomationProperties.AutomationId="Calculate"
+                Command="{Binding CalculatePressedCommand}"
+                Style="{StaticResource CalculatorBasicButton}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Equal"
+                                         Style="{DynamicResource IconLarge}" />
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="5"
+                Grid.Column="0"
+                AutomationProperties.AutomationId="AlgebSign"
+                Command="{Binding AlgebSignCommand}"
+                Foreground="White"
+                Style="{StaticResource CalculatorBasicButton}">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="PlusMinus"
+                                         Style="{DynamicResource IconLarge}" />
+            </StackPanel>
+        </Button>
+
+    </Grid>
 </UserControl>

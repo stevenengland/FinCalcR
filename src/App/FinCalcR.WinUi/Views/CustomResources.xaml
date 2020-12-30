@@ -1,130 +1,159 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-	<!-- Control -->
-	<Style x:Key="WindowBaseStyle" TargetType="{x:Type Control}">
-		<Setter Property="FontSize" Value="14" />
-		<Setter Property="Foreground" Value="White" />
-		<Setter Property="FontFamily" Value="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"/>
-		<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
-	</Style>
+    <!--  Control  -->
+    <Style x:Key="WindowBaseStyle"
+           TargetType="{x:Type Control}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" />
+        <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+    </Style>
 
-	<!-- DockPanel -->
-	<Style x:Key="ViewTitleAndToolbarDockPanel" TargetType="DockPanel">
-		<Setter Property="HorizontalAlignment" Value="Left"></Setter>
-		<Setter Property="Height" Value="50"></Setter>
-	</Style>
+    <!--  DockPanel  -->
+    <Style x:Key="ViewTitleAndToolbarDockPanel"
+           TargetType="DockPanel">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Height" Value="50" />
+    </Style>
 
-	<!-- TextBoxes.Headlines-->
-	<Style x:Key="Headline1Text" TargetType="TextBlock">
-		<Setter Property="FontSize" Value="25"></Setter>
-	</Style>
-	<Style x:Key="Headline2Text" TargetType="TextBlock">
-		<Setter Property="FontSize" Value="20"></Setter>
-	</Style>
+    <!--  TextBoxes.Headlines  -->
+    <Style x:Key="Headline1Text"
+           TargetType="TextBlock">
+        <Setter Property="FontSize" Value="25" />
+    </Style>
+    <Style x:Key="Headline2Text"
+           TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20" />
+    </Style>
 
-	<!-- TextBoxes -->
-	<Style x:Key="ViewTitleAndToolbarHeadline" TargetType="TextBlock" BasedOn="{StaticResource Headline1Text}">
-		<Setter Property="VerticalAlignment" Value="Center"></Setter>
-		<Setter Property="HorizontalAlignment" Value="Center"></Setter>
-		<Setter Property="FontWeight" Value="Bold"></Setter>
-		<Setter Property="Margin" Value="0 0 10 0"></Setter>
-	</Style>
+    <!--  TextBoxes  -->
+    <Style x:Key="ViewTitleAndToolbarHeadline"
+           BasedOn="{StaticResource Headline1Text}"
+           TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0,0,10,0" />
+    </Style>
 
-	<Style x:Key="CardHeadline" TargetType="TextBlock" BasedOn="{StaticResource Headline2Text}">
-		<Setter Property="FontWeight" Value="Regular"></Setter>
-		<Setter Property="Margin" Value="15,10,10,10" />
-	</Style>
+    <Style x:Key="CardHeadline"
+           BasedOn="{StaticResource Headline2Text}"
+           TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Margin" Value="15,10,10,10" />
+    </Style>
 
-	<Style x:Key="CalculatorSpecialFunctionTextBlock"  TargetType="TextBlock">
-		<Setter Property="HorizontalAlignment" Value="Center"></Setter>
-		<Setter Property="VerticalAlignment" Value="Center"></Setter>
-		<Setter Property="Margin" Value="0 0 0 10"></Setter>
-		<Setter Property="FontSize" Value="14"></Setter>
-	</Style>
+    <Style x:Key="CalculatorSpecialFunctionTextBlock"
+           TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,0,10" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
 
-	<!-- Borders -->
-	<Style x:Key="CardBorder" TargetType="Border">
-		<Setter Property="Background" Value="{DynamicResource MaterialDesignDivider}"></Setter>
-		<Setter Property="Margin" Value="0 0 0 10"></Setter>
-		<Setter Property="Height" Value="1"></Setter>
-		<Setter Property="SnapsToDevicePixels" Value="True"></Setter>
-		<Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
-	</Style>
+    <!--  Borders  -->
+    <Style x:Key="CardBorder"
+           TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource MaterialDesignDivider}" />
+        <Setter Property="Margin" Value="0,0,0,10" />
+        <Setter Property="Height" Value="1" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
 
-	<!-- Buttons.Base -->
-	<Style x:Key="IconButtonSmall" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatMidBgButton}">
-		<Setter Property="Height" Value="26"></Setter>
-	</Style>
+    <!--  Buttons.Base  -->
+    <Style x:Key="IconButtonSmall"
+           BasedOn="{StaticResource MaterialDesignFlatMidBgButton}"
+           TargetType="Button">
+        <Setter Property="Height" Value="26" />
+    </Style>
 
-	<!-- Buttons.Titlebar -->
-	<Style x:Key="TitleBarIconButton" TargetType="Button" BasedOn="{StaticResource IconButtonSmall}">
-		<Setter Property="HorizontalAlignment" Value="Right"></Setter>
-		<Setter Property="Margin" Value="0 0 5 0"></Setter>
-	</Style>
+    <!--  Buttons.Titlebar  -->
+    <Style x:Key="TitleBarIconButton"
+           BasedOn="{StaticResource IconButtonSmall}"
+           TargetType="Button">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Margin" Value="0,0,5,0" />
+    </Style>
 
-	<!-- Buttons.Calculator -->
-	<Style x:Key="CalculatorBasicButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatMidBgButton}">
-		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-		<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-		<Setter Property="FontSize" Value="36"></Setter>
-		<Setter Property="Height" Value="64"></Setter>
-		<Setter Property="FontWeight" Value="Bold"></Setter>
-		<Setter Property="Margin" Value="5 0 0 0"></Setter>
-	</Style>
+    <!--  Buttons.Calculator  -->
+    <Style x:Key="CalculatorBasicButton"
+           BasedOn="{StaticResource MaterialDesignFlatMidBgButton}"
+           TargetType="Button">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="36" />
+        <Setter Property="Height" Value="64" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="5,0,0,0" />
+    </Style>
 
-	<Style x:Key="CalculatorSpecialFunctionButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatLightBgButton}">
-		<Setter Property="FontWeight" Value="Bold"></Setter>
-		<Setter Property="FontSize" Value="16"></Setter>
-		<Setter Property="Margin" Value="5 0 0 0"></Setter>
-		<Setter Property="Height" Value="40"></Setter>
-	</Style>
-	<Style x:Key="CalculatorClearButton" TargetType="Button" BasedOn="{StaticResource CalculatorSpecialFunctionButton}">
-		<Setter Property="Background" Value="#CF6679"></Setter>
-		<Setter Property="BorderBrush" Value="#CF6679"></Setter>
-		<Setter Property="Margin" Value="5 0 0 0"></Setter>
-	</Style>
+    <Style x:Key="CalculatorSpecialFunctionButton"
+           BasedOn="{StaticResource MaterialDesignFlatLightBgButton}"
+           TargetType="Button">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="Height" Value="40" />
+    </Style>
+    <Style x:Key="CalculatorClearButton"
+           BasedOn="{StaticResource CalculatorSpecialFunctionButton}"
+           TargetType="Button">
+        <Setter Property="Background" Value="#CF6679" />
+        <Setter Property="BorderBrush" Value="#CF6679" />
+        <Setter Property="Margin" Value="5,0,0,0" />
+    </Style>
 
-	<!-- Labels -->
-	<Style x:Key="CalculatorOutputLabel" TargetType="Label">
-		<Setter Property="Background" Value="#85AD8B"></Setter>
-		<Setter Property="Foreground" Value="Black"></Setter>
-		<Setter Property="FontWeight" Value="Bold"></Setter>
-	</Style>
-	<Style x:Key="CalculatorOutputTopStatusLabel" TargetType="Label"  BasedOn="{StaticResource CalculatorOutputLabel}">
-		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-	</Style>
+    <!--  Labels  -->
+    <Style x:Key="CalculatorOutputLabel"
+           TargetType="Label">
+        <Setter Property="Background" Value="#85AD8B" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style x:Key="CalculatorOutputTopStatusLabel"
+           BasedOn="{StaticResource CalculatorOutputLabel}"
+           TargetType="Label">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
 
-	<!-- Icons.Base -->
-	<Style x:Key="IconLarge" TargetType="materialDesign:PackIcon">
-		<Setter Property="Height" Value="36"></Setter>
-		<Setter Property="Width" Value="36"></Setter>
-		<Setter Property="VerticalAlignment" Value="Center"></Setter>
-		<Setter Property="HorizontalAlignment" Value="Center"></Setter>
-	</Style>
-	<Style x:Key="IconMedium" TargetType="materialDesign:PackIcon">
-		<Setter Property="Height" Value="24"></Setter>
-		<Setter Property="Width" Value="24"></Setter>
-		<Setter Property="VerticalAlignment" Value="Center"></Setter>
-		<Setter Property="HorizontalAlignment" Value="Center"></Setter>
-	</Style>
-	<Style x:Key="IconSmall" TargetType="materialDesign:PackIcon">
-		<Setter Property="Height" Value="20"></Setter>
-		<Setter Property="Width" Value="20"></Setter>
-		<Setter Property="VerticalAlignment" Value="Center"></Setter>
-		<Setter Property="HorizontalAlignment" Value="Center"></Setter>
-	</Style>
+    <!--  Icons.Base  -->
+    <Style x:Key="IconLarge"
+           TargetType="materialDesign:PackIcon">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Width" Value="36" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="IconMedium"
+           TargetType="materialDesign:PackIcon">
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="IconSmall"
+           TargetType="materialDesign:PackIcon">
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
 
-	<!-- Icons -->
+    <!--  Icons  -->
 
-	<!-- Cards.Base -->
-	<Style x:Key="CardBaseStyle" TargetType="materialDesign:Card">
-		<Setter Property="Background" Value="{DynamicResource MaterialDesignBackground}"></Setter>
-	</Style>
+    <!--  Cards.Base  -->
+    <Style x:Key="CardBaseStyle"
+           TargetType="materialDesign:Card">
+        <Setter Property="Background" Value="{DynamicResource MaterialDesignBackground}" />
+    </Style>
 
-	<!-- Cards -->
-	<Style x:Key="TopCard" TargetType="materialDesign:Card" BasedOn="{StaticResource CardBaseStyle}">
-		<Setter Property="Margin" Value="0 20 0 0"></Setter>
-		<Setter Property="MinHeight" Value="50"></Setter>
-	</Style>
+    <!--  Cards  -->
+    <Style x:Key="TopCard"
+           BasedOn="{StaticResource CardBaseStyle}"
+           TargetType="materialDesign:Card">
+        <Setter Property="Margin" Value="0,20,0,0" />
+        <Setter Property="MinHeight" Value="50" />
+    </Style>
 </ResourceDictionary>

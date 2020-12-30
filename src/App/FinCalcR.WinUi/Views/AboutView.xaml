@@ -1,77 +1,78 @@
 ﻿<UserControl x:Class="StEn.FinCalcR.WinUi.Views.AboutView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:StEn.FinCalcR.WinUi.Views"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:converter="clr-namespace:StEn.FinCalcR.WinUi.Converter"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:local="clr-namespace:StEn.FinCalcR.WinUi.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:StEn.FinCalcR.WinUi.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{Binding Source={d:DesignInstance viewModels:AboutViewModel},
-                Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}">
-	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-		<Grid.Resources>
-			<Style TargetType="{x:Type TextBlock}">
-				<Setter Property="Margin" Value="15,5,0,4" />
-			</Style>
-		</Grid.Resources>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition/>
-			<ColumnDefinition/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
+             d:DataContext="{Binding Source={d:DesignInstance viewModels:AboutViewModel}, Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="15,5,0,4" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-		<TextBlock Grid.Column="0" 
-		           Grid.Row="0" 
-		           Name="AppVersionLabelTxt"
-		           Text="{lex:Loc}"/>
-		<TextBlock Grid.Column="1" 
-		           Grid.Row="0" 
-		           Text="{Binding AppVersionText}"/>
-		<TextBlock Grid.Column="0" 
-		           Grid.Row="1" 
-		           Name="NpoHomepageLabelTxt"
-		           Text="{lex:Loc}"/>
-		<TextBlock Grid.Column="1" 
-		           Grid.Row="1">
-			<Hyperlink NavigateUri="https://geldlehrer.org/"
-			           RequestNavigate="Hyperlink_OnRequestNavigate">
-				<Hyperlink.Inlines>
-					<Run Text="https://geldlehrer.org/" />
-				</Hyperlink.Inlines>
-			</Hyperlink>
-		</TextBlock>
-		<TextBlock Grid.Column="0" 
-		           Grid.Row="2" 
-		           Name="ProjectHomepageLabelTxt"
-		           Text="{lex:Loc}"/>
-		<TextBlock Grid.Column="1" 
-		           Grid.Row="2">
-			<Hyperlink NavigateUri="https://github.com/stevenengland/FinCalcR"
-			           RequestNavigate="Hyperlink_OnRequestNavigate">
-				<Hyperlink.Inlines>
-					<Run Text="https://github.com/stevenengland/FinCalcR" />
-				</Hyperlink.Inlines>
-			</Hyperlink>
-		</TextBlock>
-		<TextBlock Grid.Column="0" 
-		           Grid.Row="3"
-		           Name="MailContactLabel"
-		           Text="{lex:Loc}"/>
+        <TextBlock Name="AppVersionLabelTxt"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Text="{lex:Loc}" />
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Text="{Binding AppVersionText}" />
+        <TextBlock Name="NpoHomepageLabelTxt"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   Text="{lex:Loc}" />
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1">
+            <Hyperlink NavigateUri="https://geldlehrer.org/"
+                       RequestNavigate="Hyperlink_OnRequestNavigate">
+                <Hyperlink.Inlines>
+                    <Run Text="https://geldlehrer.org/" />
+                </Hyperlink.Inlines>
+            </Hyperlink>
+        </TextBlock>
+        <TextBlock Name="ProjectHomepageLabelTxt"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   Text="{lex:Loc}" />
+        <TextBlock Grid.Row="2"
+                   Grid.Column="1">
+            <Hyperlink NavigateUri="https://github.com/stevenengland/FinCalcR"
+                       RequestNavigate="Hyperlink_OnRequestNavigate">
+                <Hyperlink.Inlines>
+                    <Run Text="https://github.com/stevenengland/FinCalcR" />
+                </Hyperlink.Inlines>
+            </Hyperlink>
+        </TextBlock>
+        <TextBlock Name="MailContactLabel"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   Text="{lex:Loc}" />
 
-		<StackPanel Grid.Column="1"
-		            Grid.Row="3"
-		            Orientation="Vertical">
-			<TextBlock Text="Thomas Krosse: info@thomaskrosse.de"/>
-			<TextBlock Text="Steven England: sengland@steven-england.info"/>
-		</StackPanel>
+        <StackPanel Grid.Row="3"
+                    Grid.Column="1"
+                    Orientation="Vertical">
+            <TextBlock Text="Thomas Krosse: info@thomaskrosse.de" />
+            <TextBlock Text="Steven England: sengland@steven-england.info" />
+        </StackPanel>
 
-	</Grid>
+    </Grid>
 </UserControl>
