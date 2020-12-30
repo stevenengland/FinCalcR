@@ -52,7 +52,7 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
             GC.SuppressFinalize(this);
         }
 
-        public T WaitForElement<T>(Func<T> getter)
+        protected T WaitForElement<T>(Func<T> getter)
         {
             var retry = Retry.WhileNull<T>(
                 getter,
@@ -66,7 +66,7 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
             return retry.Result;
         }
 
-        public void WaitUntilClosed(AutomationElement element)
+        protected void WaitUntilClosed(AutomationElement element)
         {
             var result = Retry.WhileFalse(() => element.IsOffscreen, TimeSpan.FromMilliseconds(BigWaitTimeout));
             if (!result.Success)

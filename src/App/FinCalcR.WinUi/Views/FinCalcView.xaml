@@ -131,22 +131,26 @@
 			           Grid.Column="2"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
 			           Content="{lex:Loc Key=FinCalcFunctionInterest}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnInterestPressedAsync($source, $eventArgs)];" />
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnInterestPressedAsync($source, $eventArgs)];" 
+			           AutomationProperties.AutomationId = "EffectiveInterest"/>
 			   <Button Grid.Row="1"
 			           Grid.Column="3"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
 			           Content="{lex:Loc Key=FinCalcFunctionStart}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnStartPressedAsync($source, $eventArgs)];"/>
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnStartPressedAsync($source, $eventArgs)];"
+			           AutomationProperties.AutomationId = "Start"/>
 			   <Button Grid.Row="1"
 			           Grid.Column="4"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
 			           Content="{lex:Loc Key=FinCalcFunctionRate}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnRatePressedAsync($source, $eventArgs)];"/>
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnRatePressedAsync($source, $eventArgs)];"
+			           AutomationProperties.AutomationId = "Rate"/>
 			   <Button Grid.Row="1"
 			           Grid.Column="5"
 			           Style="{StaticResource CalculatorSpecialFunctionButton}"
 			           Content="{lex:Loc Key=FinCalcFunctionEnd}"
-			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnEndPressedAsync($source, $eventArgs)];"/>
+			           cal:Message.Attach="[Event PreviewMouseDown] = [Action OnEndPressedAsync($source, $eventArgs)];"
+			           AutomationProperties.AutomationId = "End"/>
 		   </Grid>
 	       <Button Grid.Row="2"
 	               Grid.Column="0"
@@ -222,12 +226,14 @@
 	               Grid.Column="2"
 	               Style="{StaticResource CalculatorBasicButton}"
 	               Content="{lex:Loc Key=CALC_DECIMAL_SEPARATOR}" 
-	               Command="{Binding DecimalSeparatorPressedCommand}"/>
+	               Command="{Binding DecimalSeparatorPressedCommand}"
+	               AutomationProperties.AutomationId = "DecimalSeparator"/>
 		<Button Grid.Row="2"
 	               Grid.Column="3"
 	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="/">
+	               CommandParameter="/"
+	               AutomationProperties.AutomationId = "OperatorDivide">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="Division"
 			                                Style="{DynamicResource IconLarge}"/>
@@ -237,7 +243,8 @@
 	               Grid.Column="3"
 	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="*">
+	               CommandParameter="*"
+	               AutomationProperties.AutomationId = "OperatorMultiply">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="Multiply"
 			                                Style="{DynamicResource IconLarge}"
@@ -248,7 +255,8 @@
 	               Grid.Column="3"
 	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="-">
+	               CommandParameter="-"
+	               AutomationProperties.AutomationId = "OperatorSubtract">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="Minus"
 			                                Style="{DynamicResource IconLarge}"/>
@@ -258,7 +266,8 @@
 	               Grid.Column="3"
 	               Style="{StaticResource CalculatorBasicButton}"
 	               Command="{Binding OperatorPressedCommand}"
-	               CommandParameter="+">
+	               CommandParameter="+"
+	               AutomationProperties.AutomationId = "OperatorAdd">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="Plus"
 			                                Style="{DynamicResource IconLarge}"/>
@@ -267,7 +276,8 @@
 	       <Button Grid.Row="6"
 	               Grid.Column="3"
 	               Style="{StaticResource CalculatorBasicButton}"
-	               Command="{Binding CalculatePressedCommand}">
+	               Command="{Binding CalculatePressedCommand}"
+	               AutomationProperties.AutomationId = "Calculate">
 		       <StackPanel Orientation="Horizontal">
 			       <materialDesign:PackIcon Kind="Equal"
 			                                Style="{DynamicResource IconLarge}"/>

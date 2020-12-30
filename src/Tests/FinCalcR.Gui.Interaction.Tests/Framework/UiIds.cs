@@ -18,13 +18,18 @@
             public const string OperatorSubtractBtn = "OperatorSubtract";
             public const string OperatorDivideBtn = "OperatorDivide";
             public const string OperatorMultiplyBtn = "OperatorMultiply";
-            public const string DecimalBtn = "Decimal";
+            public const string DecimalBtn = "DecimalSeparator";
             public const string AlgebSignBtn = "AlgebSign";
             public const string ClearBtn = "Clear";
+            public const string CalculateBtn = "Calculate";
 
             public const string EvaluationResultLbl = "EvaluatedResult";
 
             public const string YearsBtn = "Years";
+            public const string InterestBtn = "EffectiveInterest";
+            public const string StartBtn = "Start";
+            public const string RateBtn = "Rate";
+            public const string End = "End";
         }
     }
 }
