@@ -74,12 +74,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
             if (preOperations == null)
             {
-                preOperations = new Ca[] { };
+                preOperations = System.Array.Empty<Ca>();
             }
 
             if (postOperations == null)
             {
-                postOperations = new Ca[] { };
+                postOperations = System.Array.Empty<Ca>();
             }
 
             // Act
