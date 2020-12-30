@@ -33,7 +33,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_AppDocs", "_AppDocs", "{34
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinCalcR.Tests.Shared", "src\Tests\FinCalcR.Tests.Shared\FinCalcR.Tests.Shared.csproj", "{39061318-0FD4-4A5F-A380-B0EA93C2085B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinCalcR.Gui.Interaction.Tests", "src\Tests\FinCalcR.Gui.Interaction.Tests\FinCalcR.Gui.Interaction.Tests.csproj", "{0C6AC658-3FA9-4809-A12D-4611365EEF6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinCalcR.Gui.Interaction.Tests", "src\Tests\FinCalcR.Gui.Interaction.Tests\FinCalcR.Gui.Interaction.Tests.csproj", "{0C6AC658-3FA9-4809-A12D-4611365EEF6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{9671A490-D126-4014-8B39-DAA9158BBF70}"
+	ProjectSection(SolutionItems) = preProject
+		CodeMaid.config = CodeMaid.config
+		Directory.Build.props = Directory.Build.props
+		src\Tests\Directory.Build.props = src\Tests\Directory.Build.props
+		Settings.XamlStyler = Settings.XamlStyler
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
