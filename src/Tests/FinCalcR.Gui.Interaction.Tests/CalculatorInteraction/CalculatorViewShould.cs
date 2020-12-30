@@ -142,6 +142,44 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
         }
 
         [Fact]
+        public void ClearValues_WhenClearButtonIsPressedAShortTime()
+        {
+            // Arrange
+            var mainScreen = this.Application.GetMainWindow(this.Automation);
+
+            // Act
+            var resultLbl = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EvaluationResultLbl)).AsLabel());
+            Keyboard.Type("1234567890");
+            Wait.UntilInputIsProcessed();
+            this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.ClearBtn)).AsButton()).Click();
+            Wait.UntilInputIsProcessed();
+
+            // Assert
+            resultLbl.Text.Should().Be("0.");
+        }
+
+        [Fact]
+        public async Task ClearValuesAndShowHint_WhenClearButtonIsClickedALongTimeAsync()
+        {
+            // Arrange
+            var mainScreen = this.Application.GetMainWindow(this.Automation);
+
+            // Act
+            var resultLbl = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EvaluationResultLbl)).AsLabel());
+            Keyboard.Type("1234567890");
+            Wait.UntilInputIsProcessed();
+            var clearBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.ClearBtn)).AsButton());
+            Mouse.MoveTo(clearBtn.GetClickablePoint());
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            Wait.UntilInputIsProcessed();
+            var hintMessageTxt = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.HintView.HintMessageTxt)).AsLabel());
+
+            // Assert
+            hintMessageTxt.Text.Should().NotBeNullOrWhiteSpace();
+            resultLbl.Text.Should().Be("0.");
+        }
+
+        [Fact]
         public void SpecialFunctionsAreProcessed_WhenSpecialFunctionButtonsArePressedAShortTime()
         {
             // Arrange
@@ -166,7 +204,7 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
             Wait.UntilInputIsProcessed();
             var rateResult = resultLbl.Text;
             Keyboard.Type("5");
-            this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.End)).AsButton()).Click();
+            this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndBtn)).AsButton()).Click();
             Wait.UntilInputIsProcessed();
             var endResult = resultLbl.Text;
 
@@ -179,20 +217,62 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
         }
 
         [Fact]
-        public async Task ShowSavedYearsValue_WhenYearsButtonIsClickedLongAsync()
+        public async Task ShowSavedSpecialFunctionValues_WhenSpecialFunctionButtonIsClickedALongTimeAsync()
         {
             // Arrange
             var mainScreen = this.Application.GetMainWindow(this.Automation);
 
             // Act
             var resultLbl = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EvaluationResultLbl)).AsLabel());
+
+            Keyboard.Type("1");
             var yearsBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsBtn)).AsButton());
+            yearsBtn.Click();
+            Wait.UntilInputIsProcessed();
+            Keyboard.Type("2");
+            var interestBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.InterestBtn)).AsButton());
+            interestBtn.Click();
+            Wait.UntilInputIsProcessed();
+            Keyboard.Type("3");
+            var startBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartBtn)).AsButton());
+            startBtn.Click();
+            Wait.UntilInputIsProcessed();
+            Keyboard.Type("4");
+            var rateBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RateBtn)).AsButton());
+            rateBtn.Click();
+            Wait.UntilInputIsProcessed();
+            Keyboard.Type("5");
+            var endBtn = this.WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndBtn)).AsButton());
+            endBtn.Click();
+            Wait.UntilInputIsProcessed();
+
             Mouse.MoveTo(yearsBtn.GetClickablePoint());
             await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
             Wait.UntilInputIsProcessed();
+            var yearsResult = resultLbl.Text;
+            Mouse.MoveTo(interestBtn.GetClickablePoint());
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            Wait.UntilInputIsProcessed();
+            var interestResult = resultLbl.Text;
+            Mouse.MoveTo(startBtn.GetClickablePoint());
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            Wait.UntilInputIsProcessed();
+            var startResult = resultLbl.Text;
+            Mouse.MoveTo(rateBtn.GetClickablePoint());
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            Wait.UntilInputIsProcessed();
+            var rateResult = resultLbl.Text;
+            Mouse.MoveTo(endBtn.GetClickablePoint());
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            Wait.UntilInputIsProcessed();
+            var endResult = resultLbl.Text;
 
             // Assert
-            resultLbl.Text.Should().Be("0.00");
+            yearsResult.Should().Be("1.00");
+            interestResult.Should().Be("2.000");
+            startResult.Should().Be("3.00");
+            rateResult.Should().Be("4.00");
+            endResult.Should().Be("5.00");
         }
 
         [Fact(Skip = "https://github.com/FlaUI/FlaUI/issues/389")]

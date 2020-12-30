@@ -29,7 +29,12 @@
             public const string InterestBtn = "EffectiveInterest";
             public const string StartBtn = "Start";
             public const string RateBtn = "Rate";
-            public const string End = "End";
+            public const string EndBtn = "End";
+        }
+
+        public static class HintView
+        {
+            public const string HintMessageTxt = "HintMessage";
         }
     }
 }
