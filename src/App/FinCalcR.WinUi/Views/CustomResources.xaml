@@ -6,8 +6,13 @@
            TargetType="{x:Type Control}">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontFamily" Value="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" />
         <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+        <Setter Property="FontFamily" Value="{materialDesign:MaterialDesignFont}" />
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}" />
+        <Setter Property="TextElement.FontWeight" Value="Regular" />
+        <Setter Property="TextElement.FontSize" Value="13" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
     </Style>
 
     <!--  DockPanel  -->
