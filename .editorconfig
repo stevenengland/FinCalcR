@@ -132,13 +132,13 @@ csharp_preferred_modifier_order=public,private,protected,static,readonly,overrid
 #Style - qualification options
 
 #prefer events to be prefaced with this. in C# or Me. in Visual Basic
-dotnet_style_qualification_for_event=true:suggestion
+dotnet_style_qualification_for_event=true:none
 #prefer fields not to be prefaced with this. or Me. in Visual Basic
-dotnet_style_qualification_for_field=false:suggestion
+dotnet_style_qualification_for_field=true:none
 #prefer methods to be prefaced with this. in C# or Me. in Visual Basic
-dotnet_style_qualification_for_method=true:suggestion
+dotnet_style_qualification_for_method=true:none
 #prefer properties not to be prefaced with this. or Me. in Visual Basic
-dotnet_style_qualification_for_property=false:suggestion
+dotnet_style_qualification_for_property=true:none
 
 # Style - StyleCop Analyzer
 # StyleCop Settings to prevent clashes
