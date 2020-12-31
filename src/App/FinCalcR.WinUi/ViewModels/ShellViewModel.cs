@@ -22,9 +22,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 {
     public class ShellViewModel : Screen, IHandleWithTask<ErrorEvent>, IHandleWithTask<HintEvent>
     {
-#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
         private readonly IEventAggregator eventAggregator;
-#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
         private readonly IDialogHostMapper dialogHostMapper;
         private readonly ILocalizationService localizationService;
         private readonly IWindowManager windowManager;
@@ -293,7 +291,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         private async Task ShowErrorAsync(ErrorEvent errorEvent)
         {
-            await this.dialogHostMapper.ShowAsync(
+            _ = await this.dialogHostMapper.ShowAsync(
                 this.dialogHostMapper.GetErrorView(
                     errorEvent.ErrorMessage, errorEvent.Exception?.Message),
                 "RootDialog").ConfigureAwait(true);

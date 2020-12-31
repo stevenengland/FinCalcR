@@ -6,8 +6,6 @@ namespace FinCalcR.Calculations.Tests
 {
     public class FinancialCalculatorTests
     {
-        private const double Tolerance = 0.00000001;
-
         [Theory]
         [InlineData(12, 4, 4.074)]
         public void EffectiveInterestRateIsCalculatedCorrectly(double m, double p, double expectedEffectiveInterestRate)
@@ -90,7 +88,6 @@ namespace FinCalcR.Calculations.Tests
 #pragma warning disable SA1005 // Single line comments should begin with single space
 #pragma warning disable S125 // Sections of code should not be commented out
 #pragma warning disable SA1025 // Code should not contain multiple whitespace in a row
-#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
 #pragma warning disable S4144 // Methods should not have identical implementations
         [Theory]
         [InlineData(12, 10, 0.995445737, 100, 1000, 126231.40)] //      +++
@@ -253,6 +250,5 @@ namespace FinCalcR.Calculations.Tests
 #pragma warning restore SA1005 // Single line comments should begin with single space
 #pragma warning restore S125 // Sections of code should not be commented out
 #pragma warning restore SA1025 // Code should not contain multiple whitespace in a row
-#pragma warning restore SA1512 // Single-line comments should not be followed by blank line
 #pragma warning restore S4144 // Methods should not have identical implementations
 }

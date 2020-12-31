@@ -51,7 +51,9 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
 
         [DllImport("user32.dll")]
 #pragma warning disable SA1300 // Element should begin with upper-case letter
+#pragma warning disable IDE1006 // Naming Styles
         private static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+#pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore SA1300 // Element should begin with upper-case letter
 
         [DllImport("user32.dll")]

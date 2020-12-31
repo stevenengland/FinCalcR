@@ -12,9 +12,7 @@ namespace StEn.FinCalcR.WinUi.Converter
         {
             if (targetType != typeof(bool))
             {
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
                 throw new InvalidOperationException("The target must be a boolean");
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
             }
 
             return value != null && !(bool)value;

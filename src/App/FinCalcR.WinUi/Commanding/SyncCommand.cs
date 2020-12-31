@@ -3,7 +3,6 @@ using System.Windows.Input;
 
 namespace StEn.FinCalcR.WinUi.Commanding
 {
-#pragma warning disable CA2007 // Do not directly await a Task
     public class SyncCommand : ISyncCommand
     {
         private readonly Action execute;
@@ -111,5 +110,4 @@ namespace StEn.FinCalcR.WinUi.Commanding
         }
         #endregion
     }
-#pragma warning restore CA2007 // Do not directly await a Task
 }

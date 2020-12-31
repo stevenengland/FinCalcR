@@ -7,7 +7,6 @@ using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "MemberData needs public property")]
     public class InputSequencesShould
     {
         public InputSequencesShould()

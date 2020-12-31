@@ -52,7 +52,7 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
             GC.SuppressFinalize(this);
         }
 
-        protected T WaitForElement<T>(Func<T> getter)
+        protected static T WaitForElement<T>(Func<T> getter)
         {
             var retry = Retry.WhileNull<T>(
                 getter,

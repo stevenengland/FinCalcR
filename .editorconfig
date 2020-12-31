@@ -84,7 +84,7 @@ csharp_style_expression_bodied_accessors=true:suggestion
 #prefer block bodies for constructors
 csharp_style_expression_bodied_constructors=false:suggestion
 #prefer block bodies for methods
-csharp_style_expression_bodied_methods=false:suggestion
+csharp_style_expression_bodied_methods=true:suggestion
 #prefer expression-bodied members for properties
 csharp_style_expression_bodied_properties=true:suggestion
 
@@ -93,7 +93,7 @@ csharp_style_expression_bodied_properties=true:suggestion
 #prefer out variables to be declared inline in the argument list of a method call when possible
 csharp_style_inlined_variable_declaration=true:suggestion
 #prefer the language keyword for member access expressions, instead of the type name, for types that have a keyword to represent them
-dotnet_style_predefined_type_for_member_access=true:suggestion
+dotnet_style_predefined_type_for_member_access=true:warning
 
 #Style - Expression-level  preferences
 
@@ -140,15 +140,21 @@ dotnet_style_qualification_for_method=true:none
 #prefer properties not to be prefaced with this. or Me. in Visual Basic
 dotnet_style_qualification_for_property=true:none
 
-# Style - StyleCop Analyzer
-# StyleCop Settings to prevent clashes
+#Style - StyleCop Analyzer
+#StyleCop Settings to prevent clashes
 
-# SA1600: Elements should be documented
+#SA1124DoNotUseRegions
+dotnet_diagnostic.SA1124.severity = none
+#SA1600: Elements should be documented
 dotnet_diagnostic.SA1600.severity = none
-# SA1633FileMustHaveHeader
+#SA1602EnumerationItemsMustBeDocumented
+dotnet_diagnostic.SA1602.severity = none
+#SA1633FileMustHaveHeader
 dotnet_diagnostic.SA1633.severity = none
 
-
+#Style - Sonarlint
+#S1135: Track uses of "TODO" tags
+dotnet_diagnostic.S1135.severity = suggestion
 
 [*.{appxmanifest,build,config,csproj,dbml,discomap,dtd,jsproj,lsproj,njsproj,nuspec,proj,props,proto,resw,resx,StyleCop,targets,tasks,vbproj,xml,xsd}]
 indent_style=tab

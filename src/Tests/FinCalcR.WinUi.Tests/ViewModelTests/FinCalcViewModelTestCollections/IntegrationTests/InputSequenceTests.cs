@@ -741,7 +741,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             // Operator
-            this.PerformBasicEndCapitalCalculation(vm);
+            PerformBasicEndCapitalCalculation(vm);
 
             vm.OperatorPressedCommand.Execute("+");
             Assert.True(vm.DisplayText == "-113.187,55");
@@ -757,7 +757,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             // Digit
             vm.ClearPressedCommand.Execute(true);
-            this.PerformBasicEndCapitalCalculation(vm);
+            PerformBasicEndCapitalCalculation(vm);
 
             vm.DigitPressedCommand.Execute(1);
             Assert.True(vm.DisplayText == "1,");
@@ -772,7 +772,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             // AlgebSign
             vm.ClearPressedCommand.Execute(true);
-            this.PerformBasicEndCapitalCalculation(vm);
+            PerformBasicEndCapitalCalculation(vm);
 
             vm.AlgebSignCommand.Execute(false);
             Assert.True(vm.EndStatusBarText == string.Empty);
@@ -781,7 +781,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             // Decimal separator
             vm.ClearPressedCommand.Execute(true);
-            this.PerformBasicEndCapitalCalculation(vm);
+            PerformBasicEndCapitalCalculation(vm);
 
             vm.DecimalSeparatorPressedCommand.Execute(null);
             Assert.True(vm.EndStatusBarText == string.Empty);
@@ -991,7 +991,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
         #endregion
 
-        private void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
+        private static void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
         {
             vm.DigitPressedCommand.Execute(1);
             vm.DigitPressedCommand.Execute(2);

@@ -14,7 +14,6 @@ using StEn.FinCalcR.WinUi.ViewModels;
 
 namespace FinCalcR.WinUi.Tests.Mocks
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Tests do not care")]
     public static class MockFactories
     {
         public static ShellViewModel ShellViewModelFactory(Dictionary<string, object> mockObjects)

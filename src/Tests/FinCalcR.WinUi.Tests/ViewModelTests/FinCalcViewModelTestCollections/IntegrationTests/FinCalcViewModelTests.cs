@@ -645,9 +645,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.DecimalSeparatorPressedCommand.Execute(null);
-            this.AssertVmStatusLabelsAreEmpty(vm);
+            AssertVmStatusLabelsAreEmpty(vm);
         }
 
         [Fact]
@@ -701,9 +701,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.OperatorPressedCommand.Execute("+");
-            this.AssertVmStatusLabelsAreEmpty(vm);
+            AssertVmStatusLabelsAreEmpty(vm);
         }
 
         [Fact]
@@ -848,9 +848,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.DigitPressedCommand.Execute("1");
-            this.AssertVmStatusLabelsAreEmpty(vm);
+            AssertVmStatusLabelsAreEmpty(vm);
         }
 
         [Fact]
@@ -931,9 +931,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.CalculatePressedCommand.Execute(null);
-            this.AssertVmStatusLabelsAreEmpty(vm);
+            AssertVmStatusLabelsAreEmpty(vm);
         }
 
         [Fact]
@@ -1094,9 +1094,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.ClearPressedCommand.Execute(false);
-            this.AssertVmStatusLabelsAreEmpty(vm);
+            AssertVmStatusLabelsAreEmpty(vm);
         }
 
         [Fact]
@@ -1105,9 +1105,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.ClearPressedCommand.Execute(true);
-            this.AssertVmStatusLabelsAreEmpty(vm, true);
+            AssertVmStatusLabelsAreEmpty(vm, true);
         }
 
         [Fact]
@@ -1374,9 +1374,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.AlgebSignCommand.Execute(null);
-            this.AssertVmStatusLabelsAreEmpty(vm);
+            AssertVmStatusLabelsAreEmpty(vm);
         }
 
         [Fact]
@@ -1583,10 +1583,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.YearsPressedCommand.Execute(true);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.YearsPressedCommand.Execute(false);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
         }
@@ -1771,10 +1771,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.InterestPressedCommand.Execute(false);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.InterestPressedCommand.Execute(true);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
         }
@@ -1905,10 +1905,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.StartPressedCommand.Execute(true);
             Assert.True(string.IsNullOrWhiteSpace(vm.EndStatusBarText)); // An other label than the one belonging to the command.
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.StartPressedCommand.Execute(false);
             Assert.True(string.IsNullOrWhiteSpace(vm.EndStatusBarText)); // An other label than the one belonging to the command.
         }
@@ -1983,10 +1983,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.RatePressedCommand.Execute(true);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.RatePressedCommand.Execute(false);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
         }
@@ -2143,10 +2143,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.EndPressedCommand.Execute(true);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
-            this.SetVmStatusLabelTexts(vm);
+            SetVmStatusLabelTexts(vm);
             vm.EndPressedCommand.Execute(false);
             Assert.True(string.IsNullOrWhiteSpace(vm.StartStatusBarText)); // An other label than the one belonging to the command.
         }
@@ -2232,7 +2232,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
         #endregion
 
-        private void SetVmStatusLabelTexts(FinCalcViewModel vm)
+        private static void SetVmStatusLabelTexts(FinCalcViewModel vm)
         {
             vm.AdvanceStatusBarText = "test";
             vm.YearsStatusBarText = "test";
@@ -2242,7 +2242,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.EndStatusBarText = "test";
         }
 
-        private void AssertVmStatusLabelsAreEmpty(FinCalcViewModel vm, bool checkAdvanceStatusBarTextToo = false)
+        private static void AssertVmStatusLabelsAreEmpty(FinCalcViewModel vm, bool checkAdvanceStatusBarTextToo = false)
         {
             if (checkAdvanceStatusBarTextToo)
             {
