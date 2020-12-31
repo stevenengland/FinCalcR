@@ -12,9 +12,6 @@
 
         public override CommandWord CommandWord { get; }
 
-        public override void Execute(params object[] parameter)
-        {
-            this.calculator.PressLoadMemoryValue(MemoryFieldNames.RateNumber);
-        }
+        public override void Execute(params object[] parameter) => this.calculator.PressLoadMemoryValue(MemoryFieldNames.RateNumber);
     }
 }

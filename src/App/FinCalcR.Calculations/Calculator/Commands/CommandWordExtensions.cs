@@ -2,9 +2,7 @@
 {
     public static class CommandWordExtensions
     {
-        public static bool IsSpecialCommandWord(this CommandWord commandWord)
-        {
-            return commandWord == CommandWord.SetYears
+        public static bool IsSpecialCommandWord(this CommandWord commandWord) => commandWord == CommandWord.SetYears
                    || commandWord == CommandWord.GetYears
                    || commandWord == CommandWord.CalculateYears
                    || commandWord == CommandWord.GetEffectiveInterest
@@ -26,6 +24,5 @@
                    || commandWord == CommandWord.CalculateEnd
                    || commandWord == CommandWord.SetRatesPerAnnum
                    || commandWord == CommandWord.GetRatesPerAnnum;
-        }
     }
 }

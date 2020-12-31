@@ -30,10 +30,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         /// <inheritdoc />
         /// The evaluated result will be the same as the <see cref="GetCurrentInputFormula"/> in this implementation.
-        public string GetEvaluatedResult()
-        {
-            return this.GetCurrentInputFormula();
-        }
+        public string GetEvaluatedResult() => this.GetCurrentInputFormula();
 
         public void ResetInternalState(bool updateCurrentInputText = false)
         {
@@ -53,10 +50,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             this.BuildInputTextFromInternalState(); // TODO REMOVE BECAUSE IT IS NOT NECCESSARY
         }
 
-        public void DecimalSeparator()
-        {
-            this.isDecimalSeparatorActive = true;
-        }
+        public void DecimalSeparator() => this.isDecimalSeparatorActive = true;
 
         public void AlgebSign()
         {
@@ -112,12 +106,9 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             }
         }
 
-        private void BuildInputTextFromInternalState()
-        {
-            this.currentInputFormula = this.wholeNumberPart
+        private void BuildInputTextFromInternalState() => this.currentInputFormula = this.wholeNumberPart
                                        + Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator
                                        + this.fractionalNumberPart;
-        }
 
         private void BuildInternalStateFromNumber(double number)
         {

@@ -507,19 +507,19 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void CorrectSeparatorsAreUsedForEachLanguage()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
+            MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
 
-            Assert.True(vm.ThousandsSeparator == ".");
-            Assert.True(vm.DecimalSeparator == ",");
+            Assert.True(FinCalcViewModel.ThousandsSeparator == ".");
+            Assert.True(FinCalcViewModel.DecimalSeparator == ",");
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
 
-            Assert.True(vm.ThousandsSeparator == ",");
-            Assert.True(vm.DecimalSeparator == ".");
+            Assert.True(FinCalcViewModel.ThousandsSeparator == ",");
+            Assert.True(FinCalcViewModel.DecimalSeparator == ".");
         }
 
         [Fact]

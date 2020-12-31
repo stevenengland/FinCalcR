@@ -28,10 +28,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             this.IsTemporaryOverlay = true;
         }
 
-        public void SetFormula(string formula)
-        {
-            this.SetResult(formula);
-        }
+        public void SetFormula(string formula) => this.SetResult(formula);
 
         public void SetResult(string result, int precisionLimit = -1)
         {

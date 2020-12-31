@@ -124,20 +124,11 @@ namespace StEn.FinCalcR.WinUi
             }
         }
 
-        protected override object GetInstance(Type service, string key)
-        {
-            return this.simpleContainer.GetInstance(service, key);
-        }
+        protected override object GetInstance(Type service, string key) => this.simpleContainer.GetInstance(service, key);
 
-        protected override IEnumerable<object> GetAllInstances(Type service)
-        {
-            return this.simpleContainer.GetAllInstances(service);
-        }
+        protected override IEnumerable<object> GetAllInstances(Type service) => this.simpleContainer.GetAllInstances(service);
 
-        protected override void BuildUp(object instance)
-        {
-            this.simpleContainer.BuildUp(instance);
-        }
+        protected override void BuildUp(object instance) => this.simpleContainer.BuildUp(instance);
 
         protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {

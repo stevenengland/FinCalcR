@@ -46,9 +46,6 @@ namespace StEn.FinCalcR.WinUi.Models
             set => this.MutateVerbose(ref this.marginRequirement, value, this.RaisePropertyChanged());
         }
 
-        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
-        {
-            return args => this.PropertyChanged?.Invoke(this, args);
-        }
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged() => args => this.PropertyChanged?.Invoke(this, args);
     }
 }

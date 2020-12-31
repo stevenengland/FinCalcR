@@ -7,10 +7,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
     {
         private readonly Dictionary<string, object> container = new Dictionary<string, object>();
 
-        public void Add<T>(IMemoryField<T> memoryField)
-        {
-            this.container.Add(memoryField.Id, memoryField);
-        }
+        public void Add<T>(IMemoryField<T> memoryField) => this.container.Add(memoryField.Id, memoryField);
 
         public IMemoryField<T> Get<T>(string key)
         {

@@ -73,10 +73,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
             return inputNumber.ToString($"n{precisionLimit}", Thread.CurrentThread.CurrentUICulture);
         }
 
-        public static string RoundToMaxArithmeticPrecision(double inputNumber, int precisionLimit = -1)
-        {
-            return RoundToMaxArithmeticPrecision(inputNumber.ToString(Thread.CurrentThread.CurrentUICulture), precisionLimit);
-        }
+        public static string RoundToMaxArithmeticPrecision(double inputNumber, int precisionLimit = -1) => RoundToMaxArithmeticPrecision(inputNumber.ToString(Thread.CurrentThread.CurrentUICulture), precisionLimit);
 
         public static string RoundToMaxArithmeticPrecision(string inputNumber, int precisionLimit = -1)
         {

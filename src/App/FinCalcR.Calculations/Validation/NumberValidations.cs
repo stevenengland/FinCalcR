@@ -2,9 +2,6 @@
 {
     public static class NumberValidations
     {
-        public static bool IsValidNumber(double number)
-        {
-            return !double.IsNaN(number) && !double.IsInfinity(number);
-        }
+        public static bool IsValidNumber(double number) => !double.IsNaN(number) && !double.IsInfinity(number);
     }
 }

@@ -12,9 +12,6 @@
 
         public override CommandWord CommandWord { get; }
 
-        public override void Execute(params object[] parameter)
-        {
-            this.calculator.SetRate();
-        }
+        public override void Execute(params object[] parameter) => this.calculator.SetRate();
     }
 }

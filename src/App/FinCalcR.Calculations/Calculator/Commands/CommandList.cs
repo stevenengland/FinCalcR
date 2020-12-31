@@ -15,24 +15,12 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
         }
 
         public T GetCommandByType<T>()
-            where T : class, ICalculatorCommand
-        {
-            return this.list.OfType<T>().SingleOrDefault();
-        }
+            where T : class, ICalculatorCommand => this.list.OfType<T>().SingleOrDefault();
 
-        public IEnumerator<ICalculatorCommand> GetEnumerator()
-        {
-            return this.list.GetEnumerator();
-        }
+        public IEnumerator<ICalculatorCommand> GetEnumerator() => this.list.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)this.list).GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)this.list).GetEnumerator();
 
-        public ICalculatorCommand GetCommandByFullTypeName(string fullTypeName)
-        {
-            return this.list.SingleOrDefault(x => x.GetType().FullName == fullTypeName);
-        }
+        public ICalculatorCommand GetCommandByFullTypeName(string fullTypeName) => this.list.SingleOrDefault(x => x.GetType().FullName == fullTypeName);
     }
 }

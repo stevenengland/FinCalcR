@@ -23,10 +23,7 @@ namespace StEn.FinCalcR.WinUi.Commanding
 
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute()
-        {
-            return !this.isExecuting && (this.canExecute?.Invoke() ?? true);
-        }
+        public bool CanExecute() => !this.isExecuting && (this.canExecute?.Invoke() ?? true);
 
         public async Task ExecuteAsync()
         {
@@ -49,15 +46,9 @@ namespace StEn.FinCalcR.WinUi.Commanding
         public void TriggerCanExecuteChanged() => this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
         #region Explicit implementations
-        bool ICommand.CanExecute(object parameter)
-        {
-            return this.CanExecute();
-        }
+        bool ICommand.CanExecute(object parameter) => this.CanExecute();
 
-        void ICommand.Execute(object parameter)
-        {
-            this.ExecuteAsync().FireAndForgetSafeAsync(this.errorHandler);
-        }
+        void ICommand.Execute(object parameter) => this.ExecuteAsync().FireAndForgetSafeAsync(this.errorHandler);
         #endregion
     }
 
@@ -79,10 +70,7 @@ namespace StEn.FinCalcR.WinUi.Commanding
 
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute(T parameter)
-        {
-            return !this.isExecuting && (this.canExecute?.Invoke(parameter) ?? true);
-        }
+        public bool CanExecute(T parameter) => !this.isExecuting && (this.canExecute?.Invoke(parameter) ?? true);
 
         public async Task ExecuteAsync(T parameter)
         {
@@ -102,21 +90,12 @@ namespace StEn.FinCalcR.WinUi.Commanding
             this.TriggerCanExecuteChanged();
         }
 
-        public void TriggerCanExecuteChanged()
-        {
-            this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
+        public void TriggerCanExecuteChanged() => this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
         #region Explicit implementations
-        bool ICommand.CanExecute(object parameter)
-        {
-            return this.CanExecute((T)parameter);
-        }
+        bool ICommand.CanExecute(object parameter) => this.CanExecute((T)parameter);
 
-        void ICommand.Execute(object parameter)
-        {
-            this.ExecuteAsync((T)parameter).FireAndForgetSafeAsync(this.errorHandler);
-        }
+        void ICommand.Execute(object parameter) => this.ExecuteAsync((T)parameter).FireAndForgetSafeAsync(this.errorHandler);
         #endregion
     }
 }

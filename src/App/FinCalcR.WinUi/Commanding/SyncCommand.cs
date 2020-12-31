@@ -23,10 +23,7 @@ namespace StEn.FinCalcR.WinUi.Commanding
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute()
-        {
-            return !this.isExecuting && (this.canExecute?.Invoke() ?? true);
-        }
+        public bool CanExecute() => !this.isExecuting && (this.canExecute?.Invoke() ?? true);
 
         public void ExecuteSync()
         {
@@ -45,15 +42,9 @@ namespace StEn.FinCalcR.WinUi.Commanding
         }
 
         #region Explicit implementations
-        bool ICommand.CanExecute(object parameter)
-        {
-            return this.CanExecute();
-        }
+        bool ICommand.CanExecute(object parameter) => this.CanExecute();
 
-        void ICommand.Execute(object parameter)
-        {
-            this.ExecuteSync();
-        }
+        void ICommand.Execute(object parameter) => this.ExecuteSync();
         #endregion
     }
 
@@ -77,10 +68,7 @@ namespace StEn.FinCalcR.WinUi.Commanding
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute(T parameter)
-        {
-            return !this.isExecuting && (this.canExecute?.Invoke(parameter) ?? true);
-        }
+        public bool CanExecute(T parameter) => !this.isExecuting && (this.canExecute?.Invoke(parameter) ?? true);
 
         public void ExecuteSync(T parameter)
         {
@@ -99,15 +87,9 @@ namespace StEn.FinCalcR.WinUi.Commanding
         }
 
         #region Explicit implementations
-        bool ICommand.CanExecute(object parameter)
-        {
-            return this.CanExecute((T)parameter);
-        }
+        bool ICommand.CanExecute(object parameter) => this.CanExecute((T)parameter);
 
-        void ICommand.Execute(object parameter)
-        {
-            this.ExecuteSync((T)parameter);
-        }
+        void ICommand.Execute(object parameter) => this.ExecuteSync((T)parameter);
         #endregion
     }
 }

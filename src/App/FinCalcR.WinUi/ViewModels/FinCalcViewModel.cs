@@ -23,7 +23,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
     public class FinCalcViewModel : Screen, IHandle<KeyboardKeyDownEvent>
     {
         private const int LongTouchDelay = 2;
-        private readonly ILocalizationService localizationService;
         private readonly IEventAggregator eventAggregator;
         private readonly ICommandInvoker calculatorRemote;
         private readonly ICalculationCommandReceiver calculator;
@@ -45,7 +44,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             ICommandInvoker calculatorRemote,
             ICalculationCommandReceiver calculator)
         {
-            this.localizationService = localizationService;
             this.eventAggregator = eventAggregator;
             this.calculatorRemote = calculatorRemote;
             this.calculator = calculator;
@@ -57,6 +55,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
             this.OnClearPressed();
         }
+
+        public static string ThousandsSeparator => Resources.CALC_THOUSANDS_SEPARATOR;
+
+        public static string DecimalSeparator => Resources.CALC_DECIMAL_SEPARATOR;
 
         public double YearsNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
 
@@ -186,10 +188,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         }
 
         public bool UseAnticipativeInterestYield => this.calculator.UsesAnticipativeInterestYield;
-
-        public string ThousandsSeparator => Resources.CALC_THOUSANDS_SEPARATOR;
-
-        public string DecimalSeparator => Resources.CALC_DECIMAL_SEPARATOR;
 
         public ICommand DigitPressedCommand => new SyncCommand<object>(this.OnDigitPressed);
 
@@ -755,10 +753,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             return isLongTouch;
         }
 
-        private bool IsCommandWordSpecialFunction()
-        {
-            return this.LastPressedOperation.IsSpecialCommandWord();
-        }
+        private bool IsCommandWordSpecialFunction() => this.LastPressedOperation.IsSpecialCommandWord();
 
         private void ResetSpecialFunctionLabels(bool resetAdvanceStatusBarToo = false)
         {

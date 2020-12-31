@@ -24,9 +24,6 @@ namespace StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = cultureInfo;
         }
 
-        public T GetLocalizedValue<T>(string key)
-        {
-            return LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + $":{this.resourcesIdentifier}:" + key);
-        }
+        public T GetLocalizedValue<T>(string key) => LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + $":{this.resourcesIdentifier}:" + key);
     }
 }

@@ -6,10 +6,7 @@
 
         public CommandWord PreviousCommandWord { get; set; }
 
-        public bool ShouldExecute(CommandWord commandWord)
-        {
-            return this.CommandWord == commandWord;
-        }
+        public bool ShouldExecute(CommandWord commandWord) => this.CommandWord == commandWord;
 
         public abstract void Execute(params object[] parameter);
     }

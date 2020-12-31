@@ -18,10 +18,7 @@ namespace StEn.FinCalcR.WinUi.Converter
             return value != null && !(bool)value;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) => throw new NotSupportedException();
 
         #endregion
     }

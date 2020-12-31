@@ -28,10 +28,7 @@ namespace StEn.FinCalcR.Calculations
             return result;
         }
 
-        public static double GetPartValue(double baseValue, double rate)
-        {
-            return baseValue * rate / 100;
-        }
+        public static double GetPartValue(double baseValue, double rate) => baseValue * rate / 100;
 
         public static double AddPartValueToBaseValue(double baseValue, double rate)
         {

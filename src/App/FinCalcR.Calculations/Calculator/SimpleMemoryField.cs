@@ -18,9 +18,6 @@
 
         public T Value { get; set; }
 
-        public void Reset()
-        {
-            this.Value = this.DefaultValue;
-        }
+        public void Reset() => this.Value = this.DefaultValue;
     }
 }

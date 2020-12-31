@@ -5,10 +5,7 @@ namespace StEn.FinCalcR.WinUi.Messages
 {
     public class LocalizedErrorMessages : ErrorMessages
     {
-        public override string CalculationOfPercentIsNotPossible(int iterations)
-        {
-            return string.Format(Resources.EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE, nameof(iterations));
-        }
+        public override string CalculationOfPercentIsNotPossible(int iterations) => string.Format(Resources.EXC_CALCULATION_OF_P_IS_NOT_POSSIBLE, nameof(iterations));
 
         public override string YearsMustNotBeNegative() => Resources.EXC_YEARS_EXCEEDED_LIMIT;
 

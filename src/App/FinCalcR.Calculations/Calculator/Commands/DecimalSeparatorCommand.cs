@@ -12,9 +12,6 @@
 
         public override CommandWord CommandWord { get; }
 
-        public override void Execute(params object[] parameter)
-        {
-            this.calculator.PressDecimalSeparator();
-        }
+        public override void Execute(params object[] parameter) => this.calculator.PressDecimalSeparator();
     }
 }

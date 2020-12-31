@@ -213,10 +213,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             }
         }
 
-        private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
-        {
-            this.eventAggregator.PublishOnUIThread(new KeyboardKeyDownEvent(e));
-        }
+        private void OnKeyboardKeyPressed(MappedKeyEventArgs e) => this.eventAggregator.PublishOnUIThread(new KeyboardKeyDownEvent(e));
 
         private void LoadLanguages()
         {
@@ -279,23 +276,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.TryClose();
         }
 
-        private void OnMinimizeApp()
-        {
-            this.CurWindowState = WindowState.Minimized;
-        }
+        private void OnMinimizeApp() => this.CurWindowState = WindowState.Minimized;
 
-        private void OnExitApp()
-        {
-            this.GracefulShutdown();
-        }
+        private void OnExitApp() => this.GracefulShutdown();
 
-        private async Task ShowErrorAsync(ErrorEvent errorEvent)
-        {
-            _ = await this.dialogHostMapper.ShowAsync(
+        private async Task ShowErrorAsync(ErrorEvent errorEvent) => _ = await this.dialogHostMapper.ShowAsync(
                 this.dialogHostMapper.GetErrorView(
                     errorEvent.ErrorMessage, errorEvent.Exception?.Message),
                 "RootDialog").ConfigureAwait(true);
-        }
 
         private void GracefulShutdown()
         {

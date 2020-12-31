@@ -39,7 +39,7 @@ csharp_new_line_before_finally=true
 #require members of object initializers to be on the same line
 csharp_new_line_before_members_in_object_initializers=false
 #require braces to be on a new line for methods, control_blocks, types, and properties (also known as "Allman" style)
-csharp_new_line_before_open_brace=methods, control_blocks, types, properties
+csharp_new_line_before_open_brace=all
 
 #Formatting - organize using options
 
