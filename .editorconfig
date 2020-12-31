@@ -1,6 +1,10 @@
 # Rules in this file were initially inferred by Visual Studio IntelliCode from the D:\coding\FinCalcR codebase based on best match to current usage at 31/12/2020
 # You can modify the rules from these initially generated values to suit your own policies
 # You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+
+# top-most EditorConfig file
+root = true
+
 [*]
 
 # ReSharper properties
@@ -15,11 +19,6 @@ resharper_inconsistent_naming_highlighting=suggestion
 
 #Core editorconfig formatting - indentation
 
-#use hard tabs for indentation
-indent_style=tab
-indent_size=tab
-tab_size=4
-
 #Formatting - indentation options
 
 #indent switch case contents.
@@ -29,6 +28,8 @@ csharp_indent_switch_labels=true
 
 #Formatting - new line options
 
+#denotes whether file should end with a newline
+insert_final_newline = true
 #place catch statements on a new line
 csharp_new_line_before_catch=true
 #place else statements on a new line
@@ -74,7 +75,7 @@ csharp_preserve_single_line_blocks=false
 #Style - Code block preferences
 
 #prefer curly braces even for one line of code
-csharp_prefer_braces=true:suggestion
+csharp_prefer_braces=true:warning
 
 #Style - expression bodied member options
 
@@ -144,6 +145,8 @@ dotnet_style_qualification_for_property=false:suggestion
 
 # SA1600: Elements should be documented
 dotnet_diagnostic.SA1600.severity = none
+# SA1633FileMustHaveHeader
+dotnet_diagnostic.SA1633.severity = none
 
 
 

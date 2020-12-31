@@ -10,9 +10,7 @@
 			"usingDirectivesPlacement": "outsideNamespace"
 		},
 		"indentation": {
-			"useTabs" :  true,
-			"indentationSize": 4,
-			"tabSize": 4
+			"useTabs" :  false
 		}
 	}
 }

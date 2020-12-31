@@ -15,7 +15,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Commands
         }
 
         public T GetCommandByType<T>()
-        	where T : class, ICalculatorCommand
+            where T : class, ICalculatorCommand
         {
             return this.list.OfType<T>().SingleOrDefault();
         }

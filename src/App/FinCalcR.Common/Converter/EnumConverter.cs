@@ -22,5 +22,5 @@ namespace StEn.FinCalcR.Common.Converter
 
             throw new KeyNotFoundException();
         }
-	}
+    }
 }

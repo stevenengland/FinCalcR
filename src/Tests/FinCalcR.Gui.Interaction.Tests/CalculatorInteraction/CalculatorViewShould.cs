@@ -20,7 +20,7 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
         private readonly TimeSpan touchDelayWithOffset = TimeSpan.FromMilliseconds(2200);
 
         public CalculatorViewShould(GuiAutomationFixture fixture)
-			: base(fixture)
+            : base(fixture)
         {
         }
 

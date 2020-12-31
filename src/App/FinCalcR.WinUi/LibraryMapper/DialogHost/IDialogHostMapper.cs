@@ -3,15 +3,15 @@ using StEn.FinCalcR.WinUi.Views;
 
 namespace StEn.FinCalcR.WinUi.LibraryMapper.DialogHost
 {
-	public interface IDialogHostMapper
-	{
-		Task<object> ShowAsync(object content, object dialogIdentifier);
+    public interface IDialogHostMapper
+    {
+        Task<object> ShowAsync(object content, object dialogIdentifier);
 
-		ErrorView GetErrorView(
-			string errorMessage,
-			string innerErrorMessage = "",
-			string shutdownMessage = "");
+        ErrorView GetErrorView(
+            string errorMessage,
+            string innerErrorMessage = "",
+            string shutdownMessage = "");
 
-		HintView GetHintView(string message);
-	}
+        HintView GetHintView(string message);
+    }
 }
