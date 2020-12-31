@@ -37,10 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinCalcR.Gui.Interaction.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{9671A490-D126-4014-8B39-DAA9158BBF70}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		eng\CodeStyle\AnalyzerRules.ruleset = eng\CodeStyle\AnalyzerRules.ruleset
 		CodeMaid.config = CodeMaid.config
 		Directory.Build.props = Directory.Build.props
 		src\Tests\Directory.Build.props = src\Tests\Directory.Build.props
 		Settings.XamlStyler = Settings.XamlStyler
+		eng\CodeStyle\stylecop.json = eng\CodeStyle\stylecop.json
 	EndProjectSection
 EndProject
 Global
