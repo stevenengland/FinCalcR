@@ -66,7 +66,11 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
             return retry.Result;
         }
 
+        // Can be useful in the future so it is kept for the moment
+        // ReSharper disable once UnusedMember.Global
+#pragma warning disable CA1822 // Mark members as static
         protected void WaitUntilClosed(AutomationElement element)
+#pragma warning restore CA1822 // Mark members as static
         {
             var result = Retry.WhileFalse(() => element.IsOffscreen, TimeSpan.FromMilliseconds(BigWaitTimeout));
             if (!result.Success)

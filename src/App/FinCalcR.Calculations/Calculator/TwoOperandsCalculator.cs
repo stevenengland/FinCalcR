@@ -150,7 +150,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
                     new Func<double, double, string, double>(BasicCalculations.Calculate),
                     this.MemoryFields.Get<double>(MemoryFieldNames.PreOperatorNumber).Value,
                     this.MemoryFields.Get<double>(MemoryFieldNames.PostOperatorNumber).Value,
-                    this.TranslateMathOperator(this.ActiveMathOperator));
+                    this.ActiveMathOperator.GetAttributeOfType<TokenAttribute>().Token);
 
                 result = calculatedResult;
             }
@@ -640,27 +640,6 @@ namespace StEn.FinCalcR.Calculations.Calculator
             if (this.OutputText.IsTemporaryOverlay)
             {
                 this.OutputText.SetResult(this.InputText.GetEvaluatedResult());
-            }
-        }
-
-        // TODO: REMOVE
-        private string TranslateMathOperator(MathOperator activeMathOperator)
-        {
-            // TODO: Remove whole function as soon as VMv2 is finished so the old VM does not rely on BasicCalculations anymore.
-            switch (activeMathOperator)
-            {
-                case MathOperator.None:
-                    return string.Empty;
-                case MathOperator.Add:
-                    return "+";
-                case MathOperator.Subtract:
-                    return "-";
-                case MathOperator.Divide:
-                    return "/";
-                case MathOperator.Multiply:
-                    return "*";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(activeMathOperator), activeMathOperator, null);
             }
         }
     }
