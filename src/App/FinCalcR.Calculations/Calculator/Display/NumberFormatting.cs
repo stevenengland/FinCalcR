@@ -77,7 +77,7 @@ namespace StEn.FinCalcR.Calculations.Calculator.Display
 
         public static string RoundToMaxArithmeticPrecision(string inputNumber, int precisionLimit = -1)
         {
-            var parsingStyles = NumberStyles.Number;
+            const NumberStyles parsingStyles = NumberStyles.Number;
             var numberParts = inputNumber.Split(Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator.ToCharArray());
             var wholeNumberPart = numberParts[0];
             var fractionalPart = numberParts.Length < 2 ? string.Empty : numberParts[1];

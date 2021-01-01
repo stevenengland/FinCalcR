@@ -117,7 +117,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            var localTolerance = 0.001;
+            const double localTolerance = 0.001;
 
             // Act
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);

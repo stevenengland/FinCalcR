@@ -12,6 +12,15 @@ namespace StEn.FinCalcR.Calculations.Exceptions
             this.Message = message;
         }
 
+        public CalculationException()
+        {
+        }
+
+        public CalculationException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
         // Without this constructor, deserialization will fail
         protected CalculationException(SerializationInfo info, StreamingContext context)
             : base(info, context)

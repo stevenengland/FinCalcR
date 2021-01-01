@@ -12,6 +12,15 @@ namespace StEn.FinCalcR.Calculations.Exceptions
             this.Message = message;
         }
 
+        public ValidationException()
+        {
+        }
+
+        public ValidationException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
         // Without this constructor, deserialization will fail
         protected ValidationException(SerializationInfo info, StreamingContext context)
             : base(info, context)

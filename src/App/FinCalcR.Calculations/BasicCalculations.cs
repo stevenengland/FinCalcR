@@ -6,26 +6,19 @@ namespace StEn.FinCalcR.Calculations
     {
         public static double Calculate(double value1, double value2, string mathOperator)
         {
-            double result;
             switch (mathOperator)
             {
                 case "/":
-                    result = value1 / value2;
-                    break;
+                    return value1 / value2;
                 case "*":
-                    result = value1 * value2;
-                    break;
+                    return value1 * value2;
                 case "+":
-                    result = value1 + value2;
-                    break;
+                    return value1 + value2;
                 case "-":
-                    result = value1 - value2;
-                    break;
+                    return value1 - value2;
                 default:
                     throw new NotSupportedException();
             }
-
-            return result;
         }
 
         public static double GetPartValue(double baseValue, double rate) => baseValue * rate / 100;

@@ -15,7 +15,7 @@ namespace StEn.FinCalcR.Calculations
         public static double GetYearlyNominalInterestRate(double m, double effectiveInterestRate)
         {
             var decimalEffectiveInterestRate = effectiveInterestRate / 100;
-            return ((Math.Pow(decimalEffectiveInterestRate + 1, 1 / m) - 1) * m) * 100;
+            return (Math.Pow(decimalEffectiveInterestRate + 1, 1 / m) - 1) * m * 100;
         }
 
         public static double GetAnnuity(double k0, double e, double p, double m)
@@ -67,7 +67,7 @@ namespace StEn.FinCalcR.Calculations
         public static double E(double kn, double k0, double p, double n, double m, bool advance = false)
         {
             var q = 1 + (p / (100 * m));
-            var e = (kn - (((-1) * k0) * Math.Pow(q, n * m))) / ((Math.Pow(q, n * m) - 1) / (q - 1));
+            var e = (kn - ((-1) * k0 * Math.Pow(q, n * m))) / ((Math.Pow(q, n * m) - 1) / (q - 1));
             if (advance)
             {
                 return e / q;
