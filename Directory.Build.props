@@ -1,8 +1,4 @@
 <Project>
-	<!-- StyleCop Analyzers configuration -->
-	<!-- <PropertyGroup>
-		<CodeAnalysisRuleSet>$(SolutionDir)eng\CodeStyle\AnalyzerRules.ruleset</CodeAnalysisRuleSet>
-	</PropertyGroup> -->
 	<ItemGroup>
 		<PackageReference Include="Roslynator.Analyzers" Version="3.0.0" />
 		<PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="1.0.0" />

@@ -38,7 +38,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{9671A490-D126-4014-8B39-DAA9158BBF70}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		eng\CodeStyle\AnalyzerRules.ruleset = eng\CodeStyle\AnalyzerRules.ruleset
 		CodeMaid.config = CodeMaid.config
 		Directory.Build.props = Directory.Build.props
 		src\Tests\Directory.Build.props = src\Tests\Directory.Build.props
