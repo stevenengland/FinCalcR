@@ -17,22 +17,77 @@ using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension;
 using StEn.FinCalcR.WinUi.Messages;
 using StEn.FinCalcR.WinUi.ViewModels;
+using Unity;
+using Unity.Lifetime;
 
 namespace StEn.FinCalcR.WinUi
 {
-    public class Bootstrapper : BootstrapperBase
+    public class UnityBootstrapper : BootstrapperBase
     {
-        private readonly SimpleContainer simpleContainer = new SimpleContainer();
+        private readonly IUnityContainer unityContainer = new UnityContainer();
         private ErrorEvent firstErrorEvent;
 
-        public Bootstrapper()
+        public UnityBootstrapper()
         {
             this.Initialize();
         }
 
         protected override void Configure()
         {
-            // --- Register Localization ---
+            // --- Register container itself ---
+            this.unityContainer.RegisterInstance(this.unityContainer);
+            this.RegisterLocalizationService();
+            this.RegisterSnackbar();
+            this.RegisterCalculator();
+            this.unityContainer
+                .RegisterSingleton<IWindowManager, WindowManager>()
+                .RegisterSingleton<IEventAggregator, EventAggregator>()
+                .RegisterSingleton<IDialogHostMapper, DialogHostMapper>();
+            this.RegisterViewModels();
+        }
+
+        protected override void BuildUp(object instance)
+        {
+            this.unityContainer.BuildUp(instance);
+            base.BuildUp(instance);
+        }
+
+        protected override object GetInstance(Type service, string key) => string.IsNullOrEmpty(key) ? this.unityContainer.Resolve(service, key) : this.unityContainer.Resolve(service);
+
+        protected override IEnumerable<object> GetAllInstances(Type service) => this.unityContainer.ResolveAll(service);
+
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            this.DisplayRootViewFor<ShellViewModel>();
+            if (this.firstErrorEvent == null)
+            {
+                return;
+            }
+
+            var eventAggregator = this.unityContainer.Resolve<IEventAggregator>();
+            eventAggregator.PublishOnUIThread(
+                new ErrorEvent(
+                    this.firstErrorEvent.Exception,
+                    Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + this.firstErrorEvent.ErrorMessage,
+                    this.firstErrorEvent.ApplicationMustShutdown));
+        }
+
+        protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            var eventAggregator = this.unityContainer.Resolve<IEventAggregator>();
+            if (e == null)
+            {
+                eventAggregator.PublishOnUIThread(new ErrorEvent(new Exception(), Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + "null", true));
+            }
+            else
+            {
+                eventAggregator.PublishOnUIThread(new ErrorEvent(e.Exception, Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + e.Exception.Message, true));
+                e.Handled = true;
+            }
+        }
+
+        private void RegisterLocalizationService()
+        {
             try
             {
                 // Configure Message override
@@ -52,26 +107,30 @@ namespace StEn.FinCalcR.WinUi
                     localizationService.ChangeCurrentCulture(new CultureInfo("en"));
                 }
 
-                this.simpleContainer.Instance(localizationService);
+                this.unityContainer.RegisterInstance(localizationService);
             }
             catch (Exception e)
             {
                 this.SetErrorEvent(new ErrorEvent(e, $"Could not set Language with the help of {nameof(ILocalizationService)}:" + e.Message, true));
             }
+        }
 
-            // --- Register Snackbar ---
+        private void RegisterSnackbar()
+        {
             try
             {
                 ISnackbarMessageQueue sbMessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
-                this.simpleContainer.Instance(sbMessageQueue);
+                this.unityContainer.RegisterInstance(sbMessageQueue);
             }
             catch (Exception e)
             {
                 this.SetErrorEvent(
                     new ErrorEvent(e, $"Could not load {nameof(ISnackbarMessageQueue)}:" + e.Message, true));
             }
+        }
 
-            // --- Register Calculator ---
+        private void RegisterCalculator()
+        {
             var commands = new List<ICalculatorCommand>();
             ICalculationCommandReceiver calculator = new TwoOperandsCalculator(new SingleNumberOutput(), new SingleNumberInput(9));
             var assemblies = new[]
@@ -87,60 +146,25 @@ namespace StEn.FinCalcR.WinUi
             }
 
             // Register an instance of the calculator helps to preserve internal states when VM is recreated like when the language changes.
-            this.simpleContainer.Instance(calculator);
+            this.unityContainer.RegisterInstance(calculator);
 
             ICommandInvoker calculatorRemote = new CalculatorRemote(new CommandList(commands));
-            this.simpleContainer.Instance(calculatorRemote);
-
-            // --- Register container itself ---
-            this.simpleContainer.Instance(this.simpleContainer);
-
-            // --- Register diverse ---
-            this.simpleContainer
-                .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()
-                .PerRequest<IDialogHostMapper, DialogHostMapper>();
-
-            // --- View Model Registration ---
-            this.GetType().Assembly.GetTypes()
-                .Where(type => type.IsClass)
-                .Where(type => type.Name.EndsWith("ViewModel"))
-                .ToList()
-                .ForEach(viewModelType => this.simpleContainer.RegisterPerRequest(
-                    viewModelType, viewModelType.ToString(), viewModelType));
+            this.unityContainer.RegisterInstance(calculatorRemote);
         }
 
-        protected override void OnStartup(object sender, StartupEventArgs e)
+        private void RegisterViewModels()
         {
-            this.DisplayRootViewFor<ShellViewModel>();
-            if (this.firstErrorEvent != null)
+            try
             {
-                var eventAggregator = (IEventAggregator)this.simpleContainer.GetInstance(typeof(IEventAggregator), null);
-                eventAggregator.PublishOnUIThread(
-                    new ErrorEvent(
-                        this.firstErrorEvent.Exception,
-                        Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + this.firstErrorEvent.ErrorMessage,
-                        this.firstErrorEvent.ApplicationMustShutdown));
+                this.GetType().Assembly.GetTypes()
+                    .Where(type => type.IsClass && type.Name.EndsWith("ViewModel"))
+                    .ToList()
+                    .ForEach(viewModelType => this.unityContainer.RegisterType(
+                        viewModelType, viewModelType, new TransientLifetimeManager()));
             }
-        }
-
-        protected override object GetInstance(Type service, string key) => this.simpleContainer.GetInstance(service, key);
-
-        protected override IEnumerable<object> GetAllInstances(Type service) => this.simpleContainer.GetAllInstances(service);
-
-        protected override void BuildUp(object instance) => this.simpleContainer.BuildUp(instance);
-
-        protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-        {
-            var eventAggregator = (IEventAggregator)this.simpleContainer.GetInstance(typeof(IEventAggregator), null);
-            if (e == null)
+            catch (Exception e)
             {
-                eventAggregator.PublishOnUIThread(new ErrorEvent(new Exception(), Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + "null", true));
-            }
-            else
-            {
-                eventAggregator.PublishOnUIThread(new ErrorEvent(e.Exception, Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + e.Exception.Message, true));
-                e.Handled = true;
+                this.SetErrorEvent(new ErrorEvent(e, $"One or more ViewModels could not be loaded:" + e.Message, true));
             }
         }
 

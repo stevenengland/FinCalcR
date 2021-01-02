@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("StEn Open Source - https://github.com/stevenengland/FinCalcR")]
 [assembly: AssemblyProduct("FinCalcR.WinUi")]
-[assembly: AssemblyCopyright("Copyright © Steven England 2020")]
+[assembly: AssemblyCopyright("Copyright © Steven England 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
