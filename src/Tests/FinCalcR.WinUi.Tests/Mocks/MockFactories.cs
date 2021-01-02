@@ -5,6 +5,7 @@ using System.Reflection;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Moq;
+using Moq.AutoMock;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
@@ -16,16 +17,18 @@ namespace FinCalcR.WinUi.Tests.Mocks
 {
     public static class MockFactories
     {
-        public static ShellViewModel ShellViewModelFactory(Dictionary<string, object> mockObjects) => new ShellViewModel(
-                    (ISnackbarMessageQueue)mockObjects[nameof(ISnackbarMessageQueue)],
-                    (IEventAggregator)mockObjects[nameof(IEventAggregator)],
-                    (IDialogHostMapper)mockObjects[nameof(IDialogHostMapper)],
-                    (ILocalizationService)mockObjects[nameof(ILocalizationService)],
-                    (IWindowManager)mockObjects[nameof(IWindowManager)],
-                    AboutViewModelFactory(),
-                    FinCalcViewModelFactory(GetMockObjects()));
+        public static ShellViewModel ShellViewModelMock(out AutoMocker mocker)
+        {
+            mocker = new AutoMocker();
+            mocker.Use<ICalculationCommandReceiver>(GetCalculationCommandReceiver());
+            return mocker.CreateInstance<ShellViewModel>();
+        }
 
-        public static AboutViewModel AboutViewModelFactory() => new AboutViewModel();
+        public static AboutViewModel AboutViewModelFactory(out AutoMocker mocker)
+        {
+            mocker = new AutoMocker();
+            return mocker.CreateInstance<AboutViewModel>();
+        }
 
         public static FinCalcViewModel FinCalcViewModelFactory(Dictionary<string, object> mockObjects) => new FinCalcViewModel(
                 (ILocalizationService)mockObjects[nameof(ILocalizationService)],

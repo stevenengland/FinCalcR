@@ -28,7 +28,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         private readonly ICalculationCommandReceiver calculator;
         private string displayText;
         private double displayNumber; // Remains in VM
-
         private string advanceStatusBarText; // Remains in VM
         private string yearsStatusBarText; // Remains in VM
         private string interestStatusBarText; // Remains in VM
