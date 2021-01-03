@@ -13,7 +13,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <gui:UnityBootstrapper x:Key="Bootstrapper" />
+                    <gui:DryIocBootstrapper x:Key="Bootstrapper" />
                 </ResourceDictionary>
 
                 <!--  This is the current way to setup your app's initial theme  -->

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
+using DryIoc;
 using MaterialDesignThemes.Wpf;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
@@ -17,17 +18,15 @@ using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension;
 using StEn.FinCalcR.WinUi.Messages;
 using StEn.FinCalcR.WinUi.ViewModels;
-using Unity;
-using Unity.Lifetime;
 
 namespace StEn.FinCalcR.WinUi
 {
-    public class UnityBootstrapper : BootstrapperBase
+    public class DryIocBootstrapper : BootstrapperBase
     {
-        private readonly IUnityContainer unityContainer = new UnityContainer();
+        private readonly IContainer unityContainer = new Container();
         private ErrorEvent firstErrorEvent;
 
-        public UnityBootstrapper()
+        public DryIocBootstrapper()
         {
             this.Initialize();
         }
@@ -39,22 +38,28 @@ namespace StEn.FinCalcR.WinUi
             this.RegisterLocalizationService();
             this.RegisterSnackbar();
             this.RegisterCalculator();
-            this.unityContainer
-                .RegisterSingleton<IWindowManager, WindowManager>()
-                .RegisterSingleton<IEventAggregator, EventAggregator>()
-                .RegisterSingleton<IDialogHostMapper, DialogHostMapper>();
+            this.unityContainer.Register<IWindowManager, WindowManager>(Reuse.Singleton);
+            this.unityContainer.Register<IEventAggregator, EventAggregator>(Reuse.Singleton);
+            this.unityContainer.Register<IDialogHostMapper, DialogHostMapper>(Reuse.Singleton);
             this.RegisterViewModels();
         }
 
         protected override void BuildUp(object instance)
         {
-            this.unityContainer.BuildUp(instance);
+            // Resolve service first then inject properties into it.
+            this.unityContainer.InjectPropertiesAndFields(instance);
             base.BuildUp(instance);
+        }
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            this.unityContainer.Dispose();
+            base.OnExit(sender, e);
         }
 
         protected override object GetInstance(Type service, string key) => string.IsNullOrEmpty(key) ? this.unityContainer.Resolve(service, key) : this.unityContainer.Resolve(service);
 
-        protected override IEnumerable<object> GetAllInstances(Type service) => this.unityContainer.ResolveAll(service);
+        protected override IEnumerable<object> GetAllInstances(Type service) => this.unityContainer.ResolveMany(service);
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
@@ -159,8 +164,7 @@ namespace StEn.FinCalcR.WinUi
                 this.GetType().Assembly.GetTypes()
                     .Where(type => type.IsClass && type.Name.EndsWith("ViewModel"))
                     .ToList()
-                    .ForEach(viewModelType => this.unityContainer.RegisterType(
-                        viewModelType, viewModelType, new TransientLifetimeManager()));
+                    .ForEach(viewModelType => this.unityContainer.Register(viewModelType, viewModelType));
             }
             catch (Exception e)
             {
