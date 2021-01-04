@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
@@ -10,35 +9,29 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public static class FinCalcViewModelHelper
     {
-        public static void ExecuteDummyActionsAndCheckOutput(IEnumerable<(Ca[] operations, string expectedOutputTextAfterAllOperations)> testData)
+        public static void ExecuteDummyActionsAndCheckOutput(Ca[] actions, string expectedOutputTextAfterAllOperations)
         {
             // Arrange
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
 
-            foreach (var (operations, expectedOutputTextAfterAllOperations) in testData)
-            {
-                // Act
-                ExecuteDummyActions(vm, operations);
+            // Act
+            ExecuteDummyActions(vm, actions);
 
-                // Assert
-                vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
-            }
+            // Assert
+            vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
         }
 
-        public static void ExecuteDummyActionsAndCheckOutput(IEnumerable<(Ca[] operations, string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations)> testData)
+        public static void ExecuteDummyActionsAndCheckOutput(Ca[] actions, string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, double precision)
         {
             // Arrange
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
 
-            foreach (var (operations, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations) in testData)
-            {
-                // Act
-                ExecuteDummyActions(vm, operations);
+            // Act
+            ExecuteDummyActions(vm, actions);
 
-                // Assert
-                vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
-                vm.DisplayNumber.Should().Be(expectedNumberAfterAllOperations);
-            }
+            // Assert
+            vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
+            vm.DisplayNumber.Should().BeApproximately(expectedNumberAfterAllOperations, precision);
         }
 
         public static void SetFinancialValue(FinCalcViewModel vm, double valueToAssign, CommandWord variableToAssignValueTo)
