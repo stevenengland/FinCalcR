@@ -20,7 +20,7 @@ namespace FinCalcR.WinUi.Tests.Mocks
         public static ShellViewModel ShellViewModelMock(out AutoMocker mocker)
         {
             mocker = new AutoMocker();
-            mocker.Use<ICalculationCommandReceiver>(GetCalculationCommandReceiver());
+            mocker.Use(GetCalculationCommandReceiver());
             return mocker.CreateInstance<ShellViewModel>();
         }
 
@@ -30,11 +30,14 @@ namespace FinCalcR.WinUi.Tests.Mocks
             return mocker.CreateInstance<AboutViewModel>();
         }
 
-        public static FinCalcViewModel FinCalcViewModelFactory(Dictionary<string, object> mockObjects) => new FinCalcViewModel(
-                (ILocalizationService)mockObjects[nameof(ILocalizationService)],
-                (IEventAggregator)mockObjects[nameof(IEventAggregator)],
-                (ICommandInvoker)mockObjects[nameof(ICommandInvoker)],
-                (ICalculationCommandReceiver)mockObjects[nameof(ICalculationCommandReceiver)]);
+        public static FinCalcViewModel FinCalcViewModelWithCalculatorImplementationFactory(out AutoMocker mocker)
+        {
+            mocker = new AutoMocker();
+            SetImplementationOfCalculatorCommandObjects(out var receiver, out var invoker);
+            mocker.Use(receiver);
+            mocker.Use(invoker);
+            return mocker.CreateInstance<FinCalcViewModel>();
+        }
 
         public static FinCalcViewModel FinCalcViewModelWithCalculatorImplementationFactory(Dictionary<string, object> mockObjects)
         {

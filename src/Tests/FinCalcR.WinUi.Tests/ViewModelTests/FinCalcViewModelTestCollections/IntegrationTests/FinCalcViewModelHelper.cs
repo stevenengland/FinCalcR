@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using FinCalcR.WinUi.Tests.Mocks;
+using FluentAssertions;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.WinUi.ViewModels;
 
@@ -7,6 +10,37 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public static class FinCalcViewModelHelper
     {
+        public static void ExecuteDummyActionsAndCheckOutput(IEnumerable<(Ca[] operations, string expectedOutputTextAfterAllOperations)> testData)
+        {
+            // Arrange
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+
+            foreach (var (operations, expectedOutputTextAfterAllOperations) in testData)
+            {
+                // Act
+                ExecuteDummyActions(vm, operations);
+
+                // Assert
+                vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
+            }
+        }
+
+        public static void ExecuteDummyActionsAndCheckOutput(IEnumerable<(Ca[] operations, string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations)> testData)
+        {
+            // Arrange
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+
+            foreach (var (operations, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations) in testData)
+            {
+                // Act
+                ExecuteDummyActions(vm, operations);
+
+                // Assert
+                vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
+                vm.DisplayNumber.Should().Be(expectedNumberAfterAllOperations);
+            }
+        }
+
         public static void SetFinancialValue(FinCalcViewModel vm, double valueToAssign, CommandWord variableToAssignValueTo)
         {
             InputNumberWithCommands(vm, valueToAssign);
@@ -58,7 +92,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
         }
 
-        public static void ExecuteDummyOperations(FinCalcViewModel vm, Ca[] operations)
+        public static void ExecuteDummyActions(FinCalcViewModel vm, Ca[] operations)
         {
             foreach (Ca operation in operations)
             {

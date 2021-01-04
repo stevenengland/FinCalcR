@@ -59,7 +59,7 @@
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinancialCalculationShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinCalcViewModelHelper.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinCalcViewModelTests.cs" />
-    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\InputSequencesShould.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\FinCalcViewModelShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\InputSequenceTests.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\OperatorCommandShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\CalculatorManualExampleTests.cs" />

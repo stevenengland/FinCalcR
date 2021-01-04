@@ -81,7 +81,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
 
             // Act
-            FinCalcViewModelHelper.ExecuteDummyOperations(vm, preOperations.Concat(new[] { mainOperation }).Concat(postOperations).ToArray());
+            FinCalcViewModelHelper.ExecuteDummyActions(vm, preOperations.Concat(new[] { mainOperation }).Concat(postOperations).ToArray());
 
             // Assert
             vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
