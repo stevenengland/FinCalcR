@@ -32,7 +32,7 @@ namespace StEn.FinCalcR.WinUi.Commanding
                 try
                 {
                     this.isExecuting = true;
-                    await this.execute();
+                    await this.execute().ConfigureAwait(false);
                 }
                 finally
                 {
@@ -79,7 +79,7 @@ namespace StEn.FinCalcR.WinUi.Commanding
                 try
                 {
                     this.isExecuting = true;
-                    await this.execute(parameter);
+                    await this.execute(parameter).ConfigureAwait(false);
                 }
                 finally
                 {

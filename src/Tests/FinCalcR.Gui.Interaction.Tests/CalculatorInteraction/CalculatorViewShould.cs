@@ -170,7 +170,7 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
             Wait.UntilInputIsProcessed();
             var clearBtn = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.ClearBtn)).AsButton());
             Mouse.MoveTo(clearBtn.GetClickablePoint());
-            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset).ConfigureAwait(false);
             Wait.UntilInputIsProcessed();
             var hintMessageTxt = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.HintView.HintMessageTxt)).AsLabel());
 
@@ -247,23 +247,23 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
             Wait.UntilInputIsProcessed();
 
             Mouse.MoveTo(yearsBtn.GetClickablePoint());
-            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset).ConfigureAwait(false);
             Wait.UntilInputIsProcessed();
             var yearsResult = resultLbl.Text;
             Mouse.MoveTo(interestBtn.GetClickablePoint());
-            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset).ConfigureAwait(false);
             Wait.UntilInputIsProcessed();
             var interestResult = resultLbl.Text;
             Mouse.MoveTo(startBtn.GetClickablePoint());
-            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset).ConfigureAwait(false);
             Wait.UntilInputIsProcessed();
             var startResult = resultLbl.Text;
             Mouse.MoveTo(rateBtn.GetClickablePoint());
-            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset).ConfigureAwait(false);
             Wait.UntilInputIsProcessed();
             var rateResult = resultLbl.Text;
             Mouse.MoveTo(endBtn.GetClickablePoint());
-            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset);
+            await ExtendedMouseInput.LongLeftMouseClickAsync(this.touchDelayWithOffset).ConfigureAwait(false);
             Wait.UntilInputIsProcessed();
             var endResult = resultLbl.Text;
 

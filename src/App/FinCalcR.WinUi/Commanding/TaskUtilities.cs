@@ -18,7 +18,9 @@ namespace StEn.FinCalcR.WinUi.Commanding
             try
             {
 #pragma warning disable VSTHRD003 // Avoid awaiting foreign Tasks
+#pragma warning disable RCS1090 // Call 'ConfigureAwait(false)'.
                 await task;
+#pragma warning restore RCS1090 // Call 'ConfigureAwait(false)'.
 #pragma warning restore VSTHRD003 // Avoid awaiting foreign Tasks
             }
             catch (Exception ex)

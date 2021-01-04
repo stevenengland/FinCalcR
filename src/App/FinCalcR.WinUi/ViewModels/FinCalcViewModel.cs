@@ -221,7 +221,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
                 return;
             }
 
-            var isLongPress = await this.IsLongPressAsync(sender, eventArgs);
+            var isLongPress = await this.IsLongPressAsync(sender, eventArgs).ConfigureAwait(false);
             this.ClearPressedCommand.Execute(isLongPress);
         }
 
@@ -232,7 +232,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
                 return;
             }
 
-            var isLongPress = await this.IsLongPressAsync(sender, eventArgs);
+            var isLongPress = await this.IsLongPressAsync(sender, eventArgs).ConfigureAwait(false);
             this.YearsPressedCommand.Execute(isLongPress);
         }
 
@@ -240,7 +240,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         {
             var element = (FrameworkElement)sender;
             var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
+            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
             this.InterestPressedCommand.Execute(isLongTouch);
         }
 
@@ -248,7 +248,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         {
             var element = (FrameworkElement)sender;
             var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
+            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
             this.StartPressedCommand.Execute(isLongTouch);
         }
 
@@ -256,7 +256,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         {
             var element = (FrameworkElement)sender;
             var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
+            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
             this.RatePressedCommand.Execute(isLongTouch);
         }
 
@@ -264,7 +264,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         {
             var element = (FrameworkElement)sender;
             var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
+            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
             this.EndPressedCommand.Execute(isLongTouch);
         }
 
@@ -729,11 +729,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             {
                 case StylusDownEventArgs se:
                     se.Handled = true; // Prevents firing a separate TouchEvent with TouchEventArgs
-                    isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+                    isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
                     break;
                 case TouchEventArgs te:
                     te.Handled = true; // Prevents firing a separate TouchEvent with TouchEventArgs
-                    isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay));
+                    isLongTouch = await gestureHandler.IsLongTouchAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
                     break;
                 case MouseButtonEventArgs me:
                     if (me.StylusDevice != null)
@@ -742,7 +742,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
                     }
 
                     me.Handled = true;
-                    isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay));
+                    isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
                     break;
                 default:
                     this.eventAggregator.PublishOnUIThread(new ErrorEvent($"{eventArgs.GetType()} is not supported."));
