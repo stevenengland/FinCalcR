@@ -746,7 +746,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("+");
             Assert.True(vm.DisplayText == "-113.187,55");
             Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
-            Assert.True(vm.EndStatusBarText == string.Empty);
+            Assert.True(vm.EndStatusBarText?.Length == 0);
             vm.DigitPressedCommand.Execute(1);
             Assert.True(vm.DisplayText == "1,");
             Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
@@ -762,7 +762,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DigitPressedCommand.Execute(1);
             Assert.True(vm.DisplayText == "1,");
             Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
-            Assert.True(vm.EndStatusBarText == string.Empty);
+            Assert.True(vm.EndStatusBarText?.Length == 0);
             vm.OperatorPressedCommand.Execute("+");
             vm.DigitPressedCommand.Execute(1);
             vm.CalculatePressedCommand.Execute(null);
@@ -775,7 +775,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             PerformBasicEndCapitalCalculation(vm);
 
             vm.AlgebSignCommand.Execute(false);
-            Assert.True(vm.EndStatusBarText == string.Empty);
+            Assert.True(vm.EndStatusBarText?.Length == 0);
             Assert.True(vm.DisplayText == "113.187,55");
             Assert.True(Math.Abs(vm.DisplayNumber - 113187.548818633) < Tolerance);
 
@@ -784,7 +784,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             PerformBasicEndCapitalCalculation(vm);
 
             vm.DecimalSeparatorPressedCommand.Execute(null);
-            Assert.True(vm.EndStatusBarText == string.Empty);
+            Assert.True(vm.EndStatusBarText?.Length == 0);
             Assert.True(vm.DisplayText == "-113.187,55");
             Assert.True(Math.Abs(vm.DisplayNumber - -113187.548818633) < Tolerance);
             vm.DigitPressedCommand.Execute(1);

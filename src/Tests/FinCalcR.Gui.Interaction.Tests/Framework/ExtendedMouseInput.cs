@@ -9,20 +9,21 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
         [Flags]
         public enum MouseEvent
         {
+            None = 0,
+            Move = 0x00000001,
             LeftDown = 0x00000002,
             LeftUp = 0x00000004,
-            MiddleDown = 0x00000020,
-            MiddleUp = 0x00000040,
-            Move = 0x00000001,
-            Absolute = 0x00008000,
             RightDown = 0x00000008,
             RightUp = 0x00000010,
+            MiddleDown = 0x00000020,
+            MiddleUp = 0x00000040,
+            Absolute = 0x00008000,
         }
 
         public static async Task LongLeftMouseClickAsync(TimeSpan waitTime)
         {
             SendMouseEvent(MouseEvent.LeftDown);
-            await Task.Delay(waitTime);
+            await Task.Delay(waitTime).ConfigureAwait(false);
             SendMouseEvent(MouseEvent.LeftUp);
         }
 

@@ -114,7 +114,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             Assert.True(vm.AdvanceStatusBarText != string.Empty);
             vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
             vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8", vm) { IsShiftPressed = true }));
-            Assert.True(vm.AdvanceStatusBarText == string.Empty);
+            Assert.True(vm.AdvanceStatusBarText?.Length == 0);
             vm.ClearPressedCommand.Execute(true);
 
             vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
@@ -377,28 +377,28 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             var mockObjects = MockFactories.GetMockObjects();
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            Assert.True(vm.YearsStatusBarText == string.Empty);
+            Assert.True(vm.YearsStatusBarText?.Length == 0);
             vm.YearsPressedCommand.Execute(true);
             Assert.True(vm.YearsStatusBarText == Resources.FinCalcFunctionYears);
             vm.ClearPressedCommand.Execute(true);
             vm.YearsPressedCommand.Execute(false);
             Assert.True(vm.YearsStatusBarText == Resources.FinCalcFunctionYears);
 
-            Assert.True(vm.InterestStatusBarText == string.Empty);
+            Assert.True(vm.InterestStatusBarText?.Length == 0);
             vm.InterestPressedCommand.Execute(false);
             Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
             vm.ClearPressedCommand.Execute(true);
             vm.InterestPressedCommand.Execute(true);
             Assert.True(vm.InterestStatusBarText == Resources.FinCalcFunctionInterest);
 
-            Assert.True(vm.StartStatusBarText == string.Empty);
+            Assert.True(vm.StartStatusBarText?.Length == 0);
             vm.StartPressedCommand.Execute(true);
             Assert.True(vm.StartStatusBarText == Resources.FinCalcFunctionStart);
             vm.ClearPressedCommand.Execute(true);
             vm.StartPressedCommand.Execute(false);
             Assert.True(vm.StartStatusBarText == Resources.FinCalcFunctionStart);
 
-            Assert.True(vm.RateStatusBarText == string.Empty);
+            Assert.True(vm.RateStatusBarText?.Length == 0);
             vm.RatePressedCommand.Execute(true);
             Assert.True(vm.RateStatusBarText == Resources.FinCalcFunctionRate);
             vm.ClearPressedCommand.Execute(true);
@@ -413,7 +413,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.RatePressedCommand.Execute(false);
             Assert.True(vm.RateStatusBarText == Resources.FinCalcFunctionRate);
 
-            Assert.True(vm.EndStatusBarText == string.Empty);
+            Assert.True(vm.EndStatusBarText?.Length == 0);
             vm.EndPressedCommand.Execute(true);
             Assert.True(vm.EndStatusBarText == Resources.FinCalcFunctionEnd);
             vm.ClearPressedCommand.Execute(true);
@@ -2246,18 +2246,18 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             if (checkAdvanceStatusBarTextToo)
             {
-                Assert.True(vm.AdvanceStatusBarText == string.Empty);
+                Assert.True(vm.AdvanceStatusBarText?.Length == 0);
             }
             else
             {
                 Assert.True(vm.AdvanceStatusBarText == "test");
             }
 
-            Assert.True(vm.YearsStatusBarText == string.Empty);
-            Assert.True(vm.InterestStatusBarText == string.Empty);
-            Assert.True(vm.StartStatusBarText == string.Empty);
-            Assert.True(vm.RateStatusBarText == string.Empty);
-            Assert.True(vm.EndStatusBarText == string.Empty);
+            Assert.True(vm.YearsStatusBarText?.Length == 0);
+            Assert.True(vm.InterestStatusBarText?.Length == 0);
+            Assert.True(vm.StartStatusBarText?.Length == 0);
+            Assert.True(vm.RateStatusBarText?.Length == 0);
+            Assert.True(vm.EndStatusBarText?.Length == 0);
         }
     }
 }

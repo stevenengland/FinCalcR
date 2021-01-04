@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace StEn.FinCalcR.Calculations.Calculator
 {
@@ -43,7 +42,7 @@ namespace StEn.FinCalcR.Calculations.Calculator
 
         public void Reset(IList<string> categories = null)
         {
-            if (categories == null || !categories.Any())
+            if (categories == null || categories.Count == 0)
             {
                 foreach (var memoryField in this.container.Values)
                 {
