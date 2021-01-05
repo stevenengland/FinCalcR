@@ -82,7 +82,7 @@ namespace StEn.FinCalcR.WinUi
             var eventAggregator = this.unityContainer.Resolve<IEventAggregator>();
             if (e == null)
             {
-                eventAggregator.PublishOnUIThread(new ErrorEvent(new Exception(), Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + "null", true));
+                eventAggregator.PublishOnUIThread(new ErrorEvent(new Exception(), $"{Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED} null", true));
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace StEn.FinCalcR.Common.Extensions
@@ -68,7 +69,12 @@ namespace StEn.FinCalcR.Common.Extensions
                 }
                 else if (enumeration.HasFlag(flag))
                 {
-                    return false;
+                    // Checking Flag.HasFlag(Flag.None) is always true so that we must skip this flag.
+                    var flagNumber = (int)(flag as object);
+                    if (flagNumber != 0)
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -106,9 +112,11 @@ namespace StEn.FinCalcR.Common.Extensions
             where T : Enum
         {
             var possibleFlags = (T[])Enum.GetValues(typeof(T));
-            foreach (var flag in possibleFlags)
+            foreach (var flag in possibleFlags.Where(flag => enumeration.HasFlag(flag)))
             {
-                if (enumeration.HasFlag(flag))
+                // Checking Flag.HasFlag(Flag.None) is always true so that we must skip this flag.
+                var flagNumber = (int)(flag as object);
+                if (flagNumber != 0)
                 {
                     return false;
                 }
@@ -121,9 +129,11 @@ namespace StEn.FinCalcR.Common.Extensions
             where T : struct, IComparable, IFormattable, IConvertible
         {
             var possibleFlags = (T[])Enum.GetValues(typeof(T));
-            foreach (var flag in possibleFlags)
+            foreach (var (flag, flagNumber) in from flag in possibleFlags// Checking Flag.HasFlag(Flag.None) is always true so that we must skip this flag.
+                                               let flagNumber = (int)(flag as object)
+                                               select (flag, flagNumber))
             {
-                enumeration = enumeration.SetFlag(flag, value);
+                enumeration = enumeration.SetFlag(flag, flagNumber != 0 && value);
             }
 
             return enumeration;

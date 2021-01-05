@@ -13,7 +13,7 @@ namespace StEn.FinCalcR.WinUi.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // obtain the conveter for the target type
-            TypeConverter converter = TypeDescriptor.GetConverter(targetType);
+            var converter = TypeDescriptor.GetConverter(targetType);
 
             try
             {
@@ -35,6 +35,6 @@ namespace StEn.FinCalcR.WinUi.Converter
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotSupportedException();
     }
 }
