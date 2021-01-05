@@ -168,7 +168,7 @@ namespace StEn.FinCalcR.WinUi
             }
             catch (Exception e)
             {
-                this.SetErrorEvent(new ErrorEvent(e, $"One or more ViewModels could not be loaded:" + e.Message, true));
+                this.SetErrorEvent(new ErrorEvent(e, "One or more ViewModels could not be loaded:" + e.Message, true));
             }
         }
 

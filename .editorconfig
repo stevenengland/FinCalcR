@@ -113,6 +113,10 @@ dotnet_diagnostic.S1135.severity=suggestion
 dotnet_diagnostic.RCS1032.severity=warning
 #RCS1090: Add call to 'ConfigureAwait' (or vice versa)
 dotnet_diagnostic.RCS1090.severity=warning
+#RCS1096: Convert 'HasFlag' call to bitwise operation (or vice versa)
+dotnet_diagnostic.RCS1096.severity=suggestion
+#RCS1096i: Convert bitwise operation to 'HasFlag' call
+dotnet_diagnostic.RCS1096i.severity=suggestion
 #RCS1118: Mark local variable as const
 dotnet_diagnostic.RCS1118.severity=warning
 #RCS1135: Declare enum member with zero value (when enum has FlagsAttribute)
