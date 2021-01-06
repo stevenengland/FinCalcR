@@ -1,20 +1,12 @@
-﻿using System.Globalization;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
-    public class DecimalSeparatorCommandShould
+    public class DecimalSeparatorBtnShould : TestBase
     {
-        public DecimalSeparatorCommandShould()
-        {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
-        }
-
         public static TheoryData<Ca[], Ca, Ca[], string> SpecialDecimalDigit =>
             new TheoryData<Ca[], Ca, Ca[], string>()
             {

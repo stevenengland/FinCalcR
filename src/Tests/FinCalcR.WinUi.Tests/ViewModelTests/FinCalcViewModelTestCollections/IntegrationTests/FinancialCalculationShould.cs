@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Threading;
-using FinCalcR.Tests.Shared.TestData;
+﻿using FinCalcR.Tests.Shared.TestData;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
@@ -8,15 +6,9 @@ using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
-    public class FinancialCalculationShould
+    public class FinancialCalculationShould : TestBase
     {
         private const double Tolerance = 0.01;
-
-        public FinancialCalculationShould()
-        {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
-        }
 
         [Theory]
         [MemberData(nameof(FinancialCalculation.KnWanted), MemberType = typeof(FinancialCalculation))]

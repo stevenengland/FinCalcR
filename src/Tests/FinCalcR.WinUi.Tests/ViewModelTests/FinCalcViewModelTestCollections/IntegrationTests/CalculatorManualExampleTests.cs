@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Globalization;
-using System.Threading;
 using FinCalcR.WinUi.Tests.Mocks;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
-    public class CalculatorManualExampleTests
+    public class CalculatorManualExampleTests : TestBase
     {
         private const double Tolerance = 0.01;
-
-        public CalculatorManualExampleTests()
-        {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
-        }
 
         #region Percentage Calculation
 

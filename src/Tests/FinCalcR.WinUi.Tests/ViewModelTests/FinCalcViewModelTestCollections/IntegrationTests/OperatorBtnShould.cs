@@ -1,21 +1,13 @@
-﻿using System.Globalization;
-using System.Threading;
-using FinCalcR.WinUi.Tests.Mocks;
+﻿using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
-    public class OperatorCommandShould
+    public class OperatorBtnShould : TestBase
     {
-        public OperatorCommandShould()
-        {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
-        }
-
         [Fact]
-        public void ActivateSecondFunctionTrigger_WhenOperatorIsAdd()
+        public void ActivateSecondFunctionTrigger_WhenActiveOperatorIsAdd()
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
