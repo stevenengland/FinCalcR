@@ -47,11 +47,26 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ShowExpectedOutputText_WhenLastActionWasClear(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
 
         [Theory]
-        [InlineData("0,000", new[] { Ca.Nr1, Ca.SetYears, Ca.SetInt })] // If a special function is invoked right after another the display shall be zero (unless there is a reason to calculate the special value).
-        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetInt, Ca.SetStart })] // If a special function is invoked right after another the display shall be zero (unless there is a reason to calculate the special value).
-        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetStart, Ca.SetRate })] // If a special function is invoked right after another the display shall be zero (unless there is a reason to calculate the special value).
-        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetRate, Ca.SetEnd })] // If a special function is invoked right after another the display shall be zero (unless there is a reason to calculate the special value).
-        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetEnd, Ca.SetYears })] // If a special function is invoked right after another the display shall be zero (unless there is a reason to calculate the special value).
+
+        // Call all the special setters
+        [InlineData("1,00", new[] { Ca.Nr1, Ca.SetYears })]
+        [InlineData("1,000", new[] { Ca.Nr1, Ca.SetInt })]
+        [InlineData("1,00", new[] { Ca.Nr1, Ca.SetStart })]
+        [InlineData("1,00", new[] { Ca.Nr1, Ca.SetRate })]
+        [InlineData("1,00", new[] { Ca.Nr1, Ca.SetEnd })]
+        [InlineData("1,005", new[] { Ca.Nr1, Ca.SetNom })]
+        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetRep })]
+        [InlineData("1 p.a.", new[] { Ca.Nr1, Ca.SetRpa })]
+
+        // If a special function is invoked right after another the display shall be zero (unless there is a reason to calculate the special value).
+        [InlineData("0,000", new[] { Ca.Nr1, Ca.SetYears, Ca.SetInt })]
+        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetInt, Ca.SetStart })]
+        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetStart, Ca.SetRate })]
+        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetRate, Ca.SetEnd })]
+        [InlineData("0,00", new[] { Ca.Nr1, Ca.SetEnd, Ca.SetYears })]
+
+        // Round trip with a number before the special function. Intent is to NOT invoke the calculation of the the fifth and following special numbers because of the number set before.
+        [InlineData("1,00", new[] { Ca.Nr1, Ca.SetYears, Ca.Nr1, Ca.SetInt, Ca.Nr1, Ca.SetStart, Ca.Nr1, Ca.SetRate, Ca.Nr1, Ca.SetEnd, Ca.Nr1, Ca.SetYears })]
         public void ShowExpectedOutputText_WhenLastActionWasSettingSpecialValue(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
 
         [Theory]

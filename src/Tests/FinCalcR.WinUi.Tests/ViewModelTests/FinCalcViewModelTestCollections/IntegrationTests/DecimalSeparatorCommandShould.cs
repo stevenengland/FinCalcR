@@ -7,7 +7,6 @@ using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
-    // ToDo: Pull all the related tests for this command to this place and dito for other commands.
     public class DecimalSeparatorCommandShould
     {
         public DecimalSeparatorCommandShould()

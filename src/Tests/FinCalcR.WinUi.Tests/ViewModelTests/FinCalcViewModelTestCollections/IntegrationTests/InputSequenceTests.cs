@@ -23,46 +23,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
         }
 
-        [Fact]
-        public void Tc0003()
-        {
-            var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
-
-            vm.DigitPressedCommand.Execute(1);
-            vm.DecimalSeparatorPressedCommand.Execute(null);
-            vm.DigitPressedCommand.Execute(1);
-            vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "1,10");
-            Assert.True(Math.Abs(vm.DisplayNumber - 1.1) < Tolerance);
-
-            vm.DigitPressedCommand.Execute(2);
-            vm.InterestPressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "2,000");
-            Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
-
-            vm.DigitPressedCommand.Execute(3);
-            vm.StartPressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "3,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 3) < Tolerance);
-
-            vm.DigitPressedCommand.Execute(4);
-            vm.RatePressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "4,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
-
-            vm.DigitPressedCommand.Execute(5);
-            vm.RatePressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "5,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
-
-            // And one from the beginning
-            vm.DigitPressedCommand.Execute(1);
-            vm.YearsPressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "1,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 1) < Tolerance);
-        }
-
         #region Focus Interest
 
         [Fact]
