@@ -97,6 +97,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             switch (operation)
             {
+                case Ca.Nr0:
+                    vm.DigitPressedCommand.Execute(0);
+                    break;
                 case Ca.Nr1:
                     vm.DigitPressedCommand.Execute(1);
                     break;

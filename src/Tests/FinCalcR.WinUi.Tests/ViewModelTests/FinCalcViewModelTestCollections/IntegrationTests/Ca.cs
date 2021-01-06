@@ -5,6 +5,7 @@
     /// </summary>
     public enum Ca
     {
+        Nr0,
         Nr1,
         Nr2,
         Nr34,
