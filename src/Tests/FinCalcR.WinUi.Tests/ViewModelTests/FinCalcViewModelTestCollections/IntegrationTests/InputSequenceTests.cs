@@ -26,39 +26,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         #region Focus Interest
 
         [Fact]
-        public void PressingInterestLongTouchAlwaysUpdatesNominalInterestRateButNotEffeectiveInterestRate()
-        {
-            var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
-
-            vm.DigitPressedCommand.Execute(4);
-            vm.OperatorPressedCommand.Execute("*");
-            vm.InterestPressedCommand.Execute(false);
-            Assert.True(vm.DisplayText == "4,074");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
-            vm.OperatorPressedCommand.Execute("*");
-            vm.InterestPressedCommand.Execute(true);
-            Assert.True(vm.DisplayText == "4,000");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
-
-            // Setting rpa to 6
-            vm.DigitPressedCommand.Execute(6);
-            vm.OperatorPressedCommand.Execute("*");
-            vm.YearsPressedCommand.Execute(false);
-
-            // Interest rate is still the same
-            vm.InterestPressedCommand.Execute(true);
-            Assert.True(vm.DisplayText == "4,074");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
-
-            // Nominal interest rate gets recalculated
-            vm.OperatorPressedCommand.Execute("*");
-            vm.InterestPressedCommand.Execute(true);
-            Assert.True(vm.DisplayText == "4,007");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4.006666667) < Tolerance);
-        }
-
-        [Fact]
         public void DecimalPlacesAreFilledCorrectlyAfterInterestButtonWasPressed()
         {
             var mockObjects = MockFactories.GetMockObjects();

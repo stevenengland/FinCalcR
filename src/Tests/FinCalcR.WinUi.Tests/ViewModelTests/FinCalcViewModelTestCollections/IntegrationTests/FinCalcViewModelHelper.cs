@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
@@ -9,22 +10,27 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public static class FinCalcViewModelHelper
     {
-        public static void ExecuteDummyActionsAndCheckOutput(Ca[] actions, string expectedOutputTextAfterAllOperations)
+        internal static void ExecuteDummyActionsAndCheckOutput(Ca[] actions, string expectedOutputTextAfterAllOperations, FinCalcViewModel vm = null)
         {
             // Arrange
-            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+            vm = vm ?? MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
 
             // Act
             ExecuteDummyActions(vm, actions);
 
             // Assert
+            if (expectedOutputTextAfterAllOperations == null)
+            {
+                return;
+            }
+
             vm.DisplayText.Should().Be(expectedOutputTextAfterAllOperations);
         }
 
-        public static void ExecuteDummyActionsAndCheckOutput(Ca[] actions, string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, double precision)
+        internal static void ExecuteDummyActionsAndCheckOutput(Ca[] actions, string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, double precision, FinCalcViewModel vm = null)
         {
             // Arrange
-            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+            vm = vm ?? MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
 
             // Act
             ExecuteDummyActions(vm, actions);
@@ -34,7 +40,20 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DisplayNumber.Should().BeApproximately(expectedNumberAfterAllOperations, precision);
         }
 
-        public static void SetFinancialValue(FinCalcViewModel vm, double valueToAssign, CommandWord variableToAssignValueTo)
+        internal static void ExecuteDummyActionsAndCheckOutput(List<(string expectedOutputTextAfterAllOperations, Ca[] actions)> testSequences)
+        {
+            // Arrange
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+
+            // Act
+            // Assert
+            foreach (var (expectedOutputTextAfterAllOperations, actions) in testSequences)
+            {
+                ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, vm);
+            }
+        }
+
+        internal static void SetFinancialValue(FinCalcViewModel vm, double valueToAssign, CommandWord variableToAssignValueTo)
         {
             InputNumberWithCommands(vm, valueToAssign);
             switch (variableToAssignValueTo)
@@ -85,15 +104,15 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             }
         }
 
-        public static void ExecuteDummyActions(FinCalcViewModel vm, Ca[] operations)
+        internal static void ExecuteDummyActions(FinCalcViewModel vm, Ca[] operations)
         {
-            foreach (Ca operation in operations)
+            foreach (var operation in operations)
             {
                 ExecuteDummyOperation(vm, operation);
             }
         }
 
-        public static void ExecuteDummyOperation(FinCalcViewModel vm, Ca operation)
+        internal static void ExecuteDummyOperation(FinCalcViewModel vm, Ca operation)
         {
             switch (operation)
             {
@@ -250,7 +269,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                             vm.DecimalSeparatorPressedCommand.Execute(false);
                             break;
                         default:
-                            throw new NotImplementedException();
+                            throw new NotSupportedException();
                     }
                 }
             }

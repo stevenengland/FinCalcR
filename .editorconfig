@@ -82,7 +82,7 @@ csharp_style_pattern_local_over_anonymous_function=false:suggestion
 dotnet_style_require_accessibility_modifiers=for_non_interface_members:suggestion
 
 # Modifier Preferences
-csharp_preferred_modifier_order=public,private,protected,static,readonly,override,async,abstract,virtual:suggestion
+csharp_preferred_modifier_order=public,private,protected,internal,static,readonly,override,async,abstract,virtual:suggestion
 
 # Qualification Options
 dotnet_style_qualification_for_event=true:none
