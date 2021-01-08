@@ -236,36 +236,48 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.YearsPressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnInterestPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+        public async Task OnInterestPressedAsync(object sender, MouseButtonEventArgs eventArgs) // Public wrapper so that Caliburn can access it.
         {
-            var element = (FrameworkElement)sender;
-            var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
-            this.InterestPressedCommand.Execute(isLongTouch);
+            if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
+            {
+                return;
+            }
+
+            var isLongPress = await this.IsLongPressAsync(sender, eventArgs).ConfigureAwait(false);
+            this.InterestPressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnStartPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+        public async Task OnStartPressedAsync(object sender, MouseButtonEventArgs eventArgs) // Public wrapper so that Caliburn can access it.
         {
-            var element = (FrameworkElement)sender;
-            var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
-            this.StartPressedCommand.Execute(isLongTouch);
+            if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
+            {
+                return;
+            }
+
+            var isLongPress = await this.IsLongPressAsync(sender, eventArgs).ConfigureAwait(false);
+            this.StartPressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnRatePressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+        public async Task OnRatePressedAsync(object sender, MouseButtonEventArgs eventArgs) // Public wrapper so that Caliburn can access it.
         {
-            var element = (FrameworkElement)sender;
-            var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
-            this.RatePressedCommand.Execute(isLongTouch);
+            if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
+            {
+                return;
+            }
+
+            var isLongPress = await this.IsLongPressAsync(sender, eventArgs).ConfigureAwait(false);
+            this.RatePressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnEndPressedAsync(object sender, MouseButtonEventArgs e) // Public wrapper so that Caliburn can access it.
+        public async Task OnEndPressedAsync(object sender, MouseButtonEventArgs eventArgs)
         {
-            var element = (FrameworkElement)sender;
-            var gestureHandler = new FrameworkElementGestureHandler(element);
-            var isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
-            this.EndPressedCommand.Execute(isLongTouch);
+            if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
+            {
+                return;
+            }
+
+            var isLongPress = await this.IsLongPressAsync(sender, eventArgs).ConfigureAwait(false);
+            this.EndPressedCommand.Execute(isLongPress);
         }
 
         private void OnKeyboardKeyPressed(MappedKeyEventArgs e)

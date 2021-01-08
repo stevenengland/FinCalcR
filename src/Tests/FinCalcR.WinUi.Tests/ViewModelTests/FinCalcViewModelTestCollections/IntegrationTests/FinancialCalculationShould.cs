@@ -8,7 +8,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public class FinancialCalculationShould : TestBase
     {
-        private const double Tolerance = 0.01;
+        public FinancialCalculationShould()
+        {
+            this.Tolerance = 0.01;
+        }
 
         [Theory]
         [MemberData(nameof(FinancialCalculation.KnWanted), MemberType = typeof(FinancialCalculation))]
@@ -30,7 +33,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.EndPressedCommand.Execute(false);
 
             // Assert
-            vm.DisplayNumber.Should().BeApproximately(expectedKn, Tolerance);
+            vm.DisplayNumber.Should().BeApproximately(expectedKn, this.Tolerance);
         }
 
         [Theory]
@@ -50,7 +53,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.StartPressedCommand.Execute(false);
 
             // Assert
-            vm.DisplayNumber.Should().BeApproximately(expectedK0, Tolerance);
+            vm.DisplayNumber.Should().BeApproximately(expectedK0, this.Tolerance);
         }
 
         [Theory]
@@ -78,7 +81,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.RatePressedCommand.Execute(false);
 
             // Assert
-            vm.DisplayNumber.Should().BeApproximately(expectedE, Tolerance);
+            vm.DisplayNumber.Should().BeApproximately(expectedE, this.Tolerance);
         }
 
         [Theory]
@@ -98,7 +101,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.YearsPressedCommand.Execute(false);
 
             // Assert
-            vm.DisplayNumber.Should().BeApproximately(expectedN, Tolerance);
+            vm.DisplayNumber.Should().BeApproximately(expectedN, this.Tolerance);
         }
 
         [Theory]

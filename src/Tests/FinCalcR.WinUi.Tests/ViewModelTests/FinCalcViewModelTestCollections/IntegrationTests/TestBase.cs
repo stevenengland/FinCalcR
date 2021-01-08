@@ -5,10 +5,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public class TestBase
     {
-        public TestBase()
+        protected TestBase()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
         }
+
+        protected double Tolerance { get; set; } = 0.00000001;
     }
 }

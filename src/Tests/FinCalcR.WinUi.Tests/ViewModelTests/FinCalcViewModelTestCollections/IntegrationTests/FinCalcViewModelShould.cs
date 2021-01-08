@@ -7,8 +7,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public class FinCalcViewModelShould : TestBase
     {
-        private const double Tolerance = 0.00000001;
-
         [Theory]
         [InlineData("1,", new[] { Ca.Nr34, Ca.OpM, Ca.Nr2, Ca.Calc, Ca.Nr1 })] // Calculate, Digit
         [InlineData("1,2", new[] { Ca.Nr1, Ca.Dec, Ca.Dec, Ca.Nr2 })] // Decimal twice before digit
@@ -72,13 +70,13 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         [InlineData("32,", 32, new[] { Ca.Nr34, Ca.OpS, Ca.Nr2, Ca.Calc })]
         [InlineData("68,", 68, new[] { Ca.Nr34, Ca.OpM, Ca.Nr2, Ca.Calc })]
         [InlineData("17,", 17, new[] { Ca.Nr34, Ca.OpD, Ca.Nr2, Ca.Calc })]
-        public void ShowExpectedOutputText_WhenBasicArithmeticIsPerformed(string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations, Tolerance);
+        public void ShowExpectedOutputText_WhenBasicArithmeticIsPerformed(string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations, this.Tolerance);
 
         [Theory]
         [InlineData("0,323529412", 0.323529412, new[] { Ca.Nr1, Ca.Nr1, Ca.OpD, Ca.Nr34, Ca.Calc })] // 0,3235294117647058823 Produces a fraction with more fractional digits than allowed. Fractional digits are rounded.
         [InlineData("1,001", 1.0005, new[] { Ca.Nr1, Ca.Dec, Ca.Nr0, Ca.Nr0, Ca.Nr0, Ca.Nr5, Ca.SetInt })]
         [InlineData("1,010", 1.0095, new[] { Ca.Nr1, Ca.Dec, Ca.Nr0, Ca.Nr0, Ca.Nr9, Ca.Nr5, Ca.SetInt })]
-        public void ShowExpectedOutputText_WhenOutputIsRoundedBecauseInputOrCalculationProducesMoreFractionalDigitsThanDisplayable(string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations, Tolerance);
+        public void ShowExpectedOutputText_WhenOutputIsRoundedBecauseInputOrCalculationProducesMoreFractionalDigitsThanDisplayable(string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations, this.Tolerance);
 
         [Theory]
         [InlineData("1,000", new[] { Ca.Nr1, Ca.SetInt })]
@@ -117,17 +115,17 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
         [Theory]
         [InlineData("-113.186,548818633", new[] { Ca.OpA, Ca.Nr1, Ca.Calc })] // Operator
-        [InlineData("2,", new[] { Ca.Nr1, Ca.OpA, Ca.Nr1, Ca.Calc})] // Digit
+        [InlineData("2,", new[] { Ca.Nr1, Ca.OpA, Ca.Nr1, Ca.Calc })] // Digit
         [InlineData("113.187,55", new[] { Ca.Alg })] // AlgebSign
         [InlineData("0,1", new[] { Ca.Dec, Ca.Nr1 })] // Decimal
         public void ShowExpectedOutputText_WhenActionsArePerformedAfterCalculationOfEndNumber(string expectedOutputTextAfterAllOperations, Ca[] actions)
         {
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
-            PerformBasicEndCapitalCalculation(vm);
+            this.PerformBasicEndCapitalCalculation(vm);
             FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, vm);
         }
 
-        private static void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
+        private void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
         {
             vm.DigitPressedCommand.Execute(1);
             vm.DigitPressedCommand.Execute(2);
@@ -152,8 +150,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.EndPressedCommand.Execute(false);
 
             Assert.True(vm.DisplayText == "-113.187,55");
-            Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
-            Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < this.Tolerance);
+            Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < this.Tolerance);
         }
     }
 }

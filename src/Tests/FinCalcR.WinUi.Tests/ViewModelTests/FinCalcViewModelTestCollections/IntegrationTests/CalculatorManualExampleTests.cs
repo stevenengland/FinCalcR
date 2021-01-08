@@ -6,7 +6,10 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public class CalculatorManualExampleTests : TestBase
     {
-        private const double Tolerance = 0.01;
+        public CalculatorManualExampleTests()
+        {
+            this.Tolerance = 0.01;
+        }
 
         #region Percentage Calculation
 
@@ -24,7 +27,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DigitPressedCommand.Execute(5);
             vm.EndPressedCommand.Execute(false);
             Assert.True(vm.DisplayText == "10,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 10) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 10) < this.Tolerance);
 
             // 200 + 5
             vm.DigitPressedCommand.Execute(2);
@@ -34,7 +37,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DigitPressedCommand.Execute(5);
             vm.EndPressedCommand.Execute(false);
             Assert.True(vm.DisplayText == "210,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 210) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 210) < this.Tolerance);
 
             // 200 - 5
             vm.DigitPressedCommand.Execute(2);
@@ -44,7 +47,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DigitPressedCommand.Execute(5);
             vm.EndPressedCommand.Execute(false);
             Assert.True(vm.DisplayText == "190,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 190) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 190) < this.Tolerance);
 
             // 200 / 5 <-- not documented and not very useful
             vm.DigitPressedCommand.Execute(2);
@@ -54,7 +57,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DigitPressedCommand.Execute(5);
             vm.EndPressedCommand.Execute(false);
             Assert.True(vm.DisplayText == "4.000,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4000) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 4000) < this.Tolerance);
         }
 
         #endregion
@@ -71,14 +74,14 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.InterestPressedCommand.Execute(false);
             Assert.True(vm.DisplayText == "4,074");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < Tolerance);
-            Assert.True(Math.Abs(vm.InterestNumber - 4.074154292) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 4.074154292) < this.Tolerance);
+            Assert.True(Math.Abs(vm.InterestNumber - 4.074154292) < this.Tolerance);
 
             vm.OperatorPressedCommand.Execute("*");
             vm.InterestPressedCommand.Execute(true);
             Assert.True(vm.DisplayText == "4,000");
-            Assert.True(Math.Abs(vm.DisplayNumber - 4) < Tolerance);
-            Assert.True(Math.Abs(vm.NominalInterestRateNumber - 4) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 4) < this.Tolerance);
+            Assert.True(Math.Abs(vm.NominalInterestRateNumber - 4) < this.Tolerance);
         }
 
         #endregion
@@ -118,8 +121,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.YearsPressedCommand.Execute(false);
 
             Assert.True(vm.DisplayText == "39,85");
-            Assert.True(Math.Abs(vm.DisplayNumber - 39.85) < Tolerance);
-            Assert.True(Math.Abs(vm.YearsNumber - 39.85) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 39.85) < this.Tolerance);
+            Assert.True(Math.Abs(vm.YearsNumber - 39.85) < this.Tolerance);
         }
 
         #endregion
@@ -155,8 +158,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.EndPressedCommand.Execute(false);
 
             Assert.True(vm.DisplayText == "-113.187,55");
-            Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
-            Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < this.Tolerance);
+            Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < this.Tolerance);
         }
 
         #endregion
@@ -192,8 +195,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.StartPressedCommand.Execute(false);
 
             Assert.True(vm.DisplayText == "-49.406,13");
-            Assert.True(Math.Abs(vm.DisplayNumber - -49406.13) < Tolerance);
-            Assert.True(Math.Abs(vm.StartNumber - -49406.13) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - -49406.13) < this.Tolerance);
+            Assert.True(Math.Abs(vm.StartNumber - -49406.13) < this.Tolerance);
         }
 
         #endregion
@@ -238,8 +241,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.RatePressedCommand.Execute(false);
 
             Assert.True(vm.DisplayText == "11.827,95");
-            Assert.True(Math.Abs(vm.DisplayNumber - 11827.95) < Tolerance);
-            Assert.True(Math.Abs(vm.RateNumber - 11827.95) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 11827.95) < this.Tolerance);
+            Assert.True(Math.Abs(vm.RateNumber - 11827.95) < this.Tolerance);
         }
 
         [Fact]
@@ -265,8 +268,8 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.RatePressedCommand.Execute(false);
 
             Assert.True(vm.DisplayText == "-255,41");
-            Assert.True(Math.Abs(vm.DisplayNumber - -255.41) < Tolerance);
-            Assert.True(Math.Abs(vm.RateNumber - -255.41) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - -255.41) < this.Tolerance);
+            Assert.True(Math.Abs(vm.RateNumber - -255.41) < this.Tolerance);
         }
 
         #endregion
@@ -304,9 +307,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.InterestPressedCommand.Execute(false);
 
             Assert.True(vm.DisplayText == "1,455");
-            Assert.True(Math.Abs(vm.DisplayNumber - 1.455) < Tolerance);
-            Assert.True(Math.Abs(vm.InterestNumber - 1.455) < Tolerance);
-            Assert.True(Math.Abs(vm.NominalInterestRateNumber - 1.455) < Tolerance);
+            Assert.True(Math.Abs(vm.DisplayNumber - 1.455) < this.Tolerance);
+            Assert.True(Math.Abs(vm.InterestNumber - 1.455) < this.Tolerance);
+            Assert.True(Math.Abs(vm.NominalInterestRateNumber - 1.455) < this.Tolerance);
         }
 
         #endregion

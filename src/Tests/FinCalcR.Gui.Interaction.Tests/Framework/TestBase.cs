@@ -38,7 +38,7 @@ namespace FinCalcR.Gui.Interaction.Tests.Framework
             this.Automation = fixture.Automation;
         }
 
-        protected AutomationBase Automation { get; private set; }
+        protected AutomationBase Automation { get; }
 
         protected Application Application { get; private set; }
 

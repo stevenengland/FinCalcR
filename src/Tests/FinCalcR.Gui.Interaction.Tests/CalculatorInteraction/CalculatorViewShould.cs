@@ -29,7 +29,7 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
         "App",
         "FinCalcR.WinUi",
         "bin",
-        $"{Configuration}",
+        Configuration,
         "FinCalcR.exe");
 
         [Fact]

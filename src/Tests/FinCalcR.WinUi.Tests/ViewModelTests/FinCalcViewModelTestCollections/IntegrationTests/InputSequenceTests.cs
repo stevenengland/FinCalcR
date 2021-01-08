@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
-using Moq;
-using StEn.FinCalcR.Calculations.Calculator.Commands;
-using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
@@ -22,37 +18,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
         }
-
-        #region Focus Rate
-
-        [Fact]
-        public void CalculationOfRateLeadsToNaNAndUpcomingOperationsAreNotHarmed()
-        {
-            var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
-            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
-
-            // Produce NaN for repayment rate number
-            vm.OperatorPressedCommand.Execute("*");
-            vm.RatePressedCommand.Execute(true);
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
-
-            // Assert display is set back to zero and not NaN or something
-            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
-            Assert.True(vm.DisplayText == "0,");
-            Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
-
-            // Show rate number that was calculated with NaN of repayment rate number
-            vm.OperatorPressedCommand.Execute("*");
-            vm.RatePressedCommand.Execute(false);
-
-            // Assert values are set back to zero and not NaN or something
-            Assert.True(vm.DisplayText == "0,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance);
-            Assert.True(Math.Abs(vm.RateNumber - 0) < Tolerance);
-        }
-
-        #endregion
 
         #region Focus Rates per Annum
 
@@ -156,34 +121,5 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         }
 
         #endregion
-
-        private static void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
-        {
-            vm.DigitPressedCommand.Execute(1);
-            vm.DigitPressedCommand.Execute(2);
-            vm.OperatorPressedCommand.Execute("*");
-            vm.YearsPressedCommand.Execute(false);
-            vm.DigitPressedCommand.Execute(1);
-            vm.DigitPressedCommand.Execute(0);
-            vm.YearsPressedCommand.Execute(false);
-            vm.DigitPressedCommand.Execute(4);
-            vm.OperatorPressedCommand.Execute("*");
-            vm.InterestPressedCommand.Execute(false);
-            vm.DigitPressedCommand.Execute(1);
-            vm.DigitPressedCommand.Execute(5);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.StartPressedCommand.Execute(false);
-            vm.DigitPressedCommand.Execute(2);
-            vm.OperatorPressedCommand.Execute("*");
-            vm.RatePressedCommand.Execute(false);
-            vm.EndPressedCommand.Execute(false);
-
-            Assert.True(vm.DisplayText == "-113.187,55");
-            Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
-            Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
-        }
     }
 }

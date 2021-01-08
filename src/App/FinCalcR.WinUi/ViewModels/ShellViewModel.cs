@@ -71,7 +71,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         public ICommand KeyboardKeyPressedCommand => new SyncCommand<MappedKeyEventArgs>(this.OnKeyboardKeyPressed);
 
-        public ISnackbarMessageQueue SbMessageQueue { get; private set; }
+        public ISnackbarMessageQueue SbMessageQueue { get; }
 
         public ObservableCollection<NavigationMenuItem> MenuItems
         {
@@ -163,7 +163,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         {
             if (message == null)
             {
-                message = new ErrorEvent(new ArgumentException(Resources.EXC_ARGUMENT_NULL + $"{nameof(message)}"), Resources.EXC_ARGUMENT_NULL + $"{nameof(message)}", false);
+                message = new ErrorEvent(new ArgumentException(Resources.EXC_ARGUMENT_NULL + nameof(message)), Resources.EXC_ARGUMENT_NULL + nameof(message), false);
             }
 
             this.lastErrorEvent = message;
