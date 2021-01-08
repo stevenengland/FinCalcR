@@ -125,6 +125,25 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, vm);
         }
 
+        [Theory]
+        [InlineData("5,", new[] { Ca.Nr5, Ca.SetRpa, Ca.OpS })]
+        [InlineData("3,", new[] { Ca.Nr5, Ca.SetRpa, Ca.OpS, Ca.Nr2, Ca.Calc })]
+        [InlineData("5,", new[] { Ca.Nr5, Ca.SetRpa, Ca.Dec })]
+        [InlineData("0,2", new[] { Ca.Nr5, Ca.SetRpa, Ca.Dec, Ca.Nr2 })]
+        [InlineData("-5,", new[] { Ca.Nr5, Ca.SetRpa, Ca.Alg })]
+        [InlineData("2,", new[] { Ca.Nr5, Ca.SetRpa, Ca.Nr2 })]
+        [InlineData("4,", new[] { Ca.Nr5, Ca.SetRpa, Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.Calc })]
+
+        // When called from memory
+        [InlineData("5,", new[] { Ca.Nr5, Ca.SetRpa, Ca.GetRpa, Ca.OpS })]
+        [InlineData("3,", new[] { Ca.Nr5, Ca.SetRpa, Ca.GetRpa, Ca.OpS, Ca.Nr2, Ca.Calc })]
+        [InlineData("5,", new[] { Ca.Nr5, Ca.SetRpa, Ca.GetRpa, Ca.Dec })]
+        [InlineData("0,2", new[] { Ca.Nr5, Ca.SetRpa, Ca.GetRpa, Ca.Dec, Ca.Nr2 })]
+        [InlineData("-5,", new[] { Ca.Nr5, Ca.SetRpa, Ca.GetRpa, Ca.Alg })]
+        [InlineData("2,", new[] { Ca.Nr5, Ca.SetRpa, Ca.GetRpa, Ca.Nr2 })]
+        [InlineData("4,", new[] { Ca.Nr5, Ca.SetRpa, Ca.GetRpa, Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.Calc })]
+        public void ShowExpectedOutputText_AfterRatesPerAnnumAreSet(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
+
         private void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
         {
             vm.DigitPressedCommand.Execute(1);
