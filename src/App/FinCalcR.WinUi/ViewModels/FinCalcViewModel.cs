@@ -367,15 +367,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
                     this.DecimalSeparatorPressedCommand.Execute(null);
                     break;
                 case "Delete":
-                    if (e.IsShiftPressed)
-                    {
-                        this.ClearPressedCommand.Execute(true);
-                    }
-                    else
-                    {
-                        this.ClearPressedCommand.Execute(false);
-                    }
-
+                case "Escape":
+                    this.ClearPressedCommand.Execute(e.IsShiftPressed);
                     break;
                 case "OemQuestion":
                     this.AlgebSignCommand.Execute(null);

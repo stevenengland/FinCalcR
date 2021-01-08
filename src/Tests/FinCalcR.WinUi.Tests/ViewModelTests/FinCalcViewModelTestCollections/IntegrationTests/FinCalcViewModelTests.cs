@@ -256,6 +256,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D0", vm)));
             Assert.True(vm.DisplayText == "10,");
             vm.ClearPressedCommand.Execute(true);
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)));
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Escape", vm)));
+            Assert.True(vm.DisplayText == "0,");
         }
 
         [Fact]
