@@ -65,6 +65,7 @@
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\InterestBtnShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\OperatorBtnShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\CalculatorManualExampleTests.cs" />
+    <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\RateBtnShould.cs" />
     <Compile Include="ViewModelTests\FinCalcViewModelTestCollections\IntegrationTests\TestBase.cs" />
     <Compile Include="ViewModelTests\ShellViewModelShould.cs" />
   </ItemGroup>

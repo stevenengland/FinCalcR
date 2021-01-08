@@ -26,55 +26,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         #region Focus Rate
 
         [Fact]
-        public void PressingRateLongTouchAlwaysUpdatesRepaymentRateButNotRepayment()
-        {
-            var mockObjects = MockFactories.GetMockObjects();
-            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
-
-            vm.DigitPressedCommand.Execute(1);
-            vm.DigitPressedCommand.Execute(0);
-            vm.YearsPressedCommand.Execute(false);
-            vm.DigitPressedCommand.Execute(4);
-            vm.OperatorPressedCommand.Execute("*");
-            vm.InterestPressedCommand.Execute(false);
-            vm.DigitPressedCommand.Execute(1);
-            vm.DigitPressedCommand.Execute(5);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.StartPressedCommand.Execute(false);
-            vm.DigitPressedCommand.Execute(7);
-            vm.DigitPressedCommand.Execute(5);
-            vm.DigitPressedCommand.Execute(0);
-            vm.AlgebSignCommand.Execute(null);
-            vm.RatePressedCommand.Execute(false);
-
-            vm.OperatorPressedCommand.Execute("*");
-            vm.RatePressedCommand.Execute(true);
-            Assert.True(vm.DisplayText == "2,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 2) < Tolerance);
-
-            // Changing a dependent parameter: Start
-            vm.DigitPressedCommand.Execute(1);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.DigitPressedCommand.Execute(0);
-            vm.StartPressedCommand.Execute(false);
-
-            vm.RatePressedCommand.Execute(true);
-            Assert.True(vm.DisplayText == "-750,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - -750) < Tolerance);
-
-            vm.OperatorPressedCommand.Execute("*");
-            vm.RatePressedCommand.Execute(true);
-            Assert.True(vm.DisplayText == "5,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 5) < Tolerance);
-        }
-
-        [Fact]
         public void CalculationOfRateLeadsToNaNAndUpcomingOperationsAreNotHarmed()
         {
             var mockObjects = MockFactories.GetMockObjects();
