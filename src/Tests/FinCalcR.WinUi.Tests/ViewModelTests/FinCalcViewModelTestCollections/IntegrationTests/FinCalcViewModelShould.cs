@@ -107,6 +107,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         [InlineData("4,000", new[] { Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.OpS, Ca.SetInt })]
         [InlineData("2,074154292", new[] { Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.OpM, Ca.SetInt, Ca.OpS, Ca.Nr2, Ca.Calc })]
         [InlineData("2,074154292", new[] { Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.Calc, Ca.OpM, Ca.SetInt, Ca.OpS, Ca.Nr2, Ca.Calc })]
+
+        // After percentage calculation the result is used as first number
+        [InlineData("5,", new[] { Ca.Nr2, Ca.Nr0, Ca.Nr0, Ca.OpM, Ca.Nr5, Ca.SetEnd, Ca.OpS, Ca.Nr5, Ca.Calc })] // Operator
+        [InlineData("-10,00", new[] { Ca.Nr2, Ca.Nr0, Ca.Nr0, Ca.OpM, Ca.Nr5, Ca.SetEnd, Ca.Alg })] // AlgebSign
+        [InlineData("10,00", new[] { Ca.Nr2, Ca.Nr0, Ca.Nr0, Ca.OpM, Ca.Nr5, Ca.SetEnd, Ca.Calc })] // Calculate
+        [InlineData("0,1", new[] { Ca.Nr2, Ca.Nr0, Ca.Nr0, Ca.OpM, Ca.Nr5, Ca.SetEnd, Ca.Dec, Ca.Nr1 })] // AlgebSign
         public void UseCurrentOutputAsFirstNumber(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
 
         [Theory]
