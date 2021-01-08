@@ -9,6 +9,8 @@
         Nr1,
         Nr2,
         Nr34,
+        Nr5,
+        Nr9,
         Dec,
         Alg,
         OpA,

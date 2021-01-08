@@ -10,7 +10,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void UpdateNominalInterestRate_WhenPressedShort(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
 
         [Fact]
-        public void DoesNotUpdateEffectiveInterestRate_WhenPressedLong()
+        public void NotUpdateEffectiveInterestRate_WhenPressedLong()
         {
             var testSequences = new List<(string, Ca[])>
             {

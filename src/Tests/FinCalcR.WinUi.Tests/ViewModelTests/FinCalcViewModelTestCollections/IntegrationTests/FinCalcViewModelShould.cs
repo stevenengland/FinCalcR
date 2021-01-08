@@ -1,4 +1,7 @@
-﻿using Xunit;
+﻿using System;
+using FinCalcR.WinUi.Tests.Mocks;
+using StEn.FinCalcR.WinUi.ViewModels;
+using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.IntegrationTests
 {
@@ -59,6 +62,9 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
         // Round trip with a number before the special function. Intent is to NOT invoke the calculation of the the fifth and following special numbers because of the number set before.
         [InlineData("1,00", new[] { Ca.Nr1, Ca.SetYears, Ca.Nr1, Ca.SetInt, Ca.Nr1, Ca.SetStart, Ca.Nr1, Ca.SetRate, Ca.Nr1, Ca.SetEnd, Ca.Nr1, Ca.SetYears })]
+
+        // A subtraction is performed. Instead of = the interest button is pressed. The last number goes into memory without performing the calculation.
+        [InlineData("2,000", new[] { Ca.Nr34, Ca.OpS, Ca.Nr2, Ca.SetInt })]
         public void ShowExpectedOutputText_WhenLastActionWasSettingSpecialValue(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
 
         [Theory]
@@ -70,6 +76,78 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
         [Theory]
         [InlineData("0,323529412", 0.323529412, new[] { Ca.Nr1, Ca.Nr1, Ca.OpD, Ca.Nr34, Ca.Calc })] // 0,3235294117647058823 Produces a fraction with more fractional digits than allowed. Fractional digits are rounded.
-        public void ShowExpectedOutputText_WhenCalculationProducesMoreFractionalDigitsThanDisplayable(string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations, Tolerance);
+        [InlineData("1,001", 1.0005, new[] { Ca.Nr1, Ca.Dec, Ca.Nr0, Ca.Nr0, Ca.Nr0, Ca.Nr5, Ca.SetInt })]
+        [InlineData("1,010", 1.0095, new[] { Ca.Nr1, Ca.Dec, Ca.Nr0, Ca.Nr0, Ca.Nr9, Ca.Nr5, Ca.SetInt })]
+        public void ShowExpectedOutputText_WhenOutputIsRoundedBecauseInputOrCalculationProducesMoreFractionalDigitsThanDisplayable(string expectedOutputTextAfterAllOperations, double expectedNumberAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, expectedNumberAfterAllOperations, Tolerance);
+
+        [Theory]
+        [InlineData("1,000", new[] { Ca.Nr1, Ca.SetInt })]
+        [InlineData("1,100", new[] { Ca.Nr1, Ca.Dec, Ca.Nr1, Ca.SetInt })]
+        [InlineData("1,010", new[] { Ca.Nr1, Ca.Dec, Ca.Nr0, Ca.Nr1, Ca.SetInt })]
+        [InlineData("1,001", new[] { Ca.Nr1, Ca.Dec, Ca.Nr0, Ca.Nr0, Ca.Nr1, Ca.SetInt })]
+        [InlineData("1,000", new[] { Ca.Nr1, Ca.Dec, Ca.Nr0, Ca.Nr0, Ca.Nr0, Ca.Nr1, Ca.SetInt })]
+        public void ShowExpectedOutputText_WhenFractionalPartNeedsFilling(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
+
+        [Theory]
+
+        // A subtraction is performed. Instead of = the interest button is pressed. The last number goes into memory without performing the calculation.
+        // After that another subtraction is performed. The interest value is used as first number.
+        [InlineData("-32,", new[] { Ca.Nr34, Ca.OpS, Ca.Nr2, Ca.SetInt, Ca.OpS, Ca.Nr34, Ca.Calc })]
+
+        // Also uses the full number instead of the displayed number when fractional part exceeds displayable number
+        [InlineData("1,123412", new[] { Ca.Nr0, Ca.Dec, Ca.Nr1, Ca.Nr2, Ca.Nr34, Ca.Nr1, Ca.Nr2, Ca.SetInt, Ca.OpA, Ca.Nr1, Ca.Calc })]
+
+        // The interest value is loaded from the memory. A value is subtracted. The result is a calculation with interest as first number.
+        [InlineData("-32,", new[] { Ca.Nr2, Ca.SetInt, Ca.GetInt, Ca.OpS, Ca.Nr34, Ca.Calc })]
+
+        // A digit is entered followed by an operator. Then the interest button is pressed. Digit - Interest -> Digit is taken as interest number.
+        [InlineData("2,000", new[] { Ca.Nr2, Ca.OpS, Ca.SetInt })]
+
+        // A digit is added to another followed by an operator. Then the interest button is pressed. 2 + 2 - Interest -> 4.000 is taken as interest number.
+        [InlineData("4,000", new[] { Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.OpS, Ca.SetInt })]
+        [InlineData("2,074154292", new[] { Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.OpM, Ca.SetInt, Ca.OpS, Ca.Nr2, Ca.Calc })]
+        [InlineData("2,074154292", new[] { Ca.Nr2, Ca.OpA, Ca.Nr2, Ca.Calc, Ca.OpM, Ca.SetInt, Ca.OpS, Ca.Nr2, Ca.Calc })]
+        public void UseCurrentOutputAsFirstNumber(string expectedOutputTextAfterAllOperations, Ca[] actions) => FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations);
+
+        [Theory]
+        [InlineData("-113.186,548818633", new[] { Ca.OpA, Ca.Nr1, Ca.Calc })] // Operator
+        [InlineData("2,", new[] { Ca.Nr1, Ca.OpA, Ca.Nr1, Ca.Calc})] // Digit
+        [InlineData("113.187,55", new[] { Ca.Alg })] // AlgebSign
+        [InlineData("0,1", new[] { Ca.Dec, Ca.Nr1 })] // Decimal
+        public void ShowExpectedOutputText_WhenActionsArePerformedAfterCalculationOfEndNumber(string expectedOutputTextAfterAllOperations, Ca[] actions)
+        {
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+            PerformBasicEndCapitalCalculation(vm);
+            FinCalcViewModelHelper.ExecuteDummyActionsAndCheckOutput(actions, expectedOutputTextAfterAllOperations, vm);
+        }
+
+        private static void PerformBasicEndCapitalCalculation(FinCalcViewModel vm)
+        {
+            vm.DigitPressedCommand.Execute(1);
+            vm.DigitPressedCommand.Execute(2);
+            vm.OperatorPressedCommand.Execute("*");
+            vm.YearsPressedCommand.Execute(false);
+            vm.DigitPressedCommand.Execute(1);
+            vm.DigitPressedCommand.Execute(0);
+            vm.YearsPressedCommand.Execute(false);
+            vm.DigitPressedCommand.Execute(4);
+            vm.OperatorPressedCommand.Execute("*");
+            vm.InterestPressedCommand.Execute(false);
+            vm.DigitPressedCommand.Execute(1);
+            vm.DigitPressedCommand.Execute(5);
+            vm.DigitPressedCommand.Execute(0);
+            vm.DigitPressedCommand.Execute(0);
+            vm.DigitPressedCommand.Execute(0);
+            vm.DigitPressedCommand.Execute(0);
+            vm.StartPressedCommand.Execute(false);
+            vm.DigitPressedCommand.Execute(2);
+            vm.OperatorPressedCommand.Execute("*");
+            vm.RatePressedCommand.Execute(false);
+            vm.EndPressedCommand.Execute(false);
+
+            Assert.True(vm.DisplayText == "-113.187,55");
+            Assert.True(Math.Abs(vm.DisplayNumber - -113187.5488186329) < Tolerance);
+            Assert.True(Math.Abs(vm.EndNumber - -113187.5488186329) < Tolerance);
+        }
     }
 }

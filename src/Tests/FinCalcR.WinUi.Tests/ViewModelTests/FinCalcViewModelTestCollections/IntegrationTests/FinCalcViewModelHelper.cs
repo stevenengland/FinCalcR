@@ -129,6 +129,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
                     vm.DigitPressedCommand.Execute(3);
                     vm.DigitPressedCommand.Execute(4);
                     break;
+                case Ca.Nr5:
+                    vm.DigitPressedCommand.Execute(5);
+                    break;
+                case Ca.Nr9:
+                    vm.DigitPressedCommand.Execute(9);
+                    break;
                 case Ca.Dec:
                     vm.DecimalSeparatorPressedCommand.Execute(null);
                     break;
