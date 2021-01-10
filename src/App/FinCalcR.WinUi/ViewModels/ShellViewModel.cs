@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
+using JetBrains.Annotations;
 using MaterialDesignThemes.Wpf;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
@@ -135,7 +136,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         public object ActiveWindowContent { get; set; }
 
-        public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Caliburn Micro
+        [UsedImplicitly]
+        public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Xaml behavior event
         {
             var eventArgs = new MappedKeyEventArgs(e.Key.ToString(), this.ActiveWindowContent);
             if ((Keyboard.Modifiers & ModifierKeys.Shift) != 0)

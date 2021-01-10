@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using JetBrains.Annotations;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Events;
@@ -214,7 +215,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         public void Handle(KeyboardKeyDownEvent message) => this.KeyboardKeyPressedCommand.Execute(message.KeyEventArgs);
 
-        public async Task OnClearPressedAsync(object sender, object eventArgs) // Public wrapper so that Caliburn can access it.
+        [UsedImplicitly]
+        public async Task OnClearPressedAsync(object sender, EventArgs eventArgs) // Public wrapper so that Behavior trigger can access it.
         {
             if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
             {
@@ -225,7 +227,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.ClearPressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnYearsPressedAsync(object sender, object eventArgs) // Public wrapper so that Caliburn can access it.
+        [UsedImplicitly]
+        public async Task OnYearsPressedAsync(object sender, EventArgs eventArgs) // Public wrapper so that Behavior trigger can access it.
         {
             if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
             {
@@ -236,7 +239,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.YearsPressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnInterestPressedAsync(object sender, MouseButtonEventArgs eventArgs) // Public wrapper so that Caliburn can access it.
+        [UsedImplicitly]
+        public async Task OnInterestPressedAsync(object sender, EventArgs eventArgs) // Public wrapper so that Behavior trigger can access it.
         {
             if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
             {
@@ -247,7 +251,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.InterestPressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnStartPressedAsync(object sender, MouseButtonEventArgs eventArgs) // Public wrapper so that Caliburn can access it.
+        [UsedImplicitly]
+        public async Task OnStartPressedAsync(object sender, EventArgs eventArgs) // Public wrapper so that Behavior trigger can access it.
         {
             if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
             {
@@ -258,7 +263,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.StartPressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnRatePressedAsync(object sender, MouseButtonEventArgs eventArgs) // Public wrapper so that Caliburn can access it.
+        [UsedImplicitly]
+        public async Task OnRatePressedAsync(object sender, EventArgs eventArgs) // Public wrapper so that Behavior trigger can access it.
         {
             if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
             {
@@ -269,7 +275,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.RatePressedCommand.Execute(isLongPress);
         }
 
-        public async Task OnEndPressedAsync(object sender, MouseButtonEventArgs eventArgs)
+        [UsedImplicitly]
+        public async Task OnEndPressedAsync(object sender, EventArgs eventArgs) // Public wrapper so that Behavior trigger can access it.
         {
             if (eventArgs is MouseButtonEventArgs mbeArgs && mbeArgs.StylusDevice != null)
             {

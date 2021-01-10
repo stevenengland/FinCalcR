@@ -10,13 +10,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:StEn.FinCalcR.WinUi.Models"
         xmlns:viewModels="clr-namespace:StEn.FinCalcR.WinUi.ViewModels"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         Name="ShellViewWnd"
         Title="ShellView"
         Width="650"
         Height="650"
         MinWidth="650"
         MinHeight="650"
-        cal:Message.Attach="[Event PreviewKeyDown] = [Action OnKeyboardKeyPressed($source, $eventArgs)];"
         d:DataContext="{Binding Source={d:DesignInstance viewModels:ShellViewModel}, Converter={x:Static converter:DesignTimeViewModelLocator.Instance}}"
         lex:LocalizeDictionary.DesignCulture="de"
         lex:ResxLocalizationProvider.DefaultAssembly="FinCalcR.Common"
@@ -26,6 +26,12 @@
         WindowState="{Binding CurWindowState, Mode=TwoWay}"
         WindowStyle="None"
         mc:Ignorable="d">
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="PreviewKeyDown">
+            <b:CallMethodAction MethodName="OnKeyboardKeyPressed"
+                                TargetObject="{Binding}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
     <materialDesign:DialogHost Identifier="RootDialog"
                                SnackbarMessageQueue="{Binding SbMessageQueue}">
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
@@ -64,11 +70,9 @@
                              Margin="0,16,0,16"
                              ItemsSource="{Binding MenuItems}"
                              SelectedIndex="0">
-                        <!--  cal:Message.Attach="[Event SelectionChanged]=[Action OnMenuItemsSelectionChanged($source,$eventArgs)];"  -->
-                        <!-- ToDo: Activate in next version of MaterialDesignThemes 2.5.2
-						<ListBox.Resources>
+                        <ListBox.Resources>
 							<Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
-						</ListBox.Resources>-->
+						</ListBox.Resources>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <i:InvokeCommandAction Command="{Binding MenuItemsSelectionChangedCommand}"
