@@ -142,6 +142,28 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
         }
 
         [Fact]
+        public void ShowCalculatedResult_WhenCalculationButtonIsPressed()
+        {
+            // Arrange
+            var mainScreen = this.Application.GetMainWindow(this.Automation);
+
+            // Act
+            var resultLbl = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EvaluationResultLbl)).AsLabel());
+            Keyboard.Type("10");
+            Wait.UntilInputIsProcessed();
+            Keyboard.Type(VirtualKeyShort.ADD);
+            Wait.UntilInputIsProcessed();
+            Keyboard.Type("5");
+            Wait.UntilInputIsProcessed();
+            var calculateBtn = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.CalculateBtn)).AsButton());
+            calculateBtn?.Invoke();
+            Wait.UntilInputIsProcessed();
+
+            // Assert
+            resultLbl.Text.Should().Be("15.");
+        }
+
+        [Fact]
         public void ClearValues_WhenClearButtonIsPressedAShortTime()
         {
             // Arrange
