@@ -259,6 +259,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)));
             vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Escape", vm)));
             Assert.True(vm.DisplayText == "0,");
+
+            Assert.False(vm.IsMemoryPaneExpanded);
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Down", vm) { IsShiftPressed = true }));
+            Assert.True(vm.IsMemoryPaneExpanded);
+            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Up", vm) { IsShiftPressed = true }));
+            Assert.False(vm.IsMemoryPaneExpanded);
         }
 
         [Fact]

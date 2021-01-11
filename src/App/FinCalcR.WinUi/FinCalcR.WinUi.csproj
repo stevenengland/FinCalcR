@@ -75,6 +75,7 @@
     <Compile Include="Commanding\ISyncCommand.cs" />
     <Compile Include="Commanding\SyncCommand.cs" />
     <Compile Include="Commanding\TaskUtilities.cs" />
+    <Compile Include="Converter\NumberToFormattedStringConverter.cs" />
     <Compile Include="Events\HintEvent.cs" />
     <Compile Include="Events\KeyboardKeyDownEvent.cs" />
     <Compile Include="Extensions\MethodInfoExtensions.cs" />
@@ -217,8 +218,6 @@
   <ItemGroup>
     <Resource Include="logo.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Calculator\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

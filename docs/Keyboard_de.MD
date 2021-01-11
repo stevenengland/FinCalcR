@@ -8,7 +8,7 @@ Der Taschenrechner kann mit folgenden Tasten bedient werden:
 |+-\*/|Addieren etc.|
 |Enter|Die selbe Funktion wie "="|
 |Umschalt|Langes Drücken simulieren (Bsp. Umschalt + F1 = lange F1 drücken)|
-|Entf (+ Umschalt)|Eingaben löschen (inkl. Funktionsspeicher)|
+|Esc oder Entf (+ Umschalt)|Eingaben löschen (inkl. Funktionsspeicher)|
 |F1|Jahre|
 |F2|Zins|
 |F3|Start|
@@ -18,3 +18,5 @@ Der Taschenrechner kann mit folgenden Tasten bedient werden:
 |F7|%nom|
 |F8|vorsch.|
 |F9|%Tilg.|
+|Shift + Pfeil unten|Speicherbelegung anzeigen|
+|Shift + Pfeil hoch|Speicherbelegung ausblenden|

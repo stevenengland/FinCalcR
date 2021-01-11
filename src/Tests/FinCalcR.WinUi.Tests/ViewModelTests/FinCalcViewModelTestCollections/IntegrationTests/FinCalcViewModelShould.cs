@@ -1,5 +1,6 @@
 ﻿using System;
 using FinCalcR.WinUi.Tests.Mocks;
+using FluentAssertions;
 using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
@@ -7,6 +8,54 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public class FinCalcViewModelShould : TestBase
     {
+        [Fact]
+        public void SetSpecialNumbers_WhenVmIsCreated()
+        {
+            // Arrange
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+
+            // Act
+            // Assert
+            vm.RatesPerAnnumNumber.Should().NotBe(0);
+            vm.YearsNumber.Should().Be(0);
+            vm.StartNumber.Should().Be(0);
+            vm.InterestNumber.Should().Be(0);
+            vm.NominalInterestRateNumber.Should().Be(0);
+            vm.RateNumber.Should().Be(0);
+            vm.RepaymentRateNumber.Should().Be(0);
+            vm.EndNumber.Should().Be(0);
+        }
+
+        [Fact]
+        public void SetSpecialNumbers_WhenSpecialNumberSettersAreCalled()
+        {
+            // Arrange
+            var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out _);
+
+            // Act
+            var testSequence = new[]
+            {
+                Ca.Nr1, Ca.Nr0, Ca.SetRpa,
+                Ca.Nr1, Ca.Nr0, Ca.SetYears,
+                Ca.Nr2, Ca.SetInt,
+                Ca.Nr1, Ca.Nr5, Ca.Nr0, Ca.Nr0, Ca.Nr0, Ca.Nr0, Ca.SetStart,
+                Ca.Nr34, Ca.Nr0, Ca.Alg, Ca.SetRate,
+                Ca.Nr1, Ca.Nr0, Ca.Nr0, Ca.Nr0, Ca.Nr0, Ca.SetEnd,
+            };
+
+            FinCalcViewModelHelper.ExecuteDummyActions(vm, testSequence);
+
+            // Assert
+            vm.RatesPerAnnumNumber.Should().Be(10);
+            vm.YearsNumber.Should().Be(10);
+            vm.StartNumber.Should().Be(150000);
+            vm.InterestNumber.Should().Be(2);
+            vm.NominalInterestRateNumber.Should().BeApproximately(1.98, 0.01);
+            vm.RateNumber.Should().Be(-340);
+            vm.RepaymentRateNumber.Should().BeApproximately(0.28, 0.01);
+            vm.EndNumber.Should().Be(10000);
+        }
+
         [Theory]
         [InlineData("1,", new[] { Ca.Nr34, Ca.OpM, Ca.Nr2, Ca.Calc, Ca.Nr1 })] // Calculate, Digit
         [InlineData("1,2", new[] { Ca.Nr1, Ca.Dec, Ca.Dec, Ca.Nr2 })] // Decimal twice before digit

@@ -23,6 +23,13 @@
             public const string ClearBtn = "Clear";
             public const string CalculateBtn = "Calculate";
 
+            public const string AdvanceActiveStatusLbl = "AdvanceActiveStatus";
+            public const string YearsActiveStatusLbl = "YearsActiveStatus";
+            public const string InterestActiveStatusLbl = "InterestActiveStatus";
+            public const string StartActiveStatusLbl = "StartActiveStatus";
+            public const string RateActiveStatusLbl = "RateActiveStatus";
+            public const string EndActiveStatusLbl = "EndActiveStatus";
+
             public const string EvaluationResultLbl = "EvaluatedResult";
 
             public const string YearsBtn = "Years";
@@ -30,6 +37,16 @@
             public const string StartBtn = "Start";
             public const string RateBtn = "Rate";
             public const string EndBtn = "End";
+
+            public const string YearsNumberLbl = "YearsNumber";
+            public const string InterestNumberLbl = "InterestNumber";
+            public const string StartNumberLbl = "StartNumber";
+            public const string RateNumberLbl = "RateNumber";
+            public const string EndNumberLbl = "EndNumber";
+            public const string NominalInterestRateNumberLbl = "NominalInterestRateNumber";
+            public const string RepaymentRateNumberLbl = "RepaymentRateNumber";
+
+            public const string MemoryExp = "Memory";
         }
 
         public static class HintView

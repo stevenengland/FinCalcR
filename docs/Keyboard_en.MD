@@ -8,7 +8,7 @@ The calculator can be operated with the following keys:
 |+-\*/|Add etc.|
 |Return|The same function as "="|
 |Shift|Long press simulation (e. g. Shift + F1 = long press F1)|
-|Del (+ Shift)|Delete input (incl. function memory)|
+|Esc or Del (+ Shift)|Delete input (incl. function memory)|
 |F1|Years|
 |F2|Interest|
 |F3|Start|
@@ -18,3 +18,5 @@ The calculator can be operated with the following keys:
 |F7|%nom|
 |F8|adv.|
 |F9|%Repayment|
+|Shift + Down|Expand memory pane|
+|Shift + Up|Collapse memory pane|

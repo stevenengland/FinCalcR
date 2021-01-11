@@ -37,6 +37,15 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         private string endStatusBarText; // Remains in VM
         private CommandWord lastPressedOperation = CommandWord.None;
         private bool secondFunctionTrigger;
+        private double yearsNumber;
+        private double interestNumber;
+        private double nominalInterestRateNumber;
+        private double repaymentRateNumber;
+        private double startNumber;
+        private double rateNumber;
+        private double endNumber;
+        private int ratesPerAnnumNumber;
+        private bool isMemoryPaneExpanded;
 
         public FinCalcViewModel(
             ILocalizationService localizationService,
@@ -60,21 +69,6 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         public static string DecimalSeparator => Resources.CALC_DECIMAL_SEPARATOR;
 
-        public double YearsNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
-
-        public double InterestNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value;
-
-        public double NominalInterestRateNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value;
-
-        public double RepaymentRateNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value;
-
-        public double StartNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value;
-
-        public double RateNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
-
-        public double EndNumber => this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value;
-
-        // TODO: RMOVE PROPERTY
         public CommandWord LastPressedOperation
         {
             get => this.lastPressedOperation;
@@ -87,6 +81,144 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         public PressedSpecialFunctions PressedSpecialFunctions { get; private set; }
 
+        #region NoPC Props
+
+        public bool IsMemoryPaneExpanded
+        {
+            get => this.isMemoryPaneExpanded;
+            set
+            {
+                if (value == this.isMemoryPaneExpanded)
+                {
+                    return;
+                }
+
+                this.isMemoryPaneExpanded = value;
+                this.NotifyOfPropertyChange(() => this.IsMemoryPaneExpanded);
+            }
+        }
+
+        public int RatesPerAnnumNumber
+        {
+            get => this.ratesPerAnnumNumber;
+            set
+            {
+                if (value == this.ratesPerAnnumNumber)
+                {
+                    return;
+                }
+
+                this.ratesPerAnnumNumber = value;
+                this.NotifyOfPropertyChange(() => this.RatesPerAnnumNumber);
+            }
+        }
+
+        public double YearsNumber
+        {
+            get => this.yearsNumber;
+            set
+            {
+                if (value.Equals(this.yearsNumber))
+                {
+                    return;
+                }
+
+                this.yearsNumber = value;
+                this.NotifyOfPropertyChange(() => this.YearsNumber);
+            }
+        }
+
+        public double InterestNumber
+        {
+            get => this.interestNumber;
+            set
+            {
+                if (value.Equals(this.interestNumber))
+                {
+                    return;
+                }
+
+                this.interestNumber = value;
+                this.NotifyOfPropertyChange(() => this.InterestNumber);
+            }
+        }
+
+        public double NominalInterestRateNumber
+        {
+            get => this.nominalInterestRateNumber;
+            set
+            {
+                if (value.Equals(this.nominalInterestRateNumber))
+                {
+                    return;
+                }
+
+                this.nominalInterestRateNumber = value;
+                this.NotifyOfPropertyChange(() => this.NominalInterestRateNumber);
+            }
+        }
+
+        public double RepaymentRateNumber
+        {
+            get => this.repaymentRateNumber;
+            set
+            {
+                if (value.Equals(this.repaymentRateNumber))
+                {
+                    return;
+                }
+
+                this.repaymentRateNumber = value;
+                this.NotifyOfPropertyChange(() => this.RepaymentRateNumber);
+            }
+        }
+
+        public double StartNumber
+        {
+            get => this.startNumber;
+            set
+            {
+                if (value.Equals(this.startNumber))
+                {
+                    return;
+                }
+
+                this.startNumber = value;
+                this.NotifyOfPropertyChange(() => this.StartNumber);
+            }
+        }
+
+        public double RateNumber
+        {
+            get => this.rateNumber;
+            set
+            {
+                if (value.Equals(this.rateNumber))
+                {
+                    return;
+                }
+
+                this.rateNumber = value;
+                this.NotifyOfPropertyChange(() => this.RateNumber);
+            }
+        }
+
+        public double EndNumber
+        {
+            get => this.endNumber;
+            set
+            {
+                if (value.Equals(this.endNumber))
+                {
+                    return;
+                }
+
+                this.endNumber = value;
+                this.NotifyOfPropertyChange(() => this.EndNumber);
+            }
+        }
+
+        // TODO: REMOVE PROPERTY
         public string DisplayText
         {
             get => this.displayText;
@@ -187,6 +319,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             }
         }
 
+        #endregion
+
+        #region Commands
+
         public bool UseAnticipativeInterestYield => this.calculator.UsesAnticipativeInterestYield;
 
         public ICommand DigitPressedCommand => new SyncCommand<object>(this.OnDigitPressed);
@@ -212,6 +348,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         public ICommand EndPressedCommand => new SyncCommand<bool>(this.OnEndPressed);
 
         public ICommand KeyboardKeyPressedCommand => new SyncCommand<MappedKeyEventArgs>(this.OnKeyboardKeyPressed);
+
+        #endregion
 
         public void Handle(KeyboardKeyDownEvent message) => this.KeyboardKeyPressedCommand.Execute(message.KeyEventArgs);
 
@@ -410,6 +548,20 @@ namespace StEn.FinCalcR.WinUi.ViewModels
                 case "F9":
                     this.OperatorPressedCommand.Execute("*");
                     this.RatePressedCommand.Execute(e.IsShiftPressed);
+                    break;
+                case "Down":
+                    if (e.IsShiftPressed)
+                    {
+                        this.IsMemoryPaneExpanded = true;
+                    }
+
+                    break;
+                case "Up":
+                    if (e.IsShiftPressed)
+                    {
+                        this.IsMemoryPaneExpanded = false;
+                    }
+
                     break;
                 default:
                     Debug.WriteLine(e.Key);
@@ -821,8 +973,20 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         {
             // TODO REMOVE
             this.LastPressedOperation = e;
-
             this.SecondFunctionTrigger = false;
+            this.UpdateSpecialNumbers();
+        }
+
+        private void UpdateSpecialNumbers()
+        {
+            this.ratesPerAnnumNumber = this.calculator.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value;
+            this.YearsNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.YearsNumber).Value;
+            this.InterestNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value;
+            this.NominalInterestRateNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value;
+            this.RepaymentRateNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value;
+            this.StartNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.StartNumber).Value;
+            this.RateNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value;
+            this.EndNumber = this.calculator.MemoryFields.Get<double>(MemoryFieldNames.EndNumber).Value;
         }
     }
 }

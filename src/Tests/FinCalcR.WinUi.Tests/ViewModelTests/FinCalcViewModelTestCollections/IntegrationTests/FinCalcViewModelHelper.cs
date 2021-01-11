@@ -108,11 +108,11 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             foreach (var operation in operations)
             {
-                ExecuteDummyOperation(vm, operation);
+                ExecuteDummyAction(vm, operation);
             }
         }
 
-        internal static void ExecuteDummyOperation(FinCalcViewModel vm, Ca operation)
+        internal static void ExecuteDummyAction(FinCalcViewModel vm, Ca operation)
         {
             switch (operation)
             {

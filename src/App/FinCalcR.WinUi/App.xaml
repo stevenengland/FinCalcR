@@ -10,6 +10,8 @@
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converter:UniversalValueConverter x:Key="UniversalValueConverter" />
             <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converter:NumberToFormattedStringConverter x:Key="NumberToFormattedStringConverter" />
+            <converter:DesignTimeViewModelLocator x:Key="DesignTimeViewModelLocator" />
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>

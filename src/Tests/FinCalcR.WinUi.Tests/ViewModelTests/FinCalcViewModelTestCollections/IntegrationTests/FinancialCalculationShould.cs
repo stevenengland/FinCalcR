@@ -70,7 +70,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             // Act
             if (advance)
             {
-                FinCalcViewModelHelper.ExecuteDummyOperation(vm, Ca.ToggleAdv);
+                FinCalcViewModelHelper.ExecuteDummyAction(vm, Ca.ToggleAdv);
             }
 
             FinCalcViewModelHelper.SetFinancialValue(vm, m, CommandWord.SetRatesPerAnnum);

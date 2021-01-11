@@ -202,7 +202,67 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
         }
 
         [Fact]
-        public void SpecialFunctionsAreProcessed_WhenSpecialFunctionButtonsArePressedAShortTime()
+        public void SetSpecialFunctionLabels_WhenSpecialFunctionButtonsArePressed()
+        {
+            // Arrange
+            var mainScreen = this.Application.GetMainWindow(this.Automation);
+
+            // Act
+            Keyboard.Type("1");
+            WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsBtn)).AsButton()).Click();
+            Wait.UntilInputIsProcessed();
+            var yearsActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsActiveStatusLbl)).AsLabel()).Text;
+            var yearsNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsNumberLbl)).AsLabel()).Text;
+
+            Keyboard.Type("2");
+            WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.InterestBtn)).AsButton()).Click();
+            Wait.UntilInputIsProcessed();
+            var interestActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.InterestActiveStatusLbl)).AsLabel()).Text;
+            var interestNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.InterestNumberLbl)).AsLabel()).Text;
+            var nomInterestNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.NominalInterestRateNumberLbl)).AsLabel()).Text;
+
+            Keyboard.Type("3");
+            WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartBtn)).AsButton()).Click();
+            Wait.UntilInputIsProcessed();
+            var startActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartActiveStatusLbl)).AsLabel()).Text;
+            var startNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartNumberLbl)).AsLabel()).Text;
+
+            Keyboard.Type("4");
+            WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RateBtn)).AsButton()).Click();
+            Wait.UntilInputIsProcessed();
+            var rateActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RateActiveStatusLbl)).AsLabel()).Text;
+            var rateNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RateNumberLbl)).AsLabel()).Text;
+            var repaymentRateNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RepaymentRateNumberLbl)).AsLabel()).Text;
+
+            Keyboard.Type("5");
+            WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndBtn)).AsButton()).Click();
+            Wait.UntilInputIsProcessed();
+            var endActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndActiveStatusLbl)).AsLabel()).Text;
+            var endNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndNumberLbl)).AsLabel()).Text;
+
+            Keyboard.Type(VirtualKeyShort.MULTIPLY);
+            WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartBtn)).AsButton()).Click();
+            Wait.UntilInputIsProcessed();
+            var advanceActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.AdvanceActiveStatusLbl)).AsLabel()).Text;
+
+            // Assert
+            yearsActiveResult.Should().NotBeNullOrWhiteSpace();
+            interestActiveResult.Should().NotBeNullOrWhiteSpace();
+            startActiveResult.Should().NotBeNullOrWhiteSpace();
+            rateActiveResult.Should().NotBeNullOrWhiteSpace();
+            endActiveResult.Should().NotBeNullOrWhiteSpace();
+            advanceActiveResult.Should().NotBeNullOrWhiteSpace();
+            yearsNumber.Should().Be("1.00");
+            interestNumber.Should().Be("2.000");
+            nomInterestNumber.Should().Be("1.982");
+            startNumber.Should().Be("3.00");
+            rateNumber.Should().Be("4.00");
+            repaymentRateNumber.Should().Be("-1,601.98");
+            endNumber.Should().Be("5.00");
+        }
+
+        [Fact]
+        public void ShowSpecialFunctionOutput_WhenSpecialFunctionButtonsArePressedAShortTime()
         {
             // Arrange
             var mainScreen = this.Application.GetMainWindow(this.Automation);
