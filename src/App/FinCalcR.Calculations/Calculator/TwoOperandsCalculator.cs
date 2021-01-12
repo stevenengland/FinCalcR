@@ -338,8 +338,9 @@ namespace StEn.FinCalcR.Calculations.Calculator
                         this.MemoryFields.Get<int>(MemoryFieldNames.RatesPerAnnumNumber).Value,
                         this.MemoryFields.Get<double>(MemoryFieldNames.EffectiveInterestNumber).Value);
 
+                // If I ever switch to decimal I should try to introduce nullable types which is fine in C#9
                 this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value =
-                    isFiniteNumber ? calculationResult : 0;
+                    isFiniteNumber ? calculationResult : double.NaN;
             }
         }
 
@@ -461,9 +462,9 @@ namespace StEn.FinCalcR.Calculations.Calculator
                     this.MemoryFields.Get<double>(MemoryFieldNames.NominalInterestRateNumber).Value,
                     (-1) * this.MemoryFields.Get<double>(MemoryFieldNames.RateNumber).Value);
 
-            // Todo: In an overview where all saved and calculated results are shown it might be misleading to show a 0 in case of a erroneous calculation.
+            // If I ever switch to decimal I should try to introduce nullable types which is fine in C#9
             this.MemoryFields.Get<double>(MemoryFieldNames.RepaymentRateNumber).Value =
-                isFiniteNumber ? calculationResult : 0;
+                isFiniteNumber ? calculationResult : double.NaN;
         }
 
         public void GetRepaymentRate()
