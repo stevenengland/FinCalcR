@@ -3,6 +3,10 @@
 variables:
 - name: BuildParameters.RestoreBuildProjects
   value: '**/*.csproj'
+trigger:
+  branches:
+    include:
+    - master
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
   repositories:
