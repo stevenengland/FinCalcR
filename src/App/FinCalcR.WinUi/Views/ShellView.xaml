@@ -155,7 +155,8 @@
                                   Padding="{Binding ElementName=MenuItemLst, Path=SelectedItem.MarginRequirement}"
                                   HorizontalScrollBarVisibility="{Binding ElementName=MenuItemLst, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
                                   VerticalScrollBarVisibility="{Binding ElementName=MenuItemLst, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}">
-                        <!--<ContentControl Content="{Binding ElementName=MenuItemLst, Path=SelectedItem.Content}" />-->
+
+                        <!--  When switching to Prism, use the Regions feature  -->
                         <ContentControl cal:View.Model="{Binding ElementName=MenuItemLst, Path=SelectedItem.Content}" />
                     </ScrollViewer>
 
