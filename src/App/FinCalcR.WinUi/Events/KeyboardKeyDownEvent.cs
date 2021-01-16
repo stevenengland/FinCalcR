@@ -1,8 +1,9 @@
-﻿using StEn.FinCalcR.WinUi.Events.EventArgs;
+﻿using MediatR;
+using StEn.FinCalcR.WinUi.Events.EventArgs;
 
 namespace StEn.FinCalcR.WinUi.Events
 {
-    public class KeyboardKeyDownEvent
+    public class KeyboardKeyDownEvent : INotification
     {
         public KeyboardKeyDownEvent(MappedKeyEventArgs e)
         {

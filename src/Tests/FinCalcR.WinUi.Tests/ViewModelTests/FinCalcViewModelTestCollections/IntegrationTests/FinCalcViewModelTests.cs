@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using Caliburn.Micro;
+using System.Threading.Tasks;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
+using MediatR;
 using Moq;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
@@ -31,239 +32,234 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         }
 
         [Fact]
-        public void KeyboardEventsAreIgnoredIfCallerIsNotOfTheSameTypeAsTheHandlingVm()
+        public async Task KeyboardEventsAreIgnoredIfCallerIsNotOfTheSameTypeAsTheHandlingVmAsync()
         {
             // Arrange
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
-            eventAggregatorMock.Verify(x => x.Subscribe(It.IsAny<object>()), Times.Once);
 
             // Act
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", "test")));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", "test")));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", "test")), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", "test")), default).ConfigureAwait(false);
 
             // Assert
             vm.DisplayText.Should().Be("0,");
         }
 
         [Fact]
-        public void KeyboardEventsAreHandled()
+        public async Task KeyboardEventsAreHandledAsync()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
-            eventAggregatorMock.Verify(x => x.Subscribe(It.IsAny<object>()), Times.Once);
-
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,000");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,000");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F5", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2 p.a.");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F6", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2 p.a.");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,018");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F7", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,000");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8", vm)), default).ConfigureAwait(false);
             Assert.True(vm.AdvanceStatusBarText != string.Empty);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F8", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.AdvanceStatusBarText?.Length == 0);
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F3", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "-0,01");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F9", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = false }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,00");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = true }));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Delete", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("F1", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,00");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Multiply", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Multiply", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "6,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Divide", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Divide", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Subtract", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Subtract", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "-2,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Add", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Add", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Return", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "4,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemQuestion", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemQuestion", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "-1,");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Decimal", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Decimal", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "1,1");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemComma", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemComma", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "1,1");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemPeriod", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("OemPeriod", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "1,1");
             vm.ClearPressedCommand.Execute(true);
 
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "1,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "11,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad2", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "2,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D2", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D2", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "22,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad3", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "3,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D3", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D3", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "33,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad4", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "4,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D4", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D4", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "44,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad5", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad5", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "5,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D5", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D5", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "55,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad6", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad6", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "6,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D6", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D6", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "66,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad7", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad7", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "7,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D7", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D7", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "77,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad8", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad8", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "8,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D8", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D8", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "88,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad9", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad9", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "9,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D9", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D9", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "99,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad0", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("NumPad0", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D0", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D0", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "10,");
             vm.ClearPressedCommand.Execute(true);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)));
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Escape", vm)));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("D1", vm)), default).ConfigureAwait(false);
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Escape", vm)), default).ConfigureAwait(false);
             Assert.True(vm.DisplayText == "0,");
 
             Assert.False(vm.IsMemoryPaneExpanded);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Down", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Down", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.True(vm.IsMemoryPaneExpanded);
-            vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Up", vm) { IsShiftPressed = true }));
+            await vm.Handle(new KeyboardKeyDownEvent(new MappedKeyEventArgs("Up", vm) { IsShiftPressed = true }), default).ConfigureAwait(false);
             Assert.False(vm.IsMemoryPaneExpanded);
         }
 
@@ -1078,7 +1074,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void DivisionByZeroThrowsAndResets()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var mediatorMock = Mock.Get((IMediator)mockObjects[nameof(IMediator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(1);
@@ -1086,7 +1082,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.DigitPressedCommand.Execute(0);
             vm.CalculatePressedCommand.Execute(null);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(ErrorEvent)), It.IsAny<CancellationToken>()), Times.Once);
 
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);
             Assert.True(vm.DisplayText == "0,");
@@ -1331,12 +1327,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void ClearingLongTouchShowsResetHint()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var mediatorMock = Mock.Get((IMediator)mockObjects[nameof(IMediator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.ClearPressedCommand.Execute(true);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<HintEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(HintEvent)), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -1640,7 +1636,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void YearsDoNotExceedLimitsAndReset()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var mediatorMock = Mock.Get((IMediator)mockObjects[nameof(IMediator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(3);
@@ -1657,7 +1653,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.YearsMustNotBeNegative()), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(m => ((ErrorEvent)m).ErrorMessage == LocalizedErrorMessages.Instance.YearsMustNotBeNegative()), It.IsAny<CancellationToken>()), Times.Once); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);
@@ -1669,7 +1665,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void RatesPerAnnumDoNotExceedLimitsButThrow()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var mediatorMock = Mock.Get((IMediator)mockObjects[nameof(IMediator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(3);
@@ -1686,7 +1682,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(m => ((ErrorEvent)m).ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<CancellationToken>()), Times.Once); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);
@@ -1703,7 +1699,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Exactly(2)); // error expected
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(m => ((ErrorEvent)m).ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<CancellationToken>()), Times.Exactly(2)); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);
@@ -1721,7 +1717,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.YearsPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Exactly(3)); // error expected
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(m => ((ErrorEvent)m).ErrorMessage == LocalizedErrorMessages.Instance.RatesPerAnnumExceedsRange()), It.IsAny<CancellationToken>()), Times.Exactly(3)); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.YearsPressedCommand.Execute(true);
@@ -1824,7 +1820,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void EffectiveAndNominalInterestDoNotExceedLimitsAndResets()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var mediatorMock = Mock.Get((IMediator)mockObjects[nameof(IMediator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(3);
@@ -1843,7 +1839,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 
             vm.InterestPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.EffectiveInterestExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Once); // error expected
+            mediatorMock.Verify(x => x.Publish<INotification>(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.EffectiveInterestExceedsRange()), It.IsAny<CancellationToken>()), Times.Once); // error expected
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.InterestPressedCommand.Execute(true);
@@ -1870,7 +1866,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.OperatorPressedCommand.Execute("*");
             vm.InterestPressedCommand.Execute(false);
 
-            eventAggregatorMock.Verify(x => x.Publish(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.NominalInterestExceedsRange()), It.IsAny<Action<System.Action>>()), Times.Exactly(1)); // Not 2 because it is another error message
+            mediatorMock.Verify(x => x.Publish<INotification>(It.Is<ErrorEvent>(m => m.ErrorMessage == LocalizedErrorMessages.Instance.NominalInterestExceedsRange()), It.IsAny<CancellationToken>()), Times.Exactly(1)); // Not 2 because it is another error message
             Assert.True(vm.DisplayText == "0,");
             Assert.True(Math.Abs(vm.DisplayNumber - 0) < Tolerance); // sides are reset
             vm.OperatorPressedCommand.Execute("*");
@@ -2092,24 +2088,24 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void PressingRateDoesNotThrowWhenRepaymentRateIsCalculatedAutomaticallyAndIsInvalidNumber()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var mediatorMock = Mock.Get((IMediator)mockObjects[nameof(IMediator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.DigitPressedCommand.Execute(0);
             vm.RatePressedCommand.Execute(false); // Would throw div by zero, because repayment rate is calculated in the background with invalid result.
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Never);
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(ErrorEvent)), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
         public void PressingRateSecondFunctionLongTouchThrowsWhenRepaymentRateIsRecalculatedAndIsInvalidNumber()
         {
             var mockObjects = MockFactories.GetMockObjects();
-            var eventAggregatorMock = Mock.Get((IEventAggregator)mockObjects[nameof(IEventAggregator)]);
+            var mediatorMock = Mock.Get((IMediator)mockObjects[nameof(IMediator)]);
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(mockObjects);
 
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(true);
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(ErrorEvent)), It.IsAny<CancellationToken>()), Times.Once);
 
             // Assert display is set back to zero and not NaN or something
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);

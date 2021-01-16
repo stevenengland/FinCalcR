@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Caliburn.Micro;
+using System.Threading;
 using FinCalcR.WinUi.Tests.Mocks;
+using MediatR;
 using Moq;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.WinUi.Events;
@@ -46,7 +47,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out var autoMocker);
-            var eventAggregatorMock = autoMocker.GetMock<IEventAggregator>();
+            var mediatorMock = autoMocker.GetMock<IMediator>();
 
             // Act
             // Produce NaN for repayment rate number
@@ -54,7 +55,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             vm.RatePressedCommand.Execute(true);
 
             // Assert
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(ErrorEvent)), It.IsAny<CancellationToken>()), Times.Once);
 
             // Assert display is set back to zero and not NaN or something
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);
@@ -66,12 +67,12 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         public void CalculationOfRateLeadsToNaNAndUpcomingOperationsAreNotHarmed()
         {
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out var autoMocker);
-            var eventAggregatorMock = autoMocker.GetMock<IEventAggregator>();
+            var mediatorMock = autoMocker.GetMock<IMediator>();
 
             // Produce NaN for repayment rate number
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(true);
-            eventAggregatorMock.Verify(x => x.Publish(It.IsAny<ErrorEvent>(), It.IsAny<Action<System.Action>>()), Times.Once);
+            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(ErrorEvent)), It.IsAny<CancellationToken>()), Times.Once);
 
             // Assert display is set back to zero and not NaN or something
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);

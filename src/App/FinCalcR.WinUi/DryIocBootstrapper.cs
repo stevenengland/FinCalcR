@@ -7,6 +7,8 @@ using System.Windows;
 using Caliburn.Micro;
 using DryIoc;
 using MaterialDesignThemes.Wpf;
+using MediatR;
+using MediatR.Pipeline;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
@@ -14,16 +16,19 @@ using StEn.FinCalcR.Calculations.Messages;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
+using StEn.FinCalcR.WinUi.Extensions;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension;
 using StEn.FinCalcR.WinUi.Messages;
+using StEn.FinCalcR.WinUi.Platform;
 using StEn.FinCalcR.WinUi.ViewModels;
+using PlatformProvider = StEn.FinCalcR.WinUi.Platform.PlatformProvider;
 
 namespace StEn.FinCalcR.WinUi
 {
     public class DryIocBootstrapper : BootstrapperBase
     {
-        private readonly IContainer unityContainer = new Container();
+        private readonly IContainer iocContainer = new Container();
         private ErrorEvent firstErrorEvent;
 
         public DryIocBootstrapper()
@@ -34,32 +39,41 @@ namespace StEn.FinCalcR.WinUi
         protected override void Configure()
         {
             // --- Register container itself ---
-            this.unityContainer.RegisterInstance(this.unityContainer);
+            this.iocContainer.RegisterInstance(this.iocContainer);
             this.RegisterLocalizationService();
             this.RegisterSnackbar();
             this.RegisterCalculator();
-            this.unityContainer.Register<IWindowManager, WindowManager>(Reuse.Singleton);
-            this.unityContainer.Register<IEventAggregator, EventAggregator>(Reuse.Singleton);
-            this.unityContainer.Register<IDialogHostMapper, DialogHostMapper>(Reuse.Singleton);
+            this.iocContainer.Register<IWindowManager, WindowManager>(Reuse.Singleton);
+            this.iocContainer.Register<IDialogHostMapper, DialogHostMapper>(Reuse.Singleton);
+            this.RegisterMediator();
             this.RegisterViewModels();
+
+            PlatformProvider.Current = new Platform.XamlPlatformProvider();
+
+            // Finally check the registrations
+            var registrationErrors = this.iocContainer.Validate();
+            if (registrationErrors.Length > 0)
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         protected override void BuildUp(object instance)
         {
             // Resolve service first then inject properties into it.
-            this.unityContainer.InjectPropertiesAndFields(instance);
+            this.iocContainer.InjectPropertiesAndFields(instance);
             base.BuildUp(instance);
         }
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            this.unityContainer.Dispose();
+            this.iocContainer.Dispose();
             base.OnExit(sender, e);
         }
 
-        protected override object GetInstance(Type service, string key) => string.IsNullOrEmpty(key) ? this.unityContainer.Resolve(service, key) : this.unityContainer.Resolve(service);
+        protected override object GetInstance(Type service, string key) => string.IsNullOrEmpty(key) ? this.iocContainer.Resolve(service, key) : this.iocContainer.Resolve(service);
 
-        protected override IEnumerable<object> GetAllInstances(Type service) => this.unityContainer.ResolveMany(service);
+        protected override IEnumerable<object> GetAllInstances(Type service) => this.iocContainer.ResolveMany(service);
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
@@ -69,8 +83,8 @@ namespace StEn.FinCalcR.WinUi
                 return;
             }
 
-            var eventAggregator = this.unityContainer.Resolve<IEventAggregator>();
-            eventAggregator.PublishOnUIThread(
+            var mediator = this.iocContainer.Resolve<IMediator>();
+            mediator.PublishOnUiThread(
                 new ErrorEvent(
                     this.firstErrorEvent.Exception,
                     Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + this.firstErrorEvent.ErrorMessage,
@@ -79,15 +93,40 @@ namespace StEn.FinCalcR.WinUi
 
         protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            var eventAggregator = this.unityContainer.Resolve<IEventAggregator>();
+            var mediator = this.iocContainer.Resolve<IMediator>();
             if (e == null)
             {
-                eventAggregator.PublishOnUIThread(new ErrorEvent(new Exception(), $"{Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED} null", true));
+                mediator.PublishOnUiThread(new ErrorEvent(new Exception(), $"{Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED} null", true));
             }
             else
             {
-                eventAggregator.PublishOnUIThread(new ErrorEvent(e.Exception, Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + e.Exception.Message, true));
+                mediator.PublishOnUiThread(new ErrorEvent(e.Exception, Resources.EXC_GUI_UNHANDLED_EXCEPTION_OCCURED + " " + e.Exception.Message, true));
                 e.Handled = true;
+            }
+        }
+
+        private void RegisterMediator()
+        {
+            try
+            {
+                var handler = typeof(ShellViewModel).GetAssembly().GetTypes().Where(t => t
+                    .GetInterfaces()
+                    .Any(i => i.Name.StartsWith("IRequestHandler") || i.Name.StartsWith("INotificationHandler"))); // Not that nice, but works so far
+
+                this.iocContainer.RegisterMany(
+                    handler,
+                    ifAlreadyRegistered: IfAlreadyRegistered.Keep); // Could affect viewModels that are already registered.
+
+                // Pipeline
+                this.iocContainer.Register(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>), serviceKey: "RequestPreProcessorBehavior");
+                this.iocContainer.Register(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>), serviceKey: "RequestPostProcessorBehavior");
+
+                this.iocContainer.Register<IMediator, Mediator>();
+                this.iocContainer.RegisterDelegate<ServiceFactory>(r => r.Resolve);
+            }
+            catch (Exception e)
+            {
+                this.SetErrorEvent(new ErrorEvent(e, $"Could not register {nameof(IMediator)}:" + e.Message, true));
             }
         }
 
@@ -112,7 +151,7 @@ namespace StEn.FinCalcR.WinUi
                     localizationService.ChangeCurrentCulture(new CultureInfo("en"));
                 }
 
-                this.unityContainer.RegisterInstance(localizationService);
+                this.iocContainer.RegisterInstance(localizationService);
             }
             catch (Exception e)
             {
@@ -125,7 +164,7 @@ namespace StEn.FinCalcR.WinUi
             try
             {
                 ISnackbarMessageQueue sbMessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
-                this.unityContainer.RegisterInstance(sbMessageQueue);
+                this.iocContainer.RegisterInstance(sbMessageQueue);
             }
             catch (Exception e)
             {
@@ -151,10 +190,10 @@ namespace StEn.FinCalcR.WinUi
             }
 
             // Register an instance of the calculator helps to preserve internal states when VM is recreated like when the language changes.
-            this.unityContainer.RegisterInstance(calculator);
+            this.iocContainer.RegisterInstance(calculator);
 
             ICommandInvoker calculatorRemote = new CalculatorRemote(new CommandList(commands));
-            this.unityContainer.RegisterInstance(calculatorRemote);
+            this.iocContainer.RegisterInstance(calculatorRemote);
         }
 
         private void RegisterViewModels()
@@ -164,7 +203,7 @@ namespace StEn.FinCalcR.WinUi
                 this.GetType().Assembly.GetTypes()
                     .Where(type => type.IsClass && type.Name.EndsWith("ViewModel"))
                     .ToList()
-                    .ForEach(viewModelType => this.unityContainer.Register(viewModelType, viewModelType));
+                    .ForEach(viewModelType => this.iocContainer.Register(viewModelType, viewModelType, ifAlreadyRegistered: IfAlreadyRegistered.Keep));
             }
             catch (Exception e)
             {

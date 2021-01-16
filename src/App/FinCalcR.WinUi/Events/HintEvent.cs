@@ -1,6 +1,8 @@
-﻿namespace StEn.FinCalcR.WinUi.Events
+﻿using MediatR;
+
+namespace StEn.FinCalcR.WinUi.Events
 {
-    public class HintEvent
+    public class HintEvent : INotification
     {
         public HintEvent(string message)
         {

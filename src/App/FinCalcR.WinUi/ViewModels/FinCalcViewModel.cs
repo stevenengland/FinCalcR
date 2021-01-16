@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using MediatR;
 using StEn.FinCalcR.Calculations.Calculator;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Events;
@@ -17,16 +19,17 @@ using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Commanding;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Events.EventArgs;
+using StEn.FinCalcR.WinUi.Extensions;
 using StEn.FinCalcR.WinUi.Types;
 
 namespace StEn.FinCalcR.WinUi.ViewModels
 {
-    public class FinCalcViewModel : Screen, IHandle<KeyboardKeyDownEvent>
+    public class FinCalcViewModel : Screen, INotificationHandler<KeyboardKeyDownEvent>
     {
         private const int LongTouchDelay = 2;
-        private readonly IEventAggregator eventAggregator;
         private readonly ICommandInvoker calculatorRemote;
         private readonly ICalculationCommandReceiver calculator;
+        private readonly IMediator mediator;
         private string displayText;
         private double displayNumber; // Remains in VM
         private string advanceStatusBarText; // Remains in VM
@@ -49,15 +52,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         public FinCalcViewModel(
             ILocalizationService localizationService,
-            IEventAggregator eventAggregator,
+            IMediator mediator,
             ICommandInvoker calculatorRemote,
             ICalculationCommandReceiver calculator)
         {
-            this.eventAggregator = eventAggregator;
+            this.mediator = mediator;
             this.calculatorRemote = calculatorRemote;
             this.calculator = calculator;
 
-            this.eventAggregator?.Subscribe(this);
             this.calculator.OutputText.TextChanged += this.OnOutputTextChanged;
             this.calculatorRemote.CommandExecuted += this.OnCommandExecuted;
             this.calculatorRemote.CommandFailed += this.OnCommandFailed;
@@ -351,7 +353,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         #endregion
 
-        public void Handle(KeyboardKeyDownEvent message) => this.KeyboardKeyPressedCommand.Execute(message.KeyEventArgs);
+        public Task Handle(KeyboardKeyDownEvent notification, CancellationToken cancellationToken)
+        {
+            this.KeyboardKeyPressedCommand.Execute(notification.KeyEventArgs);
+            return Task.CompletedTask;
+        }
 
         [UsedImplicitly]
         public async Task OnClearPressedAsync(object sender, EventArgs eventArgs) // Public wrapper so that Behavior trigger can access it.
@@ -573,7 +579,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         {
             if (isLongTouch)
             {
-                this.eventAggregator.PublishOnUIThread(new HintEvent(Resources.HINT_SPECIAL_FUNCTION_MEMORY_RESET));
+                this.mediator.PublishOnUiThread(new HintEvent(Resources.HINT_SPECIAL_FUNCTION_MEMORY_RESET));
                 this.ResetSpecialFunctionLabels(true);
                 this.PressedSpecialFunctions = this.PressedSpecialFunctions.SetAllFlags(false);
                 this.calculatorRemote.InvokeCommand(CommandWord.Clear);
@@ -909,7 +915,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
                     isLongTouch = await gestureHandler.IsLongMouseClickAsync(TimeSpan.FromSeconds(LongTouchDelay)).ConfigureAwait(false);
                     break;
                 default:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent($"{eventArgs.GetType()} is not supported."));
+                    this.mediator.PublishOnUiThread(new ErrorEvent($"{eventArgs.GetType()} is not supported."));
                     break;
             }
 
@@ -944,25 +950,25 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             switch (ex)
             {
                 case CalculationException _:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, ex.Message));
+                    this.mediator.PublishOnUiThread(new ErrorEvent(ex, ex.Message));
                     break;
                 case NotFiniteNumberException _:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_NOT_FINITE_NUMBER));
+                    this.mediator.PublishOnUiThread(new ErrorEvent(ex, Resources.EXC_NOT_FINITE_NUMBER));
                     break;
                 case DivideByZeroException _:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
+                    this.mediator.PublishOnUiThread(new ErrorEvent(ex, string.Format(CultureInfo.InvariantCulture, Resources.EXC_DIVISION_BY_ZERO)));
                     break;
                 case OverflowException _:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, Resources.EXC_OVERFLOW_EXCEPTION));
+                    this.mediator.PublishOnUiThread(new ErrorEvent(ex, Resources.EXC_OVERFLOW_EXCEPTION));
                     break;
                 case NotSupportedException _:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent(Resources.EXC_OPERATION_NOT_SUPPORTED));
+                    this.mediator.PublishOnUiThread(new ErrorEvent(Resources.EXC_OPERATION_NOT_SUPPORTED));
                     break;
                 case ValidationException _:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, ex.Message));
+                    this.mediator.PublishOnUiThread(new ErrorEvent(ex, ex.Message));
                     break;
                 default:
-                    this.eventAggregator.PublishOnUIThread(new ErrorEvent(ex, ex.Message));
+                    this.mediator.PublishOnUiThread(new ErrorEvent(ex, ex.Message));
                     break;
             }
 

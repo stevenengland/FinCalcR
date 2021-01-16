@@ -1,35 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using MaterialDesignThemes.Wpf;
+using MediatR;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Commanding;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Events.EventArgs;
+using StEn.FinCalcR.WinUi.Extensions;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.Models;
 using SyncCommand = StEn.FinCalcR.WinUi.Commanding.SyncCommand;
 
 namespace StEn.FinCalcR.WinUi.ViewModels
 {
-    public class ShellViewModel : Screen, IHandleWithTask<ErrorEvent>, IHandleWithTask<HintEvent>
+    public class ShellViewModel : Screen
     {
-        private readonly IEventAggregator eventAggregator;
+        private readonly IMediator mediator;
         private readonly IDialogHostMapper dialogHostMapper;
         private readonly ILocalizationService localizationService;
         private readonly IWindowManager windowManager;
         private readonly AboutViewModel aboutViewModel;
         private readonly FinCalcViewModel finCalcViewModel;
-        private ErrorEvent lastErrorEvent;
         private WindowState curWindowState;
         private bool isMenuBarVisible;
         private string titleBarText;
@@ -39,7 +38,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         public ShellViewModel(
             ISnackbarMessageQueue snackbarMessageQueue,
-            IEventAggregator eventAggregator,
+            IMediator mediator,
             IDialogHostMapper dialogHostMapper,
             ILocalizationService localizationService,
             IWindowManager windowManager,
@@ -47,15 +46,13 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             FinCalcViewModel finCalcViewModel)
         {
             this.SbMessageQueue = snackbarMessageQueue;
-            this.eventAggregator = eventAggregator;
+            this.mediator = mediator;
             this.dialogHostMapper = dialogHostMapper;
             this.localizationService = localizationService;
             this.windowManager = windowManager;
 
             this.aboutViewModel = aboutViewModel;
             this.finCalcViewModel = finCalcViewModel;
-
-            this.eventAggregator?.Subscribe(this);
 
             this.LoadMenuItems();
             this.LoadLanguages();
@@ -149,73 +146,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.KeyboardKeyPressedCommand.Execute(mappedEventArgs);
         }
 
-        public async Task Handle(HintEvent message)
-        {
-            if (message == null)
-            {
-                return;
-            }
-
-            await this.dialogHostMapper.ShowAsync(
-                this.dialogHostMapper.GetHintView(message.Message),
-                "RootDialog").ConfigureAwait(true);
-        }
-
-        public async Task Handle(ErrorEvent message)
-        {
-            if (message == null)
-            {
-                message = new ErrorEvent(new ArgumentException(Resources.EXC_ARGUMENT_NULL + nameof(message)), Resources.EXC_ARGUMENT_NULL + nameof(message), false);
-            }
-
-            this.lastErrorEvent = message;
-
-            if (message.ApplicationMustShutdown)
-            {
-                await this.dialogHostMapper.ShowAsync(
-                    this.dialogHostMapper.GetErrorView(message.ErrorMessage, message.Exception?.Message, $"{Resources.EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN}"),
-                    "RootDialog").ConfigureAwait(true);
-                this.GracefulShutdown();
-            }
-            else if (message.ShowAsSnackbarItem)
-            {
-                this.SbMessageQueue.Enqueue<ErrorEvent>(
-                    Resources.EXC_ERROR_EVENT_GENERAL_TITLE,
-                    Resources.SnackBar_Action_Content_Details,
-#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
-                    async (arg) => await this.ShowErrorAsync(arg).ConfigureAwait(true),
-#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
-                    message);
-            }
-            else
-            {
-                await this.dialogHostMapper.ShowAsync(
-                    this.dialogHostMapper.GetErrorView(message.ErrorMessage, message.Exception?.Message),
-                    "RootDialog").ConfigureAwait(true);
-            }
-        }
-
-#pragma warning disable VSTHRD100 // Avoid async void methods
-        protected override async void OnViewLoaded(object view)
-#pragma warning restore VSTHRD100 // Avoid async void methods
-        {
-            base.OnViewLoaded(view);
-
-            // All stuff that uses error handling should come here to make use of the DialogHost, that is only available after the view loaded.
-            if (this.lastErrorEvent != null)
-            {
-                this.SbMessageQueue.Enqueue("Application loaded with errors.");
-                if (this.lastErrorEvent.ApplicationMustShutdown)
-                {
-                    await this.dialogHostMapper.ShowAsync(
-                        this.dialogHostMapper.GetErrorView(this.lastErrorEvent.ErrorMessage, this.lastErrorEvent.Exception.Message, $"{Resources.EXC_ERROR_EVENT_GENERAL_APP_NEEDS_SHUTDOWN}"),
-                        "RootDialog").ConfigureAwait(true);
-                    this.GracefulShutdown();
-                }
-            }
-        }
-
-        private void OnKeyboardKeyPressed(MappedKeyEventArgs e) => this.eventAggregator.PublishOnUIThread(new KeyboardKeyDownEvent(e));
+        private void OnKeyboardKeyPressed(MappedKeyEventArgs e) => this.mediator.PublishOnUiThread(new KeyboardKeyDownEvent(e));
 
         private void LoadLanguages()
         {
@@ -271,7 +202,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             }
 
             // Open an new instance of vm (avoid using IoC.Get to be testable). The new vm will not take over the old values.
-            this.windowManager.ShowWindow(new ShellViewModel(this.SbMessageQueue, this.eventAggregator, this.dialogHostMapper, this.localizationService, this.windowManager, this.aboutViewModel, this.finCalcViewModel), null, null);
+            this.windowManager.ShowWindow(new ShellViewModel(this.SbMessageQueue, this.mediator, this.dialogHostMapper, this.localizationService, this.windowManager, this.aboutViewModel, this.finCalcViewModel), null, null);
 
             // Close this instance
             // One could check the success in a static bootstrapper void that takes a look at the Application.Current.Windows ("How much windows of type xyz do exist?").
@@ -282,15 +213,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         private void OnExitApp() => this.GracefulShutdown();
 
-        private async Task ShowErrorAsync(ErrorEvent errorEvent) => _ = await this.dialogHostMapper.ShowAsync(
-                this.dialogHostMapper.GetErrorView(
-                    errorEvent.ErrorMessage, errorEvent.Exception?.Message),
-                "RootDialog").ConfigureAwait(true);
-
         private void GracefulShutdown()
         {
             this.TryClose();
-            System.Windows.Application.Current.Shutdown();
+            this.mediator.PublishOnUiThread(new ApplicationShutdownEvent());
         }
     }
 }

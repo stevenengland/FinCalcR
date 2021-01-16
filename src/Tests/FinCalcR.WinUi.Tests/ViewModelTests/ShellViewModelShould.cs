@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
-using MaterialDesignThemes.Wpf;
+using MediatR;
 using Moq;
 using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
-using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.Models;
 using Xunit;
 
-// ReSharper disable RedundantArgumentDefaultValue
 namespace FinCalcR.WinUi.Tests.ViewModelTests
 {
     public class ShellViewModelShould
@@ -44,19 +41,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
         }
 
         [Fact]
-        public void SubscribeToEventAggregator_WhenAppIsStarted()
-        {
-            // Arrange
-            var vm = MockFactories.ShellViewModelMock(out var mocker);
-            var eventAggregatorMock = mocker.GetMock<IEventAggregator>();
-
-            // Act
-            // Assert
-            // Test to make sure subscribe was called on the event aggregator at least once
-            eventAggregatorMock.Verify(x => x.Subscribe(vm), Times.Once);
-        }
-
-        [Fact]
         public void ChangeActiveContent_WhenSelectedMenuItemChanges()
         {
             // Arrange
@@ -67,20 +51,6 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
             // Assert
             vm.ActiveWindowContent.Should().NotBe(vm.MenuItems.First().Content);
-        }
-
-        [Fact]
-        public async Task HandleErrorEventsWithSnackbarAsync()
-        {
-            // Arrange
-            var vm = MockFactories.ShellViewModelMock(out var mocker);
-            var snackbarMock = mocker.GetMock<ISnackbarMessageQueue>();
-
-            // Act
-            await vm.Handle(new ErrorEvent(new Exception(), "test", false, true)).ConfigureAwait(true);
-
-            // Assert
-            snackbarMock.Verify(x => x.Enqueue(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<Action<ErrorEvent>>(), It.IsAny<ErrorEvent>()), Times.Once);
         }
 
         [Fact]
@@ -100,21 +70,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
         }
 
         [Fact]
-        public async Task HandleErrorEventsAsync()
-        {
-            // Arrange
-            var vm = MockFactories.ShellViewModelMock(out var mocker);
-            var dialogHostMapperMock = mocker.GetMock<IDialogHostMapper>();
-
-            // Act
-            await vm.Handle(new ErrorEvent(new Exception(), "test", false, false)).ConfigureAwait(true);
-
-            // Assert
-            dialogHostMapperMock.Verify(x => x.ShowAsync(It.IsAny<object>(), It.IsAny<object>()));
-        }
-
-        [Fact]
-        public void HandleMenuItemChanges()
+        public void HandleMenuItemChanges_WhenTheSelectedViewModelChanges()
         {
             // Arrange
             var vm = MockFactories.ShellViewModelMock(out _);
@@ -127,7 +83,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
         }
 
         [Fact]
-        public void MinimizeWindow()
+        public void MinimizeWindow_WhenMinimizeButtonIsPressed()
         {
             // Arrange
             var vm = MockFactories.ShellViewModelMock(out _);
@@ -137,6 +93,20 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
 
             // Assert
             vm.CurWindowState.Should().Be(WindowState.Minimized);
+        }
+
+        [Fact]
+        public void CloseWindow_WhenClosingButtonIsPressed()
+        {
+            // Arrange
+            var vm = MockFactories.ShellViewModelMock(out var mocker);
+            var mediator = mocker.GetMock<IMediator>();
+
+            // Act
+            vm.ExitAppCommand.Execute(null);
+
+            // Assert
+            mediator.Verify(m => m.Publish(It.Is<object>(o => o.GetType() == typeof(ApplicationShutdownEvent)), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

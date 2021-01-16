@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
+using MediatR;
 using Moq;
 using Moq.AutoMock;
 using StEn.FinCalcR.Calculations.Calculator;
@@ -44,14 +45,14 @@ namespace FinCalcR.WinUi.Tests.Mocks
             SetImplementationOfCalculatorCommandObjects(out var receiver, out var invoker);
             return new FinCalcViewModel(
                 (ILocalizationService)mockObjects[nameof(ILocalizationService)],
-                (IEventAggregator)mockObjects[nameof(IEventAggregator)],
+                (IMediator)mockObjects[nameof(IMediator)],
                 invoker,
                 receiver);
         }
 
         public static Dictionary<string, object> GetMockObjects() => new Dictionary<string, object>()
             {
-                { nameof(IEventAggregator), GetEventAggregator() },
+                { nameof(IMediator), GetMediator() },
                 { nameof(ISnackbarMessageQueue), GetISnackbarMessageQueue() },
                 { nameof(IDialogHostMapper), GetIDialogHostMapper() },
                 { nameof(ILocalizationService), GetLocalizationService() },
@@ -62,7 +63,7 @@ namespace FinCalcR.WinUi.Tests.Mocks
 
         private static ILocalizationService GetLocalizationService() => new Mock<ILocalizationService>().Object;
 
-        private static IEventAggregator GetEventAggregator() => new Mock<IEventAggregator>().Object;
+        private static IMediator GetMediator() => new Mock<IMediator>().Object;
 
         private static ISnackbarMessageQueue GetISnackbarMessageQueue() => new Mock<ISnackbarMessageQueue>().Object;
 

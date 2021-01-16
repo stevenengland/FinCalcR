@@ -1,8 +1,9 @@
 ﻿using System;
+using MediatR;
 
 namespace StEn.FinCalcR.WinUi.Events
 {
-    public class ErrorEvent
+    public class ErrorEvent : INotification
     {
         public ErrorEvent(Exception exception, string errorMessage, bool shutdown = false, bool showAsSnackbarItem = false)
         {
