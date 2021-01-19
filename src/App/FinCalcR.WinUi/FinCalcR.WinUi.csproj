@@ -99,6 +99,11 @@
     <Compile Include="Platform\XamlPlatformProvider.cs" />
     <Compile Include="Services\ApplicationShutdownService.cs" />
     <Compile Include="Services\DialogFromEventService.cs" />
+    <Compile Include="Services\IHandleKeyboardPress.cs" />
+    <Compile Include="Services\IKeyboardEventDistributionService.cs" />
+    <Compile Include="Services\ISubscriptionService.cs" />
+    <Compile Include="Services\KeyboardEventDistributionService.cs" />
+    <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="Types\FrameworkElementGestureHandler.cs" />
     <Compile Include="Types\IGestureHandler.cs" />
     <Compile Include="Types\LastPressedOperation.cs" />

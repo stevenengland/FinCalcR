@@ -1,6 +1,8 @@
 ﻿using System;
 using FinCalcR.WinUi.Tests.Mocks;
 using FluentAssertions;
+using Moq;
+using StEn.FinCalcR.WinUi.Services;
 using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
@@ -8,6 +10,18 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
 {
     public class FinCalcViewModelShould : TestBase
     {
+        [Fact]
+        public void Subscribe_WhenVmIsCreated()
+        {
+            // Arrange
+            MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out var mocker);
+            var subscriptionServiceMock = mocker.GetMock<ISubscriptionService>();
+
+            // Act
+            // Assert
+            subscriptionServiceMock.Verify(m => m.Subscribe(It.Is<object>(o => o.GetType() == typeof(FinCalcViewModel))), Times.Once);
+        }
+
         [Fact]
         public void SetSpecialNumbers_WhenVmIsCreated()
         {

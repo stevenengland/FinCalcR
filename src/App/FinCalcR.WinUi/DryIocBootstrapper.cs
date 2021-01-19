@@ -20,7 +20,7 @@ using StEn.FinCalcR.WinUi.Extensions;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.LibraryMapper.WpfLocalizeExtension;
 using StEn.FinCalcR.WinUi.Messages;
-using StEn.FinCalcR.WinUi.Platform;
+using StEn.FinCalcR.WinUi.Services;
 using StEn.FinCalcR.WinUi.ViewModels;
 using PlatformProvider = StEn.FinCalcR.WinUi.Platform.PlatformProvider;
 
@@ -46,9 +46,14 @@ namespace StEn.FinCalcR.WinUi
             this.iocContainer.Register<IWindowManager, WindowManager>(Reuse.Singleton);
             this.iocContainer.Register<IDialogHostMapper, DialogHostMapper>(Reuse.Singleton);
             this.RegisterMediator();
+            this.RegisterKeyboardEventDistributionService();
             this.RegisterViewModels();
 
             PlatformProvider.Current = new Platform.XamlPlatformProvider();
+
+#pragma warning disable S1481 // Unused local variables should be removed
+            var registrations = this.iocContainer.GetServiceRegistrations();
+#pragma warning restore S1481 // Unused local variables should be removed
 
             // Finally check the registrations
             var registrationErrors = this.iocContainer.Validate();
@@ -127,6 +132,19 @@ namespace StEn.FinCalcR.WinUi
             catch (Exception e)
             {
                 this.SetErrorEvent(new ErrorEvent(e, $"Could not register {nameof(IMediator)}:" + e.Message, true));
+            }
+        }
+
+        private void RegisterKeyboardEventDistributionService()
+        {
+            try
+            {
+                this.iocContainer.Register<ISubscriptionService, SubscriptionService>(reuse: Reuse.Singleton);
+                this.iocContainer.Register<IKeyboardEventDistributionService, KeyboardEventDistributionService>(ifAlreadyRegistered: IfAlreadyRegistered.Keep);
+            }
+            catch (Exception e)
+            {
+                this.SetErrorEvent(new ErrorEvent(e, $"Could not register {nameof(IKeyboardEventDistributionService)}:" + e.Message, true));
             }
         }
 

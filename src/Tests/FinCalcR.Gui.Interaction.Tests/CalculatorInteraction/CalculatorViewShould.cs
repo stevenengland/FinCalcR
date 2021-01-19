@@ -209,12 +209,14 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
 
             // Act
             Keyboard.Type("1");
+            Wait.UntilInputIsProcessed();
             WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsBtn)).AsButton()).Click();
             Wait.UntilInputIsProcessed();
             var yearsActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsActiveStatusLbl)).AsLabel()).Text;
             var yearsNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.YearsNumberLbl)).AsLabel()).Text;
 
             Keyboard.Type("2");
+            Wait.UntilInputIsProcessed();
             WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.InterestBtn)).AsButton()).Click();
             Wait.UntilInputIsProcessed();
             var interestActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.InterestActiveStatusLbl)).AsLabel()).Text;
@@ -222,12 +224,14 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
             var nomInterestNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.NominalInterestRateNumberLbl)).AsLabel()).Text;
 
             Keyboard.Type("3");
+            Wait.UntilInputIsProcessed();
             WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartBtn)).AsButton()).Click();
             Wait.UntilInputIsProcessed();
             var startActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartActiveStatusLbl)).AsLabel()).Text;
             var startNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartNumberLbl)).AsLabel()).Text;
 
             Keyboard.Type("4");
+            Wait.UntilInputIsProcessed();
             WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RateBtn)).AsButton()).Click();
             Wait.UntilInputIsProcessed();
             var rateActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RateActiveStatusLbl)).AsLabel()).Text;
@@ -235,12 +239,14 @@ namespace FinCalcR.Gui.Interaction.Tests.CalculatorInteraction
             var repaymentRateNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.RepaymentRateNumberLbl)).AsLabel()).Text;
 
             Keyboard.Type("5");
+            Wait.UntilInputIsProcessed();
             WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndBtn)).AsButton()).Click();
             Wait.UntilInputIsProcessed();
             var endActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndActiveStatusLbl)).AsLabel()).Text;
             var endNumber = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.EndNumberLbl)).AsLabel()).Text;
 
             Keyboard.Type(VirtualKeyShort.MULTIPLY);
+            Wait.UntilInputIsProcessed();
             WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.StartBtn)).AsButton()).Click();
             Wait.UntilInputIsProcessed();
             var advanceActiveResult = WaitForElement(() => mainScreen.FindFirstDescendant(cf => cf.ByAutomationId(UiIds.ClassicCalculator.AdvanceActiveStatusLbl)).AsLabel()).Text;

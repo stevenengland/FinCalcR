@@ -20,26 +20,26 @@ using StEn.FinCalcR.WinUi.Commanding;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Events.EventArgs;
 using StEn.FinCalcR.WinUi.Extensions;
+using StEn.FinCalcR.WinUi.Services;
 using StEn.FinCalcR.WinUi.Types;
 
 namespace StEn.FinCalcR.WinUi.ViewModels
 {
-    public class FinCalcViewModel : Screen, INotificationHandler<KeyboardKeyDownEvent>
+    public class FinCalcViewModel : Screen, IHandleKeyboardPress
     {
         private const int LongTouchDelay = 2;
         private readonly ICommandInvoker calculatorRemote;
         private readonly ICalculationCommandReceiver calculator;
         private readonly IMediator mediator;
         private string displayText;
-        private double displayNumber; // Remains in VM
-        private string advanceStatusBarText; // Remains in VM
-        private string yearsStatusBarText; // Remains in VM
-        private string interestStatusBarText; // Remains in VM
-        private string startStatusBarText; // Remains in VM
-        private string rateStatusBarText; // Remains in VM
-        private string endStatusBarText; // Remains in VM
+        private double displayNumber;
+        private string advanceStatusBarText;
+        private string yearsStatusBarText;
+        private string interestStatusBarText;
+        private string startStatusBarText;
+        private string rateStatusBarText;
+        private string endStatusBarText;
         private CommandWord lastPressedOperation = CommandWord.None;
-        private bool secondFunctionTrigger;
         private double yearsNumber;
         private double interestNumber;
         private double nominalInterestRateNumber;
@@ -49,12 +49,14 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         private double endNumber;
         private int ratesPerAnnumNumber;
         private bool isMemoryPaneExpanded;
+        private bool secondFunctionTrigger;
 
         public FinCalcViewModel(
             ILocalizationService localizationService,
             IMediator mediator,
             ICommandInvoker calculatorRemote,
-            ICalculationCommandReceiver calculator)
+            ICalculationCommandReceiver calculator,
+            ISubscriptionService subscriptionService)
         {
             this.mediator = mediator;
             this.calculatorRemote = calculatorRemote;
@@ -63,6 +65,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.calculator.OutputText.TextChanged += this.OnOutputTextChanged;
             this.calculatorRemote.CommandExecuted += this.OnCommandExecuted;
             this.calculatorRemote.CommandFailed += this.OnCommandFailed;
+
+            subscriptionService.Subscribe(this);
 
             this.OnClearPressed();
         }
@@ -316,6 +320,11 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             get => this.secondFunctionTrigger;
             set
             {
+                if (value == this.secondFunctionTrigger)
+                {
+                    return;
+                }
+
                 this.secondFunctionTrigger = value;
                 this.NotifyOfPropertyChange(() => this.SecondFunctionTrigger);
             }
@@ -353,7 +362,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         #endregion
 
-        public Task Handle(KeyboardKeyDownEvent notification, CancellationToken cancellationToken)
+        public Task HandleAsync(KeyboardKeyDownEvent notification, CancellationToken cancellationToken)
         {
             this.KeyboardKeyPressedCommand.Execute(notification.KeyEventArgs);
             return Task.CompletedTask;

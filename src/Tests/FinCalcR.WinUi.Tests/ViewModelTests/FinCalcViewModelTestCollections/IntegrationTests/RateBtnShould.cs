@@ -72,7 +72,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             // Produce NaN for repayment rate number
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(true);
-            mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(ErrorEvent)), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(x => x.Publish<INotification>(It.IsAny<ErrorEvent>(), It.IsAny<CancellationToken>()), Times.Once);
 
             // Assert display is set back to zero and not NaN or something
             Assert.True(vm.LastPressedOperation == CommandWord.Clear);

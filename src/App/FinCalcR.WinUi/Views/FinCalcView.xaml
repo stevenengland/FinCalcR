@@ -32,9 +32,9 @@
         <StackPanel Grid.ColumnSpan="4"
                     Margin="5,0,0,0"
                     Orientation="Vertical">
-            <Expander Margin="0,0,0,15"
+            <Expander x:Name="Memory"
+                      Margin="0,0,0,15"
                       AutomationProperties.AutomationId="Memory"
-                      x:Name="Memory"
                       IsExpanded="{Binding IsMemoryPaneExpanded}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -70,24 +70,24 @@
                            Content="{lex:Loc Key=FinCalcFunctionEnd}" />
                     <Label Grid.Row="0"
                            Grid.Column="1"
-                           Content="{Binding YearsNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}"
-                           AutomationProperties.AutomationId="YearsNumber"/>
+                           AutomationProperties.AutomationId="YearsNumber"
+                           Content="{Binding YearsNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}" />
                     <Label Grid.Row="1"
                            Grid.Column="1"
-                           Content="{Binding InterestNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=3}"
-                           AutomationProperties.AutomationId="InterestNumber"/>
+                           AutomationProperties.AutomationId="InterestNumber"
+                           Content="{Binding InterestNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=3}" />
                     <Label Grid.Row="2"
                            Grid.Column="1"
-                           Content="{Binding StartNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}"
-                           AutomationProperties.AutomationId="StartNumber"/>
+                           AutomationProperties.AutomationId="StartNumber"
+                           Content="{Binding StartNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}" />
                     <Label Grid.Row="3"
                            Grid.Column="1"
-                           Content="{Binding RateNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}" 
-                           AutomationProperties.AutomationId="RateNumber"/>
+                           AutomationProperties.AutomationId="RateNumber"
+                           Content="{Binding RateNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}" />
                     <Label Grid.Row="4"
                            Grid.Column="1"
-                           Content="{Binding EndNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}"
-                           AutomationProperties.AutomationId="EndNumber" />
+                           AutomationProperties.AutomationId="EndNumber"
+                           Content="{Binding EndNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}" />
 
                     <Label Grid.Row="0"
                            Grid.Column="3"
@@ -100,16 +100,16 @@
                            Content="{lex:Loc Key=FinCalcFunctionRepayment}" />
                     <Label Grid.Row="0"
                            Grid.Column="4"
-                           Content="{Binding RatesPerAnnumNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=0}"
-                           AutomationProperties.AutomationId="RatesPerAnnumNumber"/>
+                           AutomationProperties.AutomationId="RatesPerAnnumNumber"
+                           Content="{Binding RatesPerAnnumNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=0}" />
                     <Label Grid.Row="1"
                            Grid.Column="4"
-                           Content="{Binding NominalInterestRateNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=3}"
-                           AutomationProperties.AutomationId="NominalInterestRateNumber"/>
+                           AutomationProperties.AutomationId="NominalInterestRateNumber"
+                           Content="{Binding NominalInterestRateNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=3}" />
                     <Label Grid.Row="3"
                            Grid.Column="4"
-                           Content="{Binding RepaymentRateNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}" 
-                           AutomationProperties.AutomationId="RepaymentRateNumber" />
+                           AutomationProperties.AutomationId="RepaymentRateNumber"
+                           Content="{Binding RepaymentRateNumber, Converter={StaticResource NumberToFormattedStringConverter}, ConverterParameter=2}" />
                 </Grid>
             </Expander>
             <Grid>
@@ -122,29 +122,29 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0"
+                       AutomationProperties.AutomationId="AdvanceActiveStatus"
                        Content="{Binding AdvanceStatusBarText}"
-                       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-                       AutomationProperties.AutomationId="AdvanceActiveStatus"/>
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
                 <Label Grid.Column="1"
+                       AutomationProperties.AutomationId="YearsActiveStatus"
                        Content="{Binding YearsStatusBarText}"
-                       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-                       AutomationProperties.AutomationId="YearsActiveStatus"/>
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
                 <Label Grid.Column="2"
+                       AutomationProperties.AutomationId="InterestActiveStatus"
                        Content="{Binding InterestStatusBarText}"
-                       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-                       AutomationProperties.AutomationId="InterestActiveStatus"/>
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
                 <Label Grid.Column="3"
+                       AutomationProperties.AutomationId="StartActiveStatus"
                        Content="{Binding StartStatusBarText}"
-                       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-                       AutomationProperties.AutomationId="StartActiveStatus"/>
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
                 <Label Grid.Column="4"
+                       AutomationProperties.AutomationId="RateActiveStatus"
                        Content="{Binding RateStatusBarText}"
-                       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-                       AutomationProperties.AutomationId="RateActiveStatus"/>
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
                 <Label Grid.Column="5"
+                       AutomationProperties.AutomationId="EndActiveStatus"
                        Content="{Binding EndStatusBarText}"
-                       Style="{StaticResource CalculatorOutputTopStatusLabel}"
-                       AutomationProperties.AutomationId="EndActiveStatus"/>
+                       Style="{StaticResource CalculatorOutputTopStatusLabel}" />
             </Grid>
             <Label x:Name="ResultText"
                    Height="60"

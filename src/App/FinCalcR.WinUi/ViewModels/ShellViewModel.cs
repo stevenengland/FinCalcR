@@ -17,6 +17,7 @@ using StEn.FinCalcR.WinUi.Events.EventArgs;
 using StEn.FinCalcR.WinUi.Extensions;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
 using StEn.FinCalcR.WinUi.Models;
+using StEn.FinCalcR.WinUi.Services;
 using SyncCommand = StEn.FinCalcR.WinUi.Commanding.SyncCommand;
 
 namespace StEn.FinCalcR.WinUi.ViewModels
@@ -27,6 +28,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         private readonly IDialogHostMapper dialogHostMapper;
         private readonly ILocalizationService localizationService;
         private readonly IWindowManager windowManager;
+        private readonly ISubscriptionService subscriptionService;
         private readonly AboutViewModel aboutViewModel;
         private readonly FinCalcViewModel finCalcViewModel;
         private WindowState curWindowState;
@@ -42,6 +44,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             IDialogHostMapper dialogHostMapper,
             ILocalizationService localizationService,
             IWindowManager windowManager,
+            ISubscriptionService subscriptionService,
             AboutViewModel aboutViewModel,
             FinCalcViewModel finCalcViewModel)
         {
@@ -50,9 +53,12 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.dialogHostMapper = dialogHostMapper;
             this.localizationService = localizationService;
             this.windowManager = windowManager;
+            this.subscriptionService = subscriptionService;
 
             this.aboutViewModel = aboutViewModel;
             this.finCalcViewModel = finCalcViewModel;
+
+            this.subscriptionService.Subscribe(this);
 
             this.LoadMenuItems();
             this.LoadLanguages();
@@ -202,7 +208,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             }
 
             // Open an new instance of vm (avoid using IoC.Get to be testable). The new vm will not take over the old values.
-            this.windowManager.ShowWindow(new ShellViewModel(this.SbMessageQueue, this.mediator, this.dialogHostMapper, this.localizationService, this.windowManager, this.aboutViewModel, this.finCalcViewModel), null, null);
+            this.windowManager.ShowWindow(new ShellViewModel(this.SbMessageQueue, this.mediator, this.dialogHostMapper, this.localizationService, this.windowManager, this.subscriptionService, this.aboutViewModel, this.finCalcViewModel), null, null);
 
             // Close this instance
             // One could check the success in a static bootstrapper void that takes a look at the Application.Current.Windows ("How much windows of type xyz do exist?").

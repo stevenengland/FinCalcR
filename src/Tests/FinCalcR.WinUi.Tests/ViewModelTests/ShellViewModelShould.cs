@@ -12,12 +12,26 @@ using StEn.FinCalcR.Common.LanguageResources;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.Events;
 using StEn.FinCalcR.WinUi.Models;
+using StEn.FinCalcR.WinUi.Services;
+using StEn.FinCalcR.WinUi.ViewModels;
 using Xunit;
 
 namespace FinCalcR.WinUi.Tests.ViewModelTests
 {
     public class ShellViewModelShould
     {
+        [Fact]
+        public void Subscribe_WhenVmIsCreated()
+        {
+            // Arrange
+            MockFactories.ShellViewModelMock(out var mocker);
+            var subscriptionServiceMock = mocker.GetMock<ISubscriptionService>();
+
+            // Act
+            // Assert
+            subscriptionServiceMock.Verify(m => m.Subscribe(It.Is<object>(o => o.GetType() == typeof(ShellViewModel))), Times.Once);
+        }
+
         [Fact]
         public void SetActiveWindowContent_WhenAppIsStarted()
         {
@@ -106,7 +120,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
             vm.ExitAppCommand.Execute(null);
 
             // Assert
-            mediator.Verify(m => m.Publish(It.Is<object>(o => o.GetType() == typeof(ApplicationShutdownEvent)), It.IsAny<CancellationToken>()), Times.Once);
+            mediator.Verify(m => m.Publish(It.Is<INotification>(o => o.GetType() == typeof(ApplicationShutdownEvent)), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

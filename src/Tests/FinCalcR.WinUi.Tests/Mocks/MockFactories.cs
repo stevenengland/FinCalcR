@@ -12,6 +12,7 @@ using StEn.FinCalcR.Calculations.Calculator.Commands;
 using StEn.FinCalcR.Calculations.Calculator.Display;
 using StEn.FinCalcR.Common.Services.Localization;
 using StEn.FinCalcR.WinUi.LibraryMapper.DialogHost;
+using StEn.FinCalcR.WinUi.Services;
 using StEn.FinCalcR.WinUi.ViewModels;
 
 namespace FinCalcR.WinUi.Tests.Mocks
@@ -47,7 +48,8 @@ namespace FinCalcR.WinUi.Tests.Mocks
                 (ILocalizationService)mockObjects[nameof(ILocalizationService)],
                 (IMediator)mockObjects[nameof(IMediator)],
                 invoker,
-                receiver);
+                receiver,
+                (ISubscriptionService)mockObjects[nameof(ISubscriptionService)]);
         }
 
         public static Dictionary<string, object> GetMockObjects() => new Dictionary<string, object>()
@@ -59,7 +61,10 @@ namespace FinCalcR.WinUi.Tests.Mocks
                 { nameof(IWindowManager), GetWindowManager() },
                 { nameof(ICalculationCommandReceiver), GetCalculationCommandReceiver() },
                 { nameof(ICommandInvoker), GetCommandInvoker() },
+                { nameof(ISubscriptionService), GetSubscriptionService() },
             };
+
+        private static ISubscriptionService GetSubscriptionService() => new Mock<ISubscriptionService>().Object;
 
         private static ILocalizationService GetLocalizationService() => new Mock<ILocalizationService>().Object;
 
