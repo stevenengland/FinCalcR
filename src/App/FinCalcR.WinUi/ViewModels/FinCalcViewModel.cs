@@ -56,7 +56,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             IMediator mediator,
             ICommandInvoker calculatorRemote,
             ICalculationCommandReceiver calculator,
-            ISubscriptionService subscriptionService)
+            ISubscriptionAggregator subscriptionAggregator)
         {
             this.mediator = mediator;
             this.calculatorRemote = calculatorRemote;
@@ -66,7 +66,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.calculatorRemote.CommandExecuted += this.OnCommandExecuted;
             this.calculatorRemote.CommandFailed += this.OnCommandFailed;
 
-            subscriptionService.Subscribe(this);
+            subscriptionAggregator.Subscribe(this);
 
             this.OnClearPressed();
         }

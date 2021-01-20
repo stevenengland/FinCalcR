@@ -2,7 +2,7 @@
 
 namespace StEn.FinCalcR.WinUi.Services
 {
-    public interface ISubscriptionService
+    public interface ISubscriptionAggregator
     {
         void Subscribe(object subscriber);
 

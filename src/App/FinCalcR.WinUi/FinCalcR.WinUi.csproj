@@ -98,12 +98,12 @@
     <Compile Include="Platform\PlatformProvider.cs" />
     <Compile Include="Platform\XamlPlatformProvider.cs" />
     <Compile Include="Services\ApplicationShutdownService.cs" />
-    <Compile Include="Services\DialogFromEventService.cs" />
+    <Compile Include="Services\EventToDialogTransformer.cs" />
     <Compile Include="Services\IHandleKeyboardPress.cs" />
-    <Compile Include="Services\IKeyboardEventDistributionService.cs" />
-    <Compile Include="Services\ISubscriptionService.cs" />
-    <Compile Include="Services\KeyboardEventDistributionService.cs" />
-    <Compile Include="Services\SubscriptionService.cs" />
+    <Compile Include="Services\IKeyboardEventNotifier.cs" />
+    <Compile Include="Services\ISubscriptionAggregator.cs" />
+    <Compile Include="Services\KeyboardEventNotifier.cs" />
+    <Compile Include="Services\SubscriptionAggregator.cs" />
     <Compile Include="Types\FrameworkElementGestureHandler.cs" />
     <Compile Include="Types\IGestureHandler.cs" />
     <Compile Include="Types\LastPressedOperation.cs" />

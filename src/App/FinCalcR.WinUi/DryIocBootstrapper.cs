@@ -139,12 +139,12 @@ namespace StEn.FinCalcR.WinUi
         {
             try
             {
-                this.iocContainer.Register<ISubscriptionService, SubscriptionService>(reuse: Reuse.Singleton);
-                this.iocContainer.Register<IKeyboardEventDistributionService, KeyboardEventDistributionService>(ifAlreadyRegistered: IfAlreadyRegistered.Keep);
+                this.iocContainer.Register<ISubscriptionAggregator, SubscriptionAggregator>(reuse: Reuse.Singleton);
+                this.iocContainer.Register<IKeyboardEventNotifier, KeyboardEventNotifier>(ifAlreadyRegistered: IfAlreadyRegistered.Keep);
             }
             catch (Exception e)
             {
-                this.SetErrorEvent(new ErrorEvent(e, $"Could not register {nameof(IKeyboardEventDistributionService)}:" + e.Message, true));
+                this.SetErrorEvent(new ErrorEvent(e, $"Could not register {nameof(IKeyboardEventNotifier)}:" + e.Message, true));
             }
         }
 

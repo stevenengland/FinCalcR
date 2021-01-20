@@ -10,12 +10,12 @@ using StEn.FinCalcR.WinUi.Platform;
 
 namespace StEn.FinCalcR.WinUi.Services
 {
-    public class DialogFromEventService : INotificationHandler<ErrorEvent>, INotificationHandler<HintEvent>
+    public class EventToDialogTransformer : INotificationHandler<ErrorEvent>, INotificationHandler<HintEvent>
     {
         private readonly IDialogHostMapper dialogHostMapper;
         private readonly IMediator mediator;
 
-        public DialogFromEventService(IDialogHostMapper dialogHostMapper, IMediator mediator)
+        public EventToDialogTransformer(IDialogHostMapper dialogHostMapper, IMediator mediator)
         {
             this.dialogHostMapper = dialogHostMapper;
             this.mediator = mediator;

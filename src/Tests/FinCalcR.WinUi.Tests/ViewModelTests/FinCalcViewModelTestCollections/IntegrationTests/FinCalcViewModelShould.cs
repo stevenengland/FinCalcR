@@ -15,7 +15,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
         {
             // Arrange
             MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out var mocker);
-            var subscriptionServiceMock = mocker.GetMock<ISubscriptionService>();
+            var subscriptionServiceMock = mocker.GetMock<ISubscriptionAggregator>();
 
             // Act
             // Assert

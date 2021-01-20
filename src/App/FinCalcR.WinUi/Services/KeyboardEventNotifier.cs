@@ -7,20 +7,20 @@ using StEn.FinCalcR.WinUi.Events;
 
 namespace StEn.FinCalcR.WinUi.Services
 {
-    public class KeyboardEventDistributionService : IKeyboardEventDistributionService, INotificationHandler<KeyboardKeyDownEvent>
+    public class KeyboardEventNotifier : IKeyboardEventNotifier, INotificationHandler<KeyboardKeyDownEvent>
     {
-        private readonly ISubscriptionService subscriptionService;
+        private readonly ISubscriptionAggregator subscriptionAggregator;
 
-        public KeyboardEventDistributionService(ISubscriptionService subscriptionService)
+        public KeyboardEventNotifier(ISubscriptionAggregator subscriptionAggregator)
         {
-            this.subscriptionService = subscriptionService;
+            this.subscriptionAggregator = subscriptionAggregator;
         }
 
         public Task Handle(KeyboardKeyDownEvent notification, CancellationToken cancellationToken)
         {
             var tasks = new List<Task>();
 
-            var handleKeyboardPresses = this.subscriptionService.GetSubscriptionsFor<IHandleKeyboardPress>();
+            var handleKeyboardPresses = this.subscriptionAggregator.GetSubscriptionsFor<IHandleKeyboardPress>();
             if (handleKeyboardPresses != null)
             {
                 tasks = handleKeyboardPresses

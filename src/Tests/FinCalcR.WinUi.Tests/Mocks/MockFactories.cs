@@ -49,7 +49,7 @@ namespace FinCalcR.WinUi.Tests.Mocks
                 (IMediator)mockObjects[nameof(IMediator)],
                 invoker,
                 receiver,
-                (ISubscriptionService)mockObjects[nameof(ISubscriptionService)]);
+                (ISubscriptionAggregator)mockObjects[nameof(ISubscriptionAggregator)]);
         }
 
         public static Dictionary<string, object> GetMockObjects() => new Dictionary<string, object>()
@@ -61,10 +61,10 @@ namespace FinCalcR.WinUi.Tests.Mocks
                 { nameof(IWindowManager), GetWindowManager() },
                 { nameof(ICalculationCommandReceiver), GetCalculationCommandReceiver() },
                 { nameof(ICommandInvoker), GetCommandInvoker() },
-                { nameof(ISubscriptionService), GetSubscriptionService() },
+                { nameof(ISubscriptionAggregator), GetSubscriptionService() },
             };
 
-        private static ISubscriptionService GetSubscriptionService() => new Mock<ISubscriptionService>().Object;
+        private static ISubscriptionAggregator GetSubscriptionService() => new Mock<ISubscriptionAggregator>().Object;
 
         private static ILocalizationService GetLocalizationService() => new Mock<ILocalizationService>().Object;
 

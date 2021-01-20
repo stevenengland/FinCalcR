@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using FinCalcR.WinUi.Tests.Mocks;
+using FluentAssertions;
 using MediatR;
 using Moq;
 using StEn.FinCalcR.Calculations.Calculator.Commands;
@@ -58,35 +58,38 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests.FinCalcViewModelTestCollections.In
             mediatorMock.Verify(x => x.Publish(It.Is<INotification>(n => n.GetType() == typeof(ErrorEvent)), It.IsAny<CancellationToken>()), Times.Once);
 
             // Assert display is set back to zero and not NaN or something
-            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
-            Assert.True(vm.DisplayText == "0,");
-            Assert.True(Math.Abs(vm.DisplayNumber - 0) < this.Tolerance);
+            vm.LastPressedOperation.Should().Be(CommandWord.Clear);
+            vm.DisplayText.Should().Be("0,");
+            vm.DisplayNumber.Should().BeApproximately(0, this.Tolerance);
         }
 
         [Fact]
-        public void CalculationOfRateLeadsToNaNAndUpcomingOperationsAreNotHarmed()
+        public void AlsoCalculateRepaymentRate_AndHandleCalculationErrors()
         {
+            // Arrange
             var vm = MockFactories.FinCalcViewModelWithCalculatorImplementationFactory(out var autoMocker);
             var mediatorMock = autoMocker.GetMock<IMediator>();
 
+            // Act
             // Produce NaN for repayment rate number
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(true);
             mediatorMock.Verify(x => x.Publish<INotification>(It.IsAny<ErrorEvent>(), It.IsAny<CancellationToken>()), Times.Once);
 
+            // Assert
             // Assert display is set back to zero and not NaN or something
-            Assert.True(vm.LastPressedOperation == CommandWord.Clear);
-            Assert.True(vm.DisplayText == "0,");
-            Assert.True(Math.Abs(vm.DisplayNumber - 0) < this.Tolerance);
+            vm.LastPressedOperation.Should().Be(CommandWord.Clear);
+            vm.DisplayText.Should().Be("0,");
+            vm.DisplayNumber.Should().BeApproximately(0, this.Tolerance);
 
             // Show rate number that was calculated with NaN of repayment rate number
             vm.OperatorPressedCommand.Execute("*");
             vm.RatePressedCommand.Execute(false);
 
             // Assert values are set back to zero and not NaN or something
-            Assert.True(vm.DisplayText == "0,00");
-            Assert.True(Math.Abs(vm.DisplayNumber - 0) < this.Tolerance);
-            Assert.True(Math.Abs(vm.RateNumber - 0) < this.Tolerance);
+            vm.DisplayText.Should().Be("0,00");
+            vm.DisplayNumber.Should().BeApproximately(0, this.Tolerance);
+            vm.RateNumber.Should().BeApproximately(0, this.Tolerance);
         }
     }
 }

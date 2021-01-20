@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace StEn.FinCalcR.WinUi.Services
 {
-    public class SubscriptionService : ISubscriptionService
+    public class SubscriptionAggregator : ISubscriptionAggregator
     {
         private readonly List<object> handlers = new List<object>();
 
