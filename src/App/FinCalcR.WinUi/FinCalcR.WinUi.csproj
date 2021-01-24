@@ -83,6 +83,7 @@
     <Compile Include="Commanding\ISyncCommand.cs" />
     <Compile Include="Commanding\SyncCommand.cs" />
     <Compile Include="Commanding\TaskUtilities.cs" />
+    <Compile Include="Controls\NavigationMenuListView.cs" />
     <Compile Include="Converter\NumberToFormattedStringConverter.cs" />
     <Compile Include="Events\ApplicationShutdownEvent.cs" />
     <Compile Include="Events\HintEvent.cs" />

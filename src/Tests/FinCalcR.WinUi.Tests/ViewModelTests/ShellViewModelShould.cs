@@ -33,7 +33,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
         }
 
         [Fact]
-        public void SetActiveWindowContent_WhenAppIsStarted()
+        public void SetActiveWindowContentAndNavigationMenuItem_WhenAppIsStarted()
         {
             // Arrange
             var vm = MockFactories.ShellViewModelMock(out _);
@@ -41,6 +41,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
             // Act
             // Assert
             vm.ActiveWindowContent.Should().Be(vm.MenuItems.First().Content);
+            vm.ActiveNavigationMenuItem.Should().Be(vm.MenuItems.First());
         }
 
         [Fact]

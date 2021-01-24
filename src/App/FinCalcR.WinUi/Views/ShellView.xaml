@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:controls="clr-namespace:StEn.FinCalcR.WinUi.Controls"
         xmlns:converter="clr-namespace:StEn.FinCalcR.WinUi.Converter"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -37,7 +37,8 @@
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <!--  LEFT MENU  -->
             <materialDesign:DrawerHost.LeftDrawerContent>
-                <DockPanel MinWidth="250">
+                <DockPanel MinWidth="250"
+                           LastChildFill="False">
                     <ToggleButton Width="20"
                                   Height="20"
                                   Margin="16"
@@ -46,47 +47,104 @@
                                   Foreground="White"
                                   IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"
                                   Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
-                    <ComboBox Name="LanguageCb"
-                              Width="150"
-                              Margin="32,0,0,16"
-                              HorizontalAlignment="Left"
-                              materialDesign:HintAssist.Hint="{lex:Loc Key=LANG_LANGUAGE}"
-                              DockPanel.Dock="Top"
-                              ItemsSource="{Binding Languages}"
-                              SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Value}" />
+                    <controls:NavigationMenuListView x:Name="MenuItemLst"
+                                                     Margin="32,16,32,16"
+                                                     Command="{Binding MenuItemsSelectionChangedCommand}"
+                                                     CommandParameter="{Binding ElementName=MenuItemLst, Path=SelectedItem}"
+                                                     DockPanel.Dock="Top"
+                                                     ItemsSource="{Binding MenuItems}"
+                                                     SelectedItem="{Binding ActiveNavigationMenuItem, Mode=TwoWay}"
+                                                     Background="{StaticResource MaterialDesignPaper}"
+                                                     Foreground="{StaticResource MaterialDesignBody}"
+                                                     BorderBrush="{StaticResource MaterialDesignTextBoxBorder}"
+                                                     BorderThickness="0,0,0,0">
+                        <ListView.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"
+                                   TargetType="ScrollBar" />
+                        </ListView.Resources>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="models:NavigationMenuItem">
+                                <TextBlock Text="{Binding Name}" />
                             </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding LanguageSelectionChangedCommand}"
-                                                       CommandParameter="{Binding ElementName=LanguageCb, Path=SelectedItem}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ComboBox>
-                    <ListBox x:Name="MenuItemLst"
-                             Margin="0,16,0,16"
-                             ItemsSource="{Binding MenuItems}"
-                             SelectedIndex="0">
+                        </ListBox.ItemTemplate>
+                    </controls:NavigationMenuListView>
+                    <!--<ListView x:Name="MenuItemLst2"
+                                                     Margin="32,16,32,16"
+                                                     DockPanel.Dock="Top"
+                                                     ItemsSource="{Binding MenuItems}"
+                                                     SelectedItem="{Binding ActiveNavigationMenuItem, Mode=TwoWay}">
+                        <ListView.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"
+                                   TargetType="ScrollBar" />
+                        </ListView.Resources>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="models:NavigationMenuItem">
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListView>-->
+                    <StackPanel Margin="0,32,32,0"
+                                DockPanel.Dock="Top"
+                                Orientation="Horizontal">
+                        <ComboBox Name="LanguageCb"
+                                  Width="150"
+                                  Margin="32,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  materialDesign:HintAssist.Hint="{lex:Loc Key=LANG_LANGUAGE}"
+                                  ItemsSource="{Binding Languages}"
+                                  SelectedItem="{Binding ActiveLanguage, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Value}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Margin="20,0,0,0"
+                                Content="Ok">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:InvokeCommandAction Command="{Binding LanguageSelectionChangedCommand}"
+                                                           CommandParameter="{Binding ActiveLanguage}" />
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+                    <!--<ListView x:Name="MenuItemLst"
+                              Margin="0,16,0,16"
+                              Focusable="False"
+                              ItemsSource="{Binding MenuItems}"
+                              SelectedItem="{Binding ActiveNavigationMenuItem, Mode=TwoWay}">
                         <ListBox.Resources>
                             <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"
                                    TargetType="ScrollBar" />
                         </ListBox.Resources>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding MenuItemsSelectionChangedCommand}"
-                                                       CommandParameter="{Binding ElementName=MenuItemLst, Path=SelectedItem}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
+                        <b:Interaction.Triggers>
+                    -->
+                    <!--<b:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <b:CallMethodAction MethodName="OnMenuItemMouseDown"
+                                                    TargetObject="{Binding}" />
+                            </b:EventTrigger>-->
+                    <!--
+                            <b:EventTrigger EventName="PreviewKeyDown">
+                                <b:CallMethodAction MethodName="OnMenuItemKeyDown"
+                                                    TargetObject="{Binding}" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="models:NavigationMenuItem">
-                                <TextBlock Margin="32,0,32,0"
-                                           Text="{Binding Name}" />
+                                <Button Width="220"
+                                        Margin="24,0,32,0">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.MenuItemsSelectionChangedCommand}"
+                                                                   CommandParameter="{Binding}" />
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <TextBlock Text="{Binding Name}" />
+                                </Button>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>
+                    </ListView>-->
                 </DockPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
             <DockPanel>
@@ -97,11 +155,6 @@
                                           DockPanel.Dock="Top"
                                           Mode="PrimaryMid"
                                           MouseMove="ColorZone_MouseMove">
-                    <!--<i:Interaction.Triggers>
-						<i:EventTrigger EventName="MouseDoubleClick">
-							<i:InvokeCommandAction Command="{Binding TitleBarDoubleClickedCommand}" />
-						</i:EventTrigger>
-					</i:Interaction.Triggers>-->
                     <DockPanel>
                         <!--  HAMBURGER MENU  -->
 
@@ -145,19 +198,22 @@
                 <!--  MAIN BODY SECTION  -->
                 <Grid>
                     <Grid.RowDefinitions>
-                        <!--<RowDefinition Height="Auto" />-->
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <!--<domain1:DocumentationLinks DataContext="{Binding ElementName=MenuItemLst, Path=SelectedItem}"
-                                                Margin="0 0 0 16"
-                                                />-->
+
                     <ScrollViewer Grid.Row="0"
                                   Padding="{Binding ElementName=MenuItemLst, Path=SelectedItem.MarginRequirement}"
                                   HorizontalScrollBarVisibility="{Binding ElementName=MenuItemLst, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
                                   VerticalScrollBarVisibility="{Binding ElementName=MenuItemLst, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}">
 
                         <!--  When switching to Prism, use the Regions feature  -->
+                        <!-- Don't use
                         <ContentControl cal:View.Model="{Binding ElementName=MenuItemLst, Path=SelectedItem.Content}" />
+                        And also don't use
+                        <ContentControl cal:View.Model="{Binding ActiveNavigationMenuItem.Content}" />
+                        Because both of them would lead to immediate updates of the active view without waiting for a click only because the selected item of the navigation menu list changed.
+                        -->
+                        <ContentControl cal:View.Model="{Binding ActiveWindowContent}" />
                     </ScrollViewer>
 
                     <materialDesign:Snackbar x:Name="MainSnackbar"

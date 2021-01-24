@@ -35,8 +35,10 @@ namespace StEn.FinCalcR.WinUi.ViewModels
         private bool isMenuBarVisible;
         private string titleBarText;
         private ObservableCollection<KeyValuePair<string, string>> languages = new ObservableCollection<KeyValuePair<string, string>>();
-        private KeyValuePair<string, string> selectedLanguage;
+        private KeyValuePair<string, string> activeLanguage;
         private ObservableCollection<NavigationMenuItem> menuItems;
+        private NavigationMenuItem activeNavigationMenuItem;
+        private object activeWindowContent;
 
         public ShellViewModel(
             ISnackbarMessageQueue snackbarMessageQueue,
@@ -87,6 +89,21 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             }
         }
 
+        public NavigationMenuItem ActiveNavigationMenuItem
+        {
+            get => this.activeNavigationMenuItem;
+            set
+            {
+                if (Equals(value, this.activeNavigationMenuItem))
+                {
+                    return;
+                }
+
+                this.activeNavigationMenuItem = value;
+                this.NotifyOfPropertyChange(() => this.ActiveNavigationMenuItem);
+            }
+        }
+
         public ObservableCollection<KeyValuePair<string, string>> Languages
         {
             get => this.languages;
@@ -127,17 +144,30 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             }
         }
 
-        public KeyValuePair<string, string> SelectedLanguage
+        public KeyValuePair<string, string> ActiveLanguage
         {
-            get => this.selectedLanguage;
+            get => this.activeLanguage;
             set
             {
-                this.selectedLanguage = value;
-                this.NotifyOfPropertyChange(() => this.SelectedLanguage);
+                this.activeLanguage = value;
+                this.NotifyOfPropertyChange(() => this.ActiveLanguage);
             }
         }
 
-        public object ActiveWindowContent { get; set; }
+        public object ActiveWindowContent
+        {
+            get => this.activeWindowContent;
+            set
+            {
+                if (Equals(value, this.activeWindowContent))
+                {
+                    return;
+                }
+
+                this.activeWindowContent = value;
+                this.NotifyOfPropertyChange(() => this.ActiveWindowContent);
+            }
+        }
 
         [UsedImplicitly]
         public void OnKeyboardKeyPressed(object sender, KeyEventArgs e) // For Xaml behavior event
@@ -152,7 +182,18 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.KeyboardKeyPressedCommand.Execute(mappedEventArgs);
         }
 
-        private void OnKeyboardKeyPressed(MappedKeyEventArgs e) => this.mediator.PublishOnUiThread(new KeyboardKeyDownEvent(e));
+        private void OnKeyboardKeyPressed(MappedKeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case "Apps":
+                    this.IsMenuBarVisible = !this.IsMenuBarVisible;
+                    break;
+                default:
+                    this.mediator.PublishOnUiThread(new KeyboardKeyDownEvent(e));
+                    break;
+            }
+        }
 
         private void LoadLanguages()
         {
@@ -180,7 +221,9 @@ namespace StEn.FinCalcR.WinUi.ViewModels
                     VerticalScrollBarVisibilityRequirement = ScrollBarVisibility.Auto,
                 },
             };
+
             this.ActiveWindowContent = this.MenuItems.First().Content;
+            this.ActiveNavigationMenuItem = this.MenuItems.First();
         }
 
         private void OnMenuItemsSelectionChanged(object item)
@@ -189,21 +232,25 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             var navItem = (NavigationMenuItem)item;
             this.TitleBarText = Resources.AppTitleTxt_Text + " - " + navItem.Name;
             this.ActiveWindowContent = navItem.Content;
+            this.ActiveNavigationMenuItem = navItem;
         }
 
         private void OnLanguageSelectionChanged(object item)
         {
+            // For example if the selected value is the 'hint', no real entry.
+            if (item == null)
+            {
+                return;
+            }
+
             var langItem = (KeyValuePair<string, string>)item;
-            var lang = langItem.Key;
-            switch (lang)
+            switch (langItem.Key)
             {
                 case "de":
                     this.localizationService.ChangeCurrentCulture(new CultureInfo("de"));
                     break;
                 case "en":
                     this.localizationService.ChangeCurrentCulture(new CultureInfo("en"));
-                    break;
-                default:
                     break;
             }
 
