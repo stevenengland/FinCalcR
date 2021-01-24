@@ -6,12 +6,12 @@ using System.Windows.Input;
 
 namespace StEn.FinCalcR.WinUi.Controls
 {
-    public class NavigationMenuListView : ListView, ICommandSource
+    public class NavigationMenuListView : ListView
     {
         // Make Command a dependency property so it can use data binding.
-        public static readonly DependencyProperty CommandProperty =
+        public static readonly DependencyProperty NavigateCommandProperty =
             DependencyProperty.Register(
-                "Command",
+                "NavigateCommand",
                 typeof(ICommand),
                 typeof(NavigationMenuListView),
                 new PropertyMetadata(
@@ -53,10 +53,10 @@ namespace StEn.FinCalcR.WinUi.Controls
             Keyboard,
         }
 
-        public ICommand Command
+        public ICommand NavigateCommand
         {
-            get => (ICommand)this.GetValue(CommandProperty);
-            set => this.SetValue(CommandProperty, value);
+            get => (ICommand)this.GetValue(NavigateCommandProperty);
+            set => this.SetValue(NavigateCommandProperty, value);
         }
 
         public object CommandParameter
@@ -110,7 +110,7 @@ namespace StEn.FinCalcR.WinUi.Controls
 
         private void CanExecuteChanged(object sender, EventArgs e)
         {
-            switch (this.Command)
+            switch (this.NavigateCommand)
             {
                 case null:
                     return;
@@ -118,7 +118,7 @@ namespace StEn.FinCalcR.WinUi.Controls
                     this.IsEnabled = command.CanExecute(this.CommandParameter, this.CommandTarget);
                     break;
                 default:
-                    this.IsEnabled = this.Command.CanExecute(this.CommandParameter);
+                    this.IsEnabled = this.NavigateCommand.CanExecute(this.CommandParameter);
                     break;
             }
         }
@@ -169,7 +169,7 @@ namespace StEn.FinCalcR.WinUi.Controls
 
         private void ExecuteCommand()
         {
-            switch (this.Command)
+            switch (this.NavigateCommand)
             {
                 case null:
                     return;
@@ -177,7 +177,7 @@ namespace StEn.FinCalcR.WinUi.Controls
                     command.Execute(this.CommandParameter, this.CommandTarget);
                     break;
                 default:
-                    this.Command.Execute(this.CommandParameter);
+                    this.NavigateCommand.Execute(this.CommandParameter);
                     break;
             }
         }

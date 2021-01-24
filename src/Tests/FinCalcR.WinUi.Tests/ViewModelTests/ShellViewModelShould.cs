@@ -62,7 +62,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
             var vm = MockFactories.ShellViewModelMock(out _);
 
             // Act
-            vm.MenuItemsSelectionChangedCommand.Execute(vm.MenuItems.LastOrDefault());
+            vm.NavigateCommand.Execute(vm.MenuItems.LastOrDefault());
 
             // Assert
             vm.ActiveWindowContent.Should().NotBe(vm.MenuItems.First().Content);
@@ -91,7 +91,7 @@ namespace FinCalcR.WinUi.Tests.ViewModelTests
             var vm = MockFactories.ShellViewModelMock(out _);
 
             // Act
-            vm.MenuItemsSelectionChangedCommand.Execute(new NavigationMenuItem() { Name = string.Empty });
+            vm.NavigateCommand.Execute(new NavigationMenuItem() { Name = string.Empty });
 
             // Assert
             vm.IsMenuBarVisible.Should().BeFalse();

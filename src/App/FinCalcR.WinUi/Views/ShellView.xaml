@@ -49,7 +49,7 @@
                                   Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
                     <controls:NavigationMenuListView x:Name="MenuItemLst"
                                                      Margin="32,16,32,16"
-                                                     Command="{Binding MenuItemsSelectionChangedCommand}"
+                                                     NavigateCommand="{Binding NavigateCommand}"
                                                      CommandParameter="{Binding ElementName=MenuItemLst, Path=SelectedItem}"
                                                      DockPanel.Dock="Top"
                                                      ItemsSource="{Binding MenuItems}"

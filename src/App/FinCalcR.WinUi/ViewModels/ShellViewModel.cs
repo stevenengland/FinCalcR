@@ -67,7 +67,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.TitleBarText = Resources.AppTitleTxt_Text + " - " + Resources.FinCalcItem_Name;
         }
 
-        public ICommand MenuItemsSelectionChangedCommand => new SyncCommand<object>(this.OnMenuItemsSelectionChanged);
+        public ICommand NavigateCommand => new SyncCommand<object>(this.OnNavigate);
 
         public ICommand LanguageSelectionChangedCommand => new SyncCommand<object>(this.OnLanguageSelectionChanged);
 
@@ -226,7 +226,7 @@ namespace StEn.FinCalcR.WinUi.ViewModels
             this.ActiveNavigationMenuItem = this.MenuItems.First();
         }
 
-        private void OnMenuItemsSelectionChanged(object item)
+        private void OnNavigate(object item)
         {
             this.IsMenuBarVisible = false;
             var navItem = (NavigationMenuItem)item;
