@@ -362,6 +362,8 @@ namespace StEn.FinCalcR.WinUi.ViewModels
 
         #endregion
 
+        public void HandleBehaviourException(Exception ex) => this.mediator.PublishOnUiThread(new ErrorEvent(ex, Resources.EXC_UNKNOWN_ERROR));
+
         public Task HandleAsync(KeyboardKeyDownEvent notification, CancellationToken cancellationToken)
         {
             this.KeyboardKeyPressedCommand.Execute(notification.KeyEventArgs);

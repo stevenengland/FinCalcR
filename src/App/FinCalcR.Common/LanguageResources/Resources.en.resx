@@ -162,4 +162,7 @@
   <data name="EXC_NOMINTEREST_EXCEEDS_LIMIT" xml:space="preserve">
     <value>The nominal interest must not be less than -100.</value>
   </data>
+  <data name="EXC_UNKNOWN_ERROR" xml:space="preserve">
+    <value>An unknown error occured.</value>
+  </data>
 </root>

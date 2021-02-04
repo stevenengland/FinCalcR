@@ -203,15 +203,18 @@
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="PreviewMouseDown">
                         <behavior:CustomCallMethodAction MethodName="OnClearPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewTouchDown">
                         <behavior:CustomCallMethodAction MethodName="OnClearPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewStylusDown">
                         <behavior:CustomCallMethodAction MethodName="OnClearPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>
@@ -223,15 +226,18 @@
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="PreviewMouseDown">
                         <behavior:CustomCallMethodAction MethodName="OnYearsPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewTouchDown">
                         <behavior:CustomCallMethodAction MethodName="OnYearsPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewStylusDown">
                         <behavior:CustomCallMethodAction MethodName="OnYearsPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>
@@ -243,15 +249,18 @@
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="PreviewMouseDown">
                         <behavior:CustomCallMethodAction MethodName="OnInterestPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewTouchDown">
                         <behavior:CustomCallMethodAction MethodName="OnInterestPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewStylusDown">
                         <behavior:CustomCallMethodAction MethodName="OnInterestPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>
@@ -263,15 +272,18 @@
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="PreviewMouseDown">
                         <behavior:CustomCallMethodAction MethodName="OnStartPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}"  
+                                                         ExceptionHandlingMethodName="HandleBehaviourException"/>
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewTouchDown">
                         <behavior:CustomCallMethodAction MethodName="OnStartPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}"  
+                                                         ExceptionHandlingMethodName="HandleBehaviourException"/>
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewStylusDown">
                         <behavior:CustomCallMethodAction MethodName="OnStartPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>
@@ -283,15 +295,18 @@
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="PreviewMouseDown">
                         <behavior:CustomCallMethodAction MethodName="OnRatePressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewTouchDown">
                         <behavior:CustomCallMethodAction MethodName="OnRatePressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewStylusDown">
                         <behavior:CustomCallMethodAction MethodName="OnRatePressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>
@@ -303,15 +318,18 @@
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="PreviewMouseDown">
                         <behavior:CustomCallMethodAction MethodName="OnEndPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewTouchDown">
                         <behavior:CustomCallMethodAction MethodName="OnEndPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                     <b:EventTrigger EventName="PreviewStylusDown">
                         <behavior:CustomCallMethodAction MethodName="OnEndPressedAsync"
-                                                         TargetObject="{Binding}" />
+                                                         TargetObject="{Binding}" 
+                                                         ExceptionHandlingMethodName="HandleBehaviourException" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>

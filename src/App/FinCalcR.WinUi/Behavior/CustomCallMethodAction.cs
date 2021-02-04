@@ -17,12 +17,15 @@ namespace StEn.FinCalcR.WinUi.Behavior
     {
         public static readonly DependencyProperty TargetObjectProperty = DependencyProperty.Register("TargetObject", typeof(object), typeof(CustomCallMethodAction), new PropertyMetadata(OnTargetObjectChanged));
         public static readonly DependencyProperty MethodNameProperty = DependencyProperty.Register("MethodName", typeof(string), typeof(CustomCallMethodAction), new PropertyMetadata(OnMethodNameChanged));
+        public static readonly DependencyProperty ExceptionHandlingMethodNameProperty = DependencyProperty.Register("ExceptionHandlingMethodName", typeof(string), typeof(CustomCallMethodAction), new PropertyMetadata(OnExceptionHandlingMethodNameChanged));
 
         private List<MethodDescriptor> methodDescriptors;
+        private List<MethodDescriptor> exceptionHandlingMethodDescriptors;
 
         public CustomCallMethodAction()
         {
             this.methodDescriptors = new List<MethodDescriptor>();
+            this.exceptionHandlingMethodDescriptors = new List<MethodDescriptor>();
         }
 
         /// <summary>
@@ -43,6 +46,15 @@ namespace StEn.FinCalcR.WinUi.Behavior
             set => this.SetValue(MethodNameProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the name of the method to invoke. This is a dependency property.
+        /// </summary>
+        public string ExceptionHandlingMethodName
+        {
+            get => (string)this.GetValue(ExceptionHandlingMethodNameProperty);
+            set => this.SetValue(ExceptionHandlingMethodNameProperty, value);
+        }
+
         private object Target => this.TargetObject ?? this.AssociatedObject;
 
         /// <summary>
@@ -50,7 +62,9 @@ namespace StEn.FinCalcR.WinUi.Behavior
         /// </summary>
         /// <param name="parameter">The parameter of the action. If the action does not require a parameter, the parameter may be set to a null reference.</param>
         ///// <exception cref="ArgumentException">A method with <c cref="MethodName"/> could not be found on the <c cref="TargetObject"/>.</exception>
-        protected override void Invoke(object parameter)
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        protected override async void Invoke(object parameter)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
             if (this.AssociatedObject == null)
             {
@@ -72,7 +86,23 @@ namespace StEn.FinCalcR.WinUi.Behavior
                             if (parameters[0].ParameterType.IsInstanceOfType(this.AssociatedObject)
                                 && parameters[1].ParameterType.IsInstanceOfType(parameter))
                             {
-                                methodDescriptor.MethodInfo.Invoke(this.Target, new[] { this.AssociatedObject, parameter });
+                                if (methodDescriptor.MethodInfo.ReturnType == typeof(Task))
+                                {
+                                    try
+                                    {
+                                        var task = (Task)methodDescriptor.MethodInfo.Invoke(this.Target, new[] { this.AssociatedObject, parameter });
+                                        await task.ConfigureAwait(true);
+                                    }
+                                    catch (Exception ex) when (!string.IsNullOrEmpty(this.ExceptionHandlingMethodName))
+                                    {
+                                        var exMethodDescriptor = this.exceptionHandlingMethodDescriptors[0];
+                                        exMethodDescriptor.MethodInfo.Invoke(this.Target, new object[] { ex });
+                                    }
+                                }
+                                else
+                                {
+                                    methodDescriptor.MethodInfo.Invoke(this.Target, new[] { this.AssociatedObject, parameter });
+                                }
                             }
 
                             break;
@@ -93,6 +123,7 @@ namespace StEn.FinCalcR.WinUi.Behavior
         {
             base.OnAttached();
             this.UpdateMethodInfo();
+            this.UpdateExceptionHandlingMethodInfo();
         }
 
         /// <summary>
@@ -102,12 +133,15 @@ namespace StEn.FinCalcR.WinUi.Behavior
         protected override void OnDetaching()
         {
             this.methodDescriptors.Clear();
+            this.exceptionHandlingMethodDescriptors.Clear();
             base.OnDetaching();
         }
 
-        private static bool AreMethodParamsValid(ParameterInfo[] methodParams)
+        private static bool AreExceptionHandlingMethodParamsValid(IReadOnlyList<ParameterInfo> methodParams) => methodParams.Count == 1 && typeof(Exception).IsAssignableFrom(methodParams[0].ParameterType);
+
+        private static bool AreMethodParamsValid(IReadOnlyList<ParameterInfo> methodParams)
         {
-            if (methodParams.Length == 2)
+            if (methodParams.Count == 2)
             {
                 if (methodParams[0].ParameterType != typeof(object))
                 {
@@ -119,7 +153,7 @@ namespace StEn.FinCalcR.WinUi.Behavior
                     return false;
                 }
             }
-            else if (methodParams.Length != 0)
+            else if (methodParams.Count != 0)
             {
                 return false;
             }
@@ -127,65 +161,105 @@ namespace StEn.FinCalcR.WinUi.Behavior
             return true;
         }
 
+        private static void OnExceptionHandlingMethodNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args) => OnTargetObjectChanged(sender, args);
+
         private static void OnMethodNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args) => OnTargetObjectChanged(sender, args);
 
         private static void OnTargetObjectChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             var callMethodAction = (CustomCallMethodAction)sender;
             callMethodAction.UpdateMethodInfo();
+            callMethodAction.UpdateExceptionHandlingMethodInfo();
         }
 
         private MethodDescriptor FindBestMethod(object parameter) => this.methodDescriptors.Find((methodDescriptor) => !methodDescriptor.HasParameters ||
-                                                                                                                                                  (parameter != null &&
-                                                                                                                                                   methodDescriptor.SecondParameterType.IsInstanceOfType(parameter)));
+                                                                                                                                                  (parameter != null && methodDescriptor.SecondParameterType.IsInstanceOfType(parameter)));
+
+        private void UpdateExceptionHandlingMethodInfo()
+        {
+            this.exceptionHandlingMethodDescriptors.Clear();
+
+            if (this.Target == null || string.IsNullOrEmpty(this.ExceptionHandlingMethodName))
+            {
+                return;
+            }
+
+            var targetType = this.Target.GetType();
+            foreach (var method in targetType.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!this.IsExceptionHandlingMethodValid(method))
+                {
+                    continue;
+                }
+
+                var methodParams = method.GetParameters();
+
+                if (!AreExceptionHandlingMethodParamsValid(methodParams))
+                {
+                    continue;
+                }
+
+                this.exceptionHandlingMethodDescriptors.Add(new MethodDescriptor(method, methodParams));
+            }
+        }
 
         private void UpdateMethodInfo()
         {
             this.methodDescriptors.Clear();
 
-            if (this.Target != null && !string.IsNullOrEmpty(this.MethodName))
+            if (this.Target == null || string.IsNullOrEmpty(this.MethodName))
             {
-                var targetType = this.Target.GetType();
-                var methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+                return;
+            }
 
-                for (var i = 0; i < methods.Length; i++)
+            var targetType = this.Target.GetType();
+            var methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var method in methods)
+            {
+                if (!this.IsMethodValid(method))
                 {
-                    var method = methods[i];
-
-                    if (!this.IsMethodValid(method))
-                    {
-                        continue;
-                    }
-
-                    var methodParams = method.GetParameters();
-
-                    if (!AreMethodParamsValid(methodParams))
-                    {
-                        continue;
-                    }
-
-                    this.methodDescriptors.Add(new MethodDescriptor(method, methodParams));
+                    continue;
                 }
 
-                this.methodDescriptors = this.methodDescriptors.OrderByDescending((methodDescriptor) =>
+                var methodParams = method.GetParameters();
+
+                if (!AreMethodParamsValid(methodParams))
                 {
-                    var distanceFromBaseClass = 0;
+                    continue;
+                }
 
-                    if (!methodDescriptor.HasParameters)
-                    {
-                        return methodDescriptor.ParameterCount + distanceFromBaseClass;
-                    }
-
-                    var typeWalker = methodDescriptor.SecondParameterType;
-                    while (typeWalker != typeof(EventArgs))
-                    {
-                        distanceFromBaseClass++;
-                        typeWalker = typeWalker?.BaseType;
-                    }
-
-                    return methodDescriptor.ParameterCount + distanceFromBaseClass;
-                }).ToList();
+                this.methodDescriptors.Add(new MethodDescriptor(method, methodParams));
             }
+
+            this.methodDescriptors = this.methodDescriptors.OrderByDescending((methodDescriptor) =>
+            {
+                var distanceFromBaseClass = 0;
+
+                if (!methodDescriptor.HasParameters)
+                {
+                    return methodDescriptor.ParameterCount + distanceFromBaseClass;
+                }
+
+                var typeWalker = methodDescriptor.SecondParameterType;
+                while (typeWalker != typeof(EventArgs))
+                {
+                    distanceFromBaseClass++;
+                    typeWalker = typeWalker?.BaseType;
+                }
+
+                return methodDescriptor.ParameterCount + distanceFromBaseClass;
+            }).ToList();
+        }
+
+        private bool IsExceptionHandlingMethodValid(MethodInfo method)
+        {
+            if (!string.Equals(method.Name, this.ExceptionHandlingMethodName, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            return method.ReturnType == typeof(void);
         }
 
         private bool IsMethodValid(MethodInfo method)
@@ -195,12 +269,7 @@ namespace StEn.FinCalcR.WinUi.Behavior
                 return false;
             }
 
-            if (method.ReturnType != typeof(void) && method.ReturnType != typeof(Task))
-            {
-                return false;
-            }
-
-            return true;
+            return method.ReturnType == typeof(void) || method.ReturnType == typeof(Task);
         }
 
         private class MethodDescriptor

@@ -206,6 +206,10 @@
           <source>Der nominelle Zins darf nicht kleiner als -100 sein.</source>
           <target state="translated">The nominal interest must not be less than -100.</target>
         </trans-unit>
+        <trans-unit id="EXC_UNKNOWN_ERROR" translate="yes" xml:space="preserve">
+          <source>Ein unbekannter Fehler ist aufgetreten.</source>
+          <target state="translated">An unknown error occured.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

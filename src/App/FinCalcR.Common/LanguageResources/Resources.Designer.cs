@@ -286,6 +286,15 @@ namespace StEn.FinCalcR.Common.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ein unbekannter Fehler ist aufgetreten..
+        /// </summary>
+        public static string EXC_UNKNOWN_ERROR {
+            get {
+                return ResourceManager.GetString("EXC_UNKNOWN_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Der zuletzt gedrückte Knopf hat keine zugeordnete Funktion. Bitte melden Sie den Fehler..
         /// </summary>
         public static string EXC_UNKNOWN_SPECIAL_FUNCTION_BUTTON {
